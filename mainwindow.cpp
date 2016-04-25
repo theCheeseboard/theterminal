@@ -143,3 +143,9 @@ void MainWindow::on_actionGo_Full_Screen_triggered()
         ui->tabFrame->setVisible(false);
     }
 }
+
+void MainWindow::on_actionAbout_triggered()
+{
+    About* window = new About(this);
+    window->exec();
+}

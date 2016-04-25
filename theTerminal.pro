@@ -14,9 +14,12 @@ LIBS += -lqtermwidget5
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    terminalwidget.cpp
+    terminalwidget.cpp \
+    about.cpp
 
 HEADERS  += mainwindow.h \
-    terminalwidget.h
+    terminalwidget.h \
+    about.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    about.ui
