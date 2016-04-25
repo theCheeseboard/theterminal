@@ -1,0 +1,8 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=theTerminal
+GenericName=Terminal
+Exec=theterminal
+Icon=utilities-terminal
