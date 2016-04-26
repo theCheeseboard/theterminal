@@ -7,6 +7,11 @@ terminalWidget::terminalWidget(QString workDir, QWidget *parent) : QTermWidget(0
     this->setColorScheme("Linux");
     this->setHistorySize(-1);
 
+    QFont font;
+    font.setFamily("Noto Mono");
+    font.setPointSize(10);
+    this->setFont(font);
+
     QStringList environment;
     environment.append("TERM=xterm");
 
