@@ -17,6 +17,10 @@ terminalWidget::terminalWidget(QString workDir, QWidget *parent) : QTermWidget(0
 
     this->setEnvironment(environment);
 
+    if (workDir != "") {
+        this->setWorkingDirectory(workDir);
+    }
+
     this->update();
     this->startShellProgram();
 }

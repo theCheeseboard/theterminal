@@ -1,13 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QString workDir, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    this->addTerminal();
+    this->addTerminal(workDir);
 }
 
 MainWindow::~MainWindow()
@@ -57,8 +57,8 @@ void MainWindow::on_terminal_copyAvailable(bool canCopy)
 
 }
 
-void MainWindow::addTerminal() {
-    terminalWidget* widget = new terminalWidget();
+void MainWindow::addTerminal(QString workDir) {
+    terminalWidget* widget = new terminalWidget(workDir);
     QPushButton* button = new QPushButton();
     widget->setContextMenuPolicy(Qt::CustomContextMenu);
     button->setCheckable(true);

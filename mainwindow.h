@@ -15,7 +15,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QString workDir = "", QWidget *parent = 0);
     ~MainWindow();
 
 public slots:
@@ -27,7 +27,7 @@ public slots:
     void on_actionCopy_triggered();
     void on_actionPaste_triggered();
 
-    void addTerminal();
+    void addTerminal(QString workDir = "");
     void changeToTerminal(terminalWidget* widget);
     void changeToTerminal(int index);
     void closeTerminal(terminalWidget* widget);
