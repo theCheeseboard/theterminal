@@ -8,7 +8,7 @@ terminalWidget::terminalWidget(QString workDir, QWidget *parent) : QTermWidget(0
     this->setHistorySize(-1);
 
     QFont font;
-    font.setFamily("Noto Mono");
+    font.setFamily("Hack");
     font.setPointSize(10);
     this->setTerminalFont(font);
 

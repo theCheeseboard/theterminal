@@ -4,7 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui x11extras thelib
+CONFIG   += c++14
+LIBS     += -lX11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,11 +17,16 @@ LIBS += -lqtermwidget5
 SOURCES += main.cpp\
         mainwindow.cpp \
     terminalwidget.cpp \
-    about.cpp
+    about.cpp \
+    dropdown.cpp \
+    nativeeventfilter.cpp
 
 HEADERS  += mainwindow.h \
     terminalwidget.h \
-    about.h
+    about.h \
+    dropdown.h \
+    nativeeventfilter.h
 
 FORMS    += mainwindow.ui \
-    about.ui
+    about.ui \
+    dropdown.ui
