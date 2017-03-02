@@ -11,6 +11,8 @@
 #include <QDir>
 #include <QPaintEvent>
 #include <QPainter>
+#include <QProcess>
+#include <QMenu>
 #include "nativeeventfilter.h"
 #include "terminalwidget.h"
 #include <tpropertyanimation.h>
@@ -25,13 +27,18 @@ class Dropdown;
 class Dropdown : public QDialog
 {
     Q_OBJECT
+    Q_PROPERTY(QRect geometry READ geometry WRITE setGeometry)
 
 public:
     explicit Dropdown(QString workDir, QWidget *parent = 0);
     ~Dropdown();
 
+    void setGeometry(int x, int y, int w, int h);
+    void setGeometry(QRect geometry);
+
 public slots:
     void show();
+    void hide();
     void newTab(QString workDir);
     void closeTab(terminalWidget* widget);
 

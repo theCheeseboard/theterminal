@@ -6,7 +6,14 @@ Dropdown::Dropdown(QString workdir, QWidget *parent) :
     ui(new Ui::Dropdown)
 {
     ui->setupUi(this);
-    this->setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+
+    QMenu* menu = new QMenu();
+    menu->addAction(QIcon::fromTheme("application-exit"), "Exit", [=]() {
+        this->close();
+    });
+    ui->menuButton->setPopupMode(QToolButton::InstantPopup);
+    ui->menuButton->setMenu(menu);
 
     NativeEventFilter* filter = new NativeEventFilter;
     connect(filter, &NativeEventFilter::toggleTerminal, [=]() {
@@ -78,20 +85,36 @@ void Dropdown::show() {
         QRect endGeometry;
         endGeometry.setRect(screenGeometry.left() /*+ screenGeometry.width() / 20*/, screenGeometry.top(), screenGeometry.width() /* * 0.9*/, screenGeometry.height() / 2);
 
-        QDialog::show();
-        this->activateWindow();
-        ui->stackedTabs->currentWidget()->setFocus();
-
         tPropertyAnimation* animation = new tPropertyAnimation(this, "geometry");
         QRect startGeometry = endGeometry;
-        startGeometry.moveBottom(screenGeometry.top());
+        startGeometry.moveBottom(screenGeometry.top() - 1);
         animation->setStartValue(startGeometry);
         animation->setEndValue(endGeometry);
-        animation->setDuration(500);
+        animation->setDuration(250);
         animation->setEasingCurve(QEasingCurve::OutCubic);
         connect(animation, SIGNAL(finished()), animation, SLOT(deleteLater()));
         animation->start();
+
+        QDialog::show();
+        this->activateWindow();
+
+        ui->stackedTabs->currentWidget()->setFocus();
     }
+}
+
+void Dropdown::hide() {
+    tPropertyAnimation* animation = new tPropertyAnimation(this, "geometry");
+    QRect endGeometry = this->geometry();
+    endGeometry.moveBottom(this->y() - 1);
+    animation->setStartValue(this->geometry());
+    animation->setEndValue(endGeometry);
+    animation->setDuration(250);
+    animation->setEasingCurve(QEasingCurve::InCubic);
+    connect(animation, SIGNAL(finished()), animation, SLOT(deleteLater()));
+    connect(animation, &tPropertyAnimation::finished, [=]() {
+        QDialog::hide();
+    });
+    animation->start();
 }
 
 void Dropdown::on_AddTab_clicked()
@@ -122,4 +145,15 @@ void Dropdown::paintEvent(QPaintEvent *event) {
     //painter.drawLine(0, 0, 0, this->height() - 1);
     painter.drawLine(0, this->height() - 1, this->width() - 1, this->height() - 1);
     //painter.drawLine(this->width() - 1, this->height() - 1, this->width() - 1, 0);
+}
+
+void Dropdown::setGeometry(int x, int y, int w, int h) { //Use wmctrl command because KWin has a problem with moving windows offscreen.
+    QDialog::setGeometry(x, y, w, h);
+    QProcess::execute("wmctrl -r " + this->windowTitle() + " -e 0," +
+                      QString::number(x) + "," + QString::number(y) + "," +
+                      QString::number(w) + "," + QString::number(h));
+    this->setFixedSize(w, h);}
+
+void Dropdown::setGeometry(QRect geometry) {
+    this->setGeometry(geometry.x(), geometry.y(), geometry.width(), geometry.height());
 }
