@@ -81,11 +81,24 @@
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>317</width>
+             <width>289</width>
              <height>20</height>
             </size>
            </property>
           </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="expand">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset theme="go-down"/>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QPushButton" name="CloseTab">

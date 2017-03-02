@@ -50,6 +50,13 @@ void Dropdown::newTab(QString workDir) {
     connect(widget, &QTermWidget::finished, [=]() {
         closeTab(widget);
     });
+    connect(widget, &QTermWidget::bell, [=](QString message) {
+        /*tToast* toast = new tToast(widget);
+        toast->setTitle("Bell");
+        toast->setText(message);
+        toast->setTimeout(3000);
+        toast->show(widget);*/
+    });
 
     button->setText("Terminal " + QString::number(ui->stackedTabs->indexOf(widget) + 1));
     ui->tabFrame->layout()->addWidget(button);
@@ -69,11 +76,11 @@ void Dropdown::closeTab(terminalWidget *widget) {
     ui->stackedTabs->removeWidget(widget);
     if (ui->stackedTabs->count() == 0) {
         newTab(QDir::homePath());
+        this->hide();
     }
 }
 
 void Dropdown::show() {
-    QScreen* currentScreen = NULL;
     for (QScreen* screen : QApplication::screens()) {
         if (screen->geometry().contains(QCursor::pos())) {
             currentScreen = screen;
@@ -113,6 +120,8 @@ void Dropdown::hide() {
     connect(animation, SIGNAL(finished()), animation, SLOT(deleteLater()));
     connect(animation, &tPropertyAnimation::finished, [=]() {
         QDialog::hide();
+        isExpanded = false;
+        ui->expand->setIcon(QIcon::fromTheme("go-down"));
     });
     animation->start();
 }
@@ -156,4 +165,40 @@ void Dropdown::setGeometry(int x, int y, int w, int h) { //Use wmctrl command be
 
 void Dropdown::setGeometry(QRect geometry) {
     this->setGeometry(geometry.x(), geometry.y(), geometry.width(), geometry.height());
+}
+
+void Dropdown::on_expand_clicked()
+{
+    QRect screenGeometry = currentScreen->availableGeometry();
+    if (isExpanded) {
+        isExpanded = false;
+        ui->expand->setIcon(QIcon::fromTheme("go-down"));
+
+        QRect endGeometry;
+        endGeometry.setRect(screenGeometry.left(), screenGeometry.top(), screenGeometry.width(), screenGeometry.height() / 2);
+
+        tPropertyAnimation* animation = new tPropertyAnimation(this, "geometry");
+        animation->setStartValue(this->geometry());
+        animation->setEndValue(endGeometry);
+        animation->setDuration(250);
+        animation->setEasingCurve(QEasingCurve::InOutCubic);
+        connect(animation, SIGNAL(finished()), animation, SLOT(deleteLater()));
+        animation->start();
+    } else {
+        isExpanded = true;
+        ui->expand->setIcon(QIcon::fromTheme("go-up"));
+
+        QRect endGeometry;
+        endGeometry.setRect(screenGeometry.left(), screenGeometry.top(), screenGeometry.width(), screenGeometry.height() + 2);
+
+        tPropertyAnimation* animation = new tPropertyAnimation(this, "geometry");
+        animation->setStartValue(this->geometry());
+        animation->setEndValue(endGeometry);
+        animation->setDuration(250);
+        animation->setEasingCurve(QEasingCurve::InOutCubic);
+        connect(animation, SIGNAL(finished()), animation, SLOT(deleteLater()));
+        animation->start();
+    }
+
+    ui->stackedTabs->currentWidget()->setFocus();
 }

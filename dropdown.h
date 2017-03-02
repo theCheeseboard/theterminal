@@ -15,6 +15,7 @@
 #include <QMenu>
 #include "nativeeventfilter.h"
 #include "terminalwidget.h"
+#include <ttoast.h>
 #include <tpropertyanimation.h>
 #include <X11/Xlib.h>
 #include <X11/XF86keysym.h>
@@ -49,10 +50,14 @@ private slots:
 
     void on_stackedTabs_currentChanged(int arg1);
 
+    void on_expand_clicked();
+
 private:
     Ui::Dropdown *ui;
 
     QMap<terminalWidget*, QPushButton*> terminalButtons;
+    bool isExpanded = false;
+    QScreen* currentScreen = NULL;
 
     void paintEvent(QPaintEvent* event);
 };
