@@ -149,3 +149,10 @@ void MainWindow::on_actionAbout_triggered()
     About* window = new About(this);
     window->exec();
 }
+
+void MainWindow::on_actionSettings_triggered()
+{
+    SettingsWindow* settings = new SettingsWindow();
+    settings->exec();
+    settings->deleteLater();
+}

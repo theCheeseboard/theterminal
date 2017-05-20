@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include "terminalwidget.h"
 #include "about.h"
+#include "settingswindow.h"
 
 namespace Ui {
 class MainWindow;
@@ -42,6 +43,8 @@ private slots:
     void on_actionGo_Full_Screen_triggered();
 
     void on_actionAbout_triggered();
+
+    void on_actionSettings_triggered();
 
 private:
     Ui::MainWindow *ui;

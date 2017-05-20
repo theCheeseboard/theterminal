@@ -2,9 +2,15 @@
 #include "dropdown.h"
 #include <QApplication>
 
+NativeEventFilter* filter;
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    a.setOrganizationName("theSuite");
+    a.setOrganizationDomain("");
+    a.setApplicationName("theTerminal");
 
     QString workDir;
     bool dropdown = false;
@@ -25,6 +31,9 @@ int main(int argc, char *argv[])
             dropdown = true;
         }
     }
+
+    filter = new NativeEventFilter;
+    a.installNativeEventFilter(filter);
 
     if (dropdown) {
         Dropdown* w = new Dropdown(workDir);

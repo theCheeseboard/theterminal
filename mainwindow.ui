@@ -79,7 +79,7 @@
      <x>0</x>
      <y>0</y>
      <width>570</width>
-     <height>23</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -88,6 +88,8 @@
     </property>
     <addaction name="actionNew_Window"/>
     <addaction name="actionNew_Tab"/>
+    <addaction name="separator"/>
+    <addaction name="actionSettings"/>
     <addaction name="separator"/>
     <addaction name="actionClose_Tab"/>
     <addaction name="actionExit"/>
@@ -177,10 +179,11 @@
   </action>
   <action name="actionClose_Tab">
    <property name="icon">
-    <iconset theme="tab-close"/>
+    <iconset theme="tab-close">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Close Tab</string>
+    <string>&amp;Close Tab</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+W</string>
@@ -188,10 +191,11 @@
   </action>
   <action name="actionFind">
    <property name="icon">
-    <iconset theme="edit-find"/>
+    <iconset theme="edit-find">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Find...</string>
+    <string>&amp;Find...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+F</string>
@@ -199,18 +203,28 @@
   </action>
   <action name="actionGo_Full_Screen">
    <property name="icon">
-    <iconset theme="view-fullscreen"/>
+    <iconset theme="view-fullscreen">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>Go Full Screen</string>
+    <string>&amp;Go Full Screen</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset theme="help-about"/>
+    <iconset theme="help-about">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
-    <string>About</string>
+    <string>&amp;About</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="icon">
+    <iconset theme="configure"/>
+   </property>
+   <property name="text">
+    <string>Settings</string>
    </property>
   </action>
  </widget>

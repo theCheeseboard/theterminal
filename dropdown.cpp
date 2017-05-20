@@ -1,6 +1,8 @@
 #include "dropdown.h"
 #include "ui_dropdown.h"
 
+extern NativeEventFilter* filter;
+
 Dropdown::Dropdown(QString workdir, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Dropdown)
@@ -9,13 +11,23 @@ Dropdown::Dropdown(QString workdir, QWidget *parent) :
     this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
     QMenu* menu = new QMenu();
-    menu->addAction(QIcon::fromTheme("application-exit"), "Exit", [=]() {
+    menu->addAction(QIcon::fromTheme("configure"), "Settings", [=] {
+        KeyCode kc = XKeysymToKeycode(QX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong());
+        XUngrabKey(QX11Info::display(), kc, AnyModifier, DefaultRootWindow(QX11Info::display()));
+
+        SettingsWindow* settingsWin = new SettingsWindow();
+        settingsWin->exec();
+        settingsWin->deleteLater();
+
+        kc = XKeysymToKeycode(QX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong());
+        XGrabKey(QX11Info::display(), kc, AnyModifier, DefaultRootWindow(QX11Info::display()), true, GrabModeAsync, GrabModeAsync);
+    });
+    menu->addAction(QIcon::fromTheme("application-exit"), "Exit", [=] {
         this->close();
     });
     ui->menuButton->setPopupMode(QToolButton::InstantPopup);
     ui->menuButton->setMenu(menu);
 
-    NativeEventFilter* filter = new NativeEventFilter;
     connect(filter, &NativeEventFilter::toggleTerminal, [=]() {
         if (this->isVisible()) {
             this->hide();
@@ -24,9 +36,8 @@ Dropdown::Dropdown(QString workdir, QWidget *parent) :
         }
     });
 
-    KeyCode keycode = XKeysymToKeycode(QX11Info::display(), XF86XK_LaunchB);
+    KeyCode keycode = XKeysymToKeycode(QX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong());
     XGrabKey(QX11Info::display(), keycode, AnyModifier, DefaultRootWindow(QX11Info::display()), true, GrabModeAsync, GrabModeAsync);
-    QApplication::instance()->installNativeEventFilter(filter);
 
     newTab(workdir);
 }

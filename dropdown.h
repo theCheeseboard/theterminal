@@ -17,9 +17,7 @@
 #include "terminalwidget.h"
 #include <ttoast.h>
 #include <tpropertyanimation.h>
-#include <X11/Xlib.h>
-#include <X11/XF86keysym.h>
-#include <X11/Xatom.h>
+#include "settingswindow.h"
 
 namespace Ui {
 class Dropdown;
@@ -58,6 +56,7 @@ private:
     QMap<terminalWidget*, QPushButton*> terminalButtons;
     bool isExpanded = false;
     QScreen* currentScreen = NULL;
+    QSettings settings;
 
     void paintEvent(QPaintEvent* event);
 };

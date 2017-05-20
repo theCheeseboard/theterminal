@@ -45,7 +45,7 @@
     </font>
    </property>
    <property name="text">
-    <string>theTerminal 1.0</string>
+    <string>theTerminal 2.0</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">

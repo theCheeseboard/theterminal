@@ -19,14 +19,17 @@ SOURCES += main.cpp\
     terminalwidget.cpp \
     about.cpp \
     dropdown.cpp \
-    nativeeventfilter.cpp
+    nativeeventfilter.cpp \
+    settingswindow.cpp
 
 HEADERS  += mainwindow.h \
     terminalwidget.h \
     about.h \
     dropdown.h \
-    nativeeventfilter.h
+    nativeeventfilter.h \
+    settingswindow.h
 
 FORMS    += mainwindow.ui \
     about.ui \
-    dropdown.ui
+    dropdown.ui \
+    settingswindow.ui
