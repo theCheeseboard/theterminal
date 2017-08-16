@@ -5,12 +5,17 @@ terminalWidget::terminalWidget(QString workDir, QWidget *parent) : QTermWidget(0
     this->setScrollBarPosition(QTermWidget::ScrollBarRight);
     this->setFlowControlEnabled(true);
     this->setColorScheme("Linux");
-    this->setHistorySize(-1);
+    this->setHistorySize(settings.value("term/scrollback", -1).toInt());
+    this->setKeyboardCursorShape(QTermWidget::IBeamCursor);
 
-    QFont font;
+    connect(this, &terminalWidget::copyAvailable, [=](bool copyAvailable) {
+        this->copyOk = copyAvailable;
+    });
+
+    /*QFont font;
     font.setFamily("Hack");
     font.setPointSize(10);
-    this->setTerminalFont(font);
+    this->setTerminalFont(font);*/
 
     QStringList environment;
     environment.append("TERM=xterm");
@@ -21,6 +26,12 @@ terminalWidget::terminalWidget(QString workDir, QWidget *parent) : QTermWidget(0
         this->setWorkingDirectory(workDir);
     }
 
+    this->setShellProgram(settings.value("term/program", "/bin/bash").toString());
+
     this->update();
     this->startShellProgram();
+}
+
+bool terminalWidget::canCopy() {
+    return copyOk;
 }

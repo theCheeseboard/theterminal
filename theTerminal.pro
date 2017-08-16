@@ -33,3 +33,16 @@ FORMS    += mainwindow.ui \
     about.ui \
     dropdown.ui \
     settingswindow.ui
+
+unix {
+    target.path = /usr/bin
+
+    appentry.path = /usr/share/applications
+    appentry.files = theterminal.desktop theterminaldd.desktop
+
+    INSTALLS += target appentry
+}
+
+DISTFILES += \
+    theterminaldd.desktop \
+    theterminal.desktop

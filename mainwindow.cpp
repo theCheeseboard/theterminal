@@ -15,11 +15,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_terminal_finished()
-{
-    this->close();
-}
-
 void MainWindow::on_actionNew_Window_triggered()
 {
     MainWindow* win = new MainWindow();
@@ -39,22 +34,16 @@ void MainWindow::on_actionCopy_triggered()
 void MainWindow::on_actionPaste_triggered()
 {
     currentTerminal->pasteClipboard();
-
 }
 
-void MainWindow::on_terminal_customContextMenuRequested(const QPoint &pos)
+void MainWindow::showContextMenu(const QPoint &pos)
 {
     QMenu* menu = new QMenu();
+
     menu->addAction(ui->actionCopy);
     menu->addAction(ui->actionPaste);
 
     menu->exec(currentTerminal->mapToGlobal(pos));
-}
-
-void MainWindow::on_terminal_copyAvailable(bool canCopy)
-{
-    ui->actionCopy->setEnabled(canCopy);
-
 }
 
 void MainWindow::addTerminal(QString workDir) {
@@ -65,11 +54,15 @@ void MainWindow::addTerminal(QString workDir) {
     allTerminals.append(widget);
     terminalButtons.insert(widget, button);
 
-    connect(widget, SIGNAL(copyAvailable(bool)), this, SLOT(on_terminal_copyAvailable(bool)));
-    connect(widget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(on_terminal_customContextMenuRequested(QPoint)));
+    connect(widget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     connect(widget, &QTermWidget::finished, [=]() {
         closeTerminal(widget);
     });
+    /*connect(widget, &terminalWidget::copyAvailable, [=](bool canCopy) {
+        if (currentTerminal == widget) {
+            ui->actionCopy->setEnabled(canCopy);
+        }
+    });*/
 
     button->setText("Terminal " + QString::number(allTerminals.indexOf(widget) + 1));
     ui->tabFrame->layout()->addWidget(button);
@@ -96,6 +89,8 @@ void MainWindow::changeToTerminal(terminalWidget *widget) {
     terminalButtons.value(widget)->setChecked(true);
     widget->setFocus();
     currentTerminal = widget;
+
+    //ui->actionCopy->setEnabled(widget->canCopy());
 }
 
 void MainWindow::changeToTerminal(int index) {

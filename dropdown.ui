@@ -93,7 +93,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset theme="go-down"/>
+            <iconset theme="go-down">
+             <normaloff>.</normaloff>.</iconset>
            </property>
            <property name="flat">
             <bool>true</bool>
@@ -106,7 +107,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset theme="tab-close"/>
+            <iconset theme="tab-close">
+             <normaloff>.</normaloff>.</iconset>
            </property>
            <property name="flat">
             <bool>true</bool>
@@ -119,7 +121,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset theme="tab-new"/>
+            <iconset theme="tab-new">
+             <normaloff>.</normaloff>.</iconset>
            </property>
            <property name="flat">
             <bool>true</bool>
@@ -132,7 +135,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset theme="application-menu"/>
+            <iconset theme="application-menu">
+             <normaloff>.</normaloff>.</iconset>
            </property>
            <property name="autoRaise">
             <bool>true</bool>
@@ -146,6 +150,28 @@
     </widget>
    </item>
   </layout>
+  <action name="actionCopy">
+   <property name="icon">
+    <iconset theme="edit-copy"/>
+   </property>
+   <property name="text">
+    <string>Copy</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+C</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="icon">
+    <iconset theme="edit-paste"/>
+   </property>
+   <property name="text">
+    <string>Paste</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+V</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

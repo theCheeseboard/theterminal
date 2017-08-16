@@ -20,9 +20,7 @@ public:
     ~MainWindow();
 
 public slots:
-    void on_terminal_finished();
-    void on_terminal_customContextMenuRequested(const QPoint &pos);
-    void on_terminal_copyAvailable(bool canCopy);
+    void showContextMenu(const QPoint &pos);
     void on_actionNew_Window_triggered();
     void on_actionExit_triggered();
     void on_actionCopy_triggered();

@@ -35,11 +35,14 @@ public:
     void setGeometry(int x, int y, int w, int h);
     void setGeometry(QRect geometry);
 
+    terminalWidget* currentTerminal();
+
 public slots:
     void show();
     void hide();
     void newTab(QString workDir);
     void closeTab(terminalWidget* widget);
+    void showContextMenu(const QPoint &pos);
 
 private slots:
     void on_AddTab_clicked();
@@ -49,6 +52,10 @@ private slots:
     void on_stackedTabs_currentChanged(int arg1);
 
     void on_expand_clicked();
+
+    void on_actionCopy_triggered();
+
+    void on_actionPaste_triggered();
 
 private:
     Ui::Dropdown *ui;

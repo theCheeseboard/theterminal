@@ -3,6 +3,7 @@
 
 #include <qtermwidget5/qtermwidget.h>
 #include <QDebug>
+#include <QSettings>
 
 class terminalWidget : public QTermWidget
 {
@@ -13,6 +14,12 @@ public:
 signals:
 
 public slots:
+    bool canCopy();
+
+private:
+    QSettings settings;
+
+    bool copyOk = false;
 };
 
 #endif // TERMINALWIDGET_H

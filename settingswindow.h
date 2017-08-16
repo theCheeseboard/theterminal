@@ -6,6 +6,7 @@
 #include <QListWidget>
 #include <QKeySequenceEdit>
 #include <QX11Info>
+#include <QSpinBox>
 #include "nativeeventfilter.h"
 #include <X11/Xlib.h>
 #include <X11/XF86keysym.h>
@@ -41,6 +42,8 @@ private slots:
     void on_keybindingButton_toggled(bool checked);
 
     void keypressCaptureComplete();
+
+    void on_scrollbackSpin_valueChanged(int arg1);
 
 private:
     Ui::SettingsWindow *ui;

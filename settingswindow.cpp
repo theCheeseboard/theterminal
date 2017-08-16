@@ -10,10 +10,9 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->settingsLists->addItem(new QListWidgetItem(QIcon::fromTheme("configure"), "General"));
-    ui->settingsLists->addItem(new QListWidgetItem(QIcon::fromTheme("go-down"), "Drop Down"));
-
     on_keybindingButton_toggled(false);
+
+    ui->scrollbackSpin->setValue(settings.value("term/scrollback", -1).toInt());
 
     connect(filter, SIGNAL(keypressCaptureComplete()), this, SLOT(keypressCaptureComplete()));
 }
@@ -52,4 +51,9 @@ void SettingsWindow::on_keybindingButton_toggled(bool checked)
 
 void SettingsWindow::keypressCaptureComplete() {
     ui->keybindingButton->setChecked(false);
+}
+
+void SettingsWindow::on_scrollbackSpin_valueChanged(int arg1)
+{
+    settings.setValue("term/scrollback", arg1);
 }

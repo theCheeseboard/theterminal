@@ -57,7 +57,7 @@ void Dropdown::newTab(QString workDir) {
     terminalButtons.insert(widget, button);
 
     //connect(widget, SIGNAL(copyAvailable(bool)), this, SLOT(on_terminal_copyAvailable(bool)));
-    //connect(widget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(on_terminal_customContextMenuRequested(QPoint)));
+    connect(widget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     connect(widget, &QTermWidget::finished, [=]() {
         closeTab(widget);
     });
@@ -180,7 +180,7 @@ void Dropdown::setGeometry(QRect geometry) {
 
 void Dropdown::on_expand_clicked()
 {
-    QRect screenGeometry = currentScreen->availableGeometry();
+    QRect screenGeometry = currentScreen->geometry();
     if (isExpanded) {
         isExpanded = false;
         ui->expand->setIcon(QIcon::fromTheme("go-down"));
@@ -212,4 +212,29 @@ void Dropdown::on_expand_clicked()
     }
 
     ui->stackedTabs->currentWidget()->setFocus();
+}
+
+
+void Dropdown::showContextMenu(const QPoint &pos)
+{
+    QMenu* menu = new QMenu();
+
+    menu->addAction(ui->actionCopy);
+    menu->addAction(ui->actionPaste);
+
+    menu->exec(ui->stackedTabs->currentWidget()->mapToGlobal(pos));
+}
+
+terminalWidget* Dropdown::currentTerminal() {
+    return (terminalWidget*) ui->stackedTabs->currentWidget();
+}
+
+void Dropdown::on_actionCopy_triggered()
+{
+    currentTerminal()->copyClipboard();
+}
+
+void Dropdown::on_actionPaste_triggered()
+{
+    currentTerminal()->pasteClipboard();
 }
