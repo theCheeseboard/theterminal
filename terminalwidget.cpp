@@ -6,7 +6,7 @@ terminalWidget::terminalWidget(QString workDir, QWidget *parent) : QTermWidget(0
     this->setFlowControlEnabled(true);
     this->setColorScheme("Linux");
     this->setHistorySize(settings.value("term/scrollback", -1).toInt());
-    this->setKeyboardCursorShape(QTermWidget::IBeamCursor);
+    this->setKeyboardCursorShape(Konsole::Emulation::KeyboardCursorShape::IBeamCursor);
 
     connect(this, &terminalWidget::copyAvailable, [=](bool copyAvailable) {
         this->copyOk = copyAvailable;
