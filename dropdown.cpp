@@ -99,7 +99,7 @@ void Dropdown::show() {
     }
 
     if (currentScreen != NULL) {
-        QRect screenGeometry = currentScreen->availableGeometry();
+        QRect screenGeometry = currentScreen->geometry();
         QRect endGeometry;
         endGeometry.setRect(screenGeometry.left() /*+ screenGeometry.width() / 20*/, screenGeometry.top(), screenGeometry.width() /* * 0.9*/, screenGeometry.height() / 2);
 
