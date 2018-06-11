@@ -49,7 +49,7 @@ Dropdown::~Dropdown()
 
 
 void Dropdown::newTab(QString workDir) {
-    terminalWidget* widget = new terminalWidget(workDir);
+    TerminalWidget* widget = new TerminalWidget(workDir);
     QPushButton* button = new QPushButton();
     widget->setContextMenuPolicy(Qt::CustomContextMenu);
     button->setCheckable(true);
@@ -58,10 +58,10 @@ void Dropdown::newTab(QString workDir) {
 
     //connect(widget, SIGNAL(copyAvailable(bool)), this, SLOT(on_terminal_copyAvailable(bool)));
     connect(widget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
-    connect(widget, &QTermWidget::finished, [=]() {
+    connect(widget, &TerminalWidget::finished, [=]() {
         closeTab(widget);
     });
-    connect(widget, &QTermWidget::bell, [=](QString message) {
+    connect(widget, &TerminalWidget::bell, [=](QString message) {
         /*tToast* toast = new tToast(widget);
         toast->setTitle("Bell");
         toast->setText(message);
@@ -80,7 +80,7 @@ void Dropdown::newTab(QString workDir) {
     ui->stackedTabs->setCurrentWidget(widget);
 }
 
-void Dropdown::closeTab(terminalWidget *widget) {
+void Dropdown::closeTab(TerminalWidget *widget) {
     delete terminalButtons.value(widget);
     terminalButtons.remove(widget);
 
@@ -144,13 +144,13 @@ void Dropdown::on_AddTab_clicked()
 
 void Dropdown::on_CloseTab_clicked()
 {
-    closeTab((terminalWidget*) ui->stackedTabs->currentWidget());
+    closeTab((TerminalWidget*) ui->stackedTabs->currentWidget());
 }
 
 void Dropdown::on_stackedTabs_currentChanged(int arg1)
 {
     if (terminalButtons.count() > 0) {
-        terminalWidget* widget = (terminalWidget*) ui->stackedTabs->widget(arg1);
+        TerminalWidget* widget = (TerminalWidget*) ui->stackedTabs->widget(arg1);
 
         for (QPushButton* button : terminalButtons.values()) {
             button->setChecked(false);
@@ -225,8 +225,8 @@ void Dropdown::showContextMenu(const QPoint &pos)
     menu->exec(ui->stackedTabs->currentWidget()->mapToGlobal(pos));
 }
 
-terminalWidget* Dropdown::currentTerminal() {
-    return (terminalWidget*) ui->stackedTabs->currentWidget();
+TerminalWidget* Dropdown::currentTerminal() {
+    return (TerminalWidget*) ui->stackedTabs->currentWidget();
 }
 
 void Dropdown::on_actionCopy_triggered()

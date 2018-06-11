@@ -35,13 +35,13 @@ public:
     void setGeometry(int x, int y, int w, int h);
     void setGeometry(QRect geometry);
 
-    terminalWidget* currentTerminal();
+    TerminalWidget* currentTerminal();
 
 public slots:
     void show();
     void hide();
     void newTab(QString workDir);
-    void closeTab(terminalWidget* widget);
+    void closeTab(TerminalWidget* widget);
     void showContextMenu(const QPoint &pos);
 
 private slots:
@@ -60,7 +60,7 @@ private slots:
 private:
     Ui::Dropdown *ui;
 
-    QMap<terminalWidget*, QPushButton*> terminalButtons;
+    QMap<TerminalWidget*, QPushButton*> terminalButtons;
     bool isExpanded = false;
     QScreen* currentScreen = NULL;
     QSettings settings;

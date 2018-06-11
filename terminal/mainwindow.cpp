@@ -47,7 +47,7 @@ void MainWindow::showContextMenu(const QPoint &pos)
 }
 
 void MainWindow::addTerminal(QString workDir) {
-    terminalWidget* widget = new terminalWidget(workDir);
+    TerminalWidget* widget = new TerminalWidget(workDir);
     QPushButton* button = new QPushButton();
     widget->setContextMenuPolicy(Qt::CustomContextMenu);
     button->setCheckable(true);
@@ -55,10 +55,10 @@ void MainWindow::addTerminal(QString workDir) {
     terminalButtons.insert(widget, button);
 
     connect(widget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
-    connect(widget, &QTermWidget::finished, [=]() {
+    connect(widget, &TerminalWidget::finished, [=]() {
         closeTerminal(widget);
     });
-    /*connect(widget, &terminalWidget::copyAvailable, [=](bool canCopy) {
+    /*connect(widget, &TerminalWidget::copyAvailable, [=](bool canCopy) {
         if (currentTerminal == widget) {
             ui->actionCopy->setEnabled(canCopy);
         }
@@ -77,8 +77,8 @@ void MainWindow::addTerminal(QString workDir) {
     changeToTerminal(widget);
 }
 
-void MainWindow::changeToTerminal(terminalWidget *widget) {
-    for (terminalWidget* terminal : allTerminals) {
+void MainWindow::changeToTerminal(TerminalWidget *widget) {
+    for (TerminalWidget* terminal : allTerminals) {
         terminal->setVisible(false);
     }
     for (QPushButton* button : terminalButtons.values()) {
@@ -102,7 +102,7 @@ void MainWindow::on_actionNew_Tab_triggered()
     addTerminal();
 }
 
-void MainWindow::closeTerminal(terminalWidget *widget) {
+void MainWindow::closeTerminal(TerminalWidget *widget) {
     if (allTerminals.count() == 1) {
         this->close();
     } else {

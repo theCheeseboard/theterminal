@@ -27,9 +27,9 @@ public slots:
     void on_actionPaste_triggered();
 
     void addTerminal(QString workDir = "");
-    void changeToTerminal(terminalWidget* widget);
+    void changeToTerminal(TerminalWidget* widget);
     void changeToTerminal(int index);
-    void closeTerminal(terminalWidget* widget);
+    void closeTerminal(TerminalWidget* widget);
 
 private slots:
     void on_actionNew_Tab_triggered();
@@ -47,9 +47,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    QList<terminalWidget*> allTerminals;
-    QMap<terminalWidget*, QPushButton*> terminalButtons;
-    terminalWidget* currentTerminal;
+    QList<TerminalWidget*> allTerminals;
+    QMap<TerminalWidget*, QPushButton*> terminalButtons;
+    TerminalWidget* currentTerminal;
 };
 
 #endif // MAINWINDOW_H

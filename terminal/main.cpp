@@ -3,6 +3,7 @@
 #include <QApplication>
 
 NativeEventFilter* filter;
+extern void setupBuiltinFunctions();
 
 int main(int argc, char *argv[])
 {
