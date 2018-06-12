@@ -84,7 +84,7 @@ int lookaheadSpace(QString str, int from) {
 }
 
 QStringList splitSpaces(QString str) {
-    bool inQuotes;
+    bool inQuotes = false;
     QString currentString;
     QStringList list;
 

@@ -115,6 +115,7 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
         connect(autocompleteAnimation, &tVariantAnimation::valueChanged, [=](QVariant value) {
             ui->autocompletePages->setFixedHeight(value.toInt());
         });
+        connect(this, SIGNAL(destroyed(QObject*)), autocompleteAnimation, SLOT(stop()));
 
         commandsLayout = (QBoxLayout*) ui->commands->layout();
 
