@@ -18,6 +18,7 @@
 #include <QScrollBar>
 #include <QListWidget>
 #include <QTextBoundaryFinder>
+#include <QMimeDatabase>
 #include "graphicalParts/lscommand.h"
 #include "terminalpart.h"
 #include "commandpart.h"
@@ -82,6 +83,9 @@ class TerminalWidget : public QWidget
 
         QString autocompleteInitialWord;
         int autocompleteInitialStart;
+
+        QMimeDatabase mimedb;
+        tVariantAnimation* autocompleteAnimation;
 
         void resizeEvent(QResizeEvent* event);
         bool eventFilter(QObject *watched, QEvent *event);

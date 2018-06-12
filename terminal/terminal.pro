@@ -14,7 +14,6 @@ TARGET = theterminal
 TEMPLATE = app
 LIBS += -ltttermwidget
 
-
 SOURCES += main.cpp\
         mainwindow.cpp \
     about.cpp \

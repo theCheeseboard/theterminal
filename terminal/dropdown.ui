@@ -89,6 +89,9 @@
          </item>
          <item>
           <widget class="QPushButton" name="expand">
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -103,6 +106,9 @@
          </item>
          <item>
           <widget class="QPushButton" name="CloseTab">
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -117,6 +123,9 @@
          </item>
          <item>
           <widget class="QPushButton" name="AddTab">
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -131,6 +140,9 @@
          </item>
          <item>
           <widget class="QToolButton" name="menuButton">
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -152,7 +164,8 @@
   </layout>
   <action name="actionCopy">
    <property name="icon">
-    <iconset theme="edit-copy"/>
+    <iconset theme="edit-copy">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Copy</string>
@@ -163,7 +176,8 @@
   </action>
   <action name="actionPaste">
    <property name="icon">
-    <iconset theme="edit-paste"/>
+    <iconset theme="edit-paste">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Paste</string>

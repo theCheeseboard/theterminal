@@ -27,7 +27,9 @@ void lsCommand::setDir(QDir dir, QStringList args) {
     ui->filesListView->setRootIndex(model->index(dir.path()));
 
     ui->filesListView->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+    ui->filesListView->header()->setSectionResizeMode(1, QHeaderView::Fixed);
     ui->filesListView->header()->setSectionResizeMode(2, QHeaderView::Fixed);
+    ui->filesListView->header()->setSectionResizeMode(3, QHeaderView::Fixed);
 
     connect(model, &QFileSystemModel::rowsInserted, [=] {
         tVariantAnimation* anim = new tVariantAnimation();
@@ -47,7 +49,7 @@ void lsCommand::on_filesListView_activated(const QModelIndex &index)
 {
     QFileInfo info = model->fileInfo(index);
     if (info.isDir()) {
-        emit executeCommands(QStringList() << "cd " + info.filePath() << "ls");
+        emit executeCommands(QStringList() << "cd \"" + info.filePath() + "\"" << "ls");
         emit scrollToBottom();
     }
 }

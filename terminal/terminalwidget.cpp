@@ -109,6 +109,13 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
         ui->commandLine->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
         workingDirectory = QDir(workDir);
 
+        autocompleteAnimation = new tVariantAnimation();
+        autocompleteAnimation->setEasingCurve(QEasingCurve::OutCubic);
+        autocompleteAnimation->setDuration(250);
+        connect(autocompleteAnimation, &tVariantAnimation::valueChanged, [=](QVariant value) {
+            ui->autocompletePages->setFixedHeight(value.toInt());
+        });
+
         commandsLayout = (QBoxLayout*) ui->commands->layout();
 
         __uid_t currentUid = geteuid();
@@ -364,10 +371,12 @@ void TerminalWidget::on_commandLine_cursorPositionChanged(int arg1, int arg2)
         if (word.length() != 0) performSearch = true; //Perform search when there is something to autocomplete
 
         if (performSearch) {
-            for (QFileInfo info : dir.entryInfoList(commandFilters)) {
+            QFileInfoList files = dir.entryInfoList(commandFilters);
+            for (QFileInfo info : files) {
                 if (info.fileName().startsWith(word)) {
                     QListWidgetItem* item = new QListWidgetItem();
                     item->setText(info.fileName());
+                    item->setIcon(QIcon::fromTheme(mimedb.mimeTypeForFile(info).iconName()));
                     items.append(item);
                 }
             }
@@ -385,37 +394,20 @@ void TerminalWidget::on_commandLine_cursorPositionChanged(int arg1, int arg2)
 }
 
 void TerminalWidget::openAutocomplete() {
-    if (!autocompleteOpen) {
-        tVariantAnimation* anim = new tVariantAnimation();
-        anim->setStartValue(ui->autocompletePages->height());
-        anim->setEndValue(300);
-        anim->setEasingCurve(QEasingCurve::OutCubic);
-        anim->setDuration(250);
-        connect(anim, &tVariantAnimation::valueChanged, [=](QVariant value) {
-            ui->autocompletePages->setFixedHeight(value.toInt());
-        });
-        connect(anim, SIGNAL(finished()), anim, SLOT(deleteLater()));
-        anim->start();
+    autocompleteAnimation->setStartValue(ui->autocompletePages->height());
+    autocompleteAnimation->setEndValue(qMin(200, ui->fileAutocompleteWidget->count() * (ui->fileAutocompleteWidget->sizeHintForRow(0))));
+    autocompleteAnimation->start();
 
-        autocompleteOpen = true;
-    }
+    autocompleteOpen = true;
 }
 
 void TerminalWidget::closeAutocomplete() {
     if (autocompleteOpen) {
-        tVariantAnimation* anim = new tVariantAnimation();
-        anim->setStartValue(ui->autocompletePages->height());
-        anim->setEndValue(0);
-        anim->setEasingCurve(QEasingCurve::OutCubic);
-        anim->setDuration(250);
-        connect(anim, &tVariantAnimation::valueChanged, [=](QVariant value) {
-            ui->autocompletePages->setFixedHeight(value.toInt());
-        });
-        connect(this, SIGNAL(destroyed(QObject*)), anim, SLOT(stop()));
-        connect(anim, SIGNAL(finished()), anim, SLOT(deleteLater()));
-        anim->start();
+        autocompleteAnimation->setStartValue(ui->autocompletePages->height());
+        autocompleteAnimation->setEndValue(0);
+        autocompleteAnimation->start();
 
-        autocompleteOpen = false;
+        autocompleteOpen = true;
     }
 }
 
