@@ -44,14 +44,11 @@ class TerminalWidget : public QWidget
         QDir getWorkingDir();
         QProcessEnvironment getEnv();
 
-        QStringList splitSpaces(QString str);
-        int lookbehindSpace(QString str, int from);
-        int lookaheadSpace(QString str, int from);
-
     private slots:
         void prepareForNextCommand();
         void runCommand(QString command);
         void adjustCurrentTerminal();
+        void scrollToBottom();
 
         void openAutocomplete();
         void closeAutocomplete();
@@ -77,6 +74,7 @@ class TerminalWidget : public QWidget
         QBoxLayout* commandsLayout;
         QMap<QString, std::function<int(QString)>> builtinFunctions;
         CommandPart* currentCommandPart = nullptr;
+        QList<CommandPart*> commandParts;
         bool currentlyAtBottom = true;
         QStringList awaitingCommands;
         QStringList commandHistory;

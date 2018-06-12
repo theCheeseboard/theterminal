@@ -4,7 +4,8 @@
 #include <QWidget>
 #include <QDir>
 #include <QFileSystemModel>
-#include <QListView>
+#include <QTreeView>
+#include <QHeaderView>
 #include <QTimer>
 #include <tvariantanimation.h>
 
@@ -25,6 +26,7 @@ class lsCommand : public QWidget
 
     signals:
         void executeCommands(QStringList commands);
+        void scrollToBottom();
 
     private slots:
         void on_filesListView_activated(const QModelIndex &index);

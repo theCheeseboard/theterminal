@@ -26,10 +26,13 @@ void lsCommand::setDir(QDir dir, QStringList args) {
     ui->filesListView->setModel(model);
     ui->filesListView->setRootIndex(model->index(dir.path()));
 
+    ui->filesListView->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+    ui->filesListView->header()->setSectionResizeMode(2, QHeaderView::Fixed);
+
     connect(model, &QFileSystemModel::rowsInserted, [=] {
         tVariantAnimation* anim = new tVariantAnimation();
         anim->setStartValue(ui->filesListView->height());
-        anim->setEndValue(model->rowCount(model->index(dir.path())) * (ui->filesListView->sizeHintForRow(0) - 1));
+        anim->setEndValue(model->rowCount(model->index(dir.path())) * (ui->filesListView->sizeHintForRow(0)) + ui->filesListView->header()->height());
         anim->setEasingCurve(QEasingCurve::OutCubic);
         anim->setDuration(250);
         connect(anim, &tVariantAnimation::valueChanged, [=](QVariant value) {
@@ -45,5 +48,6 @@ void lsCommand::on_filesListView_activated(const QModelIndex &index)
     QFileInfo info = model->fileInfo(index);
     if (info.isDir()) {
         emit executeCommands(QStringList() << "cd " + info.filePath() << "ls");
+        emit scrollToBottom();
     }
 }

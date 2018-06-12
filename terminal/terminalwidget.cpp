@@ -1,6 +1,10 @@
 #include "terminalwidget.h"
 #include "ui_terminalwidget.h"
 
+extern int lookbehindSpace(QString str, int from);
+extern int lookaheadSpace(QString str, int from);
+extern QStringList splitSpaces(QString str);
+
 TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TerminalWidget)
@@ -69,6 +73,7 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
 
                 if (currentCommandPart == nullptr) prepareForNextCommand();
             });
+            connect(pane, SIGNAL(scrollToBottom()), this, SLOT(scrollToBottom()));
 
             currentCommandPart->executeWidget(pane);
             return 0;
@@ -89,6 +94,14 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
         });
         builtinFunctions.insert("exit", [=](QString line) {
             QTimer::singleShot(0, this, SIGNAL(finished()));
+            return 0;
+        });
+        builtinFunctions.insert("clear", [=](QString line) {
+            while (commandParts.length() > 0) {
+                CommandPart* p = commandParts.takeFirst();
+                commandsLayout->removeWidget(p);
+                p->deleteLater();
+            }
             return 0;
         });
 
@@ -180,6 +193,7 @@ void TerminalWidget::runCommand(QString command) {
     currentCommandPart = new CommandPart(this);
     currentCommandPart->setEnvironment(currentEnvironment);
     commandsLayout->addWidget(currentCommandPart);
+    commandParts.append(currentCommandPart);
     currentCommandPart->setCommandText(command);
 
     //Check if a builtin function exists
@@ -472,61 +486,16 @@ void TerminalWidget::on_fileAutocompleteWidget_currentRowChanged(int currentRow)
     ui->commandLine->blockSignals(false);
 }
 
-int TerminalWidget::lookbehindSpace(QString str, int from) {
-    bool inQuotes = false;
-    for (int i = 0; i < from; i++) {
-        if (str.at(i) == '\"') {
-            inQuotes = !inQuotes;
-        }
-    }
-
-    for (int i = from - 1; i >= 0; i--) {
-        if (str.at(i) == '\"') {
-            inQuotes = !inQuotes;
-        } else if (!inQuotes && str.at(i) == ' ') {
-            return i;
-        }
-    }
-    return -1;
-}
-
-int TerminalWidget::lookaheadSpace(QString str, int from) {
-    bool inQuotes = false;
-    for (int i = 0; i < from; i++) {
-        if (str.at(i) == '\"') {
-            inQuotes = !inQuotes;
-        }
-    }
-
-    for (int i = from; i < str.length(); i++) {
-        if (str.at(i) == '\"') {
-            inQuotes = !inQuotes;
-        } else if (!inQuotes && str.at(i) == ' ') {
-            return i;
-        }
-    }
-    return -1;
-}
-
-QStringList TerminalWidget::splitSpaces(QString str) {
-    bool inQuotes;
-    QString currentString;
-    QStringList list;
-
-    for (int i = 0; i < str.length(); i++) {
-        if (str.at(i) == '\"') {
-            inQuotes = !inQuotes;
-        } else if (!inQuotes) {
-            if (str.at(i) == ' ') {
-                list.append(currentString);
-                currentString.clear();
-            } else {
-                currentString.append(str.at(i));
-            }
-        }
-    }
-
-    if (currentString != "") list.append(currentString);
-
-    return list;
+void TerminalWidget::scrollToBottom() {
+    tVariantAnimation* anim = new tVariantAnimation();
+    anim->setStartValue(ui->terminalArea->verticalScrollBar()->value());
+    anim->setEndValue(ui->terminalArea->verticalScrollBar()->maximum());
+    anim->setEasingCurve(QEasingCurve::OutCubic);
+    anim->setDuration(250);
+    connect(anim, &tVariantAnimation::valueChanged, [=](QVariant value) {
+        anim->setEndValue(ui->terminalArea->verticalScrollBar()->maximum());
+        ui->terminalArea->verticalScrollBar()->setValue(value.toInt());
+    });
+    connect(anim, SIGNAL(finished()), anim, SLOT(deleteLater()));
+    anim->start();
 }

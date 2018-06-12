@@ -1,6 +1,8 @@
 #include "commandpart.h"
 #include "ui_commandpart.h"
 
+extern QStringList splitSpaces(QString str);
+
 CommandPart::CommandPart(TerminalWidget* parentTerminal, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CommandPart)
@@ -36,7 +38,7 @@ void CommandPart::setReturnValue(int retval) {
 }
 
 void CommandPart::executeCommand(int height, QString command) {
-    QStringList args = command.split(" ");
+    QStringList args = splitSpaces(command);
     QString executable = args.takeFirst();
 
     currentTerminal = new TerminalPart(0);

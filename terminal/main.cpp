@@ -45,3 +45,65 @@ int main(int argc, char *argv[])
 
     return a.exec();
 }
+
+
+int lookbehindSpace(QString str, int from) {
+    bool inQuotes = false;
+    for (int i = 0; i < from; i++) {
+        if (str.at(i) == '\"') {
+            inQuotes = !inQuotes;
+        }
+    }
+
+    for (int i = from - 1; i >= 0; i--) {
+        if (str.at(i) == '\"') {
+            inQuotes = !inQuotes;
+        } else if (!inQuotes && str.at(i) == ' ') {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int lookaheadSpace(QString str, int from) {
+    bool inQuotes = false;
+    for (int i = 0; i < from; i++) {
+        if (str.at(i) == '\"') {
+            inQuotes = !inQuotes;
+        }
+    }
+
+    for (int i = from; i < str.length(); i++) {
+        if (str.at(i) == '\"') {
+            inQuotes = !inQuotes;
+        } else if (!inQuotes && str.at(i) == ' ') {
+            return i;
+        }
+    }
+    return -1;
+}
+
+QStringList splitSpaces(QString str) {
+    bool inQuotes;
+    QString currentString;
+    QStringList list;
+
+    for (int i = 0; i < str.length(); i++) {
+        if (str.at(i) == '\"') {
+            inQuotes = !inQuotes;
+        } else if (inQuotes) {
+            currentString.append(str.at(i));
+        } else {
+            if (str.at(i) == ' ') {
+                list.append(currentString);
+                currentString.clear();
+            } else {
+                currentString.append(str.at(i));
+            }
+        }
+    }
+
+    if (currentString != "") list.append(currentString);
+
+    return list;
+}
