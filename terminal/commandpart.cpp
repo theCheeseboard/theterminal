@@ -58,31 +58,34 @@ void CommandPart::executeCommand(int height, QString command) {
     connect(anim, &tVariantAnimation::valueChanged, [=](QVariant value) {
         this->setFixedHeight(value.toInt());
     });
-    connect(anim, &tVariantAnimation::finished, [=] {
-        connect(currentTerminal, &TerminalPart::shellProgramFinished, [=](int exitCode) {
-            this->setReturnValue(exitCode);
-            emit finished(exitCode);
-
-            ui->expandButton->setVisible(true);
-            tVariantAnimation* anim = new tVariantAnimation();
-            anim->setStartValue(currentTerminal->height());
-            anim->setEndValue(0);
-            anim->setEasingCurve(QEasingCurve::OutCubic);
-            anim->setDuration(500);
-            connect(anim, &tVariantAnimation::valueChanged, [=](QVariant value) {
-                currentTerminal->setFixedHeight(value.toInt());
-            });
-            connect(anim, SIGNAL(finished()), anim, SLOT(deleteLater()));
-            anim->start();
-            expanded = false;
-
-            this->setFixedHeight(QWIDGETSIZE_MAX);
-            this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
-        });
-        currentTerminal->startShellProgram();
-    });
-    connect(anim, SIGNAL(finished()), anim, SLOT(deleteLater()));
     anim->start();
+
+    connect(currentTerminal, &TerminalPart::shellProgramFinished, [=](int exitCode) {
+        if (anim->state() == tVariantAnimation::Running) {
+            anim->stop();
+        }
+        anim->deleteLater();
+
+        this->setReturnValue(exitCode);
+        emit finished(exitCode);
+
+        ui->expandButton->setVisible(true);
+        tVariantAnimation* anim = new tVariantAnimation();
+        anim->setStartValue(currentTerminal->height());
+        anim->setEndValue(0);
+        anim->setEasingCurve(QEasingCurve::OutCubic);
+        anim->setDuration(250);
+        connect(anim, &tVariantAnimation::valueChanged, [=](QVariant value) {
+            currentTerminal->setFixedHeight(value.toInt());
+        });
+        connect(anim, SIGNAL(finished()), anim, SLOT(deleteLater()));
+        anim->start();
+        expanded = false;
+
+        this->setFixedHeight(QWIDGETSIZE_MAX);
+        this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+    });
+    currentTerminal->startShellProgram();
 }
 
 void CommandPart::appendOutput(QString text) {
@@ -107,13 +110,15 @@ void CommandPart::on_expandButton_clicked()
     if (expanded) {
         anim->setEndValue(0);
         expanded = false;
+        ui->expandButton->setIcon(QIcon::fromTheme("go-up"));
     } else {
         anim->setEndValue(20 * currentTerminal->fontHeight());
         expanded = true;
+        ui->expandButton->setIcon(QIcon::fromTheme("go-down"));
     }
 
     anim->setEasingCurve(QEasingCurve::OutCubic);
-    anim->setDuration(500);
+    anim->setDuration(250);
     connect(anim, &tVariantAnimation::valueChanged, [=](QVariant value) {
         currentTerminal->setFixedHeight(value.toInt());
     });

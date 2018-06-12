@@ -6,6 +6,7 @@
 #include <QFileSystemModel>
 #include <QListView>
 #include <QTimer>
+#include <tvariantanimation.h>
 
 namespace Ui {
     class lsCommand;

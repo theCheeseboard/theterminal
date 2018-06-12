@@ -7,6 +7,7 @@
 #include <QKeySequenceEdit>
 #include <QX11Info>
 #include <QSpinBox>
+#include <QComboBox>
 #include "nativeeventfilter.h"
 #include <X11/Xlib.h>
 #include <X11/XF86keysym.h>
@@ -45,7 +46,9 @@ private slots:
 
     void on_scrollbackSpin_valueChanged(int arg1);
 
-private:
+    void on_termTypeComboBox_currentIndexChanged(int index);
+
+    private:
     Ui::SettingsWindow *ui;
 
     QSettings settings;

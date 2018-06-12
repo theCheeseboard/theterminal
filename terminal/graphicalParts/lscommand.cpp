@@ -27,7 +27,16 @@ void lsCommand::setDir(QDir dir, QStringList args) {
     ui->filesListView->setRootIndex(model->index(dir.path()));
 
     connect(model, &QFileSystemModel::rowsInserted, [=] {
-        ui->filesListView->setFixedHeight(model->rowCount(model->index(dir.path())) * (ui->filesListView->sizeHintForRow(0) - 1));
+        tVariantAnimation* anim = new tVariantAnimation();
+        anim->setStartValue(ui->filesListView->height());
+        anim->setEndValue(model->rowCount(model->index(dir.path())) * (ui->filesListView->sizeHintForRow(0) - 1));
+        anim->setEasingCurve(QEasingCurve::OutCubic);
+        anim->setDuration(250);
+        connect(anim, &tVariantAnimation::valueChanged, [=](QVariant value) {
+            ui->filesListView->setFixedHeight(value.toInt());
+        });
+        connect(anim, SIGNAL(finished()), anim, SLOT(deleteLater()));
+        anim->start();
     });
 }
 

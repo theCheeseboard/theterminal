@@ -26,7 +26,7 @@ TerminalPart::TerminalPart(QString workDir, QWidget *parent) : QTermWidget(0, pa
 void TerminalPart::setup() {
     this->setScrollBarPosition(QTermWidget::ScrollBarRight);
     this->setFlowControlEnabled(true);
-    this->setColorScheme("Linux");
+    this->setColorScheme("/usr/share/tttermwidget/color-schemes/Linux.colorscheme");
     this->setHistorySize(settings.value("term/scrollback", -1).toInt());
     this->setKeyboardCursorShape(Konsole::Emulation::KeyboardCursorShape::IBeamCursor);
 

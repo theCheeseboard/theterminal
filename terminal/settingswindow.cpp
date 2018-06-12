@@ -14,6 +14,12 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 
     ui->scrollbackSpin->setValue(settings.value("term/scrollback", -1).toInt());
 
+    if (settings.value("terminal/type", "legacy").toString() == "legacy") {
+        ui->termTypeComboBox->setCurrentIndex(0);
+    } else {
+        ui->termTypeComboBox->setCurrentIndex(1);
+    }
+
     connect(filter, SIGNAL(keypressCaptureComplete()), this, SLOT(keypressCaptureComplete()));
 }
 
@@ -56,4 +62,17 @@ void SettingsWindow::keypressCaptureComplete() {
 void SettingsWindow::on_scrollbackSpin_valueChanged(int arg1)
 {
     settings.setValue("term/scrollback", arg1);
+}
+
+
+void SettingsWindow::on_termTypeComboBox_currentIndexChanged(int index)
+{
+    switch (index) {
+        case 0: //Legacy
+            settings.setValue("terminal/type", "legacy");
+            break;
+        case 1: //Contemporary
+            settings.setValue("terminal/type", "contemporary");
+            break;
+    }
 }

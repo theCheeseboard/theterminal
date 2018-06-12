@@ -6,6 +6,8 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
     ui(new Ui::TerminalWidget)
 {
     ui->setupUi(this);
+    ui->autocompletePages->setFixedHeight(0);
+    ui->commandLine->installEventFilter(this);
 
     if (settings.value("terminal/type", "legacy").toString() == "legacy") {
         //Create a legacy terminal part
@@ -22,7 +24,16 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
     } else {
         //Set up built in functions
         builtinFunctions.insert("cd", [=](QString line) {
-            QString dirString = line.remove(0, 2).trimmed(); //Remove the cd
+            QStringList args = splitSpaces(line);
+            args.takeFirst();
+
+            if (args.length() > 1) {
+                currentCommandPart->appendOutput(tr("theterminal: cd: too many arguments"));
+                return 1;
+            }
+
+            QString dirString;
+            if (args.count() == 1) dirString = args.takeFirst();
             QDir dir = workingDirectory;
 
             if (dirString == "") {
@@ -74,6 +85,10 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
             }
 
             currentEnvironment.insert(name, value);
+            return 0;
+        });
+        builtinFunctions.insert("exit", [=](QString line) {
+            QTimer::singleShot(0, this, SIGNAL(finished()));
             return 0;
         });
 
@@ -213,19 +228,17 @@ void TerminalWidget::runCommand(QString command) {
         QStringList dirs = currentEnvironment.value("PATH").split(":");
         for (QString dirString : dirs) {
             QDir dir(dirString);
-            for (QFileInfo info : dir.entryInfoList()) {
-                if (info.isExecutable()) {
-                    if (info.fileName() == executable) {
-                        connect(currentCommandPart, &CommandPart::finished, [=](int exitCode) {
-                            prepareForNextCommand();
-                        });
+            for (QFileInfo info : dir.entryInfoList(QDir::Files | QDir::Executable)) {
+                if (info.fileName() == executable) {
+                    connect(currentCommandPart, &CommandPart::finished, [=](int exitCode) {
+                        prepareForNextCommand();
+                    });
 
-                        QTimer::singleShot(0, [=] {
-                            ui->terminalArea->verticalScrollBar()->setValue(ui->terminalArea->verticalScrollBar()->maximum());
-                            currentCommandPart->executeCommand(ui->terminalArea->height() - 18, dir.path() + "/" + command);
-                        });
-                        return;
-                    }
+                    QTimer::singleShot(0, [=] {
+                        ui->terminalArea->verticalScrollBar()->setValue(ui->terminalArea->verticalScrollBar()->maximum());
+                        currentCommandPart->executeCommand(ui->terminalArea->height() - 18, dir.path() + "/" + command);
+                    });
+                    return;
                 }
             }
         }
@@ -259,4 +272,261 @@ void TerminalWidget::adjustCurrentTerminal() {
     if (currentCommandPart != nullptr) {
         currentCommandPart->setFixedHeight(ui->terminalArea->height() - 18);
     }
+}
+
+void TerminalWidget::on_commandLine_cursorPositionChanged(int arg1, int arg2)
+{
+    ui->fileAutocompleteWidget->blockSignals(true);
+    ui->fileAutocompleteWidget->clear();
+    ui->fileAutocompleteWidget->blockSignals(false);
+
+    QTextBoundaryFinder boundaries(QTextBoundaryFinder::Word, ui->commandLine->text());
+    boundaries.setPosition(arg2);
+
+    int startPos = ui->commandLine->text().lastIndexOf(" ", arg2 - 1) + 1;
+    int endPos = ui->commandLine->text().indexOf(" ", arg2);
+
+    if (startPos == -1) startPos = 0;
+    if (endPos == -1) endPos = ui->commandLine->text().length();
+    QString word = ui->commandLine->text().mid(startPos, endPos - startPos);
+
+    autocompleteInitialStart = startPos;
+    autocompleteInitialWord = word;
+
+    QDir::Filters commandFilters = QDir::Dirs | QDir::Files;
+    QString command = ui->commandLine->text().left(ui->commandLine->text().indexOf(" "));
+    if (command == "cd") {
+        commandFilters = QDir::Dirs;
+    } else if (command.startsWith("/")) {
+        commandFilters = QDir::Dirs | QDir::Files | QDir::Executable;
+    }
+
+    QList<QListWidgetItem*> items;
+    if (word.startsWith("$")) { //Search environment variables
+        for (QString key : currentEnvironment.keys()) {
+            if (key.startsWith(word.mid(1))) {
+                QString value = currentEnvironment.value(key);
+
+                QListWidgetItem* item = new QListWidgetItem();
+                item->setText("$" + key);
+                items.append(item);
+            }
+        }
+    } else if (startPos == 0 && !command.startsWith("/") && command.length() != 0) { //Search commands
+        QStringList dirs = currentEnvironment.value("PATH").split(":");
+        QStringList knownExecutables;
+
+        auto addExecutable = [=, &items, &knownExecutables](QString name) {
+            if (name.startsWith(word) && !knownExecutables.contains(name)) {
+                knownExecutables.append(name);
+                QListWidgetItem* item = new QListWidgetItem();
+                item->setText(name);
+                items.append(item);
+            }
+        };
+
+        for (QString command : builtinFunctions.keys()) {
+            addExecutable(command);
+        }
+
+        for (QString dirString : dirs) {
+            QDir dir(dirString);
+            for (QFileInfo info : dir.entryInfoList(QDir::Files | QDir::Executable)) {
+                addExecutable(info.fileName());
+            }
+        }
+    } else { //Search files
+        bool performSearch = false;
+
+        QDir dir = workingDirectory;
+        int lastDir = word.lastIndexOf("/") + 1;
+        if (lastDir != 0) {
+            performSearch = true; //Always perform search on files when finding /
+            autocompleteInitialStart = startPos + lastDir;
+            dir.cd(word.left(lastDir));
+            word = word.mid(lastDir);
+        }
+
+        if (word.length() != 0) performSearch = true; //Perform search when there is something to autocomplete
+
+        if (performSearch) {
+            for (QFileInfo info : dir.entryInfoList(commandFilters)) {
+                if (info.fileName().startsWith(word)) {
+                    QListWidgetItem* item = new QListWidgetItem();
+                    item->setText(info.fileName());
+                    items.append(item);
+                }
+            }
+        }
+    }
+
+    if (items.count() > 0) {
+        for (QListWidgetItem* item : items) {
+            ui->fileAutocompleteWidget->addItem(item);
+        }
+        openAutocomplete();
+    } else {
+        closeAutocomplete();
+    }
+}
+
+void TerminalWidget::openAutocomplete() {
+    if (!autocompleteOpen) {
+        tVariantAnimation* anim = new tVariantAnimation();
+        anim->setStartValue(ui->autocompletePages->height());
+        anim->setEndValue(300);
+        anim->setEasingCurve(QEasingCurve::OutCubic);
+        anim->setDuration(250);
+        connect(anim, &tVariantAnimation::valueChanged, [=](QVariant value) {
+            ui->autocompletePages->setFixedHeight(value.toInt());
+        });
+        connect(anim, SIGNAL(finished()), anim, SLOT(deleteLater()));
+        anim->start();
+
+        autocompleteOpen = true;
+    }
+}
+
+void TerminalWidget::closeAutocomplete() {
+    if (autocompleteOpen) {
+        tVariantAnimation* anim = new tVariantAnimation();
+        anim->setStartValue(ui->autocompletePages->height());
+        anim->setEndValue(0);
+        anim->setEasingCurve(QEasingCurve::OutCubic);
+        anim->setDuration(250);
+        connect(anim, &tVariantAnimation::valueChanged, [=](QVariant value) {
+            ui->autocompletePages->setFixedHeight(value.toInt());
+        });
+        connect(this, SIGNAL(destroyed(QObject*)), anim, SLOT(stop()));
+        connect(anim, SIGNAL(finished()), anim, SLOT(deleteLater()));
+        anim->start();
+
+        autocompleteOpen = false;
+    }
+}
+
+bool TerminalWidget::eventFilter(QObject *watched, QEvent *event) {
+    if (watched == ui->commandLine) {
+        if (event->type() == QEvent::KeyPress) {
+            QKeyEvent* e = (QKeyEvent*) event;
+            switch (e->key()) {
+                case Qt::Key_Down:
+                case Qt::Key_Tab:
+                    if (autocompleteOpen) {
+                        //Go down through autocomplete
+                        int newIndex = ui->fileAutocompleteWidget->currentRow() + 1;
+                        if (newIndex == ui->fileAutocompleteWidget->count()) {
+                            ui->fileAutocompleteWidget->setCurrentRow(-1);
+                            ui->fileAutocompleteWidget->clearSelection();
+                        } else {
+                            ui->fileAutocompleteWidget->setCurrentRow(newIndex);
+                        }
+                    } else {
+
+                    }
+                    break;
+                case Qt::Key_Up:
+                    if (autocompleteOpen) {
+                        //Go up through autocomplete
+                        int newIndex = ui->fileAutocompleteWidget->currentRow() - 1;
+                        if (newIndex == -1) {
+                            ui->fileAutocompleteWidget->setCurrentRow(-1);
+                            ui->fileAutocompleteWidget->clearSelection();
+                        } else if (newIndex == -2) {
+                            ui->fileAutocompleteWidget->setCurrentRow(ui->fileAutocompleteWidget->count() - 1);
+                        } else {
+                            ui->fileAutocompleteWidget->setCurrentRow(newIndex);
+                        }
+                    }
+                    break;
+                default:
+                    return false;
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
+void TerminalWidget::on_fileAutocompleteWidget_currentRowChanged(int currentRow)
+{
+    ui->commandLine->blockSignals(true);
+    QString wordToReplace;
+    if (currentRow == -1) {
+        wordToReplace = autocompleteInitialWord;
+    } else {
+        wordToReplace = ui->fileAutocompleteWidget->item(currentRow)->text();
+        if (wordToReplace.contains(" ")) {
+            wordToReplace.prepend("\"");
+            wordToReplace.append("\"");
+        }
+    }
+
+    QString currentText = ui->commandLine->text();
+    int endPos = lookaheadSpace(currentText, autocompleteInitialStart);
+    if (endPos == -1) endPos = currentText.length();
+
+    currentText.replace(autocompleteInitialStart, endPos - autocompleteInitialStart, wordToReplace);
+    ui->commandLine->setText(currentText);
+
+    ui->commandLine->blockSignals(false);
+}
+
+int TerminalWidget::lookbehindSpace(QString str, int from) {
+    bool inQuotes = false;
+    for (int i = 0; i < from; i++) {
+        if (str.at(i) == '\"') {
+            inQuotes = !inQuotes;
+        }
+    }
+
+    for (int i = from - 1; i >= 0; i--) {
+        if (str.at(i) == '\"') {
+            inQuotes = !inQuotes;
+        } else if (!inQuotes && str.at(i) == ' ') {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int TerminalWidget::lookaheadSpace(QString str, int from) {
+    bool inQuotes = false;
+    for (int i = 0; i < from; i++) {
+        if (str.at(i) == '\"') {
+            inQuotes = !inQuotes;
+        }
+    }
+
+    for (int i = from; i < str.length(); i++) {
+        if (str.at(i) == '\"') {
+            inQuotes = !inQuotes;
+        } else if (!inQuotes && str.at(i) == ' ') {
+            return i;
+        }
+    }
+    return -1;
+}
+
+QStringList TerminalWidget::splitSpaces(QString str) {
+    bool inQuotes;
+    QString currentString;
+    QStringList list;
+
+    for (int i = 0; i < str.length(); i++) {
+        if (str.at(i) == '\"') {
+            inQuotes = !inQuotes;
+        } else if (!inQuotes) {
+            if (str.at(i) == ' ') {
+                list.append(currentString);
+                currentString.clear();
+            } else {
+                currentString.append(str.at(i));
+            }
+        }
+    }
+
+    if (currentString != "") list.append(currentString);
+
+    return list;
 }

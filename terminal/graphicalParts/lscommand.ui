@@ -30,7 +30,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QListView" name="filesListView">
+    <widget class="QTreeView" name="filesListView">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -39,6 +39,12 @@
      </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="rootIsDecorated">
+      <bool>false</bool>
+     </property>
+     <property name="itemsExpandable">
+      <bool>false</bool>
      </property>
     </widget>
    </item>

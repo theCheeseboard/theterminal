@@ -76,7 +76,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset theme="go-down"/>
+           <iconset theme="go-up"/>
           </property>
           <property name="flat">
            <bool>true</bool>

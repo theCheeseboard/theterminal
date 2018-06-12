@@ -16,6 +16,8 @@
 #include <QBoxLayout>
 #include <QScrollArea>
 #include <QScrollBar>
+#include <QListWidget>
+#include <QTextBoundaryFinder>
 #include "graphicalParts/lscommand.h"
 #include "terminalpart.h"
 #include "commandpart.h"
@@ -42,12 +44,23 @@ class TerminalWidget : public QWidget
         QDir getWorkingDir();
         QProcessEnvironment getEnv();
 
+        QStringList splitSpaces(QString str);
+        int lookbehindSpace(QString str, int from);
+        int lookaheadSpace(QString str, int from);
+
     private slots:
         void prepareForNextCommand();
         void runCommand(QString command);
         void adjustCurrentTerminal();
 
+        void openAutocomplete();
+        void closeAutocomplete();
+
         void on_commandLine_returnPressed();
+
+        void on_commandLine_cursorPositionChanged(int arg1, int arg2);
+
+        void on_fileAutocompleteWidget_currentRowChanged(int currentRow);
 
     signals:
         void finished();
@@ -67,8 +80,13 @@ class TerminalWidget : public QWidget
         bool currentlyAtBottom = true;
         QStringList awaitingCommands;
         QStringList commandHistory;
+        bool autocompleteOpen = false;
+
+        QString autocompleteInitialWord;
+        int autocompleteInitialStart;
 
         void resizeEvent(QResizeEvent* event);
+        bool eventFilter(QObject *watched, QEvent *event);
 };
 
 #endif // TERMINALWIDGET_H
