@@ -4,9 +4,14 @@
 #
 #-------------------------------------------------
 
+
 QT       += core gui x11extras thelib
 CONFIG   += c++14
 LIBS     += -lX11
+
+# These changes are to make theTerminal Contemporary work properly.
+# For some reason it doesn't work properly if it's compiled with gcc or if it's not a debug build :(
+CONFIG   += debug
 QMAKE_CXX = clang++
 QMAKE_LINK = clang++
 
