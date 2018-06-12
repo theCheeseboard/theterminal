@@ -5,8 +5,10 @@
 #-------------------------------------------------
 
 QT       += core gui x11extras thelib
-CONFIG   += c++14 debug
+CONFIG   += c++14
 LIBS     += -lX11
+QMAKE_CXX = clang++
+QMAKE_LINK = clang++
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
