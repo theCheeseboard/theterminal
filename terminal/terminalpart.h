@@ -1,11 +1,11 @@
 #ifndef TERMINALPART_H
 #define TERMINALPART_H
 
-#include <qtermwidget.h>
+#include <tttermwidget/tttermwidget.h>
 #include <QDebug>
 #include <QSettings>
 
-class TerminalPart : public QTermWidget
+class TerminalPart : public TTTermWidget
 {
     Q_OBJECT
 public:

@@ -12,11 +12,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = theterminal
 TEMPLATE = app
-LIBS += -L$$PWD/../../build-tttermwidget-Desktop-Default/ -ltttermwidget
-
-INCLUDEPATH += $$PWD/../../tttermwidget/lib
-INCLUDEPATH += $$PWD/../../build-tttermwidget-Desktop-Default/lib
-DEPENDPATH += $$PWD/../../tttermwidget/lib
+LIBS += -ltttermwidget
 
 
 SOURCES += main.cpp\

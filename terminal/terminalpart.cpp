@@ -1,10 +1,10 @@
 #include "terminalpart.h"
 
-TerminalPart::TerminalPart(QWidget* parent) : QTermWidget(0, parent) {
+TerminalPart::TerminalPart(QWidget* parent) : TTTermWidget(0, parent) {
     setup();
 }
 
-TerminalPart::TerminalPart(QString workDir, QWidget *parent) : QTermWidget(0, parent)
+TerminalPart::TerminalPart(QString workDir, QWidget *parent) : TTTermWidget(0, parent)
 {
     setup();
 
@@ -24,7 +24,7 @@ TerminalPart::TerminalPart(QString workDir, QWidget *parent) : QTermWidget(0, pa
 }
 
 void TerminalPart::setup() {
-    this->setScrollBarPosition(QTermWidget::ScrollBarRight);
+    this->setScrollBarPosition(TTTermWidget::ScrollBarRight);
     this->setFlowControlEnabled(true);
     this->setColorScheme("/usr/share/tttermwidget/color-schemes/Linux.colorscheme");
     this->setHistorySize(settings.value("term/scrollback", -1).toInt());
