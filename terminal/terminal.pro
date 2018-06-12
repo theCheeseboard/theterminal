@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui x11extras thelib
-CONFIG   += c++14
+CONFIG   += c++14 debug
 LIBS     += -lX11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -14,7 +14,6 @@ TEMPLATE = app
 LIBS += -ltttermwidget
 
 blueprint {
-    message(Configuring theTerminal to be built as blueprint)
     TARGET = theterminalb
     DEFINES += "BLUEPRINT"
 } else {

@@ -53,6 +53,7 @@ void Dropdown::newTab(QString workDir) {
     QPushButton* button = new QPushButton();
     widget->setContextMenuPolicy(Qt::CustomContextMenu);
     button->setCheckable(true);
+    button->setFocusPolicy(Qt::NoFocus);
     ui->stackedTabs->addWidget(widget);
     terminalButtons.insert(widget, button);
 
