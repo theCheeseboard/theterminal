@@ -14,7 +14,8 @@ TEMPLATE = app
 LIBS += -ltttermwidget
 
 blueprint {
-    TARGET = theshellb
+    message(Configuring theTerminal to be built as blueprint)
+    TARGET = theterminalb
     DEFINES += "BLUEPRINT"
 } else {
     TARGET = theterminal
