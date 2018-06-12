@@ -9,7 +9,7 @@ class TerminalPart : public TTTermWidget
 {
     Q_OBJECT
 public:
-    explicit TerminalPart(QWidget* parent);
+    explicit TerminalPart(bool connectPty, QWidget* parent);
     explicit TerminalPart(QString workDir = "", QWidget *parent = 0);
 
 signals:

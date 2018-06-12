@@ -26,7 +26,7 @@ class CommandPart : public QWidget
     public slots:
         void setCommandText(QString text);
         void setReturnValue(int retval);
-        void executeCommand(int height, QString command);
+        void executeCommand(int height, QProcess* pipe, QString command);
         void appendOutput(QString text);
         void executeWidget(QWidget* widget);
         void setEnvironment(QProcessEnvironment env);

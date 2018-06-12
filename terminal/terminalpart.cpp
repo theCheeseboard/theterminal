@@ -1,10 +1,10 @@
 #include "terminalpart.h"
 
-TerminalPart::TerminalPart(QWidget* parent) : TTTermWidget(0, parent) {
+TerminalPart::TerminalPart(bool connectPty, QWidget* parent) : TTTermWidget(0, connectPty, parent) {
     setup();
 }
 
-TerminalPart::TerminalPart(QString workDir, QWidget *parent) : TTTermWidget(0, parent)
+TerminalPart::TerminalPart(QString workDir, QWidget *parent) : TTTermWidget(0, true, parent)
 {
     setup();
 

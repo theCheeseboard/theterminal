@@ -19,7 +19,6 @@
 #include <QListWidget>
 #include <QTextBoundaryFinder>
 #include <QMimeDatabase>
-#include "graphicalParts/lscommand.h"
 #include "terminalpart.h"
 #include "commandpart.h"
 
@@ -50,6 +49,8 @@ class TerminalWidget : public QWidget
         void runCommand(QString command);
         void adjustCurrentTerminal();
         void scrollToBottom();
+
+        QString executableSearch(QString executable, QString command);
 
         void openAutocomplete();
         void closeAutocomplete();

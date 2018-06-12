@@ -1,6 +1,9 @@
 #include "terminalwidget.h"
 #include "ui_terminalwidget.h"
 
+#include "graphicalParts/lscommand.h"
+#include "graphicalParts/ttedcommand.h"
+
 extern int lookbehindSpace(QString str, int from);
 extern int lookaheadSpace(QString str, int from);
 extern QStringList splitSpaces(QString str);
@@ -75,6 +78,40 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
             });
             connect(pane, SIGNAL(scrollToBottom()), this, SLOT(scrollToBottom()));
 
+            currentCommandPart->executeWidget(pane);
+            return 0;
+        });
+        builtinFunctions.insert("tted", [=](QString line) {
+            QStringList args = splitSpaces(line);
+            args.takeFirst();
+
+            if (args.contains("--help") || args.contains("-")) {
+                currentCommandPart->appendOutput(tr("Usage: tted [OPTIONS] [FILE]\n"
+                                                    "-h, --help                   Show this help output\n"));
+                return 0;
+            }
+
+            if (args.length() < 1) {
+                currentCommandPart->appendOutput(tr("theterminal: tted: not enough arguments"));
+                return 1;
+            } else if (args.length() > 1) {
+                currentCommandPart->appendOutput(tr("theterminal: tted: too many arguments"));
+                return 1;
+            }
+
+            QString file = args.first();
+            QDir dir = workingDirectory;
+            int lastDir = file.lastIndexOf("/") + 1;
+            if (lastDir != 0) {
+                if (!dir.cd(file.left(lastDir))) {
+                    currentCommandPart->appendOutput(tr("theterminal: tted: cannot access '%1' No such file or directory").arg(file));
+                    return 1;
+                }
+                file = file.mid(lastDir);
+            }
+
+            ttedCommand* pane = new ttedCommand();
+            pane->loadFile(dir.path() + "/" + file);
             currentCommandPart->executeWidget(pane);
             return 0;
         });
@@ -196,7 +233,6 @@ void TerminalWidget::toggleShowSearchBar() {
 void TerminalWidget::runCommand(QString command) {
     commandHistory.append(command);
     ui->commandLine->setVisible(false);
-    QString executable = command.split(" ").first();
 
     currentCommandPart = new CommandPart(this);
     currentCommandPart->setEnvironment(currentEnvironment);
@@ -204,44 +240,72 @@ void TerminalWidget::runCommand(QString command) {
     commandParts.append(currentCommandPart);
     currentCommandPart->setCommandText(command);
 
-    //Check if a builtin function exists
-    if (builtinFunctions.contains(executable)) {
-        //Run function
-        int retval = builtinFunctions.value(executable)(command);
-        currentCommandPart->setReturnValue(retval);
-        prepareForNextCommand();
-        return;
+    QStringList pipeline = command.split("|");
+    QProcess* previousProcess = nullptr;
+
+    for (int i = 0; i < pipeline.count(); i++) {
+        command = pipeline.at(i).trimmed();
+        bool isLast = (i == pipeline.count() - 1);
+        QString executable = command.split(" ").first();
+
+        //Check if a builtin function exists
+        if (builtinFunctions.contains(executable)) {
+            //Run function
+            int retval = builtinFunctions.value(executable)(command);
+            currentCommandPart->setReturnValue(retval);
+            prepareForNextCommand();
+            return;
+        }
+
+        QString cmd = executableSearch(executable, command);
+
+        if (cmd != "") {
+            if (isLast) {
+                connect(currentCommandPart, &CommandPart::finished, [=](int exitCode) {
+                    prepareForNextCommand();
+                });
+                adjustCurrentTerminal();
+
+                QTimer::singleShot(0, [=] {
+                    ui->terminalArea->verticalScrollBar()->setValue(ui->terminalArea->verticalScrollBar()->maximum());
+                    currentCommandPart->executeCommand(ui->terminalArea->height() - 18, previousProcess, cmd);
+                });
+            } else {
+                QProcess* proc = new QProcess;
+                QStringList args = splitSpaces(cmd);
+                QString executable = args.takeFirst();
+                proc->setArguments(args);
+                connect(proc, SIGNAL(finished(int)), proc, SLOT(deleteLater()));
+
+                if (previousProcess != nullptr) {
+                    previousProcess->setStandardOutputProcess(proc);
+                }
+
+                proc->start(executable);
+                previousProcess = proc;
+            }
+        } else {
+            //Conclusion: command not found :(
+            currentCommandPart->appendOutput(tr("theterminal: %1: command not found").arg(executable));
+            currentCommandPart->setReturnValue(1);
+            prepareForNextCommand();
+        }
     }
+}
+
+QString TerminalWidget::executableSearch(QString executable, QString command) {
 
     //Check if executable is itself an executable file
     if (executable.startsWith("/")) {
         QFileInfo file(executable);
         if (file.isExecutable()) {
-            connect(currentCommandPart, &CommandPart::finished, [=](int exitCode) {
-                prepareForNextCommand();
-            });
-            adjustCurrentTerminal();
-
-            QTimer::singleShot(0, [=] {
-                ui->terminalArea->verticalScrollBar()->setValue(ui->terminalArea->verticalScrollBar()->maximum());
-                currentCommandPart->executeCommand(ui->terminalArea->height() - 18, file.path() + "/" + command);
-            });
-            return;
+            return file.path() + "/" + command;
         }
     }
     if (executable.startsWith("./")) {
         QFileInfo file(workingDirectory.path() + "/" + executable);
         if (file.isExecutable()) {
-            connect(currentCommandPart, &CommandPart::finished, [=](int exitCode) {
-                prepareForNextCommand();
-            });
-            adjustCurrentTerminal();
-
-            QTimer::singleShot(0, [=] {
-                ui->terminalArea->verticalScrollBar()->setValue(ui->terminalArea->verticalScrollBar()->maximum());
-                currentCommandPart->executeCommand(ui->terminalArea->height() - 18, file.path() + "/" + command);
-            });
-            return;
+            return file.path() + "/" + command;
         }
     }
 
@@ -252,24 +316,13 @@ void TerminalWidget::runCommand(QString command) {
             QDir dir(dirString);
             for (QFileInfo info : dir.entryInfoList(QDir::Files | QDir::Executable)) {
                 if (info.fileName() == executable) {
-                    connect(currentCommandPart, &CommandPart::finished, [=](int exitCode) {
-                        prepareForNextCommand();
-                    });
-
-                    QTimer::singleShot(0, [=] {
-                        ui->terminalArea->verticalScrollBar()->setValue(ui->terminalArea->verticalScrollBar()->maximum());
-                        currentCommandPart->executeCommand(ui->terminalArea->height() - 18, dir.path() + "/" + command);
-                    });
-                    return;
+                    return dir.path() + "/" + command;
                 }
             }
         }
     }
 
-    //Conclusion: command not found :(
-    currentCommandPart->appendOutput(tr("theterminal: %1: command not found").arg(executable));
-    currentCommandPart->setReturnValue(1);
-    prepareForNextCommand();
+    return "";
 }
 
 void TerminalWidget::on_commandLine_returnPressed()

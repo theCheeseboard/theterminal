@@ -76,7 +76,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset theme="go-up"/>
+           <iconset theme="go-up">
+            <normaloff>.</normaloff>.</iconset>
           </property>
           <property name="flat">
            <bool>true</bool>
@@ -103,9 +104,6 @@
          <widget class="QLabel" name="returnValue">
           <property name="text">
            <string>returnValue</string>
-          </property>
-          <property name="margin">
-           <number>9</number>
           </property>
          </widget>
         </item>

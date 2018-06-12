@@ -37,11 +37,12 @@ void CommandPart::setReturnValue(int retval) {
     }
 }
 
-void CommandPart::executeCommand(int height, QString command) {
+void CommandPart::executeCommand(int height, QProcess* pipe, QString command) {
     QStringList args = splitSpaces(command);
     QString executable = args.takeFirst();
 
-    currentTerminal = new TerminalPart(0);
+    //bool connectPty = (pipe == nullptr);
+    currentTerminal = new TerminalPart(true, 0);
     ((QBoxLayout*) ui->frame->layout())->addWidget(currentTerminal);
     currentTerminal->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     currentTerminal->setWorkingDirectory(parentTerminal->getWorkingDir().path());
@@ -88,6 +89,15 @@ void CommandPart::executeCommand(int height, QString command) {
         this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
     });
     currentTerminal->startShellProgram();
+
+    if (pipe != nullptr) {
+        connect(pipe, &QProcess::readyReadStandardOutput, [=] {
+            currentTerminal->getProcess()->write(pipe->readAllStandardOutput());
+        });
+        connect(pipe, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=](int exitCode, QProcess::ExitStatus exitStatus){
+            currentTerminal->getProcess()->close();
+        });
+    }
 }
 
 void CommandPart::appendOutput(QString text) {
@@ -135,3 +145,4 @@ void CommandPart::executeWidget(QWidget *widget) {
 void CommandPart::setEnvironment(QProcessEnvironment env) {
     this->env = env;
 }
+

@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     terminalpart.cpp \
     terminalwidget.cpp \
     commandpart.cpp \
-    graphicalParts/lscommand.cpp
+    graphicalParts/lscommand.cpp \
+    graphicalParts/ttedcommand.cpp
 
 HEADERS  += mainwindow.h \
     about.h \
@@ -40,7 +41,8 @@ HEADERS  += mainwindow.h \
     terminalpart.h \
     terminalwidget.h \
     commandpart.h \
-    graphicalParts/lscommand.h
+    graphicalParts/lscommand.h \
+    graphicalParts/ttedcommand.h
 
 FORMS    += mainwindow.ui \
     about.ui \
@@ -48,7 +50,8 @@ FORMS    += mainwindow.ui \
     settingswindow.ui \
     terminalwidget.ui \
     commandpart.ui \
-    graphicalParts/lscommand.ui
+    graphicalParts/lscommand.ui \
+    graphicalParts/ttedcommand.ui
 
 unix {
     target.path = /usr/bin
