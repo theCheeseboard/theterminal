@@ -6,6 +6,7 @@
 #include <QPlainTextEdit>
 #include <QLabel>
 #include <tvariantanimation.h>
+#include <QToolButton>
 
 namespace Ui {
     class ttedCommand;
@@ -26,6 +27,14 @@ class ttedCommand : public QWidget
         void on_saveButton_triggered(QAction *arg1);
 
         void on_editor_textChanged();
+
+        void on_undoButton_triggered(QAction *arg1);
+
+        void on_redoButton_triggered(QAction *arg1);
+
+        void on_editor_undoAvailable(bool b);
+
+        void on_editor_redoAvailable(bool b);
 
     private:
         Ui::ttedCommand *ui;

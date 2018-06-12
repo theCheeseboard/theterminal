@@ -16,6 +16,7 @@ ttedCommand::ttedCommand(QWidget *parent) :
     ui->filename->setPalette(pal);
 
     ui->saveWarningLabel->setVisible(false);
+    ui->permissionWarningLabel->setVisible(false);
 }
 
 ttedCommand::~ttedCommand()
@@ -28,6 +29,10 @@ void ttedCommand::loadFile(QString file) {
 
     loadedFile = file;
     QFile fileObj(file);
+    if (!fileObj.isWritable()) {
+        ui->permissionWarningLabel->setVisible(true);
+        ui->saveButton->setVisible(false);
+    }
     if (fileObj.exists()) {
         fileObj.open(QFile::ReadOnly);
         ui->editor->setPlainText(fileObj.readAll());
@@ -60,4 +65,24 @@ void ttedCommand::on_editor_textChanged()
     });
     connect(anim, SIGNAL(finished()), anim, SLOT(deleteLater()));
     anim->start();
+}
+
+void ttedCommand::on_undoButton_triggered(QAction *arg1)
+{
+    ui->editor->undo();
+}
+
+void ttedCommand::on_redoButton_triggered(QAction *arg1)
+{
+    ui->editor->redo();
+}
+
+void ttedCommand::on_editor_undoAvailable(bool b)
+{
+    ui->undoButton->setEnabled(b);
+}
+
+void ttedCommand::on_editor_redoAvailable(bool b)
+{
+    ui->redoButton->setEnabled(b);
 }
