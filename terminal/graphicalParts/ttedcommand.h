@@ -7,6 +7,8 @@
 #include <QLabel>
 #include <tvariantanimation.h>
 #include <QToolButton>
+#include <QFileInfo>
+#include <QFileSystemWatcher>
 
 namespace Ui {
     class ttedCommand;
@@ -24,22 +26,20 @@ class ttedCommand : public QWidget
         void loadFile(QString file);
 
     private slots:
-        void on_saveButton_triggered(QAction *arg1);
-
         void on_editor_textChanged();
-
-        void on_undoButton_triggered(QAction *arg1);
-
-        void on_redoButton_triggered(QAction *arg1);
 
         void on_editor_undoAvailable(bool b);
 
         void on_editor_redoAvailable(bool b);
 
+        void on_saveButton_clicked();
+
     private:
         Ui::ttedCommand *ui;
 
         QString loadedFile;
+        QFileSystemWatcher* watcher;
+        bool justSaved = false;
 };
 
 #endif // TTEDCOMMAND_H

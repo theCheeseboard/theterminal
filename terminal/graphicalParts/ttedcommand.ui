@@ -352,5 +352,38 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>undoButton</sender>
+   <signal>clicked()</signal>
+   <receiver>editor</receiver>
+   <slot>undo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>41</x>
+     <y>283</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>104</x>
+     <y>116</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>redoButton</sender>
+   <signal>clicked()</signal>
+   <receiver>editor</receiver>
+   <slot>redo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>66</x>
+     <y>291</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>54</x>
+     <y>167</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

@@ -21,36 +21,38 @@ ttedCommand::ttedCommand(QWidget *parent) :
 
 ttedCommand::~ttedCommand()
 {
+    watcher->deleteLater();
     delete ui;
 }
 
 void ttedCommand::loadFile(QString file) {
     QString statusBar = file;
+    watcher = new QFileSystemWatcher();
+    watcher->addPath(file);
+    connect(watcher, &QFileSystemWatcher::fileChanged, [=] {
+        if (!justSaved) {
+            ui->saveWarningLabel->setVisible(true);
+        } else {
+            justSaved = false;
+        }
+    });
 
     loadedFile = file;
     QFile fileObj(file);
-    if (!fileObj.isWritable()) {
-        ui->permissionWarningLabel->setVisible(true);
-        ui->saveButton->setVisible(false);
-    }
+    QFileInfo fileInfo(file);
     if (fileObj.exists()) {
         fileObj.open(QFile::ReadOnly);
         ui->editor->setPlainText(fileObj.readAll());
         fileObj.close();
+
+        if (!fileInfo.isWritable()) {
+            ui->permissionWarningLabel->setVisible(true);
+            ui->saveButton->setVisible(false);
+        }
     } else {
         statusBar.append(" [NEW FILE]");
     }
     ui->filename->setText(statusBar);
-}
-
-void ttedCommand::on_saveButton_triggered(QAction *arg1)
-{
-    QFile fileObj(loadedFile);
-    fileObj.open(QFile::WriteOnly);
-    fileObj.write(ui->editor->toPlainText().toUtf8());
-    fileObj.close();
-
-    ui->saveWarningLabel->setVisible(false);
 }
 
 void ttedCommand::on_editor_textChanged()
@@ -67,16 +69,6 @@ void ttedCommand::on_editor_textChanged()
     anim->start();
 }
 
-void ttedCommand::on_undoButton_triggered(QAction *arg1)
-{
-    ui->editor->undo();
-}
-
-void ttedCommand::on_redoButton_triggered(QAction *arg1)
-{
-    ui->editor->redo();
-}
-
 void ttedCommand::on_editor_undoAvailable(bool b)
 {
     ui->undoButton->setEnabled(b);
@@ -85,4 +77,15 @@ void ttedCommand::on_editor_undoAvailable(bool b)
 void ttedCommand::on_editor_redoAvailable(bool b)
 {
     ui->redoButton->setEnabled(b);
+}
+
+void ttedCommand::on_saveButton_clicked()
+{
+    justSaved = true;
+    QFile fileObj(loadedFile);
+    fileObj.open(QFile::WriteOnly);
+    fileObj.write(ui->editor->toPlainText().toUtf8());
+    fileObj.close();
+
+    ui->saveWarningLabel->setVisible(false);
 }

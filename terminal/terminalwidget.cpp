@@ -94,25 +94,23 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
             if (args.length() < 1) {
                 currentCommandPart->appendOutput(tr("theterminal: tted: not enough arguments"));
                 return 1;
-            } else if (args.length() > 1) {
-                currentCommandPart->appendOutput(tr("theterminal: tted: too many arguments"));
-                return 1;
             }
 
-            QString file = args.first();
-            QDir dir = workingDirectory;
-            int lastDir = file.lastIndexOf("/") + 1;
-            if (lastDir != 0) {
-                if (!dir.cd(file.left(lastDir))) {
-                    currentCommandPart->appendOutput(tr("theterminal: tted: cannot access '%1' No such file or directory").arg(file));
-                    return 1;
+            for (QString file : args) {
+                QDir dir = workingDirectory;
+                int lastDir = file.lastIndexOf("/") + 1;
+                if (lastDir != 0) {
+                    if (!dir.cd(file.left(lastDir))) {
+                        currentCommandPart->appendOutput(tr("theterminal: tted: cannot access '%1' No such file or directory").arg(file));
+                        return 1;
+                    }
+                    file = file.mid(lastDir);
                 }
-                file = file.mid(lastDir);
-            }
 
-            ttedCommand* pane = new ttedCommand();
-            pane->loadFile(dir.path() + "/" + file);
-            currentCommandPart->executeWidget(pane);
+                ttedCommand* pane = new ttedCommand();
+                pane->loadFile(dir.path() + "/" + file);
+                currentCommandPart->executeWidget(pane);
+            }
             return 0;
         });
         builtinFunctions.insert("export", [=](QString line) {
