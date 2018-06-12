@@ -10,9 +10,15 @@ LIBS     += -lX11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = theterminal
 TEMPLATE = app
 LIBS += -ltttermwidget
+
+blueprint {
+    TARGET = theshellb
+    DEFINES += "BLUEPRINT"
+} else {
+    TARGET = theterminal
+}
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -46,12 +52,18 @@ FORMS    += mainwindow.ui \
 unix {
     target.path = /usr/bin
 
-    appentry.path = /usr/share/applications
-    appentry.files = theterminal.desktop theterminaldd.desktop
+    blueprint {
+        appentry.path = /usr/share/applications
+        appentry.files = theterminalb.desktop
+    } else {
+        appentry.path = /usr/share/applications
+        appentry.files = theterminal.desktop theterminaldd.desktop
+    }
 
     INSTALLS += target appentry
 }
 
 DISTFILES += \
     theterminaldd.desktop \
-    theterminal.desktop
+    theterminal.desktop \
+    theterminalb.desktop
