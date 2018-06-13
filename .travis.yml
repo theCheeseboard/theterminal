@@ -5,11 +5,12 @@ before_install:
   - sudo add-apt-repository 'deb https://vicr123.com/repo/apt/ubuntu bionic main'
   - sudo add-apt-repository -y ppa:beineri/opt-qt-5.10.0-xenial
   - sudo apt-get update -qq
-  - sudo apt-get install qt5-qmake libqt5x11extras5-dev qt5-default qt510-meta-minimal qt510x11extras qt510tools qt510translations libmount-dev xorg-dev
+  - sudo apt-get install qt510-meta-minimal qt510x11extras qt510tools qt510translations libmount-dev xorg-dev libxcb-util0-dev libgl1-mesa-dev
 script:
   - source /opt/qt510/bin/qt510-env.sh
   - git clone https://gitlab.gnome.org/GNOME/glib.git
   - cd glib
+  - git checkout e44ea516afeb41d22cebf968b3ea5d9543856df2
   - NOCONFIGURE=1 ./autogen.sh
   - "./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu --sysconfdir=/etc"
   - make
@@ -41,12 +42,19 @@ script:
   - cd ../../
   - qmake
   - make
-  - make install INSTALL_ROOT=appdir
+  - make install INSTALL_ROOT=~/appdir
+  - git clone https://github.com/vicr123/contemporary-icons.git
+  - cp contemporary-icons/apps/32/utilities-terminal.svg ~/appdir/utilities-terminal.svg
+  - cd ~
   - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+  - wget -c -nv "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
+  - sudo cp appimagetool-x86_64.AppImage /usr/bin/appimagetool
+  - sudo chmod +x /usr/bin/appimagetool
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
-  - "./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs"
-  - "./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage"
+  - "./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/theterminal.desktop -bundle-non-qt-libs"
+  - "./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/theterminal.desktop -appimage"
 after_success:
+  - cd ~
   - find appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
   - bash upload.sh theTerminal*.AppImage*
