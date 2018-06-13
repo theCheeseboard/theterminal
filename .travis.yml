@@ -3,9 +3,18 @@ before_install:
   - wget -O ~/vicr12345.gpg.key https://vicr123.com/repo/apt/vicr12345.gpg.key
   - sudo apt-key add ~/vicr12345.gpg.key
   - sudo add-apt-repository 'deb https://vicr123.com/repo/apt/ubuntu bionic main'
+  - sudo add-apt-repository -y ppa:beineri/opt-qt-5.10.0-xenial
   - sudo apt-get update -qq
-  - sudo apt-get install libphonon4qt5-dev libtag1-dev qt5-qmake libqt5x11extras5-dev qt5-default
+  - sudo apt-get install qt5-qmake libqt5x11extras5-dev qt5-default qt510-meta-minimal qt510x11extras qt510tools qt510translations libmount-dev xorg-dev
 script:
+  - source /opt/qt510/bin/qt510-env.sh
+  - git clone https://gitlab.gnome.org/GNOME/glib.git
+  - cd glib
+  - NOCONFIGURE=1 ./autogen.sh
+  - "./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu --sysconfdir=/etc"
+  - make
+  - sudo make install DESTDIR=/
+  - cd ..
   - git clone https://github.com/vicr123/the-libs.git
   - cd the-libs
   - qmake
@@ -13,13 +22,15 @@ script:
   - sudo make install INSTALL_ROOT=/
   - cd ..
   - mkdir lxqt-build-tools
+  - cd lxqt-build-tools
   - git clone https://github.com/lxqt/lxqt-build-tools.git
   - mkdir build
   - cd build
-  - cmake ../lxqt-build-tools CMakeLists.txt -DCMAKE_INSTALL_PREFIX=/usr
+  - cmake ../lxqt-build-tools -DCMAKE_INSTALL_PREFIX=/usr
   - make
   - sudo make install DESTDIR=/
   - cd ../../
+  - mkdir tttermwidget
   - cd tttermwidget
   - git clone https://github.com/vicr123/tttermwidget.git
   - mkdir build

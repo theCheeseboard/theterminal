@@ -57,6 +57,7 @@ FORMS    += mainwindow.ui \
     terminalstatus.ui
 
 unix {
+    QMAKE_STRIP = echo
     target.path = /usr/bin
 
     blueprint {
