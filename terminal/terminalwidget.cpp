@@ -234,7 +234,11 @@ void TerminalWidget::toggleShowSearchBar() {
 }
 
 void TerminalWidget::runCommand(QString command) {
-    commandHistory.append(command);
+    if (command.trimmed() == "") {
+        history.clearState();
+        return;
+    }
+    history.appendToHistory(command);
     ui->commandLine->setVisible(false);
 
     currentCommandPart = new CommandPart(this);
@@ -471,7 +475,7 @@ void TerminalWidget::closeAutocomplete() {
         autocompleteAnimation->setEndValue(0);
         autocompleteAnimation->start();
 
-        autocompleteOpen = true;
+        autocompleteOpen = false;
     }
 }
 
@@ -492,7 +496,11 @@ bool TerminalWidget::eventFilter(QObject *watched, QEvent *event) {
                             ui->fileAutocompleteWidget->setCurrentRow(newIndex);
                         }
                     } else {
-
+                        //Go down through history
+                        //Disable autocomplete
+                        ui->commandLine->blockSignals(true);
+                        ui->commandLine->setText(history.historyDown(ui->commandLine->text()));
+                        ui->commandLine->blockSignals(false);
                     }
                     break;
                 case Qt::Key_Up:
@@ -507,6 +515,12 @@ bool TerminalWidget::eventFilter(QObject *watched, QEvent *event) {
                         } else {
                             ui->fileAutocompleteWidget->setCurrentRow(newIndex);
                         }
+                    } else {
+                        //Go up through history
+                        //Disable autocomplete
+                        ui->commandLine->blockSignals(true);
+                        ui->commandLine->setText(history.historyUp(ui->commandLine->text()));
+                        ui->commandLine->blockSignals(false);
                     }
                     break;
                 default:

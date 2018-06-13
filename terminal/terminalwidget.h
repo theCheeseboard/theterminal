@@ -22,6 +22,7 @@
 #include "terminalpart.h"
 #include "commandpart.h"
 #include "terminalstatus.h"
+#include "history.h"
 
 class CommandPart;
 
@@ -80,7 +81,6 @@ class TerminalWidget : public QWidget
         QList<CommandPart*> commandParts;
         bool currentlyAtBottom = true;
         QStringList awaitingCommands;
-        QStringList commandHistory;
         bool autocompleteOpen = false;
 
         QString autocompleteInitialWord;
@@ -88,6 +88,7 @@ class TerminalWidget : public QWidget
 
         QMimeDatabase mimedb;
         tVariantAnimation* autocompleteAnimation;
+        History history;
 
         void resizeEvent(QResizeEvent* event);
         bool eventFilter(QObject *watched, QEvent *event);

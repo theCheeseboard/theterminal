@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     commandpart.cpp \
     graphicalParts/lscommand.cpp \
     graphicalParts/ttedcommand.cpp \
-    terminalstatus.cpp
+    terminalstatus.cpp \
+    history.cpp
 
 HEADERS  += mainwindow.h \
     about.h \
@@ -44,7 +45,8 @@ HEADERS  += mainwindow.h \
     commandpart.h \
     graphicalParts/lscommand.h \
     graphicalParts/ttedcommand.h \
-    terminalstatus.h
+    terminalstatus.h \
+    history.h
 
 FORMS    += mainwindow.ui \
     about.ui \
