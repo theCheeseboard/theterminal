@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     terminalwidget.cpp \
     commandpart.cpp \
     graphicalParts/lscommand.cpp \
-    graphicalParts/ttedcommand.cpp
+    graphicalParts/ttedcommand.cpp \
+    terminalstatus.cpp
 
 HEADERS  += mainwindow.h \
     about.h \
@@ -42,7 +43,8 @@ HEADERS  += mainwindow.h \
     terminalwidget.h \
     commandpart.h \
     graphicalParts/lscommand.h \
-    graphicalParts/ttedcommand.h
+    graphicalParts/ttedcommand.h \
+    terminalstatus.h
 
 FORMS    += mainwindow.ui \
     about.ui \
@@ -51,7 +53,8 @@ FORMS    += mainwindow.ui \
     terminalwidget.ui \
     commandpart.ui \
     graphicalParts/lscommand.ui \
-    graphicalParts/ttedcommand.ui
+    graphicalParts/ttedcommand.ui \
+    terminalstatus.ui
 
 unix {
     target.path = /usr/bin

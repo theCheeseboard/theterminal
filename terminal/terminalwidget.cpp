@@ -201,7 +201,7 @@ void TerminalWidget::prepareForNextCommand() {
 
         ui->commandLine->setPlaceholderText(prompt);
 
-        ui->statusLabel->setText(workingDirectory.absolutePath());
+        ui->statusWidget->setDir(workingDirectory);
 
         ui->commandLine->setVisible(true);
         ui->commandLine->setFocus();

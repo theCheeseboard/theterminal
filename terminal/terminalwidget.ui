@@ -62,7 +62,7 @@
             <x>0</x>
             <y>0</y>
             <width>679</width>
-            <height>207</height>
+            <height>220</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -161,14 +161,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="statusLabel">
-         <property name="text">
-          <string notr="true">workingDir</string>
-         </property>
-         <property name="margin">
-          <number>9</number>
-         </property>
-        </widget>
+        <widget class="TerminalStatus" name="statusWidget" native="true"/>
        </item>
       </layout>
      </widget>
@@ -177,6 +170,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TerminalStatus</class>
+   <extends>QWidget</extends>
+   <header>terminalstatus.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

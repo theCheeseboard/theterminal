@@ -21,6 +21,7 @@
 #include <QMimeDatabase>
 #include "terminalpart.h"
 #include "commandpart.h"
+#include "terminalstatus.h"
 
 class CommandPart;
 
