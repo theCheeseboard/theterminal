@@ -161,6 +161,7 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
         }
 
         currentEnvironment = QProcessEnvironment::systemEnvironment();
+        currentEnvironment.insert("TERM", "xterm");
         prepareForNextCommand();
 
         connect(ui->terminalArea->verticalScrollBar(), &QScrollBar::valueChanged, [=](int value) {

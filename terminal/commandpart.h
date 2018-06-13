@@ -7,6 +7,7 @@
 #include <QPushButton>
 #include <tpropertyanimation.h>
 #include <QGraphicsOpacityEffect>
+#include <signal.h>
 #include "terminalpart.h"
 #include "terminalwidget.h"
 

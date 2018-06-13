@@ -45,6 +45,22 @@ void CommandPart::setReturnValue(int retval) {
     } else {
         ui->returnValue->setText(QString::number(retval));
     }
+
+    switch (retval) {
+        case 128 + SIGABRT:
+            this->appendOutput(tr("Aborted"));
+            break;
+        case 128 + SIGFPE:
+            this->appendOutput(tr("Floating Point Exception"));
+            break;
+        case 128 + SIGSEGV:
+            this->appendOutput(tr("Segmentation Fault"));
+            break;
+        case 128 + SIGKILL:
+            this->appendOutput(tr("Killed"));
+            break;
+    }
+
     ui->returnValue->setVisible(true);
     ui->spinnerContainer->setVisible(false);
     ui->dismissButton->setVisible(true);

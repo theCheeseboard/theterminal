@@ -161,7 +161,14 @@
         </widget>
        </item>
        <item>
-        <widget class="TerminalStatus" name="statusWidget" native="true"/>
+        <widget class="TerminalStatus" name="statusWidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
