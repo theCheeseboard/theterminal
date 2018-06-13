@@ -132,10 +132,8 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
             return 0;
         });
         builtinFunctions.insert("clear", [=](QString line) {
-            while (commandParts.length() > 0) {
-                CommandPart* p = commandParts.takeFirst();
-                commandsLayout->removeWidget(p);
-                p->deleteLater();
+            for (CommandPart* part : commandParts) {
+                part->close();
             }
             return 0;
         });
@@ -190,8 +188,15 @@ void TerminalWidget::prepareForNextCommand() {
         QString prompt = currentEnvironment.value("PS1", "\\u \\$");
         QDateTime currentTime = QDateTime::currentDateTime();
 
+        QString shellPrompt;
+        if (geteuid() == 0) {
+            shellPrompt = "#";
+        } else {
+            shellPrompt = "$";
+        }
+
         prompt.replace("\\n", "");
-        prompt.replace("\\$", "$");
+        prompt.replace("\\$", shellPrompt);
         prompt.replace("\\w", workingDirectory.absolutePath());
         prompt.replace("\\d", currentTime.toString("ddd MMM dd"));
         prompt.replace("\\t", currentTime.toString("HH:mm:ss"));
@@ -237,6 +242,13 @@ void TerminalWidget::runCommand(QString command) {
     commandsLayout->addWidget(currentCommandPart);
     commandParts.append(currentCommandPart);
     currentCommandPart->setCommandText(command);
+
+    CommandPart* part = currentCommandPart;
+    connect(currentCommandPart, &CommandPart::dismiss, [=] {
+        commandParts.removeOne(part);
+        commandsLayout->removeWidget(part);
+        part->deleteLater();
+    });
 
     QStringList pipeline = command.split("|");
     QProcess* previousProcess = nullptr;
@@ -343,7 +355,7 @@ void TerminalWidget::resizeEvent(QResizeEvent *event) {
 
 void TerminalWidget::adjustCurrentTerminal() {
     if (currentCommandPart != nullptr) {
-        currentCommandPart->setFixedHeight(ui->terminalArea->height() - 18);
+        //currentCommandPart->setFixedHeight(ui->terminalArea->height() + ui->autocompletePages->height() - 18);
     }
 }
 

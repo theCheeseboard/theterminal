@@ -5,7 +5,8 @@
 #include <QLabel>
 #include <QBoxLayout>
 #include <QPushButton>
-#include <tvariantanimation.h>
+#include <tpropertyanimation.h>
+#include <QGraphicsOpacityEffect>
 #include "terminalpart.h"
 #include "terminalwidget.h"
 
@@ -30,12 +31,16 @@ class CommandPart : public QWidget
         void appendOutput(QString text);
         void executeWidget(QWidget* widget);
         void setEnvironment(QProcessEnvironment env);
+        void close();
 
     signals:
         void finished(int exitCode);
+        void dismiss();
 
     private slots:
         void on_expandButton_clicked();
+
+        void on_dismissButton_clicked();
 
     private:
         Ui::CommandPart *ui;

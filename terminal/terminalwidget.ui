@@ -97,23 +97,6 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <property name="leftMargin">
-          <number>9</number>
-         </property>
-         <item>
-          <widget class="QLineEdit" name="commandLine">
-           <property name="frame">
-            <bool>false</bool>
-           </property>
-           <property name="placeholderText">
-            <string/>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
         <widget class="QStackedWidget" name="autocompletePages">
          <widget class="QWidget" name="page">
           <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -146,6 +129,23 @@
          </widget>
          <widget class="QWidget" name="page_2"/>
         </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="leftMargin">
+          <number>9</number>
+         </property>
+         <item>
+          <widget class="QLineEdit" name="commandLine">
+           <property name="frame">
+            <bool>false</bool>
+           </property>
+           <property name="placeholderText">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="Line" name="line">

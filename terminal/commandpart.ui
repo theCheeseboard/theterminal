@@ -59,7 +59,7 @@
          <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
          <number>0</number>
@@ -105,15 +105,58 @@
           <property name="text">
            <string>returnValue</string>
           </property>
+          <property name="margin">
+           <number>9</number>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="tCircularSpinner" name="workingSpinner" native="true">
-          <property name="maximumSize">
-           <size>
-            <width>16</width>
-            <height>16777215</height>
-           </size>
+         <widget class="QWidget" name="spinnerContainer" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>9</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="tCircularSpinner" name="workingSpinner" native="true">
+             <property name="maximumSize">
+              <size>
+               <width>16</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="dismissButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset theme="window-close"/>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
           </property>
          </widget>
         </item>

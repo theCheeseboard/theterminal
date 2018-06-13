@@ -12,7 +12,22 @@ CommandPart::CommandPart(TerminalWidget* parentTerminal, QWidget *parent) :
     ui->commandLabel->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
     ui->returnValue->setVisible(false);
     ui->expandButton->setVisible(false);
+    ui->dismissButton->setVisible(false);
     this->parentTerminal = parentTerminal;
+
+    QGraphicsOpacityEffect* effect = new QGraphicsOpacityEffect();
+    this->setGraphicsEffect(effect);
+    tPropertyAnimation* anim = new tPropertyAnimation(effect, "opacity");
+    anim->setStartValue((float) 0);
+    anim->setEndValue((float) 1);
+    anim->setDuration(500);
+    anim->setEasingCurve(QEasingCurve::OutCubic);
+    connect(anim, &tPropertyAnimation::finished, [=] {
+        this->setGraphicsEffect(nullptr);
+    });
+    connect(anim, SIGNAL(finished()), anim, SLOT(deleteLater()));
+    connect(this, SIGNAL(destroyed(QObject*)), anim, SLOT(stop()));
+    anim->start();
 }
 
 CommandPart::~CommandPart()
@@ -25,9 +40,14 @@ void CommandPart::setCommandText(QString text) {
 }
 
 void CommandPart::setReturnValue(int retval) {
-    ui->returnValue->setText(QString::number(retval));
+    if (retval == 0) {
+        ui->returnValue->setPixmap(QIcon::fromTheme("dialog-ok").pixmap(16, 16));
+    } else {
+        ui->returnValue->setText(QString::number(retval));
+    }
     ui->returnValue->setVisible(true);
-    ui->workingSpinner->setVisible(false);
+    ui->spinnerContainer->setVisible(false);
+    ui->dismissButton->setVisible(true);
 
     if (retval != 0) {
         QPalette pal = this->palette();
@@ -146,3 +166,22 @@ void CommandPart::setEnvironment(QProcessEnvironment env) {
     this->env = env;
 }
 
+
+void CommandPart::on_dismissButton_clicked()
+{
+    //emit dismiss();
+    close();
+}
+
+void CommandPart::close() {
+    QVariantAnimation* h = new QVariantAnimation();
+    h->setStartValue(this->height());
+    h->setEndValue(0);
+    h->setDuration(250);
+    h->setEasingCurve(QEasingCurve::OutCubic);
+    connect(h, &QVariantAnimation::valueChanged, [=](QVariant value) {
+        this->setFixedHeight(value.toInt());
+    });
+    connect(h, SIGNAL(finished()), this, SIGNAL(dismiss()));
+    h->start();
+}
