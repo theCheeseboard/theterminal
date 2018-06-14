@@ -10,6 +10,7 @@ lsCommand::lsCommand(QWidget *parent) :
 
 lsCommand::~lsCommand()
 {
+    model->deleteLater();
     delete ui;
 }
 
