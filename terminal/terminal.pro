@@ -73,7 +73,7 @@ FORMS    += mainwindow.ui \
     terminalstatus.ui
 
 
-unix!macx {
+unix:!macx {
     FORMS += dropdown.ui
 }
 
