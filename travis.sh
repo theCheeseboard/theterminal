@@ -83,6 +83,7 @@ elif [ $STAGE = "after_success" ]; then
     wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
     bash upload.sh theTerminal*.AppImage*
   else
+    echo "hello :)"
     #echo "[TRAVIS] Publishing Disk Image"
     #cd ~
     #wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
