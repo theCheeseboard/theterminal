@@ -8,7 +8,7 @@
 QT       += core gui thelib
 CONFIG   += c++14
 
-unix!macx {
+unix:!macx {
     QT += x11extras
     LIBS += -lX11
 }
@@ -43,7 +43,7 @@ SOURCES += main.cpp\
     terminalstatus.cpp \
     history.cpp
 
-unix!macx {
+unix:!macx {
     SOURCES += dropdown.cpp
 }
 
@@ -59,7 +59,7 @@ HEADERS  += mainwindow.h \
     terminalstatus.h \
     history.h
 
-unix!macx {
+unix:!macx {
     HEADERS += dropdown.h
 }
 
