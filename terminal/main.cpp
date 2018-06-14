@@ -1,6 +1,9 @@
 #include "mainwindow.h"
-#include "dropdown.h"
 #include <QApplication>
+
+#ifndef Q_OS_MAC
+#include "dropdown.h"
+#endif
 
 NativeEventFilter* filter;
 extern void setupBuiltinFunctions();
@@ -23,7 +26,11 @@ int main(int argc, char *argv[])
             qDebug() << "theTerminal";
             qDebug() << "Usage: theterminal [OPTIONS]";
             qDebug() << "  -w=[WORKDIR]                 Set Working directory to [WORKDIR]";
+
+            #ifndef Q_OS_MAC
             qDebug() << "  -d[ropdown]                  Starts theTerminal in dropdown mode";
+            #endif
+
             qDebug() << "  -h, --help                   Show this help message";
             return 0;
         } else if (arg.startsWith("-w=")) {
@@ -37,7 +44,9 @@ int main(int argc, char *argv[])
     a.installNativeEventFilter(filter);
 
     if (dropdown) {
+        #ifndef Q_OS_MAC
         Dropdown* w = new Dropdown(workDir);
+        #endif
     } else {
         MainWindow* w = new MainWindow(workDir);
         w->show();

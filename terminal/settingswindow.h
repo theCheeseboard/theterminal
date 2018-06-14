@@ -5,10 +5,12 @@
 #include <QStackedWidget>
 #include <QListWidget>
 #include <QKeySequenceEdit>
-#include <QX11Info>
 #include <QSpinBox>
 #include <QComboBox>
 #include "nativeeventfilter.h"
+
+#ifdef Q_OS_LINUX
+#include <QX11Info>
 #include <X11/Xlib.h>
 #include <X11/XF86keysym.h>
 #include <X11/Xatom.h>
@@ -22,6 +24,7 @@
 #undef FontChange
 #undef Expose
 #undef Bool
+#endif
 
 namespace Ui {
 class SettingsWindow;

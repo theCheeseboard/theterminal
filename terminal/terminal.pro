@@ -5,9 +5,18 @@
 #-------------------------------------------------
 
 
-QT       += core gui x11extras thelib
+QT       += core gui thelib
 CONFIG   += c++14
-LIBS     += -lX11
+
+unix!macx {
+    QT += x11extras
+    LIBS += -lX11
+}
+
+macx {
+    INCLUDEPATH += /usr/local/include
+    LIBS += -L/usr/local/lib/ -lthe-libs
+}
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,7 +33,6 @@ blueprint {
 SOURCES += main.cpp\
         mainwindow.cpp \
     about.cpp \
-    dropdown.cpp \
     nativeeventfilter.cpp \
     settingswindow.cpp \
     terminalpart.cpp \
@@ -35,9 +43,12 @@ SOURCES += main.cpp\
     terminalstatus.cpp \
     history.cpp
 
+unix!macx {
+    SOURCES += dropdown.cpp
+}
+
 HEADERS  += mainwindow.h \
     about.h \
-    dropdown.h \
     nativeeventfilter.h \
     settingswindow.h \
     terminalpart.h \
@@ -48,15 +59,23 @@ HEADERS  += mainwindow.h \
     terminalstatus.h \
     history.h
 
+unix!macx {
+    HEADERS += dropdown.h
+}
+
 FORMS    += mainwindow.ui \
     about.ui \
-    dropdown.ui \
     settingswindow.ui \
     terminalwidget.ui \
     commandpart.ui \
     graphicalParts/lscommand.ui \
     graphicalParts/ttedcommand.ui \
     terminalstatus.ui
+
+
+unix!macx {
+    FORMS += dropdown.ui
+}
 
 unix {
     QMAKE_STRIP = echo

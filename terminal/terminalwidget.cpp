@@ -152,7 +152,11 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
 
         commandsLayout = (QBoxLayout*) ui->commands->layout();
 
+#ifdef Q_OS_MAC
+        uid_t currentUid = geteuid();
+#else
         __uid_t currentUid = geteuid();
+#endif
         passwd* pw = getpwuid(currentUid);
         if (pw == nullptr) {
             currentUser = "unknown user";

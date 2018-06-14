@@ -10,6 +10,12 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+#ifdef Q_OS_MAC
+    ui->keybindingButton->setVisible(false);
+    ui->keybindLabel->setVisible(false);
+#else
+    ui->dropdownMacSupport->setVisible(false);
+#endif
     on_keybindingButton_toggled(false);
 
     ui->scrollbackSpin->setValue(settings.value("term/scrollback", -1).toInt());
@@ -41,6 +47,7 @@ void SettingsWindow::on_DoneButton_clicked()
 
 void SettingsWindow::on_keybindingButton_toggled(bool checked)
 {
+#ifndef Q_OS_MAC
     if (checked) {
         //Capture keyboard
         XGrabKeyboard(QX11Info::display(), RootWindow(QX11Info::display(), 0), True, GrabModeAsync, GrabModeAsync, CurrentTime);
@@ -53,6 +60,7 @@ void SettingsWindow::on_keybindingButton_toggled(bool checked)
 
         ui->keybindingButton->setText(settings.value("dropdown/keyString", "F12").toString());
     }
+#endif
 }
 
 void SettingsWindow::keypressCaptureComplete() {
