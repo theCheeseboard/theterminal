@@ -11,11 +11,19 @@ CONFIG   += c++14
 unix:!macx {
     QT += x11extras
     LIBS += -lX11
+
+    blueprint {
+        TARGET = theterminalb
+        DEFINES += "BLUEPRINT"
+    } else {
+        TARGET = theterminal
+    }
 }
 
 macx {
-    INCLUDEPATH += /usr/local/include
+    INCLUDEPATH += /usr/local/include /usr/local/include/the-libs
     LIBS += -L/usr/local/lib/ -lthe-libs
+    TARGET = theTerminal
 }
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -23,12 +31,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TEMPLATE = app
 LIBS += -ltttermwidget
 
-blueprint {
-    TARGET = theterminalb
-    DEFINES += "BLUEPRINT"
-} else {
-    TARGET = theterminal
-}
 
 SOURCES += main.cpp\
         mainwindow.cpp \
