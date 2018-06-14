@@ -5,7 +5,7 @@ if [ $STAGE = "script" ]; then
     cd glib
     git checkout e44ea516afeb41d22cebf968b3ea5d9543856df2
     NOCONFIGURE=1 ./autogen.sh
-    "./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu --sysconfdir=/etc"
+    ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu --sysconfdir=/etc
     make
     sudo make install DESTDIR=/
     cd ..
@@ -44,8 +44,8 @@ if [ $STAGE = "script" ]; then
     sudo cp appimagetool-x86_64.AppImage /usr/bin/appimagetool
     sudo chmod +x /usr/bin/appimagetool
     chmod a+x linuxdeployqt-continuous-x86_64.AppImage
-    "./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/theterminal.desktop -bundle-non-qt-libs"
-    "./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/theterminal.desktop -appimage"
+    ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/theterminal.desktop -bundle-non-qt-libs
+    ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/theterminal.desktop -appimage
   else
     echo "[TRAVIS] Building for macOS"
     export PATH="/usr/local/opt/qt/bin:$PATH"
