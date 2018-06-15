@@ -15,7 +15,9 @@ MainWindow::MainWindow(QString workDir, QWidget *parent) :
     ui->centralWidget->layout()->addWidget(tabBar);
 
     connect(tabBar, &QTabBar::currentChanged, [=](int index) {
-        changeToTerminal(allTerminals.value(index));
+        if (index != -1) {
+            changeToTerminal(allTerminals.value(index));
+        }
     });
     connect(tabBar, &QTabBar::tabCloseRequested, [=](int index) {
         allTerminals.value(index)->close();
@@ -38,7 +40,12 @@ void MainWindow::on_actionNew_Window_triggered()
 
 void MainWindow::on_actionExit_triggered()
 {
-    QApplication::exit();
+    for (QWidget* w : QApplication::allWidgets()) {
+        if (strcmp(w->metaObject()->className(), "MainWindow") == 0) {
+            MainWindow* win = (MainWindow*) w;
+            win->close();
+        }
+    }
 }
 
 void MainWindow::on_actionCopy_triggered()
@@ -199,9 +206,12 @@ void MainWindow::on_actionSettings_triggered()
 
 void MainWindow::closeEvent(QCloseEvent *event) {
     if (allTerminals.count() != 0) {
-        event->ignore();
         for (TerminalWidget* widget : allTerminals) {
             widget->close();
+        }
+
+        if (allTerminals.count() != 0) {
+            event->ignore();
         }
     }
 }
