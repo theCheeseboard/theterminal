@@ -98,3 +98,6 @@ DISTFILES += \
     theterminaldd.desktop \
     theterminal.desktop \
     theterminalb.desktop
+
+RESOURCES += \
+    icons.qrc

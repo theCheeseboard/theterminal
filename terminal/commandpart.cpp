@@ -41,7 +41,7 @@ void CommandPart::setCommandText(QString text) {
 
 void CommandPart::setReturnValue(int retval) {
     if (retval == 0) {
-        ui->returnValue->setPixmap(QIcon::fromTheme("dialog-ok").pixmap(16, 16));
+        ui->returnValue->setPixmap(QIcon::fromTheme("dialog-ok", QIcon(":/icons/dialog-ok.svg")).pixmap(16, 16));
     } else {
         ui->returnValue->setText(QString::number(retval));
     }
@@ -158,11 +158,11 @@ void CommandPart::on_expandButton_clicked()
     if (expanded) {
         anim->setEndValue(0);
         expanded = false;
-        ui->expandButton->setIcon(QIcon::fromTheme("go-up"));
+        ui->expandButton->setIcon(QIcon::fromTheme("go-up", QIcon(":/icons/go_up.svg")));
     } else {
         anim->setEndValue(20 * currentTerminal->fontHeight());
         expanded = true;
-        ui->expandButton->setIcon(QIcon::fromTheme("go-down"));
+        ui->expandButton->setIcon(QIcon::fromTheme("go-down", QIcon(":/icons/go-down.svg")));
     }
 
     anim->setEasingCurve(QEasingCurve::OutCubic);

@@ -40,6 +40,13 @@ int main(int argc, char *argv[])
         }
     }
 
+
+#ifdef Q_OS_MAC
+    QIcon::setFallbackSearchPaths(QStringList() << ":/");
+    QIcon::setThemeName("icons");
+    a.setAttribute(Qt::AA_DontShowIconsInMenus, true);
+#endif
+
     filter = new NativeEventFilter;
     a.installNativeEventFilter(filter);
 

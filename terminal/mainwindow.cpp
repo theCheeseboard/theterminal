@@ -7,6 +7,21 @@ MainWindow::MainWindow(QString workDir, QWidget *parent) :
 {
     ui->setupUi(this);
 
+#ifdef Q_OS_MAC
+    ui->tabFrame->setVisible(false);
+    tabBar = new QTabBar();
+    tabBar->setDocumentMode(true);
+    tabBar->setTabsClosable(true);
+    ui->centralWidget->layout()->addWidget(tabBar);
+
+    connect(tabBar, &QTabBar::currentChanged, [=](int index) {
+        changeToTerminal(allTerminals.value(index));
+    });
+    connect(tabBar, &QTabBar::tabCloseRequested, [=](int index) {
+        allTerminals.value(index)->close();
+    });
+#endif
+
     this->addTerminal(workDir);
 }
 
@@ -48,15 +63,39 @@ void MainWindow::showContextMenu(const QPoint &pos)
 
 void MainWindow::addTerminal(QString workDir) {
     TerminalWidget* widget = new TerminalWidget(workDir);
-    QPushButton* button = new QPushButton();
     widget->setContextMenuPolicy(Qt::CustomContextMenu);
-    button->setCheckable(true);
     allTerminals.append(widget);
+
+#ifndef Q_OS_MAC
+    QPushButton* button = new QPushButton();
+    button->setCheckable(true);
     terminalButtons.insert(widget, button);
+#endif
 
     connect(widget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     connect(widget, &TerminalWidget::finished, [=]() {
-        closeTerminal(widget);
+        int index = allTerminals.indexOf(widget);
+#ifdef Q_OS_MAC
+        tabBar->removeTab(index);
+#else
+        delete terminalButtons.value(widget);
+        terminalButtons.remove(widget);
+#endif
+        allTerminals.removeOne(widget);
+        delete widget;
+
+        if (allTerminals.count() == 0) {
+            this->close();
+        } else {
+            if (index == 0) {
+                changeToTerminal(0);
+            } else {
+                changeToTerminal(index - 1);
+            }
+        }
+    });
+    connect(widget, &TerminalWidget::switchToThis, [=] {
+        changeToTerminal(widget);
     });
     /*connect(widget, &TerminalWidget::copyAvailable, [=](bool canCopy) {
         if (currentTerminal == widget) {
@@ -64,6 +103,9 @@ void MainWindow::addTerminal(QString workDir) {
         }
     });*/
 
+#ifdef Q_OS_MAC
+    tabBar->addTab("Terminal " + QString::number(allTerminals.indexOf(widget) + 1));
+#else
     button->setText("Terminal " + QString::number(allTerminals.indexOf(widget) + 1));
     ui->tabFrame->layout()->addWidget(button);
     ui->tabFrame->layout()->removeItem(ui->horizontalSpacer);
@@ -71,6 +113,7 @@ void MainWindow::addTerminal(QString workDir) {
     connect(button, &QPushButton::clicked, [=]() {
         changeToTerminal(widget);
     });
+#endif
 
     ui->centralWidget->layout()->addWidget(widget);
 
@@ -81,12 +124,17 @@ void MainWindow::changeToTerminal(TerminalWidget *widget) {
     for (TerminalWidget* terminal : allTerminals) {
         terminal->setVisible(false);
     }
+
+#ifdef Q_OS_MAC
+    tabBar->setCurrentIndex(allTerminals.indexOf(widget));
+#else
     for (QPushButton* button : terminalButtons.values()) {
         button->setChecked(false);
     }
+    terminalButtons.value(widget)->setChecked(true);
+#endif
 
     widget->setVisible(true);
-    terminalButtons.value(widget)->setChecked(true);
     widget->setFocus();
     currentTerminal = widget;
 
@@ -103,19 +151,7 @@ void MainWindow::on_actionNew_Tab_triggered()
 }
 
 void MainWindow::closeTerminal(TerminalWidget *widget) {
-    if (allTerminals.count() == 1) {
-        this->close();
-    } else {
-        if (allTerminals.indexOf(widget) == 0) {
-            changeToTerminal(1);
-        } else {
-            changeToTerminal(allTerminals.indexOf(widget) - 1);
-        }
-        delete terminalButtons.value(widget);
-        terminalButtons.remove(widget);
-        allTerminals.removeOne(widget);
-        delete widget;
-    }
+    widget->close();
 }
 
 void MainWindow::on_actionClose_Tab_triggered()
@@ -132,10 +168,19 @@ void MainWindow::on_actionGo_Full_Screen_triggered()
 {
     if (this->isFullScreen()) {
         this->showNormal();
+
+#ifdef Q_OS_MAC
+        tabBar->setVisible(true);
+#else
         ui->tabFrame->setVisible(true);
+#endif
     } else {
         this->showFullScreen();
+#ifdef Q_OS_MAC
+        tabBar->setVisible(true);
+#else
         ui->tabFrame->setVisible(false);
+#endif
     }
 }
 
@@ -150,4 +195,13 @@ void MainWindow::on_actionSettings_triggered()
     SettingsWindow* settings = new SettingsWindow();
     settings->exec();
     settings->deleteLater();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+    if (allTerminals.count() != 0) {
+        event->ignore();
+        for (TerminalWidget* widget : allTerminals) {
+            widget->close();
+        }
+    }
 }
