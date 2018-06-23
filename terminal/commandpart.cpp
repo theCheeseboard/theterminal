@@ -23,9 +23,10 @@ CommandPart::CommandPart(TerminalWidget* parentTerminal, QWidget *parent) :
     anim->setDuration(500);
     anim->setEasingCurve(QEasingCurve::OutCubic);
     connect(anim, &tPropertyAnimation::finished, [=] {
-        this->setGraphicsEffect(nullptr);
+        QTimer::singleShot(0, [=] {
+            this->setGraphicsEffect(nullptr);
+        });
     });
-    connect(anim, SIGNAL(finished()), anim, SLOT(deleteLater()));
     connect(this, SIGNAL(destroyed(QObject*)), anim, SLOT(stop()));
     anim->start();
 }

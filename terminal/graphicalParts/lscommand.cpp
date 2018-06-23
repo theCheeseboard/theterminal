@@ -32,7 +32,7 @@ void lsCommand::setDir(QDir dir, QStringList args) {
     ui->filesListView->header()->setSectionResizeMode(2, QHeaderView::Fixed);
     ui->filesListView->header()->setSectionResizeMode(3, QHeaderView::Fixed);
 
-    connect(model, &QFileSystemModel::rowsInserted, [=] {
+    QMetaObject::Connection cn = connect(model, &QFileSystemModel::rowsInserted, [=] {
         tVariantAnimation* anim = new tVariantAnimation();
         anim->setStartValue(ui->filesListView->height());
         anim->setEndValue(model->rowCount(model->index(dir.path())) * (ui->filesListView->sizeHintForRow(0)) + ui->filesListView->header()->height());
@@ -43,6 +43,9 @@ void lsCommand::setDir(QDir dir, QStringList args) {
         });
         connect(anim, SIGNAL(finished()), anim, SLOT(deleteLater()));
         anim->start();
+    });
+    connect(this, &lsCommand::destroyed, [=] {
+        disconnect(cn);
     });
 }
 
