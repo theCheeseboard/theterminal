@@ -152,7 +152,11 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
 
         commandsLayout = (QBoxLayout*) ui->commands->layout();
 
+#ifdef Q_OS_MAC
+        uid_t currentUid = geteuid();
+#else
         __uid_t currentUid = geteuid();
+#endif
         passwd* pw = getpwuid(currentUid);
         if (pw == nullptr) {
             currentUser = "unknown user";
@@ -184,6 +188,7 @@ TerminalWidget::~TerminalWidget()
 
 void TerminalWidget::prepareForNextCommand() {
     currentCommandPart = nullptr;
+    currentCommand = "";
 
     if (awaitingCommands.count() == 0) {
         QString prompt = currentEnvironment.value("PS1", "\\u \\$");
@@ -260,6 +265,7 @@ void TerminalWidget::runCommand(QString command) {
 
     for (int i = 0; i < pipeline.count(); i++) {
         command = pipeline.at(i).trimmed();
+        currentCommand = command;
         bool isLast = (i == pipeline.count() - 1);
         QString executable = command.split(" ").first();
 
@@ -569,4 +575,34 @@ void TerminalWidget::scrollToBottom() {
     });
     connect(anim, SIGNAL(finished()), anim, SLOT(deleteLater()));
     anim->start();
+}
+
+void TerminalWidget::close() {
+    if (legacyTerminalPart == nullptr) {
+        //Using Contemporary terminal
+        if (currentCommand != "") {
+            emit switchToThis();
+            QMessageBox* box = new QMessageBox();
+            box->setParent(this->window());
+
+#ifdef Q_OS_MAC
+            box->setText(tr("Close this tab?"));
+            box->setInformativeText(tr("Closing this tab will also close %1.").arg(currentCommand));
+            box->setIconPixmap(QIcon(":/icons/utilities-terminal.svg").pixmap(48, 48));
+            box->setWindowFlags(Qt::Sheet);
+#else
+            box->setWindowTitle(tr("Close tab?"));
+            box->setText(tr("Closing this tab will also close %1.").arg(currentCommand));
+#endif
+            box->setStandardButtons(QMessageBox::Close | QMessageBox::Cancel);
+            if (box->exec() == QMessageBox::Close) {
+                emit finished();
+            }
+        } else {
+            emit finished();
+        }
+    } else {
+        //Using legacy terminal
+        emit finished();
+    }
 }

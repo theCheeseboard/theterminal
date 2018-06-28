@@ -153,7 +153,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset theme="window-close"/>
+           <iconset theme="window-close" resource="icons.qrc">
+            <normaloff>:/icons/window-close.svg</normaloff>:/icons/window-close.svg</iconset>
           </property>
           <property name="flat">
            <bool>true</bool>
@@ -175,6 +176,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

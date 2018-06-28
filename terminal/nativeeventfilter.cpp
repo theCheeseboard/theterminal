@@ -6,6 +6,7 @@ NativeEventFilter::NativeEventFilter(QObject *parent) : QObject(parent)
 }
 
 bool NativeEventFilter::nativeEventFilter(const QByteArray &eventType, void *message, long *result) {
+#ifndef Q_OS_MAC
     if (eventType == "xcb_generic_event_t") {
         xcb_generic_event_t* event = static_cast<xcb_generic_event_t*>(message);
         if (event->response_type == XCB_KEY_RELEASE) {
@@ -28,6 +29,7 @@ bool NativeEventFilter::nativeEventFilter(const QByteArray &eventType, void *mes
             }
         }
     }
+#endif
     return false;
 }
 

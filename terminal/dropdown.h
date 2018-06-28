@@ -2,7 +2,6 @@
 #define DROPDOWN_H
 
 #include <QDialog>
-#include <QX11Info>
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QStackedWidget>
@@ -18,6 +17,7 @@
 #include <ttoast.h>
 #include <tpropertyanimation.h>
 #include "settingswindow.h"
+#include <QX11Info>
 
 namespace Ui {
 class Dropdown;

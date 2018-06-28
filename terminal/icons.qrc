@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/utilities-terminal.svg</file>
+        <file>icons/application-exit.svg</file>
+        <file>icons/commit.svg</file>
+        <file>icons/document-close.svg</file>
+        <file>icons/document-new.svg</file>
+        <file>icons/document-open-recent.svg</file>
+        <file>icons/document-open.svg</file>
+        <file>icons/document-print.svg</file>
+        <file>icons/document-save.svg</file>
+        <file>icons/document-share.svg</file>
+        <file>icons/edit-copy.svg</file>
+        <file>icons/edit-cut.svg</file>
+        <file>icons/edit-paste.svg</file>
+        <file>icons/edit-redo.svg</file>
+        <file>icons/edit-undo.svg</file>
+        <file>icons/go-next.svg</file>
+        <file>icons/go-previous.svg</file>
+        <file>icons/help-about.svg</file>
+        <file>icons/tab-close.svg</file>
+        <file>icons/tab-new.svg</file>
+        <file>icons/go-down.svg</file>
+        <file>icons/go-up.svg</file>
+        <file>icons/window-close.svg</file>
+    </qresource>
+</RCC>

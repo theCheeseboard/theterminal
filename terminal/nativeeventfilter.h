@@ -3,8 +3,10 @@
 
 #include <QObject>
 #include <QAbstractNativeEventFilter>
-#include <QX11Info>
 #include <QSettings>
+
+#ifdef Q_OS_LINUX
+#include <QX11Info>
 #include <xcb/xcb.h>
 #include <xcb/xcb_atom.h>
 #include <X11/XF86keysym.h>
@@ -15,6 +17,7 @@
 #undef None
 #undef Status
 #undef Bool
+#endif
 
 class NativeEventFilter : public QObject, public QAbstractNativeEventFilter
 {

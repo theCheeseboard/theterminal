@@ -1,6 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#ifdef Q_OS_MAC
+#include <QTabBar>
+#endif
+
 #include <QMainWindow>
 #include <QPushButton>
 #include "terminalwidget.h"
@@ -48,8 +52,14 @@ private:
     Ui::MainWindow *ui;
 
     QList<TerminalWidget*> allTerminals;
-    QMap<TerminalWidget*, QPushButton*> terminalButtons;
     TerminalWidget* currentTerminal;
+    void closeEvent(QCloseEvent* event);
+
+#ifdef Q_OS_MAC
+    QTabBar* tabBar;
+#else
+    QMap<TerminalWidget*, QPushButton*> terminalButtons;
+#endif
 };
 
 #endif // MAINWINDOW_H

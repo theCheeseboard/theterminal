@@ -19,6 +19,7 @@
 #include <QListWidget>
 #include <QTextBoundaryFinder>
 #include <QMimeDatabase>
+#include <QMessageBox>
 #include "terminalpart.h"
 #include "commandpart.h"
 #include "terminalstatus.h"
@@ -42,6 +43,7 @@ class TerminalWidget : public QWidget
         void copyClipboard();
         void pasteClipboard();
         void toggleShowSearchBar();
+        void close();
 
         QDir getWorkingDir();
         QProcessEnvironment getEnv();
@@ -66,11 +68,12 @@ class TerminalWidget : public QWidget
     signals:
         void finished();
         void bell(QString message);
+        void switchToThis();
 
     private:
         Ui::TerminalWidget *ui;
         QSettings settings;
-        TerminalPart* legacyTerminalPart;
+        TerminalPart* legacyTerminalPart = nullptr;
 
         QProcessEnvironment currentEnvironment;
         QDir workingDirectory;
@@ -82,6 +85,7 @@ class TerminalWidget : public QWidget
         bool currentlyAtBottom = true;
         QStringList awaitingCommands;
         bool autocompleteOpen = false;
+        QString currentCommand = "";
 
         QString autocompleteInitialWord;
         int autocompleteInitialStart;

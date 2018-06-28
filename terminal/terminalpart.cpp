@@ -34,6 +34,10 @@ void TerminalPart::setup() {
         this->copyOk = copyAvailable;
     });
 
+#ifdef Q_OS_MAC
+    this->setTerminalFont(QFont("Monaco", 10));
+#endif
+
     this->update();
 }
 

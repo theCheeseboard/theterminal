@@ -14,8 +14,11 @@
    <string>theTerminal</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="utilities-terminal">
-    <normaloff>.</normaloff>.</iconset>
+   <iconset theme="utilities-terminal" resource="icons.qrc">
+    <normaloff>:/icons/utilities-terminal.svg</normaloff>:/icons/utilities-terminal.svg</iconset>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>true</bool>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -239,6 +242,8 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
