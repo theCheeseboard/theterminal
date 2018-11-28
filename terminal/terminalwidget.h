@@ -44,6 +44,9 @@ class TerminalWidget : public QWidget
         void pasteClipboard();
         void toggleShowSearchBar();
         void close();
+        void zoomIn();
+        void zoomOut();
+        void zoom100();
 
         QDir getWorkingDir();
         QProcessEnvironment getEnv();

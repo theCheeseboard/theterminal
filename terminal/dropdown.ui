@@ -186,6 +186,17 @@
     <string>Ctrl+Shift+V</string>
    </property>
   </action>
+  <action name="actionFind">
+   <property name="icon">
+    <iconset theme="edit-find"/>
+   </property>
+   <property name="text">
+    <string>Find</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+F</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

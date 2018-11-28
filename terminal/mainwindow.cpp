@@ -25,6 +25,8 @@ MainWindow::MainWindow(QString workDir, QWidget *parent) :
 #endif
 
     this->addTerminal(workDir);
+    this->resize(this->size() * theLibsGlobal::getDPIScaling());
+    ui->termStack->setCurrentAnimation(tStackedWidget::SlideHorizontal);
 }
 
 MainWindow::~MainWindow()
@@ -76,6 +78,7 @@ void MainWindow::addTerminal(QString workDir) {
 #ifndef Q_OS_MAC
     QPushButton* button = new QPushButton();
     button->setCheckable(true);
+    button->setAutoExclusive(true);
     terminalButtons.insert(widget, button);
 #endif
 
@@ -89,6 +92,7 @@ void MainWindow::addTerminal(QString workDir) {
         terminalButtons.remove(widget);
 #endif
         allTerminals.removeOne(widget);
+        ui->termStack->removeWidget(widget);
         delete widget;
 
         if (allTerminals.count() == 0) {
@@ -122,26 +126,20 @@ void MainWindow::addTerminal(QString workDir) {
     });
 #endif
 
-    ui->centralWidget->layout()->addWidget(widget);
+    //ui->centralWidget->layout()->addWidget(widget);
+    ui->termStack->addWidget(widget);
 
     changeToTerminal(widget);
 }
 
 void MainWindow::changeToTerminal(TerminalWidget *widget) {
-    for (TerminalWidget* terminal : allTerminals) {
-        terminal->setVisible(false);
-    }
-
+    ui->termStack->setCurrentWidget(widget);
 #ifdef Q_OS_MAC
     tabBar->setCurrentIndex(allTerminals.indexOf(widget));
 #else
-    for (QPushButton* button : terminalButtons.values()) {
-        button->setChecked(false);
-    }
     terminalButtons.value(widget)->setChecked(true);
 #endif
 
-    widget->setVisible(true);
     widget->setFocus();
     currentTerminal = widget;
 
@@ -214,4 +212,19 @@ void MainWindow::closeEvent(QCloseEvent *event) {
             event->ignore();
         }
     }
+}
+
+void MainWindow::on_actionZoomIn_triggered()
+{
+    currentTerminal->zoomIn();
+}
+
+void MainWindow::on_actionZoomOut_triggered()
+{
+    currentTerminal->zoomOut();
+}
+
+void MainWindow::on_actionResetZoom_triggered()
+{
+    currentTerminal->zoom100();
 }

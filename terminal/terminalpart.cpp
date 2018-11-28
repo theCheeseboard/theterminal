@@ -1,11 +1,23 @@
 #include "terminalpart.h"
 
+#include <QFontDatabase>
+
+class TerminalPartPrivate {
+    public:
+        QSettings settings;
+
+        QFont defaultFont;
+        bool copyOk = false;
+};
+
 TerminalPart::TerminalPart(bool connectPty, QWidget* parent) : TTTermWidget(0, connectPty, parent) {
+    d = new TerminalPartPrivate();
     setup();
 }
 
 TerminalPart::TerminalPart(QString workDir, QWidget *parent) : TTTermWidget(0, true, parent)
 {
+    d = new TerminalPartPrivate();
     setup();
 
     QStringList environment;
@@ -17,34 +29,52 @@ TerminalPart::TerminalPart(QString workDir, QWidget *parent) : TTTermWidget(0, t
         this->setWorkingDirectory(workDir);
     }
 
-    this->setShellProgram(settings.value("term/program", "/bin/bash").toString());
-
     this->update();
     this->startShellProgram();
+}
+
+TerminalPart::~TerminalPart() {
+    delete d;
 }
 
 void TerminalPart::setup() {
     this->setScrollBarPosition(TTTermWidget::ScrollBarRight);
     this->setFlowControlEnabled(true);
-    this->setColorScheme("/usr/share/tttermwidget/color-schemes/Linux.colorscheme");
-    this->setHistorySize(settings.value("term/scrollback", -1).toInt());
+    this->setColorScheme(QString("/usr/share/tttermwidget/color-schemes/%1.colorscheme").arg(d->settings.value("theme/scheme", "Linux").toString()));
+    this->setHistorySize(d->settings.value("term/scrollback", -1).toInt());
     this->setKeyboardCursorShape(Konsole::Emulation::KeyboardCursorShape::IBeamCursor);
+    this->setShellProgram(d->settings.value("term/program", qgetenv("SHELL")).toString());
 
     connect(this, &TerminalPart::copyAvailable, [=](bool copyAvailable) {
-        this->copyOk = copyAvailable;
+        d->copyOk = copyAvailable;
     });
 
-#ifdef Q_OS_MAC
-    this->setTerminalFont(QFont("Monaco", 10));
-#endif
+    d->defaultFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    this->setTerminalFont(d->defaultFont);
 
     this->update();
 }
 
 bool TerminalPart::canCopy() {
-    return copyOk;
+    return d->copyOk;
 }
 
 void TerminalPart::resizeEvent(QResizeEvent *event) {
 
+}
+
+void TerminalPart::zoomIn() {
+    QFont f = this->getTerminalFont();
+    f.setPointSize(f.pointSize() + 1);
+    this->setTerminalFont(f);
+}
+
+void TerminalPart::zoomOut() {
+    QFont f = this->getTerminalFont();
+    f.setPointSize(f.pointSize() - 1);
+    this->setTerminalFont(f);
+}
+
+void TerminalPart::zoom100() {
+    this->setTerminalFont(d->defaultFont);
 }

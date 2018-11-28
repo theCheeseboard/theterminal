@@ -51,6 +51,10 @@ private slots:
 
     void on_termTypeComboBox_currentIndexChanged(int index);
 
+    void on_coloursComboBox_currentIndexChanged(const QString &arg1);
+
+    void on_shellLineEdit_editingFinished();
+
     private:
     Ui::SettingsWindow *ui;
 

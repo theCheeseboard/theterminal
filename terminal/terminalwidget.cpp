@@ -239,6 +239,24 @@ void TerminalWidget::toggleShowSearchBar() {
     }
 }
 
+void TerminalWidget::zoomIn() {
+    if (ui->terminalTypeStack->currentWidget() == ui->legacyTerminalPage) {
+        legacyTerminalPart->zoomIn();
+    }
+}
+
+void TerminalWidget::zoomOut() {
+    if (ui->terminalTypeStack->currentWidget() == ui->legacyTerminalPage) {
+        legacyTerminalPart->zoomOut();
+    }
+}
+
+void TerminalWidget::zoom100() {
+    if (ui->terminalTypeStack->currentWidget() == ui->legacyTerminalPage) {
+        legacyTerminalPart->zoom100();
+    }
+}
+
 void TerminalWidget::runCommand(QString command) {
     if (command.trimmed() == "") {
         history.clearState();

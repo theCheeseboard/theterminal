@@ -48,7 +48,13 @@ private slots:
 
     void on_actionSettings_triggered();
 
-private:
+    void on_actionZoomIn_triggered();
+
+    void on_actionZoomOut_triggered();
+
+    void on_actionResetZoom_triggered();
+
+    private:
     Ui::MainWindow *ui;
 
     QList<TerminalWidget*> allTerminals;

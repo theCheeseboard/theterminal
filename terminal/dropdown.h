@@ -57,7 +57,9 @@ private slots:
 
     void on_actionPaste_triggered();
 
-private:
+    void on_actionFind_triggered();
+
+    private:
     Ui::Dropdown *ui;
 
     QMap<TerminalWidget*, QPushButton*> terminalButtons;

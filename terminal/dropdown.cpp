@@ -11,7 +11,10 @@ Dropdown::Dropdown(QString workdir, QWidget *parent) :
     this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
     QMenu* menu = new QMenu();
-    menu->addAction(QIcon::fromTheme("configure"), "Settings", [=] {
+    menu->addSection(tr("For current tab"));
+    menu->addAction(ui->actionFind);
+    menu->addSection(tr("For theTerminal"));
+    menu->addAction(QIcon::fromTheme("configure"), tr("Settings"), [=] {
         KeyCode kc = XKeysymToKeycode(QX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong());
         XUngrabKey(QX11Info::display(), kc, AnyModifier, DefaultRootWindow(QX11Info::display()));
 
@@ -22,7 +25,7 @@ Dropdown::Dropdown(QString workdir, QWidget *parent) :
         kc = XKeysymToKeycode(QX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong());
         XGrabKey(QX11Info::display(), kc, AnyModifier, DefaultRootWindow(QX11Info::display()), true, GrabModeAsync, GrabModeAsync);
     });
-    menu->addAction(QIcon::fromTheme("application-exit"), "Exit", [=] {
+    menu->addAction(QIcon::fromTheme("application-exit"), tr("Exit"), [=] {
         this->close();
     });
     ui->menuButton->setPopupMode(QToolButton::InstantPopup);
@@ -53,6 +56,7 @@ void Dropdown::newTab(QString workDir) {
     QPushButton* button = new QPushButton();
     widget->setContextMenuPolicy(Qt::CustomContextMenu);
     button->setCheckable(true);
+    button->setAutoExclusive(true);
     button->setFocusPolicy(Qt::NoFocus);
     ui->stackedTabs->addWidget(widget);
     terminalButtons.insert(widget, button);
@@ -152,10 +156,6 @@ void Dropdown::on_stackedTabs_currentChanged(int arg1)
 {
     if (terminalButtons.count() > 0) {
         TerminalWidget* widget = (TerminalWidget*) ui->stackedTabs->widget(arg1);
-
-        for (QPushButton* button : terminalButtons.values()) {
-            button->setChecked(false);
-        }
         terminalButtons.value(widget)->setChecked(true);
     }
 }
@@ -238,4 +238,9 @@ void Dropdown::on_actionCopy_triggered()
 void Dropdown::on_actionPaste_triggered()
 {
     currentTerminal()->pasteClipboard();
+}
+
+void Dropdown::on_actionFind_triggered()
+{
+    currentTerminal()->toggleShowSearchBar();
 }
