@@ -3,6 +3,8 @@
 
 #include <the-libs_global.h>
 #include <QDir>
+#include "terminalcontroller.h"
+#include <QScroller>
 
 extern bool capturingKeyPress;
 extern NativeEventFilter* filter;
@@ -26,11 +28,29 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 
     ui->scrollbackSpin->setValue(settings.value("term/scrollback", -1).toInt());
     ui->shellLineEdit->setText(settings.value("term/program", qgetenv("SHELL")).toString());
+    ui->fontComboBox->setCurrentFont(QFont(settings.value("theme/fontFamily", QFontDatabase::systemFont(QFontDatabase::FixedFont).family()).toString()));
+    ui->currentFontSize->setValue(settings.value("theme/fontSize", QFontDatabase::systemFont(QFontDatabase::FixedFont).pointSize()).toInt());
+    ui->blinkCursorSwitch->setChecked(settings.value("theme/blinkCursor", true).toBool());
+    ui->bellActiveSoundSwitch->setChecked(settings.value("theme/bellActiveSound", true).toBool());
+    ui->bellInactiveSoundSwitch->setChecked(settings.value("theme/bellInactiveSound", true).toBool());
+    ui->bellInactiveNotificationSwitch->setChecked(settings.value("theme/bellInactiveNotification", true).toBool());
 
     if (settings.value("terminal/type", "legacy").toString() == "legacy") {
         ui->termTypeComboBox->setCurrentIndex(0);
     } else {
         ui->termTypeComboBox->setCurrentIndex(1);
+    }
+
+    switch (settings.value("theme/cursorType", 0).toInt()) {
+        case 0: //Block
+            ui->blockCursor->setChecked(true);
+            break;
+        case 1: //Underline
+            ui->underlineCursor->setChecked(true);
+            break;
+        case 2: //I-beam
+            ui->ibeamCursor->setChecked(true);
+            break;
     }
 
     ui->coloursComboBox->blockSignals(true);
@@ -44,6 +64,8 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
         }
     }
     ui->coloursComboBox->blockSignals(false);
+
+    QScroller::grabGesture(ui->themingScrollArea->viewport(), QScroller::LeftMouseButtonGesture);
 
     connect(filter, SIGNAL(keypressCaptureComplete()), this, SLOT(keypressCaptureComplete()));
 }
@@ -107,9 +129,66 @@ void SettingsWindow::on_termTypeComboBox_currentIndexChanged(int index)
 void SettingsWindow::on_coloursComboBox_currentIndexChanged(const QString &arg1)
 {
     settings.setValue("theme/scheme", arg1);
+    TerminalController::updateTerminalStyles();
 }
 
 void SettingsWindow::on_shellLineEdit_editingFinished()
 {
     settings.setValue("term/program", ui->shellLineEdit->text());
+}
+
+void SettingsWindow::on_fontComboBox_currentFontChanged(const QFont &f)
+{
+    settings.setValue("theme/fontFamily", f.family());
+    TerminalController::updateTerminalStyles();
+}
+
+void SettingsWindow::on_currentFontSize_valueChanged(int arg1)
+{
+    settings.setValue("theme/fontSize", arg1);
+    TerminalController::updateTerminalStyles();
+}
+
+void SettingsWindow::on_blockCursor_toggled(bool checked)
+{
+    if (checked) {
+        settings.setValue("theme/cursorType", 0);
+        TerminalController::updateTerminalStyles();
+    }
+}
+
+void SettingsWindow::on_underlineCursor_toggled(bool checked)
+{
+    if (checked) {
+        settings.setValue("theme/cursorType", 1);
+        TerminalController::updateTerminalStyles();
+    }
+}
+
+void SettingsWindow::on_ibeamCursor_toggled(bool checked)
+{
+    if (checked) {
+        settings.setValue("theme/cursorType", 2);
+        TerminalController::updateTerminalStyles();
+    }
+}
+
+void SettingsWindow::on_blinkCursorSwitch_toggled(bool checked)
+{
+    settings.setValue("theme/blinkCursor", checked);
+}
+
+void SettingsWindow::on_bellActiveSoundSwitch_toggled(bool checked)
+{
+    settings.setValue("theme/bellActiveSound", checked);
+}
+
+void SettingsWindow::on_bellInactiveSoundSwitch_toggled(bool checked)
+{
+    settings.setValue("theme/bellInactiveSound", checked);
+}
+
+void SettingsWindow::on_bellInactiveNotificationSwitch_toggled(bool checked)
+{
+    settings.setValue("theme/bellInactiveNotification", checked);
 }

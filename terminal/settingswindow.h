@@ -55,6 +55,24 @@ private slots:
 
     void on_shellLineEdit_editingFinished();
 
+    void on_fontComboBox_currentFontChanged(const QFont &f);
+
+    void on_currentFontSize_valueChanged(int arg1);
+
+    void on_blockCursor_toggled(bool checked);
+
+    void on_underlineCursor_toggled(bool checked);
+
+    void on_ibeamCursor_toggled(bool checked);
+
+    void on_blinkCursorSwitch_toggled(bool checked);
+
+    void on_bellActiveSoundSwitch_toggled(bool checked);
+
+    void on_bellInactiveSoundSwitch_toggled(bool checked);
+
+    void on_bellInactiveNotificationSwitch_toggled(bool checked);
+
     private:
     Ui::SettingsWindow *ui;
 

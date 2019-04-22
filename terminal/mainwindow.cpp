@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QShortcut>
+#include <ttoast.h>
+
 MainWindow::MainWindow(QString workDir, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -22,11 +25,35 @@ MainWindow::MainWindow(QString workDir, QWidget *parent) :
     connect(tabBar, &QTabBar::tabCloseRequested, [=](int index) {
         allTerminals.value(index)->close();
     });
+#else
+    ui->menuBar->setVisible(false);
+
+    QMenu* menu = new QMenu();
+    menu->addAction(ui->actionNew_Window);
+    menu->addAction(ui->actionNew_Tab);
+    menu->addSeparator();
+    menu->addAction(ui->actionCopy);
+    menu->addAction(ui->actionPaste);
+    menu->addSeparator();
+    menu->addAction(ui->actionZoomIn);
+    menu->addAction(ui->actionZoomOut);
+    menu->addAction(ui->actionResetZoom);
+    menu->addAction(ui->actionGo_Full_Screen);
+    menu->addSeparator();
+    menu->addAction(ui->actionSettings);
+    menu->addMenu(ui->menuHelp);
+    menu->addSeparator();
+    menu->addAction(ui->actionClose_Tab);
+    menu->addAction(ui->actionExit);
+    ui->menuButton->setMenu(menu);
 #endif
 
     this->addTerminal(workDir);
     this->resize(this->size() * theLibsGlobal::getDPIScaling());
     ui->termStack->setCurrentAnimation(tStackedWidget::SlideHorizontal);
+
+    QShortcut* fullscreenShortcut = new QShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F11), this);
+    connect(fullscreenShortcut, &QShortcut::activated, this, &MainWindow::on_actionGo_Full_Screen_triggered);
 }
 
 MainWindow::~MainWindow()
@@ -79,6 +106,7 @@ void MainWindow::addTerminal(QString workDir) {
     QPushButton* button = new QPushButton();
     button->setCheckable(true);
     button->setAutoExclusive(true);
+    button->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     terminalButtons.insert(widget, button);
 #endif
 
@@ -177,15 +205,20 @@ void MainWindow::on_actionGo_Full_Screen_triggered()
 #ifdef Q_OS_MAC
         tabBar->setVisible(true);
 #else
-        ui->tabFrame->setVisible(true);
+        ui->topFrame->setVisible(true);
 #endif
     } else {
         this->showFullScreen();
 #ifdef Q_OS_MAC
         tabBar->setVisible(true);
 #else
-        ui->tabFrame->setVisible(false);
+        ui->topFrame->setVisible(false);
 #endif
+        tToast* toast = new tToast();
+        toast->setTitle(tr("Full Screen"));
+        toast->setText(tr("You're in full screen. You can exit full screen with SHIFT+F11."));
+        toast->show(this);
+        connect(toast, &tToast::dismissed, toast, &tToast::deleteLater);
     }
 }
 

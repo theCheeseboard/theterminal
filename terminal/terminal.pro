@@ -29,7 +29,8 @@ macx {
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TEMPLATE = app
-LIBS += -ltttermwidget
+#LIBS += -ltttermwidget
+LIBS += /home/victor/Documents/Apps/build-tttermwidget-Desktop-Default/libtttermwidget.so
 
 
 SOURCES += main.cpp\
@@ -43,7 +44,8 @@ SOURCES += main.cpp\
     graphicalParts/lscommand.cpp \
     graphicalParts/ttedcommand.cpp \
     terminalstatus.cpp \
-    history.cpp
+    history.cpp \
+    terminalcontroller.cpp
 
 unix:!macx {
     SOURCES += dropdown.cpp
@@ -59,7 +61,8 @@ HEADERS  += mainwindow.h \
     graphicalParts/lscommand.h \
     graphicalParts/ttedcommand.h \
     terminalstatus.h \
-    history.h
+    history.h \
+    terminalcontroller.h
 
 unix:!macx {
     HEADERS += dropdown.h

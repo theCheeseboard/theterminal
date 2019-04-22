@@ -10,6 +10,8 @@ Dropdown::Dropdown(QString workdir, QWidget *parent) :
     ui->setupUi(this);
     this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
+    ui->stackedTabs->setCurrentAnimation(tStackedWidget::SlideHorizontal);
+
     QMenu* menu = new QMenu();
     menu->addSection(tr("For current tab"));
     menu->addAction(ui->actionFind);

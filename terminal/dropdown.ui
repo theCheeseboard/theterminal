@@ -30,7 +30,7 @@
     <number>1</number>
    </property>
    <item>
-    <widget class="QStackedWidget" name="stackedTabs"/>
+    <widget class="tStackedWidget" name="stackedTabs"/>
    </item>
    <item>
     <widget class="QFrame" name="tabFrame">
@@ -188,7 +188,8 @@
   </action>
   <action name="actionFind">
    <property name="icon">
-    <iconset theme="edit-find"/>
+    <iconset theme="edit-find">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Find</string>
@@ -198,6 +199,14 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>tStackedWidget</class>
+   <extends>QStackedWidget</extends>
+   <header location="global">tstackedwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

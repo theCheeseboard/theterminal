@@ -24,6 +24,8 @@ public slots:
     void zoomOut();
     void zoom100();
 
+    void reloadThemeSettings();
+
 private:
     TerminalPartPrivate* d;
 

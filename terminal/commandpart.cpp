@@ -88,15 +88,24 @@ void CommandPart::executeCommand(int height, QProcess* pipe, QString command) {
     currentTerminal->setArgs(args);
     currentTerminal->setEnvironment(env.toStringList());
     currentTerminal->setFocus();
+    currentTerminal->setScrollBarPosition(TTTermWidget::NoScrollBar);
+    connect(currentTerminal, &TerminalPart::lineCountChanged, [=](int lineCount) {
+        if (expanded) currentTerminal->setFixedHeight(lineCount * 13);
+        qDebug() << lineCount;
+    });
 
     //Run the animation to hide the artifacts of resizing an app such as nano
     tVariantAnimation* anim = new tVariantAnimation();
     anim->setStartValue(0);
-    anim->setEndValue(height);
+    //anim->setEndValue(height);
+    anim->setEndValue(this->sizeHint().height());
     anim->setEasingCurve(QEasingCurve::OutCubic);
     anim->setDuration(500);
     connect(anim, &tVariantAnimation::valueChanged, [=](QVariant value) {
         this->setFixedHeight(value.toInt());
+    });
+    connect(anim, &tVariantAnimation::finished, [=] {
+        this->setFixedHeight(QWIDGETSIZE_MAX);
     });
     anim->start();
 
