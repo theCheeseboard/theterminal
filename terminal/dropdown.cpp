@@ -58,7 +58,10 @@ Dropdown::~Dropdown()
 
 
 void Dropdown::newTab(QString workDir) {
-    TerminalWidget* widget = new TerminalWidget(workDir);
+    newTab(new TerminalWidget(workDir));
+}
+
+void Dropdown::newTab(TerminalWidget* widget) {
     QPushButton* button = new QPushButton();
     widget->setContextMenuPolicy(Qt::CustomContextMenu);
     button->setCheckable(true);
@@ -67,20 +70,13 @@ void Dropdown::newTab(QString workDir) {
     ui->stackedTabs->addWidget(widget);
     terminalButtons.insert(widget, button);
 
-    //connect(widget, SIGNAL(copyAvailable(bool)), this, SLOT(on_terminal_copyAvailable(bool)));
     connect(widget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     connect(widget, &TerminalWidget::finished, [=]() {
         closeTab(widget);
     });
-    connect(widget, &TerminalWidget::bell, [=](QString message) {
-        /*tToast* toast = new tToast(widget);
-        toast->setTitle("Bell");
-        toast->setText(message);
-        toast->setTimeout(3000);
-        toast->show(widget);*/
-    });
+    connect(widget, &TerminalWidget::openNewTerminal, this, QOverload<TerminalWidget*>::of(&Dropdown::newTab));
 
-    button->setText("Terminal " + QString::number(ui->stackedTabs->indexOf(widget) + 1));
+    button->setText(tr("Terminal %1").arg(ui->stackedTabs->indexOf(widget) + 1));
     ui->tabFrame->layout()->addWidget(button);
     ui->tabFrame->layout()->removeWidget(ui->endWidgets);
     ui->tabFrame->layout()->addWidget(ui->endWidgets);

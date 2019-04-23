@@ -128,6 +128,11 @@
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../dropdown.cpp" line="79"/>
+        <source>Terminal %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>

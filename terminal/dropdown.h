@@ -41,6 +41,7 @@ public slots:
     void show();
     void hide();
     void newTab(QString workDir);
+    void newTab(TerminalWidget* widget);
     void closeTab(TerminalWidget* widget);
 
 private slots:

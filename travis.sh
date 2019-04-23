@@ -71,7 +71,7 @@ elif [ $STAGE = "before_install" ]; then
     sudo add-apt-repository 'deb https://vicr123.com/repo/apt/ubuntu bionic main'
     sudo add-apt-repository -y ppa:beineri/opt-qt-5.10.0-xenial
     sudo apt-get update -qq
-    sudo apt-get install qt510-meta-minimal qt510x11extras qt510tools qt510translations libmount-dev xorg-dev libxcb-util0-dev libgl1-mesa-dev
+    sudo apt-get install qt510-meta-minimal qt510x11extras qt510tools qt510translations qt510multimedia libmount-dev xorg-dev libxcb-util0-dev libgl1-mesa-dev
   else
     echo "[TRAVIS] Preparing to build for macOS"
     brew update
