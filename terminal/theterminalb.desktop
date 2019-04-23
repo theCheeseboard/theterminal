@@ -4,5 +4,6 @@ Type=Application
 Version=1.0
 Name=theTerminal Blueprint
 GenericName=Terminal
+GenericName[vi]=Thiết bị đầu cuối (Blueprint)
 Exec=theterminalb
 Icon=utilities-terminal

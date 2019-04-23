@@ -1,8 +1,12 @@
 #include "mainwindow.h"
-#include <QApplication>
+#include <tapplication.h>
 
 #ifndef Q_OS_MAC
 #include "dropdown.h"
+#endif
+
+#ifdef Q_OS_MAC
+#include <CoreFoundation/CFBundle.h>
 #endif
 
 NativeEventFilter* filter;
@@ -10,11 +14,13 @@ extern void setupBuiltinFunctions();
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    tApplication a(argc, argv);
 
     a.setOrganizationName("theSuite");
     a.setOrganizationDomain("");
     a.setApplicationName("theTerminal");
+    a.setShareDir("/usr/share/theterminal/");
+    a.installTranslators();
 
     QString workDir;
     bool dropdown = false;
