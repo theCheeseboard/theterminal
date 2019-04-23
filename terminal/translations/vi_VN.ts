@@ -6,17 +6,17 @@
     <message>
         <location filename="../about.ui" line="14"/>
         <source>About theTerminal</source>
-        <translation type="unfinished"></translation>
+        <translation>Giới thiệu về</translation>
     </message>
     <message>
         <location filename="../about.ui" line="25"/>
         <source>theTerminal 2.0</source>
-        <translation type="unfinished"></translation>
+        <translation>theTerminal 2.0</translation>
     </message>
     <message>
         <location filename="../about.ui" line="32"/>
         <source>Terminal Emulator</source>
-        <translation type="unfinished"></translation>
+        <translation>Thiết bị đầu cuối</translation>
     </message>
     <message>
         <location filename="../about.ui" line="52"/>
@@ -31,7 +31,7 @@
     <message>
         <location filename="../about.ui" line="90"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>OK</translation>
     </message>
 </context>
 <context>
