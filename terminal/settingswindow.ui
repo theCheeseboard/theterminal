@@ -174,7 +174,7 @@
      <item>
       <widget class="QStackedWidget" name="pages">
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="page">
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -424,7 +424,7 @@
                   <item>
                    <widget class="QPushButton" name="underlineCursor">
                     <property name="text">
-                     <string>▁</string>
+                     <string notr="true">▁</string>
                     </property>
                     <property name="checkable">
                      <bool>true</bool>
@@ -437,7 +437,7 @@
                   <item>
                    <widget class="QPushButton" name="ibeamCursor">
                     <property name="text">
-                     <string>▏</string>
+                     <string notr="true">▏</string>
                     </property>
                     <property name="checkable">
                      <bool>true</bool>

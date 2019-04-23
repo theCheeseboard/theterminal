@@ -37,21 +37,6 @@
 <context>
     <name>CommandPart</name>
     <message>
-        <location filename="../commandpart.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../commandpart.ui" line="96"/>
-        <source>command</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../commandpart.ui" line="106"/>
-        <source>returnValue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../commandpart.cpp" line="52"/>
         <source>Aborted</source>
         <translation type="unfinished"></translation>
@@ -74,11 +59,6 @@
 </context>
 <context>
     <name>Dropdown</name>
-    <message>
-        <location filename="../dropdown.ui" line="14"/>
-        <source>theTerminalDropdownDialog</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../dropdown.ui" line="174"/>
         <source>Copy</source>
@@ -341,16 +321,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="427"/>
-        <source>▁</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settingswindow.ui" line="440"/>
-        <source>▏</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../settingswindow.ui" line="469"/>
         <source>Font</source>
         <translation type="unfinished"></translation>
@@ -498,38 +468,13 @@
 <context>
     <name>TerminalStatus</name>
     <message>
-        <location filename="../terminalstatus.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../terminalstatus.ui" line="38"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../terminalstatus.ui" line="125"/>
-        <source>Git</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../terminalstatus.ui" line="232"/>
-        <source>Icon</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../terminalstatus.ui" line="239"/>
-        <source>Git Commit</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TerminalWidget</name>
-    <message>
-        <location filename="../terminalwidget.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../terminalwidget.cpp" line="38"/>
         <source>theterminal: cd: too many arguments</source>
@@ -585,32 +530,19 @@
     </message>
 </context>
 <context>
-    <name>lsCommand</name>
-    <message>
-        <location filename="../graphicalParts/lscommand.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ttedCommand</name>
-    <message>
-        <location filename="../graphicalParts/ttedcommand.ui" line="20"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../graphicalParts/ttedcommand.ui" line="301"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../graphicalParts/ttedcommand.ui" line="314"/>
+        <location filename="../graphicalParts/ttedcommand.ui" line="315"/>
         <source>Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../graphicalParts/ttedcommand.ui" line="327"/>
+        <location filename="../graphicalParts/ttedcommand.ui" line="329"/>
         <source>Redo</source>
         <translation type="unfinished"></translation>
     </message>

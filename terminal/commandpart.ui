@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -93,7 +93,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>command</string>
+           <string notr="true">command</string>
           </property>
           <property name="margin">
            <number>9</number>
@@ -103,7 +103,7 @@
         <item>
          <widget class="QLabel" name="returnValue">
           <property name="text">
-           <string>returnValue</string>
+           <string notr="true">returnValue</string>
           </property>
           <property name="margin">
            <number>9</number>
