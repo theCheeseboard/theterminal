@@ -18,17 +18,12 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
 
     if (settings.value("terminal/type", "legacy").toString() == "legacy") {
         //Create a legacy terminal part
-        legacyTerminalPart = new TerminalPart(workDir);
+        TerminalPartConstruct termPartArgs;
+        termPartArgs.workDir = workDir;
 
-        QBoxLayout* layout = new QBoxLayout(QBoxLayout::TopToBottom);
-        layout->addWidget(legacyTerminalPart);
-        layout->setMargin(0);
-        ui->legacyTerminalPage->setLayout(layout);
-
-        ui->terminalTypeStack->setCurrentWidget(ui->legacyTerminalPage);
-        connect(legacyTerminalPart, SIGNAL(finished()), this, SIGNAL(finished()));
-        connect(legacyTerminalPart, SIGNAL(bell(QString)), this, SIGNAL(bell(QString)));
+        initializeAsLegacy(new TerminalPart(termPartArgs));
     } else {
+        ui->terminalTypeStack->setCurrentWidget(ui->newTerminalPage);
         //Set up built in functions
         builtinFunctions.insert("cd", [=](QString line) {
             QStringList args = splitSpaces(line);
@@ -181,9 +176,31 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
     }
 }
 
+TerminalWidget::TerminalWidget(TerminalPart* terminal, QWidget* parent) : QWidget(parent), ui(new Ui::TerminalWidget) {
+    ui->setupUi(this);
+
+    initializeAsLegacy(terminal);
+}
+
 TerminalWidget::~TerminalWidget()
 {
     delete ui;
+}
+
+void TerminalWidget::initializeAsLegacy(TerminalPart *terminal) {
+    legacyTerminalPart = terminal;
+
+    QBoxLayout* layout = new QBoxLayout(QBoxLayout::TopToBottom);
+    layout->addWidget(legacyTerminalPart);
+    layout->setMargin(0);
+    ui->legacyTerminalPage->setLayout(layout);
+
+    ui->terminalTypeStack->setCurrentWidget(ui->legacyTerminalPage);
+    connect(legacyTerminalPart, SIGNAL(closeTerminal()), this, SIGNAL(finished()));
+    connect(legacyTerminalPart, SIGNAL(bell(QString)), this, SIGNAL(bell(QString)));
+    connect(legacyTerminalPart, &TerminalPart::openNewTerminal, [=](TerminalPart* terminal) {
+        emit openNewTerminal(new TerminalWidget(terminal));
+    });
 }
 
 void TerminalWidget::prepareForNextCommand() {

@@ -11,6 +11,7 @@ if [ $STAGE = "script" ]; then
     cd ..
     git clone https://github.com/vicr123/the-libs.git
     cd the-libs
+    git checkout blueprint
     qmake
     make
     sudo make install INSTALL_ROOT=/

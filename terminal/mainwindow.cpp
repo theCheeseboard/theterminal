@@ -92,19 +92,11 @@ void MainWindow::on_actionPaste_triggered()
     currentTerminal->pasteClipboard();
 }
 
-void MainWindow::showContextMenu(const QPoint &pos)
-{
-    QMenu* menu = new QMenu();
-
-    menu->addAction(ui->actionCopy);
-    menu->addAction(ui->actionPaste);
-
-    menu->exec(currentTerminal->mapToGlobal(pos));
+void MainWindow::addTerminal(QString workDir) {
+    addTerminal(new TerminalWidget(workDir));
 }
 
-void MainWindow::addTerminal(QString workDir) {
-    TerminalWidget* widget = new TerminalWidget(workDir);
-    widget->setContextMenuPolicy(Qt::CustomContextMenu);
+void MainWindow::addTerminal(TerminalWidget* widget) {
     allTerminals.append(widget);
 
 #ifndef Q_OS_MAC
@@ -115,7 +107,6 @@ void MainWindow::addTerminal(QString workDir) {
     terminalButtons.insert(widget, button);
 #endif
 
-    connect(widget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     connect(widget, &TerminalWidget::finished, [=]() {
         int index = allTerminals.indexOf(widget);
 #ifdef Q_OS_MAC
@@ -141,6 +132,7 @@ void MainWindow::addTerminal(QString workDir) {
     connect(widget, &TerminalWidget::switchToThis, [=] {
         changeToTerminal(widget);
     });
+    connect(widget, &TerminalWidget::openNewTerminal, this, QOverload<TerminalWidget*>::of(&MainWindow::addTerminal));
     /*connect(widget, &TerminalWidget::copyAvailable, [=](bool canCopy) {
         if (currentTerminal == widget) {
             ui->actionCopy->setEnabled(canCopy);
@@ -148,9 +140,9 @@ void MainWindow::addTerminal(QString workDir) {
     });*/
 
 #ifdef Q_OS_MAC
-    tabBar->addTab("Terminal " + QString::number(allTerminals.indexOf(widget) + 1));
+    tabBar->addTab(tr("Terminal %1").arg(allTerminals.indexOf(widget) + 1));
 #else
-    button->setText("Terminal " + QString::number(allTerminals.indexOf(widget) + 1));
+    button->setText(tr("Terminal %1").arg(allTerminals.indexOf(widget) + 1));
     ui->tabFrame->layout()->addWidget(button);
     ui->tabFrame->layout()->removeItem(ui->horizontalSpacer);
     ui->tabFrame->layout()->addItem(ui->horizontalSpacer);
@@ -159,7 +151,6 @@ void MainWindow::addTerminal(QString workDir) {
     });
 #endif
 
-    //ui->centralWidget->layout()->addWidget(widget);
     ui->termStack->addWidget(widget);
 
     changeToTerminal(widget);

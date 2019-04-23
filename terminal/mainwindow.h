@@ -24,13 +24,13 @@ public:
     ~MainWindow();
 
 public slots:
-    void showContextMenu(const QPoint &pos);
     void on_actionNew_Window_triggered();
     void on_actionExit_triggered();
     void on_actionCopy_triggered();
     void on_actionPaste_triggered();
 
     void addTerminal(QString workDir = "");
+    void addTerminal(TerminalWidget* widget);
     void changeToTerminal(TerminalWidget* widget);
     void changeToTerminal(int index);
     void closeTerminal(TerminalWidget* widget);

@@ -36,7 +36,7 @@ class TerminalWidget : public QWidget
         Q_OBJECT
 
     public:
-        explicit TerminalWidget(QString workDir = "", QWidget *parent = 0);
+        explicit TerminalWidget(QString workDir = "", QWidget *parent = nullptr);
         ~TerminalWidget();
 
     public slots:
@@ -72,8 +72,12 @@ class TerminalWidget : public QWidget
         void finished();
         void bell(QString message);
         void switchToThis();
+        void openNewTerminal(TerminalWidget* terminalWidget);
 
     private:
+        explicit TerminalWidget(TerminalPart* terminal, QWidget* parent = nullptr);
+        void initializeAsLegacy(TerminalPart* terminal);
+
         Ui::TerminalWidget *ui;
         QSettings settings;
         TerminalPart* legacyTerminalPart = nullptr;

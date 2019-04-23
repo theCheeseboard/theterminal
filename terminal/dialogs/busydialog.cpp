@@ -20,14 +20,28 @@
 #include "busydialog.h"
 #include "ui_busydialog.h"
 
-BusyDialog::BusyDialog(QWidget *parent) :
+BusyDialog::BusyDialog(QStringList processes, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::BusyDialog)
 {
     ui->setupUi(this);
+
+    ui->busyApps->addItems(processes);
 }
 
 BusyDialog::~BusyDialog()
 {
     delete ui;
+}
+
+void BusyDialog::on_closeButton_clicked()
+{
+    emit accept();
+    emit done();
+}
+
+void BusyDialog::on_backButton_clicked()
+{
+    emit dismiss();
+    emit done();
 }

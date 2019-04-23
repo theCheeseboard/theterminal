@@ -29,7 +29,7 @@
    <item>
     <widget class="QStackedWidget" name="terminalTypeStack">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="newTerminalPage">
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -61,8 +61,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>100</width>
-            <height>30</height>
+            <width>679</width>
+            <height>220</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">

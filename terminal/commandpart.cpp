@@ -79,7 +79,10 @@ void CommandPart::executeCommand(int height, QProcess* pipe, QString command) {
     QString executable = args.takeFirst();
 
     //bool connectPty = (pipe == nullptr);
-    currentTerminal = new TerminalPart(true, 0);
+    TerminalPartConstruct termPartArgs;
+    termPartArgs.startShell = false;
+
+    currentTerminal = new TerminalPart(termPartArgs, 0);
     ((QBoxLayout*) ui->frame->layout())->addWidget(currentTerminal);
     currentTerminal->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     currentTerminal->setWorkingDirectory(parentTerminal->getWorkingDir().path());
@@ -89,10 +92,10 @@ void CommandPart::executeCommand(int height, QProcess* pipe, QString command) {
     currentTerminal->setEnvironment(env.toStringList());
     currentTerminal->setFocus();
     currentTerminal->setScrollBarPosition(TTTermWidget::NoScrollBar);
-    connect(currentTerminal, &TerminalPart::lineCountChanged, [=](int lineCount) {
+    /*connect(currentTerminal, &TerminalPart::lineCountChanged, [=](int lineCount) {
         if (expanded) currentTerminal->setFixedHeight(lineCount * 13);
         qDebug() << lineCount;
-    });
+    });*/
 
     //Run the animation to hide the artifacts of resizing an app such as nano
     tVariantAnimation* anim = new tVariantAnimation();

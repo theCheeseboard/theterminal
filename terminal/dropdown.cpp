@@ -221,17 +221,6 @@ void Dropdown::on_expand_clicked()
     ui->stackedTabs->currentWidget()->setFocus();
 }
 
-
-void Dropdown::showContextMenu(const QPoint &pos)
-{
-    QMenu* menu = new QMenu();
-
-    menu->addAction(ui->actionCopy);
-    menu->addAction(ui->actionPaste);
-
-    menu->exec(ui->stackedTabs->currentWidget()->mapToGlobal(pos));
-}
-
 TerminalWidget* Dropdown::currentTerminal() {
     return (TerminalWidget*) ui->stackedTabs->currentWidget();
 }

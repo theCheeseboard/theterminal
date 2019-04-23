@@ -42,7 +42,6 @@ public slots:
     void hide();
     void newTab(QString workDir);
     void closeTab(TerminalWidget* widget);
-    void showContextMenu(const QPoint &pos);
 
 private slots:
     void on_AddTab_clicked();

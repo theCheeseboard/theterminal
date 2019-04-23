@@ -35,6 +35,25 @@
     </message>
 </context>
 <context>
+    <name>BusyDialog</name>
+    <message>
+        <location filename="../dialogs/busydialog.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/busydialog.ui" line="71"/>
+        <source>Terminal Busy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/busydialog.ui" line="115"/>
+        <source>&lt;p&gt;This terminal is busy with the following processes.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Closing this terminal will forcefully terminate these processes.&lt;/b&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CommandPart</name>
     <message>
         <location filename="../commandpart.cpp" line="52"/>
@@ -253,12 +272,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="223"/>
+        <location filename="../mainwindow.cpp" line="143"/>
+        <location filename="../mainwindow.cpp" line="145"/>
+        <source>Terminal %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="214"/>
         <source>Full Screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="224"/>
+        <location filename="../mainwindow.cpp" line="215"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -279,19 +304,19 @@
     </message>
     <message>
         <location filename="../settingswindow.ui" line="133"/>
-        <location filename="../settingswindow.ui" line="320"/>
+        <location filename="../settingswindow.ui" line="330"/>
         <source>Appearance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="138"/>
-        <location filename="../settingswindow.ui" line="653"/>
+        <location filename="../settingswindow.ui" line="663"/>
         <source>Scrolling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="143"/>
-        <location filename="../settingswindow.ui" line="900"/>
+        <location filename="../settingswindow.ui" line="910"/>
         <source>Bells</source>
         <translation type="unfinished"></translation>
     </message>
@@ -321,123 +346,128 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="469"/>
+        <location filename="../settingswindow.ui" line="281"/>
+        <source>The Contemporary terminal uses theTerminal itself as the shell in a modern UI. Not everything may work properly.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settingswindow.ui" line="479"/>
         <source>Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="494"/>
+        <location filename="../settingswindow.ui" line="504"/>
         <source>Cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="510"/>
+        <location filename="../settingswindow.ui" line="520"/>
         <source>TEXT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="517"/>
+        <location filename="../settingswindow.ui" line="527"/>
         <source>Blink Cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="563"/>
+        <location filename="../settingswindow.ui" line="573"/>
         <source>Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="589"/>
+        <location filename="../settingswindow.ui" line="599"/>
         <source>COLOURS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="606"/>
+        <location filename="../settingswindow.ui" line="616"/>
         <source>Opacity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="726"/>
+        <location filename="../settingswindow.ui" line="736"/>
         <source>Limit Scrollback to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="745"/>
+        <location filename="../settingswindow.ui" line="755"/>
         <source> lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="758"/>
+        <location filename="../settingswindow.ui" line="768"/>
         <source>No Scrollback</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="765"/>
+        <location filename="../settingswindow.ui" line="775"/>
         <source>Infinite Scrollback</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="778"/>
+        <location filename="../settingswindow.ui" line="788"/>
         <source>SCROLLBACK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="817"/>
+        <location filename="../settingswindow.ui" line="827"/>
         <source>ScrollKeystrokeSwitch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="824"/>
+        <location filename="../settingswindow.ui" line="834"/>
         <source>Scroll down on keystroke</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="850"/>
+        <location filename="../settingswindow.ui" line="860"/>
         <source>SCROLLING DOWN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="974"/>
-        <location filename="../settingswindow.ui" line="1046"/>
+        <location filename="../settingswindow.ui" line="984"/>
+        <location filename="../settingswindow.ui" line="1056"/>
         <source>Play Sound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1000"/>
+        <location filename="../settingswindow.ui" line="1010"/>
         <source>ACTIVE TERMINAL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1053"/>
+        <location filename="../settingswindow.ui" line="1063"/>
         <source>Send Notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1060"/>
+        <location filename="../settingswindow.ui" line="1070"/>
         <source>BellInactiveSoundSwitch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1086"/>
+        <location filename="../settingswindow.ui" line="1096"/>
         <source>INACTIVE TERMINAL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1136"/>
+        <location filename="../settingswindow.ui" line="1146"/>
         <source>Drop Down Terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1182"/>
+        <location filename="../settingswindow.ui" line="1192"/>
         <source>F12</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1192"/>
+        <location filename="../settingswindow.ui" line="1202"/>
         <source>Keyboard Binding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1199"/>
+        <location filename="../settingswindow.ui" line="1209"/>
         <source>The Drop Down Terminal is not available on macOS.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -445,23 +475,48 @@
 <context>
     <name>TerminalPart</name>
     <message>
-        <location filename="../terminalpart.cpp" line="76"/>
+        <location filename="../terminalpart.cpp" line="116"/>
         <source>Bell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="77"/>
+        <location filename="../terminalpart.cpp" line="117"/>
         <source>A bell was sounded!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="146"/>
-        <source>Busy</source>
+        <location filename="../terminalpart.cpp" line="154"/>
+        <source>For text &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="146"/>
-        <source>This terminal is busy. Do you want to close the terminal and kill any apps running within it?</source>
+        <location filename="../terminalpart.cpp" line="155"/>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../terminalpart.cpp" line="160"/>
+        <source>Open man page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../terminalpart.cpp" line="168"/>
+        <source>Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../terminalpart.cpp" line="167"/>
+        <source>For this terminal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../terminalpart.cpp" line="171"/>
+        <source>Find</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../terminalpart.cpp" line="174"/>
+        <source>Close Terminal</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -476,55 +531,55 @@
 <context>
     <name>TerminalWidget</name>
     <message>
-        <location filename="../terminalwidget.cpp" line="38"/>
+        <location filename="../terminalwidget.cpp" line="33"/>
         <source>theterminal: cd: too many arguments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="49"/>
+        <location filename="../terminalwidget.cpp" line="44"/>
         <source>theterminal: cd: %1: No such file or directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="67"/>
+        <location filename="../terminalwidget.cpp" line="62"/>
         <source>theterminal: cannot access &apos;%1&apos; No such file or directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="89"/>
+        <location filename="../terminalwidget.cpp" line="84"/>
         <source>Usage: tted [OPTIONS] [FILE]
 -h, --help                   Show this help output
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="95"/>
+        <location filename="../terminalwidget.cpp" line="90"/>
         <source>theterminal: tted: not enough arguments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="104"/>
+        <location filename="../terminalwidget.cpp" line="99"/>
         <source>theterminal: tted: cannot access &apos;%1&apos; No such file or directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="328"/>
+        <location filename="../terminalwidget.cpp" line="345"/>
         <source>theterminal: %1: command not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="607"/>
+        <location filename="../terminalwidget.cpp" line="624"/>
         <source>Close this tab?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="608"/>
-        <location filename="../terminalwidget.cpp" line="613"/>
+        <location filename="../terminalwidget.cpp" line="625"/>
+        <location filename="../terminalwidget.cpp" line="630"/>
         <source>Closing this tab will also close %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="612"/>
+        <location filename="../terminalwidget.cpp" line="629"/>
         <source>Close tab?</source>
         <translation type="unfinished"></translation>
     </message>

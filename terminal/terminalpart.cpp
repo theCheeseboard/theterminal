@@ -2,19 +2,33 @@
 
 #include "terminalcontroller.h"
 #include <QFontDatabase>
+#include <QMenu>
 #include <tsystemsound.h>
 #include <tnotification.h>
+#include <tpopover.h>
+
+#include "dialogs/busydialog.h"
 
 class TerminalPartPrivate {
     public:
         QSettings settings;
 
+        enum QuitType {
+            UseSettings,
+            AlwaysQuit = 0,
+            NeverQuit,
+            QuitOnCleanExit
+        };
+
         QFont defaultFont;
         int zoomLevel = 0;
         bool copyOk = false;
+
+        QuitType quitType = UseSettings;
+        bool quitNeeded = false;
 };
 
-TerminalPart::TerminalPart(bool connectPty, QWidget* parent) : TTTermWidget(0, connectPty, parent) {
+/*TerminalPart::TerminalPart(bool connectPty, QWidget* parent) : TTTermWidget(0, connectPty, parent) {
     d = new TerminalPartPrivate();
     setup();
 }
@@ -35,6 +49,32 @@ TerminalPart::TerminalPart(QString workDir, QWidget *parent) : TTTermWidget(0, t
 
     this->update();
     this->startShellProgram();
+}*/
+
+TerminalPart::TerminalPart(TerminalPartConstruct args, QWidget* parent) : TTTermWidget(0, args.connectPty, parent) {
+    d = new TerminalPartPrivate();
+    setup();
+
+    QStringList environment;
+    environment.append("TERM=xterm");
+
+    this->setEnvironment(environment);
+
+    if (args.workDir != "") {
+        this->setWorkingDirectory(args.workDir);
+    }
+
+    this->update();
+
+    if (args.manPage != "") {
+        this->setShellProgram(theLibsGlobal::searchInPath("man").first());
+        this->setArgs({args.manPage});
+        d->quitType = TerminalPartPrivate::QuitOnCleanExit;
+    }
+
+    if (args.startShell) {
+        this->startShellProgram();
+    }
 }
 
 TerminalPart::~TerminalPart() {
@@ -81,6 +121,61 @@ void TerminalPart::setup() {
                 notification->post(true);
             }
         }
+    });
+    connect(this, &TerminalPart::shellProgramFinished, [=](int exitCode) {
+        if (d->quitType == TerminalPartPrivate::UseSettings) {
+            d->quitType = static_cast<TerminalPartPrivate::QuitType>(d->settings.value("term/quitType", 0).toInt());
+        }
+
+        switch (d->quitType) {
+            case TerminalPartPrivate::AlwaysQuit:
+                d->quitNeeded = true;
+                break;
+            case TerminalPartPrivate::NeverQuit:
+                d->quitNeeded = false;
+                break;
+            case TerminalPartPrivate::QuitOnCleanExit:
+                if (exitCode == 0) {
+                    d->quitNeeded = true;
+                } else {
+                    d->quitNeeded = false;
+                }
+        }
+    });
+    connect(this, &TerminalPart::finished, this, [=] {
+        if (d->quitNeeded) emit closeTerminal();
+    });
+
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, &TerminalPart::customContextMenuRequested, [=](QPoint pos) {
+        QMenu* menu = new QMenu();
+
+        if (this->selectedText(false) != "") {
+            menu->addSection(tr("For text \"%1\"").arg(menu->fontMetrics().elidedText(this->selectedText(false).trimmed(), Qt::ElideMiddle, 200 * theLibsGlobal::getDPIScaling())));
+            QAction* copyAction = menu->addAction(QIcon::fromTheme("edit-copy"), tr("Copy"), [=] {
+                this->copyClipboard();
+            });
+            copyAction->setEnabled(canCopy());
+
+            menu->addAction(tr("Open man page"), [=] {
+                TerminalPartConstruct terminalPartArgs;
+                terminalPartArgs.manPage = this->selectedText(false);
+                emit openNewTerminal(new TerminalPart(terminalPartArgs));
+            });
+        }
+
+        menu->addSection(tr("For this terminal"));
+        menu->addAction(QIcon::fromTheme("edit-paste"), tr("Paste"), [=] {
+            this->pasteClipboard();
+        });
+        menu->addAction(QIcon::fromTheme("edit-find"), tr("Find"), [=] {
+            this->toggleShowSearchBar();
+        });
+        menu->addAction(QIcon::fromTheme("dialog-close"), tr("Close Terminal"), [=] {
+            this->tryClose();
+        });
+
+        menu->exec(this->mapToGlobal(pos));
     });
 
     this->update();
@@ -137,16 +232,24 @@ void TerminalPart::reloadThemeSettings() {
     this->setTerminalFont(f);
 
     this->setTerminalOpacity(d->settings.value("theme/opacity", 100).toInt() / 100.0);
-    this->setScrollOnKeypress(d->settings.value("scrolling/scrollOnKeystroke", true).toBool());
+    //this->setScrollOnKeypress(d->settings.value("scrolling/scrollOnKeystroke", true).toBool());
 }
 
-#include <QMessageBox>
 void TerminalPart::tryClose() {
     if (this->isBusy()) {
-        if (QMessageBox::warning(this, tr("Busy"), tr("This terminal is busy. Do you want to close the terminal and kill any apps running within it?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::No) {
+        /*if (QMessageBox::warning(this, tr("Busy"), tr("This terminal is busy. Do you want to close the terminal and kill any apps running within it?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::No) {
             return;
-        }
-    }
+        }*/
 
-    emit finished();
+        BusyDialog* dialog = new BusyDialog(QStringList());
+        tPopover* popover = new tPopover(dialog);
+        popover->setPopoverWidth(300 * theLibsGlobal::getDPIScaling());
+        connect(popover, &tPopover::dismissed, dialog, &BusyDialog::deleteLater);
+        connect(popover, &tPopover::dismissed, popover, &tPopover::deleteLater);
+        connect(dialog, &BusyDialog::done, popover, &tPopover::dismiss);
+        connect(dialog, &BusyDialog::accept, this, &TerminalPart::closeTerminal);
+        popover->show(this);
+    } else {
+        emit closeTerminal();
+    }
 }

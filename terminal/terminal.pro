@@ -44,7 +44,8 @@ SOURCES += main.cpp\
     graphicalParts/ttedcommand.cpp \
     terminalstatus.cpp \
     history.cpp \
-    terminalcontroller.cpp
+    terminalcontroller.cpp \
+    dialogs/busydialog.cpp
 
 unix:!macx {
     SOURCES += dropdown.cpp
@@ -61,7 +62,8 @@ HEADERS  += mainwindow.h \
     graphicalParts/ttedcommand.h \
     terminalstatus.h \
     history.h \
-    terminalcontroller.h
+    terminalcontroller.h \
+    dialogs/busydialog.h
 
 unix:!macx {
     HEADERS += dropdown.h
@@ -74,7 +76,8 @@ FORMS    += mainwindow.ui \
     commandpart.ui \
     graphicalParts/lscommand.ui \
     graphicalParts/ttedcommand.ui \
-    terminalstatus.ui
+    terminalstatus.ui \
+    dialogs/busydialog.ui
 
 TRANSLATIONS += \
     translations/au_AU.ts \

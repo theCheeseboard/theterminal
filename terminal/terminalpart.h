@@ -7,31 +7,41 @@
 
 class TerminalPartPrivate;
 
+struct TerminalPartConstruct {
+    QString workDir = "";
+    QString manPage = "";
+    bool connectPty = true;
+    bool startShell = true;
+};
+
 class TerminalPart : public TTTermWidget
 {
     Q_OBJECT
-public:
-    explicit TerminalPart(bool connectPty, QWidget* parent);
-    explicit TerminalPart(QString workDir = "", QWidget *parent = 0);
-    ~TerminalPart();
+    public:
+        //explicit TerminalPart(bool connectPty, QWidget* parent);
+        //explicit TerminalPart(QString workDir = "", QWidget *parent = 0);
+        explicit TerminalPart(TerminalPartConstruct args, QWidget* parent = nullptr);
+        ~TerminalPart();
 
-signals:
+    signals:
+        void closeTerminal();
+        void openNewTerminal(TerminalPart* part);
 
-public slots:
-    bool canCopy();
+    public slots:
+        bool canCopy();
 
-    void zoomIn();
-    void zoomOut();
-    void zoom100();
+        void zoomIn();
+        void zoomOut();
+        void zoom100();
 
-    void reloadThemeSettings();
-    void tryClose();
+        void reloadThemeSettings();
+        void tryClose();
 
-private:
-    TerminalPartPrivate* d;
+    private:
+        TerminalPartPrivate* d;
 
-    void setup();
-    void resizeEvent(QResizeEvent* event);
+        void setup();
+        void resizeEvent(QResizeEvent* event);
 };
 
 #endif // TERMINALPART_H
