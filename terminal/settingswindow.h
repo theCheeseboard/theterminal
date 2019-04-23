@@ -73,6 +73,16 @@ private slots:
 
     void on_bellInactiveNotificationSwitch_toggled(bool checked);
 
+    void on_opacitySlider_valueChanged(int value);
+
+    void on_noScrollbackRadioButton_toggled(bool checked);
+
+    void on_limitScrollbackRadioButton_toggled(bool checked);
+
+    void on_infiniteScrollbackRadioButton_toggled(bool checked);
+
+    void on_scrollKeystrokeSwitch_toggled(bool checked);
+
     private:
     Ui::SettingsWindow *ui;
 

@@ -621,6 +621,7 @@ void TerminalWidget::close() {
         }
     } else {
         //Using legacy terminal
-        emit finished();
+        legacyTerminalPart->tryClose();
+        //emit finished();
     }
 }

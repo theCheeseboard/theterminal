@@ -41,6 +41,10 @@ Dropdown::Dropdown(QString workdir, QWidget *parent) :
         }
     });
 
+    //Make the background translucent in case the user wants the terminal to be translucent
+    this->setAttribute(Qt::WA_NoSystemBackground);
+    this->setAttribute(Qt::WA_TranslucentBackground);
+
     KeyCode keycode = XKeysymToKeycode(QX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong());
     XGrabKey(QX11Info::display(), keycode, AnyModifier, DefaultRootWindow(QX11Info::display()), true, GrabModeAsync, GrabModeAsync);
 

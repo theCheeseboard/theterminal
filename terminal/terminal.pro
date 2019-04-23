@@ -29,8 +29,7 @@ macx {
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TEMPLATE = app
-#LIBS += -ltttermwidget
-LIBS += /home/victor/Documents/Apps/build-tttermwidget-Desktop-Default/libtttermwidget.so
+LIBS += -ltttermwidget
 
 
 SOURCES += main.cpp\

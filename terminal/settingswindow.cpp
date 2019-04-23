@@ -26,14 +26,25 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 #endif
     on_keybindingButton_toggled(false);
 
-    ui->scrollbackSpin->setValue(settings.value("term/scrollback", -1).toInt());
     ui->shellLineEdit->setText(settings.value("term/program", qgetenv("SHELL")).toString());
     ui->fontComboBox->setCurrentFont(QFont(settings.value("theme/fontFamily", QFontDatabase::systemFont(QFontDatabase::FixedFont).family()).toString()));
     ui->currentFontSize->setValue(settings.value("theme/fontSize", QFontDatabase::systemFont(QFontDatabase::FixedFont).pointSize()).toInt());
     ui->blinkCursorSwitch->setChecked(settings.value("theme/blinkCursor", true).toBool());
-    ui->bellActiveSoundSwitch->setChecked(settings.value("theme/bellActiveSound", true).toBool());
-    ui->bellInactiveSoundSwitch->setChecked(settings.value("theme/bellInactiveSound", true).toBool());
-    ui->bellInactiveNotificationSwitch->setChecked(settings.value("theme/bellInactiveNotification", true).toBool());
+    ui->bellActiveSoundSwitch->setChecked(settings.value("bell/bellActiveSound", true).toBool());
+    ui->bellInactiveSoundSwitch->setChecked(settings.value("bell/bellInactiveSound", true).toBool());
+    ui->bellInactiveNotificationSwitch->setChecked(settings.value("bell/bellInactiveNotification", true).toBool());
+    ui->opacitySlider->setValue(settings.value("theme/opacity", 100).toInt());
+    ui->scrollKeystrokeSwitch->setChecked(settings.value("scrolling/scrollOnKeystroke", true).toBool());
+
+    int scrollback = settings.value("term/scrollback", -1).toInt();
+    if (scrollback == -1) {
+        ui->infiniteScrollbackRadioButton->setChecked(true);
+    } else if (scrollback == 0) {
+        ui->noScrollbackRadioButton->setChecked(true);
+    } else {
+        ui->limitScrollbackRadioButton->setChecked(true);
+        ui->scrollbackSpin->setValue(scrollback);
+    }
 
     if (settings.value("terminal/type", "legacy").toString() == "legacy") {
         ui->termTypeComboBox->setCurrentIndex(0);
@@ -66,6 +77,8 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     ui->coloursComboBox->blockSignals(false);
 
     QScroller::grabGesture(ui->themingScrollArea->viewport(), QScroller::LeftMouseButtonGesture);
+    QScroller::grabGesture(ui->scrollingScrollArea->viewport(), QScroller::LeftMouseButtonGesture);
+    QScroller::grabGesture(ui->bellsScrollArea->viewport(), QScroller::LeftMouseButtonGesture);
 
     connect(filter, SIGNAL(keypressCaptureComplete()), this, SLOT(keypressCaptureComplete()));
 }
@@ -180,15 +193,51 @@ void SettingsWindow::on_blinkCursorSwitch_toggled(bool checked)
 
 void SettingsWindow::on_bellActiveSoundSwitch_toggled(bool checked)
 {
-    settings.setValue("theme/bellActiveSound", checked);
+    settings.setValue("bell/bellActiveSound", checked);
 }
 
 void SettingsWindow::on_bellInactiveSoundSwitch_toggled(bool checked)
 {
-    settings.setValue("theme/bellInactiveSound", checked);
+    settings.setValue("bell/bellInactiveSound", checked);
 }
 
 void SettingsWindow::on_bellInactiveNotificationSwitch_toggled(bool checked)
 {
-    settings.setValue("theme/bellInactiveNotification", checked);
+    settings.setValue("bell/bellInactiveNotification", checked);
+}
+
+void SettingsWindow::on_opacitySlider_valueChanged(int value)
+{
+    settings.setValue("theme/opacity", value);
+    TerminalController::updateTerminalStyles();
+}
+
+void SettingsWindow::on_noScrollbackRadioButton_toggled(bool checked)
+{
+    if (checked) {
+        settings.setValue("term/scrollback", 0);
+    }
+}
+
+void SettingsWindow::on_limitScrollbackRadioButton_toggled(bool checked)
+{
+    if (checked) {
+        settings.setValue("term/scrollback", ui->scrollbackSpin->value());
+        ui->scrollbackSpin->setEnabled(true);
+    } else {
+        ui->scrollbackSpin->setEnabled(false);
+    }
+}
+
+void SettingsWindow::on_infiniteScrollbackRadioButton_toggled(bool checked)
+{
+    if (checked) {
+        settings.setValue("term/scrollback", -1);
+    }
+}
+
+void SettingsWindow::on_scrollKeystrokeSwitch_toggled(bool checked)
+{
+    settings.setValue("scrolling/scrollOnKeystroke", checked);
+    TerminalController::updateTerminalStyles();
 }

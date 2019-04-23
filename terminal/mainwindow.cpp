@@ -34,6 +34,7 @@ MainWindow::MainWindow(QString workDir, QWidget *parent) :
     menu->addSeparator();
     menu->addAction(ui->actionCopy);
     menu->addAction(ui->actionPaste);
+    menu->addAction(ui->actionFind);
     menu->addSeparator();
     menu->addAction(ui->actionZoomIn);
     menu->addAction(ui->actionZoomOut);
@@ -51,6 +52,10 @@ MainWindow::MainWindow(QString workDir, QWidget *parent) :
     this->addTerminal(workDir);
     this->resize(this->size() * theLibsGlobal::getDPIScaling());
     ui->termStack->setCurrentAnimation(tStackedWidget::SlideHorizontal);
+
+    //Make the background translucent in case the user wants the terminal to be translucent
+    this->setAttribute(Qt::WA_NoSystemBackground);
+    this->setAttribute(Qt::WA_TranslucentBackground);
 
     QShortcut* fullscreenShortcut = new QShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F11), this);
     connect(fullscreenShortcut, &QShortcut::activated, this, &MainWindow::on_actionGo_Full_Screen_triggered);

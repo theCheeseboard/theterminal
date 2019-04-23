@@ -45,6 +45,9 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <property name="spacing">
         <number>0</number>

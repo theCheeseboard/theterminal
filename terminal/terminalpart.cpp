@@ -59,14 +59,14 @@ void TerminalPart::setup() {
     connect(this, &TerminalPart::bell, [=] {
         if (this->hasFocus()) {
             //Active terminal
-            if (d->settings.value("theme/bellActiveSound", true).toBool()) {
+            if (d->settings.value("bell/bellActiveSound", true).toBool()) {
                 //Play an audible bell
                 tSystemSound::play("bell");
             }
         } else {
             //Inactive terminal
-            bool bellSound = d->settings.value("theme/bellInactiveSound", true).toBool();
-            bool notification = d->settings.value("theme/bellInactiveNotification", true).toBool();
+            bool bellSound = d->settings.value("bell/bellInactiveSound", true).toBool();
+            bool notification = d->settings.value("bell/bellInactiveNotification", true).toBool();
             if (bellSound && !notification) {
                 //Play an audible bell
                 tSystemSound::play("bell");
@@ -135,4 +135,18 @@ void TerminalPart::reloadThemeSettings() {
     QFont f = d->defaultFont;
     f.setPointSize(f.pointSize() + d->zoomLevel);
     this->setTerminalFont(f);
+
+    this->setTerminalOpacity(d->settings.value("theme/opacity", 100).toInt() / 100.0);
+    this->setScrollOnKeypress(d->settings.value("scrolling/scrollOnKeystroke", true).toBool());
+}
+
+#include <QMessageBox>
+void TerminalPart::tryClose() {
+    if (this->isBusy()) {
+        if (QMessageBox::warning(this, tr("Busy"), tr("This terminal is busy. Do you want to close the terminal and kill any apps running within it?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::No) {
+            return;
+        }
+    }
+
+    emit finished();
 }
