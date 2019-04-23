@@ -21,7 +21,7 @@
     <message>
         <location filename="../about.ui" line="52"/>
         <source>Copyright (c) Victor Tran 2018. Licensed under the terms of the GNU General Public License, version 3 or later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bản quyền (c) Victor Tran 2018. Cấp phép với giấy phép Công cộng GNU, phiên bản 3 hoặc mới hơn.</translation>
     </message>
     <message>
         <location filename="../about.ui" line="62"/>
@@ -39,22 +39,22 @@
     <message>
         <location filename="../commandpart.cpp" line="52"/>
         <source>Aborted</source>
-        <translation type="unfinished"></translation>
+        <translation>Hủy bỏ</translation>
     </message>
     <message>
         <location filename="../commandpart.cpp" line="55"/>
         <source>Floating Point Exception</source>
-        <translation type="unfinished"></translation>
+        <translation>Lỗi về số dấu phẩy động</translation>
     </message>
     <message>
         <location filename="../commandpart.cpp" line="58"/>
         <source>Segmentation Fault</source>
-        <translation type="unfinished"></translation>
+        <translation>Lỗi phân đoạn</translation>
     </message>
     <message>
         <location filename="../commandpart.cpp" line="61"/>
         <source>Killed</source>
-        <translation type="unfinished"></translation>
+        <translation>Buộc kết thúc</translation>
     </message>
 </context>
 <context>
@@ -62,52 +62,52 @@
     <message>
         <location filename="../dropdown.ui" line="174"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Chép</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="177"/>
         <source>Ctrl+Shift+C</source>
-        <translation type="unfinished">Ctrl+Shift+C</translation>
+        <translation>Ctrl+Shift+C</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="186"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>Dán</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="189"/>
         <source>Ctrl+Shift+V</source>
-        <translation type="unfinished">Ctrl+Shift+V</translation>
+        <translation>Ctrl+Shift+V</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="198"/>
         <source>Find</source>
-        <translation type="unfinished"></translation>
+        <translation>Tìm</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="201"/>
         <source>Ctrl+Shift+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+F</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="16"/>
         <source>For current tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Cho tab hiện tại</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="18"/>
         <source>For theTerminal</source>
-        <translation type="unfinished"></translation>
+        <translation>Cho theTerminal</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="19"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Cài đặt</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="30"/>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Thoát</translation>
     </message>
 </context>
 <context>
@@ -115,27 +115,27 @@
     <message>
         <location filename="../mainwindow.ui" line="14"/>
         <source>theTerminal</source>
-        <translation type="unfinished"></translation>
+        <translation>theTerminal</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="154"/>
         <source>Fi&amp;le</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tệp</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="166"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Sửa</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="175"/>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Xem</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="185"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Trợ giúp</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="200"/>
@@ -175,27 +175,27 @@
     <message>
         <location filename="../mainwindow.ui" line="245"/>
         <source>Ne&amp;w Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tab mới</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="248"/>
         <source>Ctrl+Shift+T</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+T</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="257"/>
         <source>&amp;Close Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Đó&amp;ng tab</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="260"/>
         <source>Ctrl+Shift+W</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+W</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="269"/>
         <source>&amp;Find...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tìm...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="272"/>
@@ -205,62 +205,62 @@
     <message>
         <location filename="../mainwindow.ui" line="281"/>
         <source>&amp;Go Full Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Chuyển sang toàn màn hình</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="290"/>
         <source>&amp;About</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Giới thiệu</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="299"/>
         <source>&amp;Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Cài đặt</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="302"/>
         <source>Ctrl+,</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+,</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="311"/>
         <source>Zoom In</source>
-        <translation type="unfinished"></translation>
+        <translation>Phóng to</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="314"/>
         <source>Ctrl+=</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+=</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="323"/>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Thu nhỏ</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="326"/>
         <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+-</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="331"/>
         <source>Reset Zoom</source>
-        <translation type="unfinished"></translation>
+        <translation>Cỡ thường</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="334"/>
         <source>Ctrl+0</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+0</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="223"/>
         <source>Full Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Toàn màn hình</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="224"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bạn trong chế độ toàn màn hình. Bạn có thể thoát chế độ toàn màn hình với SHIFT+F11</translation>
     </message>
 </context>
 <context>
@@ -269,116 +269,116 @@
         <location filename="../settingswindow.ui" line="14"/>
         <location filename="../settingswindow.ui" line="99"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Cài đặt</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="128"/>
         <location filename="../settingswindow.ui" line="204"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Chung</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="133"/>
         <location filename="../settingswindow.ui" line="320"/>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Giao diện</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="138"/>
         <location filename="../settingswindow.ui" line="653"/>
         <source>Scrolling</source>
-        <translation type="unfinished"></translation>
+        <translation>Cuộn</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="143"/>
         <location filename="../settingswindow.ui" line="900"/>
         <source>Bells</source>
-        <translation type="unfinished"></translation>
+        <translation>Chuông</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="148"/>
         <source>Dropdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Phần rớt xuống</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="244"/>
         <source>Shell</source>
-        <translation type="unfinished"></translation>
+        <translation>Hệ vỏ</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="251"/>
         <source>Terminal Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Kiểu đầu cuối</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="265"/>
         <source>Legacy</source>
-        <translation type="unfinished"></translation>
+        <translation>Di sản</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="270"/>
         <source>Contemporary</source>
-        <translation type="unfinished"></translation>
+        <translation>Đồng thời</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="469"/>
         <source>Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Phông chữ</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="494"/>
         <source>Cursor</source>
-        <translation type="unfinished"></translation>
+        <translation>Con trỏ</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="510"/>
         <source>TEXT</source>
-        <translation type="unfinished"></translation>
+        <translation>VĂN BẢN</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="517"/>
         <source>Blink Cursor</source>
-        <translation type="unfinished"></translation>
+        <translation>Chớp con trỏ</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="563"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Chủ đề</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="589"/>
         <source>COLOURS</source>
-        <translation type="unfinished"></translation>
+        <translation>MÀU</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="606"/>
         <source>Opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>Độ mờ đục</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="726"/>
         <source>Limit Scrollback to</source>
-        <translation type="unfinished"></translation>
+        <translation>Giới hạn cuộn ngược đến</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="745"/>
         <source> lines</source>
-        <translation type="unfinished"></translation>
+        <translation> dòng</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="758"/>
         <source>No Scrollback</source>
-        <translation type="unfinished"></translation>
+        <translation>Không cho cuộn ngược</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="765"/>
         <source>Infinite Scrollback</source>
-        <translation type="unfinished"></translation>
+        <translation>Cuộn ngược vô hạn</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="778"/>
         <source>SCROLLBACK</source>
-        <translation type="unfinished"></translation>
+        <translation>CUỘN NGƯỢC</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="817"/>
@@ -388,28 +388,28 @@
     <message>
         <location filename="../settingswindow.ui" line="824"/>
         <source>Scroll down on keystroke</source>
-        <translation type="unfinished"></translation>
+        <translation>Cuộn xuống khi nhấn phím</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="850"/>
         <source>SCROLLING DOWN</source>
-        <translation type="unfinished"></translation>
+        <translation>CUỘN XUỐNG</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="974"/>
         <location filename="../settingswindow.ui" line="1046"/>
         <source>Play Sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Phát âm thanh</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1000"/>
         <source>ACTIVE TERMINAL</source>
-        <translation type="unfinished"></translation>
+        <translation>ĐẦU CUỐI HOẠT ĐỘNG</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1053"/>
         <source>Send Notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Gửi thông báo</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1060"/>
@@ -419,27 +419,27 @@
     <message>
         <location filename="../settingswindow.ui" line="1086"/>
         <source>INACTIVE TERMINAL</source>
-        <translation type="unfinished"></translation>
+        <translation>ĐẦU CUỐI KHÔNG HOẠT ĐỘNG</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1136"/>
         <source>Drop Down Terminal</source>
-        <translation type="unfinished"></translation>
+        <translation>Đầu cuối rớt xuống</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1182"/>
         <source>F12</source>
-        <translation type="unfinished"></translation>
+        <translation>F12</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1192"/>
         <source>Keyboard Binding</source>
-        <translation type="unfinished"></translation>
+        <translation>Phím gắn</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1199"/>
         <source>The Drop Down Terminal is not available on macOS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Thiết bị đầu cuối rớt xuống không hỗ trợ trên macOS.</translation>
     </message>
 </context>
 <context>
@@ -447,22 +447,22 @@
     <message>
         <location filename="../terminalpart.cpp" line="76"/>
         <source>Bell</source>
-        <translation type="unfinished"></translation>
+        <translation>Chuông</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="77"/>
         <source>A bell was sounded!</source>
-        <translation type="unfinished"></translation>
+        <translation>Một chuông bị rung!</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="146"/>
         <source>Busy</source>
-        <translation type="unfinished"></translation>
+        <translation>Bận</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="146"/>
         <source>This terminal is busy. Do you want to close the terminal and kill any apps running within it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Đầu cuối này đang bận. Bạn có muốn đóng đầu cuối này và buộc thoát bất kỳ ứng dụng nào đang chạy trong nó đẻ thoát?</translation>
     </message>
 </context>
 <context>
