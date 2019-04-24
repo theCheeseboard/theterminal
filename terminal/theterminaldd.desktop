@@ -7,3 +7,4 @@ GenericName=Drop Down Terminal
 GenericName[vi]=Thiết bị đầu cuối rơi xuống
 Exec=theterminal -d
 Icon=utilities-terminal
+Categories=Utility;System;TerminalEmulator;

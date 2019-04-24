@@ -7,3 +7,4 @@ GenericName=Terminal
 GenericName[vi]=Thiết bị đầu cuối (Blueprint)
 Exec=theterminalb
 Icon=utilities-terminal
+Categories=Utility;System;TerminalEmulator;

@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include <tapplication.h>
+#include <QCommandLineParser>
 
 #ifndef Q_OS_MAC
 #include "dropdown.h"
@@ -22,29 +23,14 @@ int main(int argc, char *argv[])
     a.setShareDir("/usr/share/theterminal/");
     a.installTranslators();
 
-    QString workDir;
-    bool dropdown = false;
-
-    QStringList args = a.arguments();
-    args.removeFirst();
-    for (QString arg : a.arguments()) {
-        if (arg == "-h" || arg == "--help") {
-            qDebug() << "theTerminal";
-            qDebug() << "Usage: theterminal [OPTIONS]";
-            qDebug() << "  -w=[WORKDIR]                 Set Working directory to [WORKDIR]";
-
-            #ifndef Q_OS_MAC
-            qDebug() << "  -d[ropdown]                  Starts theTerminal in dropdown mode";
-            #endif
-
-            qDebug() << "  -h, --help                   Show this help message";
-            return 0;
-        } else if (arg.startsWith("-w=")) {
-            workDir = arg.remove("-w=");
-        } else if (arg.startsWith("-d")) {
-            dropdown = true;
-        }
-    }
+    QCommandLineParser parser;
+    parser.addOptions({
+        {{"w","workdir"}, a.translate("main", "Set working directory"), a.translate("main", "workdir")},
+        {{"d","dropdown"}, a.translate("main", "Starts theTerminal in dropdown mode")},
+        {{"e","exec"}, a.translate("main", "Command to execute"), a.translate("main", "cmd")}
+    });
+    parser.addHelpOption();
+    parser.process(a);
 
 
 #ifdef Q_OS_MAC
@@ -56,12 +42,12 @@ int main(int argc, char *argv[])
     filter = new NativeEventFilter;
     a.installNativeEventFilter(filter);
 
-    if (dropdown) {
+    if (parser.isSet("d")) {
         #ifndef Q_OS_MAC
-        Dropdown* w = new Dropdown(workDir);
+        Dropdown* w = new Dropdown(parser.value("workdir"));
         #endif
     } else {
-        MainWindow* w = new MainWindow(workDir);
+        MainWindow* w = new MainWindow(parser.value("workdir"), parser.value("exec"));
         w->show();
     }
 

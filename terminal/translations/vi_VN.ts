@@ -480,47 +480,52 @@
 <context>
     <name>TerminalPart</name>
     <message>
-        <location filename="../terminalpart.cpp" line="116"/>
+        <location filename="../terminalpart.cpp" line="130"/>
         <source>Bell</source>
         <translation>Chuông</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="117"/>
+        <location filename="../terminalpart.cpp" line="131"/>
         <source>A bell was sounded!</source>
         <translation>Một chuông bị rung!</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="154"/>
+        <location filename="../terminalpart.cpp" line="168"/>
         <source>For text &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="155"/>
+        <location filename="../terminalpart.cpp" line="169"/>
         <source>Copy</source>
         <translation type="unfinished">Chép</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="160"/>
+        <location filename="../terminalpart.cpp" line="174"/>
         <source>Open man page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="168"/>
+        <location filename="../terminalpart.cpp" line="182"/>
         <source>Paste</source>
         <translation type="unfinished">Dán</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="167"/>
+        <location filename="../terminalpart.cpp" line="181"/>
         <source>For this terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="171"/>
+        <location filename="../terminalpart.cpp" line="81"/>
+        <source>theterminal: %1: command not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../terminalpart.cpp" line="185"/>
         <source>Find</source>
         <translation type="unfinished">Tìm</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="174"/>
+        <location filename="../terminalpart.cpp" line="188"/>
         <source>Close Terminal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -536,56 +541,84 @@
 <context>
     <name>TerminalWidget</name>
     <message>
-        <location filename="../terminalwidget.cpp" line="33"/>
+        <location filename="../terminalwidget.cpp" line="34"/>
         <source>theterminal: cd: too many arguments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="44"/>
+        <location filename="../terminalwidget.cpp" line="45"/>
         <source>theterminal: cd: %1: No such file or directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="62"/>
+        <location filename="../terminalwidget.cpp" line="63"/>
         <source>theterminal: cannot access &apos;%1&apos; No such file or directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="84"/>
+        <location filename="../terminalwidget.cpp" line="85"/>
         <source>Usage: tted [OPTIONS] [FILE]
 -h, --help                   Show this help output
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="90"/>
+        <location filename="../terminalwidget.cpp" line="91"/>
         <source>theterminal: tted: not enough arguments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="99"/>
+        <location filename="../terminalwidget.cpp" line="100"/>
         <source>theterminal: tted: cannot access &apos;%1&apos; No such file or directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="345"/>
+        <location filename="../terminalwidget.cpp" line="346"/>
         <source>theterminal: %1: command not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="624"/>
+        <location filename="../terminalwidget.cpp" line="625"/>
         <source>Close this tab?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="625"/>
-        <location filename="../terminalwidget.cpp" line="630"/>
+        <location filename="../terminalwidget.cpp" line="626"/>
+        <location filename="../terminalwidget.cpp" line="631"/>
         <source>Closing this tab will also close %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="629"/>
+        <location filename="../terminalwidget.cpp" line="630"/>
         <source>Close tab?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>main</name>
+    <message>
+        <location filename="../main.cpp" line="28"/>
+        <source>workdir</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="28"/>
+        <source>Set working directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="29"/>
+        <source>Starts theTerminal in dropdown mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="30"/>
+        <source>Command to execute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="30"/>
+        <source>cmd</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -10,6 +10,7 @@ class TerminalPartPrivate;
 struct TerminalPartConstruct {
     QString workDir = "";
     QString manPage = "";
+    QString shell = "";
     bool connectPty = true;
     bool startShell = true;
 };

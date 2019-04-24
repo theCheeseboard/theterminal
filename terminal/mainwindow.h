@@ -20,7 +20,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QString workDir = "", QWidget *parent = 0);
+    explicit MainWindow(QString workDir = "", QString cmd = "", QWidget *parent = 0);
     ~MainWindow();
 
 public slots:
@@ -29,7 +29,7 @@ public slots:
     void on_actionCopy_triggered();
     void on_actionPaste_triggered();
 
-    void addTerminal(QString workDir = "");
+    void addTerminal(QString workDir = "", QString cmd = "");
     void addTerminal(TerminalWidget* widget);
     void changeToTerminal(TerminalWidget* widget);
     void changeToTerminal(int index);

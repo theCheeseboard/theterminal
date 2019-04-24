@@ -36,7 +36,7 @@ class TerminalWidget : public QWidget
         Q_OBJECT
 
     public:
-        explicit TerminalWidget(QString workDir = "", QWidget *parent = nullptr);
+        explicit TerminalWidget(QString workDir = "", QString cmd = "", QWidget *parent = nullptr);
         ~TerminalWidget();
 
     public slots:

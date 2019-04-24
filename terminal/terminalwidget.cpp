@@ -8,7 +8,7 @@ extern int lookbehindSpace(QString str, int from);
 extern int lookaheadSpace(QString str, int from);
 extern QStringList splitSpaces(QString str);
 
-TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
+TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TerminalWidget)
 {
@@ -16,10 +16,11 @@ TerminalWidget::TerminalWidget(QString workDir, QWidget *parent) :
     ui->autocompletePages->setFixedHeight(0);
     ui->commandLine->installEventFilter(this);
 
-    if (settings.value("terminal/type", "legacy").toString() == "legacy") {
+    if (cmd != "" || settings.value("terminal/type", "legacy").toString() == "legacy") {
         //Create a legacy terminal part
         TerminalPartConstruct termPartArgs;
         termPartArgs.workDir = workDir;
+        termPartArgs.shell = cmd;
 
         initializeAsLegacy(new TerminalPart(termPartArgs));
     } else {

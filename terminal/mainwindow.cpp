@@ -4,7 +4,7 @@
 #include <QShortcut>
 #include <ttoast.h>
 
-MainWindow::MainWindow(QString workDir, QWidget *parent) :
+MainWindow::MainWindow(QString workDir, QString cmd, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
@@ -49,7 +49,7 @@ MainWindow::MainWindow(QString workDir, QWidget *parent) :
     ui->menuButton->setMenu(menu);
 #endif
 
-    this->addTerminal(workDir);
+    this->addTerminal(workDir, cmd);
     this->resize(this->size() * theLibsGlobal::getDPIScaling());
     ui->termStack->setCurrentAnimation(tStackedWidget::SlideHorizontal);
 
@@ -92,8 +92,8 @@ void MainWindow::on_actionPaste_triggered()
     currentTerminal->pasteClipboard();
 }
 
-void MainWindow::addTerminal(QString workDir) {
-    addTerminal(new TerminalWidget(workDir));
+void MainWindow::addTerminal(QString workDir, QString cmd) {
+    addTerminal(new TerminalWidget(workDir, cmd));
 }
 
 void MainWindow::addTerminal(TerminalWidget* widget) {

@@ -55,10 +55,9 @@ TerminalPart::TerminalPart(TerminalPartConstruct args, QWidget* parent) : TTTerm
     d = new TerminalPartPrivate();
     setup();
 
-    QStringList environment;
+    /*QStringList environment;
     environment.append("TERM=xterm");
-
-    this->setEnvironment(environment);
+    this->setEnvironment(environment);*/
 
     if (args.workDir != "") {
         this->setWorkingDirectory(args.workDir);
@@ -70,6 +69,21 @@ TerminalPart::TerminalPart(TerminalPartConstruct args, QWidget* parent) : TTTerm
         this->setShellProgram(theLibsGlobal::searchInPath("man").first());
         this->setArgs({args.manPage});
         d->quitType = TerminalPartPrivate::QuitOnCleanExit;
+    } else if (args.shell != "") {
+        QStringList shellArgs = args.shell.split(" ");
+        QString shellProgram = shellArgs.takeFirst();
+        this->setArgs(shellArgs);
+        if (!shellProgram.startsWith("/")) {
+            QStringList availableApps = theLibsGlobal::searchInPath(shellProgram);
+            if (availableApps.count() > 0) {
+                shellProgram = availableApps.first();
+            } else {
+                this->setArgs({tr("theterminal: %1: command not found").arg(shellProgram)});
+                shellProgram = "echo";
+                d->quitType = TerminalPartPrivate::NeverQuit;
+            }
+        }
+        this->setShellProgram(shellProgram);
     }
 
     if (args.startShell) {
