@@ -154,8 +154,7 @@ void TerminalTabber::changeToTerminal(TerminalWidget *widget) {
 
     widget->setFocus();
     d->currentTerminal = widget;
-
-    //ui->actionCopy->setEnabled(widget->canCopy());
+    this->setFocusProxy(widget);
 }
 
 void TerminalTabber::changeToTerminal(int index) {
@@ -179,7 +178,8 @@ void TerminalTabber::closeAllTabs() {
 }
 
 void TerminalTabber::focusInEvent(QFocusEvent *event) {
-    emit gotFocus();
+    //Pass on focus to the current terminal
+    currentTerminal()->setFocus();
 }
 
 bool TerminalTabber::eventFilter(QObject *watched, QEvent *event) {

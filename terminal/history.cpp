@@ -3,7 +3,7 @@
 History::History(QObject *parent) : QObject(parent)
 {
     watcher = new QFileSystemWatcher();
-    connect(watcher, &QFileSystemWatcher::fileChanged, [=] {
+    connect(watcher, &QFileSystemWatcher::fileChanged, this, [=] {
         if (justSaved) {
             justSaved = false;
         } else {

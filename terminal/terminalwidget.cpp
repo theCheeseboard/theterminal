@@ -190,6 +190,7 @@ TerminalWidget::~TerminalWidget()
 
 void TerminalWidget::initializeAsLegacy(TerminalPart *terminal) {
     legacyTerminalPart = terminal;
+    this->setFocusProxy(terminal);
 
     QBoxLayout* layout = new QBoxLayout(QBoxLayout::TopToBottom);
     layout->addWidget(legacyTerminalPart);

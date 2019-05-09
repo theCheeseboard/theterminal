@@ -287,7 +287,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="252"/>
+        <location filename="../mainwindow.ui" line="250"/>
+        <source>Ctrl+Shift+S, -</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="258"/>
+        <source>Ctrl+Shift+S, \</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="255"/>
         <source>Split Horizontally</source>
         <translation type="unfinished"></translation>
     </message>
@@ -596,23 +606,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="346"/>
+        <location filename="../terminalwidget.cpp" line="347"/>
         <source>theterminal: %1: command not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="625"/>
+        <location filename="../terminalwidget.cpp" line="626"/>
         <source>Close this tab?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="626"/>
-        <location filename="../terminalwidget.cpp" line="631"/>
+        <location filename="../terminalwidget.cpp" line="627"/>
+        <location filename="../terminalwidget.cpp" line="632"/>
         <source>Closing this tab will also close %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="630"/>
+        <location filename="../terminalwidget.cpp" line="631"/>
         <source>Close tab?</source>
         <translation type="unfinished"></translation>
     </message>

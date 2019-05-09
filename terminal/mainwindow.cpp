@@ -195,44 +195,94 @@ void MainWindow::on_actionResetZoom_triggered()
 
 TerminalTabber* MainWindow::splitVertically() {
     //Create a new tabber
+    TerminalWidget* terminal = new TerminalWidget();
     TerminalTabber* tabber = newTabber();
-    tabber->addTab(new TerminalWidget());
+    tabber->addTab(terminal);
+    tabber->setFixedHeight(0);
 
+    int newHeight;
+
+    QSplitter* actingSplitter;
     QSplitter* splitter = qobject_cast<QSplitter*>(currentTabber()->parentWidget());
     int index = splitter->indexOf(currentTabber());
     if (splitter->orientation() == Qt::Vertical) {
         //Add the tabber to this splitter
         splitter->insertWidget(index + 1, tabber);
+        newHeight = splitter->height() / splitter->count();
+        actingSplitter = splitter;
     } else {
         //Create a vertical splitter and replace the widget
-        QSplitter* vSplitter = new QSplitter(Qt::Vertical);
-        QWidget* oldWidget = splitter->replaceWidget(index, vSplitter);
+        newHeight = splitter->widget(index)->height() / 2;
+        actingSplitter = new QSplitter(Qt::Vertical);
+        QWidget* oldWidget = splitter->replaceWidget(index, actingSplitter);
 
-        vSplitter->addWidget(oldWidget);
-        vSplitter->addWidget(tabber);
+        actingSplitter->addWidget(oldWidget);
+        actingSplitter->addWidget(tabber);
     }
+
+    tVariantAnimation* anim = new tVariantAnimation();
+    anim->setStartValue(0);
+    anim->setEndValue(newHeight);
+    anim->setDuration(500);
+    anim->setEasingCurve(QEasingCurve::OutCubic);
+    connect(anim, &tVariantAnimation::valueChanged, tabber, [=](QVariant value) {
+        tabber->setFixedHeight(value.toInt());
+    });
+    connect(anim, &tVariantAnimation::finished, tabber, [=] {
+        actingSplitter->setSizes(actingSplitter->sizes());
+        tabber->setFixedHeight(QWIDGETSIZE_MAX);
+        anim->deleteLater();
+    });
+    anim->start();
+
+    terminal->setFocus();
 
     return tabber;
 }
 
 TerminalTabber* MainWindow::splitHorizontally() {
     //Create a new tabber
+    TerminalWidget* terminal = new TerminalWidget();
     TerminalTabber* tabber = newTabber();
-    tabber->addTab(new TerminalWidget());
+    tabber->addTab(terminal);
+    tabber->setFixedWidth(0);
 
+    int newWidth;
+
+    QSplitter* actingSplitter;
     QSplitter* splitter = qobject_cast<QSplitter*>(currentTabber()->parentWidget());
     int index = splitter->indexOf(currentTabber());
     if (splitter->orientation() == Qt::Horizontal) {
         //Add the tabber to this splitter
         splitter->insertWidget(index + 1, tabber);
+        newWidth = splitter->width() / splitter->count();
+        actingSplitter = splitter;
     } else {
         //Create a horizontal splitter and replace the widget
-        QSplitter* hSplitter = new QSplitter(Qt::Horizontal);
-        QWidget* oldWidget = splitter->replaceWidget(index, hSplitter);
+        newWidth = splitter->widget(index)->width() / 2;
+        actingSplitter = new QSplitter(Qt::Horizontal);
+        QWidget* oldWidget = splitter->replaceWidget(index, actingSplitter);
 
-        hSplitter->addWidget(oldWidget);
-        hSplitter->addWidget(tabber);
+        actingSplitter->addWidget(oldWidget);
+        actingSplitter->addWidget(tabber);
     }
+
+    tVariantAnimation* anim = new tVariantAnimation();
+    anim->setStartValue(0);
+    anim->setEndValue(newWidth);
+    anim->setDuration(500);
+    anim->setEasingCurve(QEasingCurve::OutCubic);
+    connect(anim, &tVariantAnimation::valueChanged, tabber, [=](QVariant value) {
+        tabber->setFixedWidth(value.toInt());
+    });
+    connect(anim, &tVariantAnimation::finished, tabber, [=] {
+        actingSplitter->setSizes(actingSplitter->sizes());
+        tabber->setFixedWidth(QWIDGETSIZE_MAX);
+        anim->deleteLater();
+    });
+    anim->start();
+
+    terminal->setFocus();
 
     return tabber;
 }
@@ -261,6 +311,7 @@ TerminalTabber* MainWindow::newTabber() {
 
             if (nextSplitter != nullptr) {
                 d->currentTabber = qobject_cast<TerminalTabber*>(nextSplitter);
+                d->currentTabber->setFocus();
             }
         }
 
