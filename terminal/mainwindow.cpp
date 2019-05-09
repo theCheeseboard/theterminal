@@ -1,32 +1,34 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QSplitter>
+#include <QToolButton>
 #include <QShortcut>
 #include <ttoast.h>
+
+struct MainWindowPrivate {
+    QList<TerminalTabber*> tabbers;
+    TerminalTabber* currentTabber;
+
+    QToolButton *menuButton;
+    QSplitter* mainSplitter;
+};
 
 MainWindow::MainWindow(QString workDir, QString cmd, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    d = new MainWindowPrivate();
 
-#ifdef Q_OS_MAC
-    ui->tabFrame->setVisible(false);
-    tabBar = new QTabBar();
-    tabBar->setDocumentMode(true);
-    tabBar->setTabsClosable(true);
-    ui->centralWidget->layout()->addWidget(tabBar);
-
-    connect(tabBar, &QTabBar::currentChanged, [=](int index) {
-        if (index != -1) {
-            changeToTerminal(allTerminals.value(index));
-        }
-    });
-    connect(tabBar, &QTabBar::tabCloseRequested, [=](int index) {
-        allTerminals.value(index)->close();
-    });
-#else
+#ifndef Q_OS_MAC
     ui->menuBar->setVisible(false);
+
+    d->menuButton = new QToolButton();
+    d->menuButton->setIcon(QIcon::fromTheme("utilities-terminal"));
+    d->menuButton->setIconSize(QSize(24, 24) * theLibsGlobal::getDPIScaling());
+    d->menuButton->setPopupMode(QToolButton::InstantPopup);
+    d->menuButton->setAutoRaise(true);
 
     QMenu* menu = new QMenu();
     menu->addAction(ui->actionNew_Window);
@@ -40,18 +42,17 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget *parent) :
     menu->addAction(ui->actionZoomOut);
     menu->addAction(ui->actionResetZoom);
     menu->addAction(ui->actionGo_Full_Screen);
+    menu->addMenu(ui->menuSplit);
     menu->addSeparator();
     menu->addAction(ui->actionSettings);
     menu->addMenu(ui->menuHelp);
     menu->addSeparator();
     menu->addAction(ui->actionClose_Tab);
     menu->addAction(ui->actionExit);
-    ui->menuButton->setMenu(menu);
+    d->menuButton->setMenu(menu);
 #endif
 
-    this->addTerminal(workDir, cmd);
     this->resize(this->size() * theLibsGlobal::getDPIScaling());
-    ui->termStack->setCurrentAnimation(tStackedWidget::SlideHorizontal);
 
     //Make the background translucent in case the user wants the terminal to be translucent
     this->setAttribute(Qt::WA_NoSystemBackground);
@@ -59,11 +60,32 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget *parent) :
 
     QShortcut* fullscreenShortcut = new QShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F11), this);
     connect(fullscreenShortcut, &QShortcut::activated, this, &MainWindow::on_actionGo_Full_Screen_triggered);
+
+    //Create a new tabber
+    TerminalTabber* tabber = newTabber();
+    tabber->setMenuButton(d->menuButton);
+    d->tabbers.append(tabber);
+    d->currentTabber = tabber;
+
+    this->addTerminal(workDir, cmd);
+
+    d->mainSplitter = new QSplitter(Qt::Horizontal);
+    d->mainSplitter->addWidget(tabber);
+    this->centralWidget()->layout()->addWidget(d->mainSplitter);
 }
 
 MainWindow::~MainWindow()
 {
+    delete d;
     delete ui;
+}
+
+TerminalTabber* MainWindow::currentTabber() {
+    return d->currentTabber;
+}
+
+TerminalWidget* MainWindow::currentTerminal() {
+    return currentTabber()->currentTerminal();
 }
 
 void MainWindow::on_actionNew_Window_triggered()
@@ -84,12 +106,12 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionCopy_triggered()
 {
-    currentTerminal->copyClipboard();
+    currentTerminal()->copyClipboard();
 }
 
 void MainWindow::on_actionPaste_triggered()
 {
-    currentTerminal->pasteClipboard();
+    currentTerminal()->pasteClipboard();
 }
 
 void MainWindow::addTerminal(QString workDir, QString cmd) {
@@ -97,81 +119,7 @@ void MainWindow::addTerminal(QString workDir, QString cmd) {
 }
 
 void MainWindow::addTerminal(TerminalWidget* widget) {
-    allTerminals.append(widget);
-
-#ifndef Q_OS_MAC
-    QPushButton* button = new QPushButton();
-    button->setCheckable(true);
-    button->setAutoExclusive(true);
-    button->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    terminalButtons.insert(widget, button);
-#endif
-
-    connect(widget, &TerminalWidget::finished, [=]() {
-        int index = allTerminals.indexOf(widget);
-#ifdef Q_OS_MAC
-        tabBar->removeTab(index);
-#else
-        delete terminalButtons.value(widget);
-        terminalButtons.remove(widget);
-#endif
-        allTerminals.removeOne(widget);
-        ui->termStack->removeWidget(widget);
-        delete widget;
-
-        if (allTerminals.count() == 0) {
-            this->close();
-        } else {
-            if (index == 0) {
-                changeToTerminal(0);
-            } else {
-                changeToTerminal(index - 1);
-            }
-        }
-    });
-    connect(widget, &TerminalWidget::switchToThis, [=] {
-        changeToTerminal(widget);
-    });
-    connect(widget, &TerminalWidget::openNewTerminal, this, QOverload<TerminalWidget*>::of(&MainWindow::addTerminal));
-    /*connect(widget, &TerminalWidget::copyAvailable, [=](bool canCopy) {
-        if (currentTerminal == widget) {
-            ui->actionCopy->setEnabled(canCopy);
-        }
-    });*/
-
-#ifdef Q_OS_MAC
-    tabBar->addTab(tr("Terminal %1").arg(allTerminals.indexOf(widget) + 1));
-#else
-    button->setText(tr("Terminal %1").arg(allTerminals.indexOf(widget) + 1));
-    ui->tabFrame->layout()->addWidget(button);
-    ui->tabFrame->layout()->removeItem(ui->horizontalSpacer);
-    ui->tabFrame->layout()->addItem(ui->horizontalSpacer);
-    connect(button, &QPushButton::clicked, [=]() {
-        changeToTerminal(widget);
-    });
-#endif
-
-    ui->termStack->addWidget(widget);
-
-    changeToTerminal(widget);
-}
-
-void MainWindow::changeToTerminal(TerminalWidget *widget) {
-    ui->termStack->setCurrentWidget(widget);
-#ifdef Q_OS_MAC
-    tabBar->setCurrentIndex(allTerminals.indexOf(widget));
-#else
-    terminalButtons.value(widget)->setChecked(true);
-#endif
-
-    widget->setFocus();
-    currentTerminal = widget;
-
-    //ui->actionCopy->setEnabled(widget->canCopy());
-}
-
-void MainWindow::changeToTerminal(int index) {
-    changeToTerminal(allTerminals.at(index));
+    currentTabber()->addTab(widget);
 }
 
 void MainWindow::on_actionNew_Tab_triggered()
@@ -185,31 +133,21 @@ void MainWindow::closeTerminal(TerminalWidget *widget) {
 
 void MainWindow::on_actionClose_Tab_triggered()
 {
-    closeTerminal(currentTerminal);
+    closeTerminal(currentTerminal());
 }
 
 void MainWindow::on_actionFind_triggered()
 {
-    currentTerminal->toggleShowSearchBar();
+    currentTerminal()->toggleShowSearchBar();
 }
 
 void MainWindow::on_actionGo_Full_Screen_triggered()
 {
     if (this->isFullScreen()) {
         this->showNormal();
-
-#ifdef Q_OS_MAC
-        tabBar->setVisible(true);
-#else
-        ui->topFrame->setVisible(true);
-#endif
     } else {
         this->showFullScreen();
-#ifdef Q_OS_MAC
-        tabBar->setVisible(true);
-#else
-        ui->topFrame->setVisible(false);
-#endif
+
         tToast* toast = new tToast();
         toast->setTitle(tr("Full Screen"));
         toast->setText(tr("You're in full screen. You can exit full screen with SHIFT+F11."));
@@ -232,28 +170,147 @@ void MainWindow::on_actionSettings_triggered()
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
-    if (allTerminals.count() != 0) {
-        for (TerminalWidget* widget : allTerminals) {
-            widget->close();
-        }
-
-        if (allTerminals.count() != 0) {
-            event->ignore();
+    if (d->tabbers.count() != 0) {
+        event->ignore();
+        for (TerminalTabber* tabber : d->tabbers) {
+            tabber->closeAllTabs();
         }
     }
 }
 
 void MainWindow::on_actionZoomIn_triggered()
 {
-    currentTerminal->zoomIn();
+    currentTerminal()->zoomIn();
 }
 
 void MainWindow::on_actionZoomOut_triggered()
 {
-    currentTerminal->zoomOut();
+    currentTerminal()->zoomOut();
 }
 
 void MainWindow::on_actionResetZoom_triggered()
 {
-    currentTerminal->zoom100();
+    currentTerminal()->zoom100();
+}
+
+TerminalTabber* MainWindow::splitVertically() {
+    //Create a new tabber
+    TerminalTabber* tabber = newTabber();
+    tabber->addTab(new TerminalWidget());
+
+    QSplitter* splitter = qobject_cast<QSplitter*>(currentTabber()->parentWidget());
+    int index = splitter->indexOf(currentTabber());
+    if (splitter->orientation() == Qt::Vertical) {
+        //Add the tabber to this splitter
+        splitter->insertWidget(index + 1, tabber);
+    } else {
+        //Create a vertical splitter and replace the widget
+        QSplitter* vSplitter = new QSplitter(Qt::Vertical);
+        QWidget* oldWidget = splitter->replaceWidget(index, vSplitter);
+
+        vSplitter->addWidget(oldWidget);
+        vSplitter->addWidget(tabber);
+    }
+
+    return tabber;
+}
+
+TerminalTabber* MainWindow::splitHorizontally() {
+    //Create a new tabber
+    TerminalTabber* tabber = newTabber();
+    tabber->addTab(new TerminalWidget());
+
+    QSplitter* splitter = qobject_cast<QSplitter*>(currentTabber()->parentWidget());
+    int index = splitter->indexOf(currentTabber());
+    if (splitter->orientation() == Qt::Horizontal) {
+        //Add the tabber to this splitter
+        splitter->insertWidget(index + 1, tabber);
+    } else {
+        //Create a horizontal splitter and replace the widget
+        QSplitter* hSplitter = new QSplitter(Qt::Horizontal);
+        QWidget* oldWidget = splitter->replaceWidget(index, hSplitter);
+
+        hSplitter->addWidget(oldWidget);
+        hSplitter->addWidget(tabber);
+    }
+
+    return tabber;
+}
+
+TerminalTabber* MainWindow::newTabber() {
+    //Create a new tabber
+    TerminalTabber* tabber = new TerminalTabber();
+    connect(tabber, &TerminalTabber::done, this, [=] {
+        //Clean up splitters
+        QSplitter* parentSplitter = qobject_cast<QSplitter*>(tabber->parentWidget());
+        tabber->setParent(nullptr); //Remove the tabber from its parent
+
+        //Find the next available tabber to make the current tabber
+        {
+            QWidget* nextSplitter = parentSplitter;
+            while (qobject_cast<TerminalTabber*>(nextSplitter) == nullptr) {
+                QSplitter* splitter = qobject_cast<QSplitter*>(nextSplitter);
+                if (splitter->count() == 0) {
+                    //Bail out!
+                    nextSplitter = nullptr;
+                    break;
+                } else {
+                    nextSplitter = splitter->widget(0);
+                }
+            }
+
+            if (nextSplitter != nullptr) {
+                d->currentTabber = qobject_cast<TerminalTabber*>(nextSplitter);
+            }
+        }
+
+        while (parentSplitter->count() == 1 && parentSplitter != d->mainSplitter) {
+            //We can clean up this splitter
+            QWidget* cleanupWidget = parentSplitter->widget(0);
+            QSplitter* parentParentSplitter = qobject_cast<QSplitter*>(parentSplitter->parentWidget());
+            parentParentSplitter->replaceWidget(parentParentSplitter->indexOf(parentSplitter), cleanupWidget);
+
+            parentSplitter->deleteLater();
+            parentSplitter = parentParentSplitter;
+        }
+
+        //Ensure the top left splitter has the menu button
+        {
+            QWidget* nextSplitter = d->mainSplitter;
+            while (qobject_cast<TerminalTabber*>(nextSplitter) == nullptr) {
+                QSplitter* splitter = qobject_cast<QSplitter*>(nextSplitter);
+                if (splitter->count() == 0) {
+                    //Bail out!
+                    nextSplitter = nullptr;
+                    break;
+                } else {
+                    nextSplitter = splitter->widget(0);
+                }
+            }
+
+            if (nextSplitter != nullptr) {
+                qobject_cast<TerminalTabber*>(nextSplitter)->setMenuButton(d->menuButton);
+            }
+        }
+
+        d->tabbers.removeAll(tabber);
+        if (d->tabbers.count() == 0) {
+            QTimer::singleShot(0, this, &MainWindow::close);
+        }
+    });
+    connect(tabber, &TerminalTabber::gotFocus, this, [=] {
+        d->currentTabber = tabber;
+    });
+    d->tabbers.append(tabber);
+    return tabber;
+}
+
+void MainWindow::on_actionSplitVertically_triggered()
+{
+    this->splitVertically();
+}
+
+void MainWindow::on_actionSplitHorizontally_triggered()
+{
+    this->splitHorizontally();
 }

@@ -38,6 +38,7 @@ SOURCES += main.cpp\
     nativeeventfilter.cpp \
     settingswindow.cpp \
     terminalpart.cpp \
+    terminaltabber.cpp \
     terminalwidget.cpp \
     commandpart.cpp \
     graphicalParts/lscommand.cpp \
@@ -56,6 +57,7 @@ HEADERS  += mainwindow.h \
     nativeeventfilter.h \
     settingswindow.h \
     terminalpart.h \
+    terminaltabber.h \
     terminalwidget.h \
     commandpart.h \
     graphicalParts/lscommand.h \
@@ -72,6 +74,7 @@ unix:!macx {
 FORMS    += mainwindow.ui \
     about.ui \
     settingswindow.ui \
+    terminaltabber.ui \
     terminalwidget.ui \
     commandpart.ui \
     graphicalParts/lscommand.ui \

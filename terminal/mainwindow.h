@@ -7,6 +7,7 @@
 
 #include <QMainWindow>
 #include <QPushButton>
+#include "terminaltabber.h"
 #include "terminalwidget.h"
 #include "about.h"
 #include "settingswindow.h"
@@ -15,57 +16,60 @@ namespace Ui {
 class MainWindow;
 }
 
+struct MainWindowPrivate;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-public:
-    explicit MainWindow(QString workDir = "", QString cmd = "", QWidget *parent = 0);
-    ~MainWindow();
+    public:
+        explicit MainWindow(QString workDir = "", QString cmd = "", QWidget *parent = 0);
+        ~MainWindow();
 
-public slots:
-    void on_actionNew_Window_triggered();
-    void on_actionExit_triggered();
-    void on_actionCopy_triggered();
-    void on_actionPaste_triggered();
+    public slots:
+        void on_actionNew_Window_triggered();
+        void on_actionExit_triggered();
+        void on_actionCopy_triggered();
+        void on_actionPaste_triggered();
 
-    void addTerminal(QString workDir = "", QString cmd = "");
-    void addTerminal(TerminalWidget* widget);
-    void changeToTerminal(TerminalWidget* widget);
-    void changeToTerminal(int index);
-    void closeTerminal(TerminalWidget* widget);
+        void addTerminal(QString workDir = "", QString cmd = "");
+        void addTerminal(TerminalWidget* widget);
+        void closeTerminal(TerminalWidget* widget);
 
-private slots:
-    void on_actionNew_Tab_triggered();
+        TerminalTabber* splitVertically();
+        TerminalTabber* splitHorizontally();
 
-    void on_actionClose_Tab_triggered();
+    private slots:
+        void on_actionNew_Tab_triggered();
 
-    void on_actionFind_triggered();
+        void on_actionClose_Tab_triggered();
 
-    void on_actionGo_Full_Screen_triggered();
+        void on_actionFind_triggered();
 
-    void on_actionAbout_triggered();
+        void on_actionGo_Full_Screen_triggered();
 
-    void on_actionSettings_triggered();
+        void on_actionAbout_triggered();
 
-    void on_actionZoomIn_triggered();
+        void on_actionSettings_triggered();
 
-    void on_actionZoomOut_triggered();
+        void on_actionZoomIn_triggered();
 
-    void on_actionResetZoom_triggered();
+        void on_actionZoomOut_triggered();
+
+        void on_actionResetZoom_triggered();
+
+        void on_actionSplitVertically_triggered();
+
+        void on_actionSplitHorizontally_triggered();
 
     private:
-    Ui::MainWindow *ui;
+        Ui::MainWindow *ui;
+        MainWindowPrivate* d;
 
-    QList<TerminalWidget*> allTerminals;
-    TerminalWidget* currentTerminal;
-    void closeEvent(QCloseEvent* event);
+        void closeEvent(QCloseEvent* event);
+        TerminalTabber* currentTabber();
+        TerminalWidget* currentTerminal();
 
-#ifdef Q_OS_MAC
-    QTabBar* tabBar;
-#else
-    QMap<TerminalWidget*, QPushButton*> terminalButtons;
-#endif
+        TerminalTabber* newTabber();
 };
 
 #endif // MAINWINDOW_H
