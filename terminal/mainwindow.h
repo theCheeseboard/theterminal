@@ -61,6 +61,10 @@ class MainWindow : public QMainWindow
 
         void on_actionSplitHorizontally_triggered();
 
+        void on_actionFileBug_triggered();
+
+        void on_actionSources_triggered();
+
     private:
         Ui::MainWindow *ui;
         MainWindowPrivate* d;

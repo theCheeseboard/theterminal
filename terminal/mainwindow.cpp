@@ -4,6 +4,7 @@
 #include <QSplitter>
 #include <QToolButton>
 #include <QShortcut>
+#include <QDesktopServices>
 #include <ttoast.h>
 
 struct MainWindowPrivate {
@@ -363,4 +364,14 @@ void MainWindow::on_actionSplitVertically_triggered()
 void MainWindow::on_actionSplitHorizontally_triggered()
 {
     this->splitHorizontally();
+}
+
+void MainWindow::on_actionFileBug_triggered()
+{
+    QDesktopServices::openUrl(QUrl("https://github.com/vicr123/theslate/issues"));
+}
+
+void MainWindow::on_actionSources_triggered()
+{
+    QDesktopServices::openUrl(QUrl("https://github.com/vicr123/theslate"));
 }

@@ -162,147 +162,157 @@
         <translation>Trợ giúp</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="108"/>
+        <location filename="../mainwindow.ui" line="111"/>
         <source>&amp;New Window</source>
         <translation>&amp;Cửa sổ mới</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="111"/>
+        <location filename="../mainwindow.ui" line="114"/>
         <source>Ctrl+Shift+N</source>
         <translation>Ctrl+Shift+N</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="120"/>
+        <location filename="../mainwindow.ui" line="123"/>
         <source>&amp;Exit</source>
         <translation>&amp;Thoát</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="129"/>
+        <location filename="../mainwindow.ui" line="132"/>
         <source>&amp;Copy</source>
         <translation>&amp;Chép</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="132"/>
+        <location filename="../mainwindow.ui" line="135"/>
         <source>Ctrl+Shift+C</source>
         <translation>Ctrl+Shift+C</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="141"/>
+        <location filename="../mainwindow.ui" line="144"/>
         <source>&amp;Paste</source>
         <translation>&amp;Dán</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="144"/>
+        <location filename="../mainwindow.ui" line="147"/>
         <source>Ctrl+Shift+V</source>
         <translation>Ctrl+Shift+V</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="153"/>
+        <location filename="../mainwindow.ui" line="156"/>
         <source>Ne&amp;w Tab</source>
         <translation>&amp;Tab mới</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="156"/>
+        <location filename="../mainwindow.ui" line="159"/>
         <source>Ctrl+Shift+T</source>
         <translation>Ctrl+Shift+T</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="165"/>
+        <location filename="../mainwindow.ui" line="168"/>
         <source>&amp;Close Tab</source>
         <translation>Đó&amp;ng tab</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="168"/>
+        <location filename="../mainwindow.ui" line="171"/>
         <source>Ctrl+Shift+W</source>
         <translation>Ctrl+Shift+W</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="177"/>
+        <location filename="../mainwindow.ui" line="180"/>
         <source>&amp;Find...</source>
         <translation>&amp;Tìm...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="180"/>
+        <location filename="../mainwindow.ui" line="183"/>
         <source>Ctrl+Shift+F</source>
         <translation type="unfinished">Ctrl+Shift+F</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="189"/>
+        <location filename="../mainwindow.ui" line="192"/>
         <source>&amp;Go Full Screen</source>
         <translation>&amp;Chuyển sang toàn màn hình</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="198"/>
+        <location filename="../mainwindow.ui" line="201"/>
         <source>&amp;About</source>
         <translation>&amp;Giới thiệu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="207"/>
+        <location filename="../mainwindow.ui" line="210"/>
         <source>&amp;Settings</source>
         <translation>&amp;Cài đặt</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="210"/>
+        <location filename="../mainwindow.ui" line="213"/>
         <source>Ctrl+,</source>
         <translation>Ctrl+,</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="219"/>
+        <location filename="../mainwindow.ui" line="222"/>
         <source>Zoom In</source>
         <translation>Phóng to</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="222"/>
+        <location filename="../mainwindow.ui" line="225"/>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="231"/>
+        <location filename="../mainwindow.ui" line="234"/>
         <source>Zoom Out</source>
         <translation>Thu nhỏ</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="234"/>
+        <location filename="../mainwindow.ui" line="237"/>
         <source>Ctrl+-</source>
         <translation>Ctrl+-</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="239"/>
+        <location filename="../mainwindow.ui" line="242"/>
         <source>Reset Zoom</source>
         <translation>Cỡ thường</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="242"/>
+        <location filename="../mainwindow.ui" line="245"/>
         <source>Ctrl+0</source>
         <translation>Ctrl+0</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="247"/>
+        <location filename="../mainwindow.ui" line="250"/>
         <source>Split Vertically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="250"/>
+        <location filename="../mainwindow.ui" line="253"/>
         <source>Ctrl+Shift+S, -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="258"/>
+        <location filename="../mainwindow.ui" line="261"/>
         <source>Ctrl+Shift+S, \</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="255"/>
+        <location filename="../mainwindow.ui" line="269"/>
+        <source>File Bug</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="277"/>
+        <source>Sources</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="258"/>
         <source>Split Horizontally</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="151"/>
+        <location filename="../mainwindow.cpp" line="152"/>
         <source>Full Screen</source>
         <translation>Toàn màn hình</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="152"/>
+        <location filename="../mainwindow.cpp" line="153"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
         <translation>Bạn trong chế độ toàn màn hình. Bạn có thể thoát chế độ toàn màn hình với SHIFT+F11</translation>
     </message>

@@ -16,23 +16,14 @@ if [ $STAGE = "script" ]; then
     make
     sudo make install INSTALL_ROOT=/
     cd ..
-    mkdir lxqt-build-tools
-    cd lxqt-build-tools
-    git clone https://github.com/lxqt/lxqt-build-tools.git
-    mkdir build
-    cd build
-    cmake ../lxqt-build-tools -DCMAKE_INSTALL_PREFIX=/usr
-    make
-    sudo make install DESTDIR=/
-    cd ../../
     mkdir tttermwidget
     cd tttermwidget
     git clone https://github.com/vicr123/tttermwidget.git
     mkdir build
     cd build
-    cmake ../tttermwidget -DCMAKE_INSTALL_PREFIX=/usr -DUSE_QT5=true
+    qmake ../tttermwidget.pro
     make
-    sudo make install DESTDIR=/
+    sudo make install INSTALL_ROOT=/
     cd ../../
     qmake
     make

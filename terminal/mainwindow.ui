@@ -14,7 +14,7 @@
    <string>theTerminal</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="utilities-terminal" resource="icons.qrc">
+   <iconset theme="utilities-terminal">
     <normaloff>:/icons/utilities-terminal.svg</normaloff>:/icons/utilities-terminal.svg</iconset>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
@@ -92,6 +92,9 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionFileBug"/>
+    <addaction name="actionSources"/>
+    <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuFile"/>
@@ -258,10 +261,24 @@
     <string>Ctrl+Shift+S, \</string>
    </property>
   </action>
+  <action name="actionFileBug">
+   <property name="icon">
+    <iconset theme="tools-report-bug"/>
+   </property>
+   <property name="text">
+    <string>File Bug</string>
+   </property>
+  </action>
+  <action name="actionSources">
+   <property name="icon">
+    <iconset theme="commit"/>
+   </property>
+   <property name="text">
+    <string>Sources</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
