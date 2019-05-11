@@ -22,7 +22,7 @@
       </font>
      </property>
      <property name="text">
-      <string>theTerminal 2.0</string>
+      <string>theTerminal 3.0</string>
      </property>
     </widget>
    </item>
@@ -52,19 +52,6 @@
       <string>Copyright (c) Victor Tran 2018. Licensed under the terms of the GNU General Public License, version 3 or later.</string>
      </property>
      <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uses qtermwidget from &lt;a href=&quot;https://github.com/lxde/qtermwidget&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;https://github.com/lxde/qtermwidget&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="openExternalLinks">
       <bool>true</bool>
      </property>
     </widget>

@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../about.ui" line="25"/>
-        <source>theTerminal 2.0</source>
+        <source>theTerminal 3.0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -24,12 +24,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../about.ui" line="62"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uses qtermwidget from &lt;a href=&quot;https://github.com/lxde/qtermwidget&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;https://github.com/lxde/qtermwidget&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../about.ui" line="90"/>
+        <location filename="../about.ui" line="77"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
