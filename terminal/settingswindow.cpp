@@ -6,6 +6,8 @@
 #include "terminalcontroller.h"
 #include <QScroller>
 
+#include "models/colorschemeselectiondelegate.h"
+
 extern bool capturingKeyPress;
 extern NativeEventFilter* filter;
 
@@ -64,11 +66,12 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
             break;
     }
 
+    ui->coloursComboBox->setItemDelegate(new ColorSchemeSelectionDelegate());
     ui->coloursComboBox->blockSignals(true);
     QDir systemColors("/usr/share/tttermwidget/color-schemes");
     for (QFileInfo col : systemColors.entryInfoList()) {
         if (col.suffix() == "colorscheme") {
-            ui->coloursComboBox->addItem(col.baseName());
+            ui->coloursComboBox->addItem(col.baseName(), col.filePath());
             if (col.baseName() == settings.value("theme/scheme", "Linux").toString()) {
                 ui->coloursComboBox->setCurrentIndex(ui->coloursComboBox->count() - 1);
             }

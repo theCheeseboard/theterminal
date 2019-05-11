@@ -174,7 +174,7 @@
      <item>
       <widget class="QStackedWidget" name="pages">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="page">
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -934,8 +934,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>432</width>
-              <height>385</height>
+              <width>326</width>
+              <height>164</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">

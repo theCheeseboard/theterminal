@@ -3,6 +3,7 @@
 #include "terminalcontroller.h"
 #include <QFontDatabase>
 #include <QMenu>
+#include <QStack>
 #include <tsystemsound.h>
 #include <tnotification.h>
 #include <tpopover.h>
@@ -255,7 +256,7 @@ void TerminalPart::tryClose() {
             return;
         }*/
 
-        BusyDialog* dialog = new BusyDialog(QStringList());
+        BusyDialog* dialog = new BusyDialog(this->runningProcesses());
         tPopover* popover = new tPopover(dialog);
         popover->setPopoverWidth(300 * theLibsGlobal::getDPIScaling());
         connect(popover, &tPopover::dismissed, dialog, &BusyDialog::deleteLater);

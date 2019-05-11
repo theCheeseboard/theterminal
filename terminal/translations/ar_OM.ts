@@ -49,7 +49,7 @@
     <message>
         <location filename="../dialogs/busydialog.ui" line="116"/>
         <source>&lt;p&gt;This terminal is busy with the following processes.&lt;/p&gt;
-&lt;p&gt;&lt;b&gt;Closing this terminal will forcefully terminate these processes.&lt;/b&gt;&lt;/p&gt;</source>
+&lt;p&gt;&lt;b&gt;Closing this terminal will forcibly terminate these processes.&lt;/b&gt;&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -302,12 +302,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="152"/>
+        <location filename="../mainwindow.cpp" line="151"/>
         <source>Full Screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="153"/>
+        <location filename="../mainwindow.cpp" line="152"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -499,52 +499,52 @@
 <context>
     <name>TerminalPart</name>
     <message>
-        <location filename="../terminalpart.cpp" line="130"/>
+        <location filename="../terminalpart.cpp" line="131"/>
         <source>Bell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="131"/>
+        <location filename="../terminalpart.cpp" line="132"/>
         <source>A bell was sounded!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="168"/>
+        <location filename="../terminalpart.cpp" line="169"/>
         <source>For text &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="169"/>
+        <location filename="../terminalpart.cpp" line="170"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="174"/>
+        <location filename="../terminalpart.cpp" line="175"/>
         <source>Open man page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="182"/>
+        <location filename="../terminalpart.cpp" line="183"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="181"/>
+        <location filename="../terminalpart.cpp" line="182"/>
         <source>For this terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="81"/>
+        <location filename="../terminalpart.cpp" line="82"/>
         <source>theterminal: %1: command not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="185"/>
+        <location filename="../terminalpart.cpp" line="186"/>
         <source>Find</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="188"/>
+        <location filename="../terminalpart.cpp" line="189"/>
         <source>Close Terminal</source>
         <translation type="unfinished"></translation>
     </message>

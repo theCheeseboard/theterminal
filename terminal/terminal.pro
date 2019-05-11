@@ -9,7 +9,7 @@ QT       += core gui thelib
 CONFIG   += c++14
 
 unix:!macx {
-    QT += x11extras
+    QT += x11extras tttermwidget
     LIBS += -lX11
 
     blueprint {
@@ -29,12 +29,11 @@ macx {
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TEMPLATE = app
-LIBS += -ltttermwidget
-
 
 SOURCES += main.cpp\
         mainwindow.cpp \
     about.cpp \
+    models/colorschemeselectiondelegate.cpp \
     nativeeventfilter.cpp \
     settingswindow.cpp \
     terminalpart.cpp \
@@ -54,6 +53,7 @@ unix:!macx {
 
 HEADERS  += mainwindow.h \
     about.h \
+    models/colorschemeselectiondelegate.h \
     nativeeventfilter.h \
     settingswindow.h \
     terminalpart.h \

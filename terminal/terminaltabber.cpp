@@ -170,10 +170,8 @@ void TerminalTabber::setMenuButton(QWidget *menuButton) {
 }
 
 void TerminalTabber::closeAllTabs() {
-    if (d->allTerminals.count() != 0) {
-        for (TerminalWidget* widget : d->allTerminals) {
-            widget->close();
-        }
+    for (TerminalWidget* widget : d->allTerminals) {
+        widget->close();
     }
 }
 

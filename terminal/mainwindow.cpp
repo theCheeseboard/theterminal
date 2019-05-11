@@ -64,7 +64,6 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget *parent) :
     //Create a new tabber
     TerminalTabber* tabber = newTabber();
     tabber->setMenuButton(d->menuButton);
-    d->tabbers.append(tabber);
     d->currentTabber = tabber;
 
     this->addTerminal(workDir, cmd);
