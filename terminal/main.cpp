@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include <tapplication.h>
 #include <QCommandLineParser>
+#include <tcsdtools.h>
 
 #ifndef Q_OS_MAC
 #include "dropdown.h"
@@ -22,6 +23,9 @@ int main(int argc, char *argv[])
     a.setApplicationName("theTerminal");
     a.setShareDir("/usr/share/theterminal/");
     a.installTranslators();
+
+    QSettings settings;
+    tCsdGlobal::setCsdsEnabled(!settings.value("appearance/useSsds", false).toBool());
 
     QCommandLineParser parser;
     parser.addOptions({

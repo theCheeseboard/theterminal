@@ -5,6 +5,7 @@
 #include <QDir>
 #include "terminalcontroller.h"
 #include <QScroller>
+#include <tcsdtools.h>
 
 #include "models/colorschemeselectiondelegate.h"
 
@@ -37,6 +38,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     ui->bellInactiveNotificationSwitch->setChecked(settings.value("bell/bellInactiveNotification", true).toBool());
     ui->opacitySlider->setValue(settings.value("theme/opacity", 100).toInt());
     ui->scrollKeystrokeSwitch->setChecked(settings.value("scrolling/scrollOnKeystroke", true).toBool());
+    ui->systemTitlebarsCheckbox->setChecked(settings.value("appearance/useSsds", false).toBool());
 
     int scrollback = settings.value("term/scrollback", -1).toInt();
     if (scrollback == -1) {
@@ -243,4 +245,10 @@ void SettingsWindow::on_scrollKeystrokeSwitch_toggled(bool checked)
 {
     settings.setValue("scrolling/scrollOnKeystroke", checked);
     TerminalController::updateTerminalStyles();
+}
+
+void SettingsWindow::on_systemTitlebarsCheckbox_toggled(bool checked)
+{
+    settings.setValue("appearance/useSsds", checked);
+    tCsdGlobal::setCsdsEnabled(!checked);
 }

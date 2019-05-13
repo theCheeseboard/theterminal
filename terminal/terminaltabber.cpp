@@ -22,8 +22,17 @@
 
 #include <QStack>
 #include "terminalwidget.h"
+#include <tcsdtools.h>
+
+#ifdef T_OS_UNIX_NOT_MAC
+#include <QX11Info>
+#include <X11/Xlib.h>
+
+#undef FocusIn
+#endif
 
 struct TerminalTabberPrivate {
+    tCsdTools csd;
     QList<TerminalWidget*> allTerminals;
     TerminalWidget* currentTerminal;
 
@@ -40,6 +49,11 @@ TerminalTabber::TerminalTabber(QWidget *parent) :
 {
     ui->setupUi(this);
     d = new TerminalTabberPrivate();
+
+    d->csd.installMoveAction(ui->topFrame);
+    if (tCsdGlobal::windowControlsEdge() == tCsdGlobal::Left) {
+        static_cast<QBoxLayout*>(ui->csdWidget->layout())->setDirection(QBoxLayout::RightToLeft);
+    }
 
 #ifdef Q_OS_MAC
     ui->tabFrame->setVisible(false);
@@ -167,6 +181,14 @@ void TerminalTabber::setMenuButton(QWidget *menuButton) {
     }
 
     static_cast<QBoxLayout*>(ui->topFrame->layout())->insertWidget(0, menuButton);
+}
+
+void TerminalTabber::setCsdButtons(QWidget* csdButtons) {
+    if (csdButtons->parentWidget() != nullptr) {
+        csdButtons->parentWidget()->layout()->removeWidget(csdButtons);
+    }
+
+    static_cast<QBoxLayout*>(ui->csdWidget->layout())->addWidget(csdButtons);
 }
 
 void TerminalTabber::closeAllTabs() {

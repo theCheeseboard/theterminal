@@ -5,13 +5,16 @@
 #include <QToolButton>
 #include <QShortcut>
 #include <QDesktopServices>
+#include <tcsdtools.h>
 #include <ttoast.h>
 
 struct MainWindowPrivate {
+    tCsdTools csd;
     QList<TerminalTabber*> tabbers;
     TerminalTabber* currentTabber;
 
     QToolButton *menuButton;
+    QWidget* csdButtons;
     QSplitter* mainSplitter;
 };
 
@@ -21,6 +24,9 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget *parent) :
 {
     ui->setupUi(this);
     d = new MainWindowPrivate();
+
+    d->csd.installResizeAction(this);
+    d->csdButtons = d->csd.csdBoxForWidget(this);
 
 #ifndef Q_OS_MAC
     ui->menuBar->setVisible(false);
@@ -65,6 +71,7 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget *parent) :
     //Create a new tabber
     TerminalTabber* tabber = newTabber();
     tabber->setMenuButton(d->menuButton);
+    tabber->setCsdButtons(d->csdButtons);
     d->currentTabber = tabber;
 
     this->addTerminal(workDir, cmd);
@@ -237,6 +244,8 @@ TerminalTabber* MainWindow::splitVertically() {
 
     terminal->setFocus();
 
+    moveTabberButtons();
+
     return tabber;
 }
 
@@ -284,6 +293,8 @@ TerminalTabber* MainWindow::splitHorizontally() {
 
     terminal->setFocus();
 
+    moveTabberButtons();
+
     return tabber;
 }
 
@@ -325,24 +336,7 @@ TerminalTabber* MainWindow::newTabber() {
             parentSplitter = parentParentSplitter;
         }
 
-        //Ensure the top left splitter has the menu button
-        {
-            QWidget* nextSplitter = d->mainSplitter;
-            while (qobject_cast<TerminalTabber*>(nextSplitter) == nullptr) {
-                QSplitter* splitter = qobject_cast<QSplitter*>(nextSplitter);
-                if (splitter->count() == 0) {
-                    //Bail out!
-                    nextSplitter = nullptr;
-                    break;
-                } else {
-                    nextSplitter = splitter->widget(0);
-                }
-            }
-
-            if (nextSplitter != nullptr) {
-                qobject_cast<TerminalTabber*>(nextSplitter)->setMenuButton(d->menuButton);
-            }
-        }
+        moveTabberButtons();
 
         d->tabbers.removeAll(tabber);
         if (d->tabbers.count() == 0) {
@@ -374,4 +368,50 @@ void MainWindow::on_actionFileBug_triggered()
 void MainWindow::on_actionSources_triggered()
 {
     QDesktopServices::openUrl(QUrl("https://github.com/vicr123/theslate"));
+}
+
+void MainWindow::moveTabberButtons() {
+    //Ensure the top left splitter has the menu button
+    {
+        QWidget* nextSplitter = d->mainSplitter;
+        while (qobject_cast<TerminalTabber*>(nextSplitter) == nullptr) {
+            QSplitter* splitter = qobject_cast<QSplitter*>(nextSplitter);
+            if (splitter->count() == 0) {
+                //Bail out!
+                nextSplitter = nullptr;
+                break;
+            } else {
+                nextSplitter = splitter->widget(0);
+            }
+        }
+
+        if (nextSplitter != nullptr) {
+            qobject_cast<TerminalTabber*>(nextSplitter)->setMenuButton(d->menuButton);
+            //If CSDs are on the left, make this the CSD splitter too
+            if (tCsdGlobal::windowControlsEdge() == tCsdGlobal::Left) qobject_cast<TerminalTabber*>(nextSplitter)->setCsdButtons(d->csdButtons);
+        }
+    }
+
+    //Ensure the top right splitter has the CSD buttons if CSDs are on the right
+    if (tCsdGlobal::windowControlsEdge() == tCsdGlobal::Right) {
+        QWidget* nextSplitter = d->mainSplitter;
+        while (qobject_cast<TerminalTabber*>(nextSplitter) == nullptr) {
+            QSplitter* splitter = qobject_cast<QSplitter*>(nextSplitter);
+            if (splitter->count() == 0) {
+                //Bail out!
+                nextSplitter = nullptr;
+                break;
+            } else {
+                if (splitter->orientation() == Qt::Horizontal) {
+                    nextSplitter = splitter->widget(splitter->count() - 1);
+                } else {
+                    nextSplitter = splitter->widget(0);
+                }
+            }
+        }
+
+        if (nextSplitter != nullptr) {
+            qobject_cast<TerminalTabber*>(nextSplitter)->setCsdButtons(d->csdButtons);
+        }
+    }
 }

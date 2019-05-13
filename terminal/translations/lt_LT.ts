@@ -307,12 +307,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="152"/>
+        <location filename="../mainwindow.cpp" line="159"/>
         <source>Full Screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="153"/>
+        <location filename="../mainwindow.cpp" line="160"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -339,13 +339,13 @@
     </message>
     <message>
         <location filename="../settingswindow.ui" line="138"/>
-        <location filename="../settingswindow.ui" line="663"/>
+        <location filename="../settingswindow.ui" line="715"/>
         <source>Scrolling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="143"/>
-        <location filename="../settingswindow.ui" line="910"/>
+        <location filename="../settingswindow.ui" line="962"/>
         <source>Bells</source>
         <translation type="unfinished"></translation>
     </message>
@@ -405,98 +405,108 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="599"/>
+        <location filename="../settingswindow.ui" line="586"/>
         <source>COLOURS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="616"/>
+        <location filename="../settingswindow.ui" line="603"/>
         <source>Opacity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="736"/>
-        <source>Limit Scrollback to</source>
+        <location filename="../settingswindow.ui" line="658"/>
+        <source>TITLEBAR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="755"/>
-        <source> lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settingswindow.ui" line="768"/>
-        <source>No Scrollback</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settingswindow.ui" line="775"/>
-        <source>Infinite Scrollback</source>
+        <location filename="../settingswindow.ui" line="665"/>
+        <source>Use System Titlebars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="788"/>
-        <source>SCROLLBACK</source>
+        <source>Limit Scrollback to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settingswindow.ui" line="807"/>
+        <source> lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settingswindow.ui" line="820"/>
+        <source>No Scrollback</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="827"/>
+        <source>Infinite Scrollback</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settingswindow.ui" line="840"/>
+        <source>SCROLLBACK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settingswindow.ui" line="879"/>
         <source>ScrollKeystrokeSwitch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="834"/>
+        <location filename="../settingswindow.ui" line="886"/>
         <source>Scroll down on keystroke</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="860"/>
+        <location filename="../settingswindow.ui" line="912"/>
         <source>SCROLLING DOWN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="984"/>
-        <location filename="../settingswindow.ui" line="1056"/>
+        <location filename="../settingswindow.ui" line="1036"/>
+        <location filename="../settingswindow.ui" line="1108"/>
         <source>Play Sound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1010"/>
+        <location filename="../settingswindow.ui" line="1062"/>
         <source>ACTIVE TERMINAL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1063"/>
+        <location filename="../settingswindow.ui" line="1115"/>
         <source>Send Notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1070"/>
+        <location filename="../settingswindow.ui" line="1122"/>
         <source>BellInactiveSoundSwitch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1096"/>
+        <location filename="../settingswindow.ui" line="1148"/>
         <source>INACTIVE TERMINAL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1146"/>
+        <location filename="../settingswindow.ui" line="1198"/>
         <source>Drop Down Terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1192"/>
+        <location filename="../settingswindow.ui" line="1244"/>
         <source>F12</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1202"/>
+        <location filename="../settingswindow.ui" line="1254"/>
         <source>Keyboard Binding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1209"/>
+        <location filename="../settingswindow.ui" line="1261"/>
         <source>The Drop Down Terminal is not available on macOS.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -570,8 +580,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminaltabber.cpp" line="127"/>
-        <location filename="../terminaltabber.cpp" line="129"/>
+        <location filename="../terminaltabber.cpp" line="141"/>
+        <location filename="../terminaltabber.cpp" line="143"/>
         <source>Terminal %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -635,27 +645,27 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="28"/>
+        <location filename="../main.cpp" line="32"/>
         <source>workdir</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="28"/>
+        <location filename="../main.cpp" line="32"/>
         <source>Set working directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="29"/>
+        <location filename="../main.cpp" line="33"/>
         <source>Starts theTerminal in dropdown mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="30"/>
+        <location filename="../main.cpp" line="34"/>
         <source>Command to execute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="30"/>
+        <location filename="../main.cpp" line="34"/>
         <source>cmd</source>
         <translation type="unfinished"></translation>
     </message>
