@@ -21,8 +21,8 @@ unix:!macx {
 }
 
 macx {
-    INCLUDEPATH += /usr/local/include /usr/local/include/the-libs
-    LIBS += -L/usr/local/lib/ -lthe-libs
+    LIBS += -F/usr/local/Frameworks/ -framework tttermwidget
+    INCLUDEPATH += /usr/local/include /usr/local/include/the-libs /usr/local/Frameworks/tttermwidget.framework/Headers
     TARGET = theTerminal
 }
 
@@ -278,6 +278,14 @@ unix {
     }
 
     INSTALLS += target appentry
+}
+
+macx {
+    tttermwidget.files = /usr/local/Frameworks/tttermwidget.framework
+    tttermwidget.path = Contents/Frameworks
+
+    QMAKE_BUNDLE_DATA += tttermwidget
+    QMAKE_POST_LINK += $$quote(install_name_tool -change tttermwidget.framework/Versions/1/tttermwidget @executable_path/../Frameworks/tttermwidget.framework/Versions/1/tttermwidget $${OUT_PWD}/theTerminal.app/Contents/MacOS/theTerminal)
 }
 
 DISTFILES += \

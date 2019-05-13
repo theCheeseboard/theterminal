@@ -5,6 +5,7 @@
 #include <QDir>
 #include "terminalcontroller.h"
 #include <QScroller>
+#include <tapplication.h>
 #include <tcsdtools.h>
 
 #include "models/colorschemeselectiondelegate.h"
@@ -68,9 +69,15 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
             break;
     }
 
+    QString systemColorsDir;
+#ifdef Q_OS_MAC
+    systemColorsDir = tApplication::macOSBundlePath() + "/Contents/Frameworks/tttermwidget.framework/Resources/color-schemes";
+#else
+    systemColorsDir = "/usr/share/tttermwidget/color-schemes"
+#endif
     ui->coloursComboBox->setItemDelegate(new ColorSchemeSelectionDelegate());
     ui->coloursComboBox->blockSignals(true);
-    QDir systemColors("/usr/share/tttermwidget/color-schemes");
+    QDir systemColors(systemColorsDir);
     for (QFileInfo col : systemColors.entryInfoList()) {
         if (col.suffix() == "colorscheme") {
             ui->coloursComboBox->addItem(col.baseName(), col.filePath());

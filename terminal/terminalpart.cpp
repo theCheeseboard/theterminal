@@ -7,6 +7,7 @@
 #include <tsystemsound.h>
 #include <tnotification.h>
 #include <tpopover.h>
+#include <tapplication.h>
 
 #include "dialogs/busydialog.h"
 
@@ -224,7 +225,13 @@ void TerminalPart::zoom100() {
 }
 
 void TerminalPart::reloadThemeSettings() {
-    this->setColorScheme(QString("/usr/share/tttermwidget/color-schemes/%1.colorscheme").arg(d->settings.value("theme/scheme", "Linux").toString()));
+    QString colorThemePath;
+#ifdef Q_OS_MAC
+    colorThemePath = tApplication::macOSBundlePath() + "/Contents/Frameworks/tttermwidget.framework/Resources/color-schemes/";
+#else
+    colorThemePath = "/usr/share/tttermwidget/color-schemes/";
+#endif
+    this->setColorScheme(QString(colorThemePath + "%1.colorscheme").arg(d->settings.value("theme/scheme", "Linux").toString()));
     this->setBlinkingCursor(d->settings.value("theme/blinkCursor", true).toBool());
 
     d->defaultFont.setFamily(d->settings.value("theme/fontFamily", QFontDatabase::systemFont(QFontDatabase::FixedFont).family()).toString());

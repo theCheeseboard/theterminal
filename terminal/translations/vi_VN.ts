@@ -307,12 +307,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="159"/>
+        <location filename="../mainwindow.cpp" line="163"/>
         <source>Full Screen</source>
         <translation>Toàn màn hình</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="160"/>
+        <location filename="../mainwindow.cpp" line="164"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
         <translation>Bạn trong chế độ toàn màn hình. Bạn có thể thoát chế độ toàn màn hình với SHIFT+F11</translation>
     </message>
@@ -514,52 +514,52 @@
 <context>
     <name>TerminalPart</name>
     <message>
-        <location filename="../terminalpart.cpp" line="131"/>
+        <location filename="../terminalpart.cpp" line="132"/>
         <source>Bell</source>
         <translation>Chuông</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="132"/>
+        <location filename="../terminalpart.cpp" line="133"/>
         <source>A bell was sounded!</source>
         <translation>Một chuông bị rung!</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="169"/>
+        <location filename="../terminalpart.cpp" line="170"/>
         <source>For text &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="170"/>
+        <location filename="../terminalpart.cpp" line="171"/>
         <source>Copy</source>
         <translation type="unfinished">Chép</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="175"/>
+        <location filename="../terminalpart.cpp" line="176"/>
         <source>Open man page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="183"/>
+        <location filename="../terminalpart.cpp" line="184"/>
         <source>Paste</source>
         <translation type="unfinished">Dán</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="182"/>
+        <location filename="../terminalpart.cpp" line="183"/>
         <source>For this terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="82"/>
+        <location filename="../terminalpart.cpp" line="83"/>
         <source>theterminal: %1: command not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="186"/>
+        <location filename="../terminalpart.cpp" line="187"/>
         <source>Find</source>
         <translation type="unfinished">Tìm</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="189"/>
+        <location filename="../terminalpart.cpp" line="190"/>
         <source>Close Terminal</source>
         <translation type="unfinished"></translation>
     </message>

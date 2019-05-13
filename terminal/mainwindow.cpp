@@ -5,6 +5,7 @@
 #include <QToolButton>
 #include <QShortcut>
 #include <QDesktopServices>
+#include <tapplication.h>
 #include <tcsdtools.h>
 #include <ttoast.h>
 
@@ -70,7 +71,9 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget *parent) :
 
     //Create a new tabber
     TerminalTabber* tabber = newTabber();
+#ifndef Q_OS_MAC
     tabber->setMenuButton(d->menuButton);
+#endif
     tabber->setCsdButtons(d->csdButtons);
     d->currentTabber = tabber;
 
@@ -103,12 +106,13 @@ void MainWindow::on_actionNew_Window_triggered()
 
 void MainWindow::on_actionExit_triggered()
 {
-    for (QWidget* w : QApplication::allWidgets()) {
-        if (strcmp(w->metaObject()->className(), "MainWindow") == 0) {
-            MainWindow* win = (MainWindow*) w;
-            win->close();
-        }
-    }
+    tApplication::closeAllWindows();
+//    for (QWidget* w : QApplication::allWidgets()) {
+//        if (w && strcmp(w->metaObject()->className(), "MainWindow") == 0) {
+//            MainWindow* win = (MainWindow*) w;
+//            win->close();
+//        }
+//    }
 }
 
 void MainWindow::on_actionCopy_triggered()
@@ -386,7 +390,9 @@ void MainWindow::moveTabberButtons() {
         }
 
         if (nextSplitter != nullptr) {
+#ifndef Q_OS_MAC
             qobject_cast<TerminalTabber*>(nextSplitter)->setMenuButton(d->menuButton);
+#endif
             //If CSDs are on the left, make this the CSD splitter too
             if (tCsdGlobal::windowControlsEdge() == tCsdGlobal::Left) qobject_cast<TerminalTabber*>(nextSplitter)->setCsdButtons(d->csdButtons);
         }

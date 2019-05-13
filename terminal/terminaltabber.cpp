@@ -60,7 +60,7 @@ TerminalTabber::TerminalTabber(QWidget *parent) :
     d->tabBar = new QTabBar();
     d->tabBar->setDocumentMode(true);
     d->tabBar->setTabsClosable(true);
-    this->layout()->addWidget(d->allTerminalstabBar);
+    static_cast<QBoxLayout*>(this->layout())->insertWidget(0, d->tabBar);
 
     connect(d->tabBar, &QTabBar::currentChanged, [=](int index) {
         if (index != -1) {
