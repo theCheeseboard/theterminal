@@ -60,7 +60,7 @@ elif [ $STAGE = "before_install" ]; then
     wget -O ~/vicr12345.gpg.key https://vicr123.com/repo/apt/vicr12345.gpg.key
     sudo apt-key add ~/vicr12345.gpg.key
     sudo add-apt-repository 'deb https://vicr123.com/repo/apt/ubuntu bionic main'
-    sudo add-apt-repository -y ppa:beineri/opt-qt-5.10.0-trusty
+    sudo add-apt-repository -y ppa:beineri/opt-qt-5.10.1-trusty
     sudo apt-get update -qq
     sudo apt-get install qt510-meta-minimal qt510x11extras qt510tools qt510translations qt510multimedia libmount-dev xorg-dev libxcb-util0-dev libgl1-mesa-dev libutf8proc-dev
   else
