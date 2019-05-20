@@ -74,6 +74,7 @@ class MainWindow : public QMainWindow
         TerminalWidget* currentTerminal();
 
         TerminalTabber* newTabber();
+        void moveTabberButtons();
 };
 
 #endif // MAINWINDOW_H

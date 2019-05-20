@@ -40,6 +40,7 @@ class TerminalTabber : public QWidget
 
     public slots:
         void setMenuButton(QWidget* menuButton);
+        void setCsdButtons(QWidget* csdButtons);
         void addTab(TerminalWidget* tab);
 
         void changeToTerminal(TerminalWidget* widget);

@@ -83,6 +83,8 @@ private slots:
 
     void on_scrollKeystrokeSwitch_toggled(bool checked);
 
+    void on_systemTitlebarsCheckbox_toggled(bool checked);
+
     private:
     Ui::SettingsWindow *ui;
 

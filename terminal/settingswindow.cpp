@@ -5,6 +5,8 @@
 #include <QDir>
 #include "terminalcontroller.h"
 #include <QScroller>
+#include <tapplication.h>
+#include <tcsdtools.h>
 
 #include "models/colorschemeselectiondelegate.h"
 
@@ -37,6 +39,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     ui->bellInactiveNotificationSwitch->setChecked(settings.value("bell/bellInactiveNotification", true).toBool());
     ui->opacitySlider->setValue(settings.value("theme/opacity", 100).toInt());
     ui->scrollKeystrokeSwitch->setChecked(settings.value("scrolling/scrollOnKeystroke", true).toBool());
+    ui->systemTitlebarsCheckbox->setChecked(settings.value("appearance/useSsds", false).toBool());
 
     int scrollback = settings.value("term/scrollback", -1).toInt();
     if (scrollback == -1) {
@@ -66,9 +69,15 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
             break;
     }
 
+    QString systemColorsDir;
+#ifdef Q_OS_MAC
+    systemColorsDir = tApplication::macOSBundlePath() + "/Contents/Frameworks/tttermwidget.framework/Resources/color-schemes";
+#else
+    systemColorsDir = "/usr/share/tttermwidget/color-schemes";
+#endif
     ui->coloursComboBox->setItemDelegate(new ColorSchemeSelectionDelegate());
     ui->coloursComboBox->blockSignals(true);
-    QDir systemColors("/usr/share/tttermwidget/color-schemes");
+    QDir systemColors(systemColorsDir);
     for (QFileInfo col : systemColors.entryInfoList()) {
         if (col.suffix() == "colorscheme") {
             ui->coloursComboBox->addItem(col.baseName(), col.filePath());
@@ -243,4 +252,10 @@ void SettingsWindow::on_scrollKeystrokeSwitch_toggled(bool checked)
 {
     settings.setValue("scrolling/scrollOnKeystroke", checked);
     TerminalController::updateTerminalStyles();
+}
+
+void SettingsWindow::on_systemTitlebarsCheckbox_toggled(bool checked)
+{
+    settings.setValue("appearance/useSsds", checked);
+    tCsdGlobal::setCsdsEnabled(!checked);
 }
