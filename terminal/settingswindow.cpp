@@ -69,20 +69,23 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
             break;
     }
 
-    QString systemColorsDir;
+    QStringList systemColorsDirs;
 #ifdef Q_OS_MAC
-    systemColorsDir = tApplication::macOSBundlePath() + "/Contents/Frameworks/tttermwidget.framework/Resources/color-schemes";
+    systemColorsDirs.append(tApplication::macOSBundlePath() + "/Contents/Frameworks/tttermwidget.framework/Resources/color-schemes");
 #else
-    systemColorsDir = "/usr/share/tttermwidget/color-schemes";
+    systemColorsDirs.append("/usr/share/tttermwidget/color-schemes");
+    systemColorsDirs.append(QDir::cleanPath(QApplication::applicationDirPath() + "/../share/tttermwidget/ColorDefinitions/"));
 #endif
     ui->coloursComboBox->setItemDelegate(new ColorSchemeSelectionDelegate());
     ui->coloursComboBox->blockSignals(true);
-    QDir systemColors(systemColorsDir);
-    for (QFileInfo col : systemColors.entryInfoList()) {
-        if (col.suffix() == "colorscheme") {
-            ui->coloursComboBox->addItem(col.baseName(), col.filePath());
-            if (col.baseName() == settings.value("theme/scheme", "Linux").toString()) {
-                ui->coloursComboBox->setCurrentIndex(ui->coloursComboBox->count() - 1);
+    for (QString systemColorsDir : systemColorsDirs) {
+        QDir systemColors(systemColorsDir);
+        for (QFileInfo col : systemColors.entryInfoList()) {
+            if (col.suffix() == "colorscheme") {
+                ui->coloursComboBox->addItem(col.baseName(), col.filePath());
+                if (col.baseName() == settings.value("theme/scheme", "Linux").toString()) {
+                    ui->coloursComboBox->setCurrentIndex(ui->coloursComboBox->count() - 1);
+                }
             }
         }
     }

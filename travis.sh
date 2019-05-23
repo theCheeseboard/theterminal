@@ -24,6 +24,7 @@ if [ $STAGE = "script" ]; then
     qmake ../tttermwidget/tttermwidget.pro
     make
     sudo make install INSTALL_ROOT=/
+    make install INSTALL_ROOT=~/appdir # Also install into the appdir
     cd ../../
     qmake
     make
