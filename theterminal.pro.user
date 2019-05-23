@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.9.0, 2019-05-14T00:22:31. -->
+<!-- Written by QtCreator 4.9.0, 2019-05-21T19:12:34. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
-  <value type="QByteArray">{d7411e96-14b5-4042-9ccf-ffe9d69b4ada}</value>
+  <value type="QByteArray">{a3c48418-ace6-4eef-a000-f1d19e83340a}</value>
  </data>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -64,12 +64,12 @@
   <valuemap type="QVariantMap">
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{4c44e3a7-1b54-4b6e-b375-0cb501e74210}</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{02d7cee9-8956-48b1-b59f-e68fb1f84b83}</value>
    <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/Users/victor/Documents/Apps/build-theterminal-Desktop-Debug</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/victor/Documents/Apps/build-theterminal-Desktop-Debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -125,7 +125,7 @@
     <value type="bool" key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild">true</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/Users/victor/Documents/Apps/build-theterminal-Desktop-Release</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/victor/Documents/Apps/build-theterminal-Desktop-Release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -181,7 +181,7 @@
     <value type="bool" key="Qt4ProjectManager.Qt4BuildConfiguration.UseShadowBuild">true</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.2">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/Users/victor/Documents/Apps/build-theterminal-Desktop-Profile</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/victor/Documents/Apps/build-theterminal-Desktop-Profile</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -305,18 +305,17 @@
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">terminal</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/Users/victor/Documents/Apps/theterminal/terminal/terminal.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/victor/Documents/Apps/theterminal/terminal/terminal.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="uint" key="RunConfiguration.QmlDebugServerPort">3768</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
-    <value type="bool" key="RunConfiguration.UseDyldImageSuffix">false</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/Users/victor/Documents/Apps/build-theterminal-Desktop-Debug/terminal/theTerminal.app/Contents/MacOS</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/victor/Documents/Apps/build-theterminal-Desktop-Debug/terminal</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

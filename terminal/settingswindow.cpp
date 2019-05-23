@@ -74,7 +74,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     systemColorsDirs.append(tApplication::macOSBundlePath() + "/Contents/Frameworks/tttermwidget.framework/Resources/color-schemes");
 #else
     systemColorsDirs.append("/usr/share/tttermwidget/color-schemes");
-    systemColorsDirs.append(QDir::cleanPath(QApplication::applicationDirPath() + "/../share/tttermwidget/ColorDefinitions/"));
+    systemColorsDirs.append(QDir::cleanPath(QApplication::applicationDirPath() + "/../share/tttermwidget/color-schemes/"));
 #endif
     ui->coloursComboBox->setItemDelegate(new ColorSchemeSelectionDelegate());
     ui->coloursComboBox->blockSignals(true);

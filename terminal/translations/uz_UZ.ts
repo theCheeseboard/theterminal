@@ -645,27 +645,27 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="32"/>
+        <location filename="../main.cpp" line="36"/>
         <source>workdir</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="32"/>
+        <location filename="../main.cpp" line="36"/>
         <source>Set working directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="33"/>
+        <location filename="../main.cpp" line="37"/>
         <source>Starts theTerminal in dropdown mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="34"/>
+        <location filename="../main.cpp" line="38"/>
         <source>Command to execute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="34"/>
+        <location filename="../main.cpp" line="38"/>
         <source>cmd</source>
         <translation type="unfinished"></translation>
     </message>
