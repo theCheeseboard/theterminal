@@ -21,7 +21,11 @@ int main(int argc, char *argv[])
     a.setOrganizationName("theSuite");
     a.setOrganizationDomain("");
     a.setApplicationName("theTerminal");
-    a.setShareDir("/usr/share/theterminal/");
+    if (QDir("/usr/share/theterminal/").exists()) {
+        a.setShareDir("/usr/share/theterminal/");
+    } else if (QDir(QDir::cleanPath(QApplication::applicationDirPath() + "/../share/theterminal/")).exists()) {
+        a.setShareDir(QDir::cleanPath(QApplication::applicationDirPath() + "/../share/theterminal/"));
+    }
     a.installTranslators();
 
     QSettings settings;
