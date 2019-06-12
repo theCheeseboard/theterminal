@@ -11,7 +11,7 @@
     <message>
         <location filename="../about.ui" line="25"/>
         <source>theTerminal 3.0</source>
-        <translation type="unfinished">theTerminal 3.0</translation>
+        <translation>theTerminal 3.0</translation>
     </message>
     <message>
         <location filename="../about.ui" line="32"/>
@@ -39,13 +39,14 @@
     <message>
         <location filename="../dialogs/busydialog.ui" line="71"/>
         <source>Terminal Busy</source>
-        <translation type="unfinished"></translation>
+        <translation>Đầu cuối bận</translation>
     </message>
     <message>
         <location filename="../dialogs/busydialog.ui" line="116"/>
         <source>&lt;p&gt;This terminal is busy with the following processes.&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;Closing this terminal will forcibly terminate these processes.&lt;/b&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Đầu cuối này bận với quá trình dưới đây&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Nếu bạn đóng đầu cuối này, quá trình sẽ bắt buộc phải chấm dứt.&lt;/b&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -126,7 +127,7 @@
     <message>
         <location filename="../dropdown.cpp" line="79"/>
         <source>Terminal %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Đầu cuối %1</translation>
     </message>
 </context>
 <context>
@@ -154,7 +155,7 @@
     <message>
         <location filename="../mainwindow.ui" line="78"/>
         <source>Split</source>
-        <translation type="unfinished"></translation>
+        <translation>Chia đôi</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="93"/>
@@ -224,7 +225,7 @@
     <message>
         <location filename="../mainwindow.ui" line="183"/>
         <source>Ctrl+Shift+F</source>
-        <translation type="unfinished">Ctrl+Shift+F</translation>
+        <translation>Ctrl+Shift+F</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="192"/>
@@ -279,32 +280,32 @@
     <message>
         <location filename="../mainwindow.ui" line="250"/>
         <source>Split Vertically</source>
-        <translation type="unfinished"></translation>
+        <translation>Chia theo hướng dọc</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="253"/>
         <source>Ctrl+Shift+S, -</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+S, -</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="261"/>
         <source>Ctrl+Shift+S, \</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+S, \</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="269"/>
         <source>File Bug</source>
-        <translation type="unfinished"></translation>
+        <translation>Báo cáo lỗi</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="277"/>
         <source>Sources</source>
-        <translation type="unfinished"></translation>
+        <translation>Mã nguồn</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="258"/>
         <source>Split Horizontally</source>
-        <translation type="unfinished"></translation>
+        <translation>Chia theo hướng ngang</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="163"/>
@@ -314,7 +315,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="164"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
-        <translation>Bạn trong chế độ toàn màn hình. Bạn có thể thoát chế độ toàn màn hình với SHIFT+F11</translation>
+        <translation>Bạn trong chế độ toàn màn hình. Bạn có thể thoát chế độ toàn màn hình với SHIFT+F11.</translation>
     </message>
 </context>
 <context>
@@ -417,12 +418,12 @@
     <message>
         <location filename="../settingswindow.ui" line="658"/>
         <source>TITLEBAR</source>
-        <translation type="unfinished"></translation>
+        <translation>THANH TIÊU ĐỀ</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="665"/>
         <source>Use System Titlebars</source>
-        <translation type="unfinished"></translation>
+        <translation>Sử dụng thanh tiêu đề hệ thống</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="788"/>
@@ -526,42 +527,42 @@
     <message>
         <location filename="../terminalpart.cpp" line="170"/>
         <source>For text &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Cho văn bản &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="171"/>
         <source>Copy</source>
-        <translation type="unfinished">Chép</translation>
+        <translation>Chép</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="176"/>
         <source>Open man page</source>
-        <translation type="unfinished"></translation>
+        <translation>Mở trang man</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="184"/>
         <source>Paste</source>
-        <translation type="unfinished">Dán</translation>
+        <translation>Dán</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="183"/>
         <source>For this terminal</source>
-        <translation type="unfinished"></translation>
+        <translation>Cho đầu cuối này</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="83"/>
         <source>theterminal: %1: command not found</source>
-        <translation type="unfinished"></translation>
+        <translation>theterminal: %1: không tìm thấy lệnh</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="187"/>
         <source>Find</source>
-        <translation type="unfinished">Tìm</translation>
+        <translation>Tìm</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="190"/>
         <source>Close Terminal</source>
-        <translation type="unfinished"></translation>
+        <translation>Đóng đầu cuối</translation>
     </message>
 </context>
 <context>
@@ -583,7 +584,7 @@
         <location filename="../terminaltabber.cpp" line="141"/>
         <location filename="../terminaltabber.cpp" line="143"/>
         <source>Terminal %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Đầu cuối %1</translation>
     </message>
 </context>
 <context>
@@ -591,55 +592,57 @@
     <message>
         <location filename="../terminalwidget.cpp" line="34"/>
         <source>theterminal: cd: too many arguments</source>
-        <translation type="unfinished"></translation>
+        <translation>theterminal: cd: quá nhiều đối số</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="45"/>
         <source>theterminal: cd: %1: No such file or directory</source>
-        <translation type="unfinished"></translation>
+        <translation>theterminal: cd: %1: Không có tập tin hoặc thư mục như vậy</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="63"/>
         <source>theterminal: cannot access &apos;%1&apos; No such file or directory</source>
-        <translation type="unfinished"></translation>
+        <translation>theterminal: Không thể truy cập &apos;%1&apos; Không có tập tin hoặc thư mục như vậy</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="85"/>
         <source>Usage: tted [OPTIONS] [FILE]
 -h, --help                   Show this help output
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Sử dụng: tted [TÙY CHỌN] [TỆP]
+-h, --help                   Hiển thị trợ giúp này
+</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="91"/>
         <source>theterminal: tted: not enough arguments</source>
-        <translation type="unfinished"></translation>
+        <translation>theterminal: tted: thiếu toán hạng</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="100"/>
         <source>theterminal: tted: cannot access &apos;%1&apos; No such file or directory</source>
-        <translation type="unfinished"></translation>
+        <translation>theterminal: tted: Không thể truy cập &apos;%1&apos; Không có tập tin hoặc thư mục như vậy</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="347"/>
         <source>theterminal: %1: command not found</source>
-        <translation type="unfinished"></translation>
+        <translation>theterminal: %1: không tìm thấy lệnh</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="626"/>
         <source>Close this tab?</source>
-        <translation type="unfinished"></translation>
+        <translation>Đóng tab này?</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="627"/>
         <location filename="../terminalwidget.cpp" line="632"/>
         <source>Closing this tab will also close %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Việc đóng tab này sẽ cùng đóng %1.</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="631"/>
         <source>Close tab?</source>
-        <translation type="unfinished"></translation>
+        <translation>Đóng tab này?</translation>
     </message>
 </context>
 <context>
@@ -647,27 +650,27 @@
     <message>
         <location filename="../main.cpp" line="36"/>
         <source>workdir</source>
-        <translation type="unfinished"></translation>
+        <translation>workdir</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="36"/>
         <source>Set working directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Đặt thư mục làm việc</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="37"/>
         <source>Starts theTerminal in dropdown mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Khởi động theTerminal trong chế độ rơi xuống</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="38"/>
         <source>Command to execute</source>
-        <translation type="unfinished"></translation>
+        <translation>Lệnh để chạy</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="38"/>
         <source>cmd</source>
-        <translation type="unfinished"></translation>
+        <translation>cmd</translation>
     </message>
 </context>
 <context>
@@ -675,17 +678,17 @@
     <message>
         <location filename="../graphicalParts/ttedcommand.ui" line="301"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Lưu</translation>
     </message>
     <message>
         <location filename="../graphicalParts/ttedcommand.ui" line="315"/>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Hoàn tác</translation>
     </message>
     <message>
         <location filename="../graphicalParts/ttedcommand.ui" line="329"/>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>Làm lại</translation>
     </message>
 </context>
 </TS>
