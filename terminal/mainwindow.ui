@@ -14,7 +14,7 @@
    <string>theTerminal</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="utilities-terminal" resource="icons.qrc">
+   <iconset theme="utilities-terminal">
     <normaloff>:/icons/utilities-terminal.svg</normaloff>:/icons/utilities-terminal.svg</iconset>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
@@ -83,8 +83,6 @@
     <addaction name="actionZoomIn"/>
     <addaction name="actionZoomOut"/>
     <addaction name="actionResetZoom"/>
-    <addaction name="separator"/>
-    <addaction name="actionGo_Full_Screen"/>
     <addaction name="separator"/>
     <addaction name="menuSplit"/>
    </widget>
@@ -290,8 +288,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

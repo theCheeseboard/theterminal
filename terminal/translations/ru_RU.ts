@@ -157,152 +157,152 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="93"/>
+        <location filename="../mainwindow.ui" line="91"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="111"/>
+        <location filename="../mainwindow.ui" line="109"/>
         <source>&amp;New Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="114"/>
+        <location filename="../mainwindow.ui" line="112"/>
         <source>Ctrl+Shift+N</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="123"/>
+        <location filename="../mainwindow.ui" line="121"/>
         <source>&amp;Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="135"/>
+        <location filename="../mainwindow.ui" line="133"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="138"/>
+        <location filename="../mainwindow.ui" line="136"/>
         <source>Ctrl+Shift+C</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="147"/>
+        <location filename="../mainwindow.ui" line="145"/>
         <source>&amp;Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="150"/>
+        <location filename="../mainwindow.ui" line="148"/>
         <source>Ctrl+Shift+V</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="159"/>
+        <location filename="../mainwindow.ui" line="157"/>
         <source>Ne&amp;w Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="162"/>
+        <location filename="../mainwindow.ui" line="160"/>
         <source>Ctrl+Shift+T</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="171"/>
+        <location filename="../mainwindow.ui" line="169"/>
         <source>&amp;Close Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="174"/>
+        <location filename="../mainwindow.ui" line="172"/>
         <source>Ctrl+Shift+W</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="183"/>
+        <location filename="../mainwindow.ui" line="181"/>
         <source>&amp;Find...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="186"/>
+        <location filename="../mainwindow.ui" line="184"/>
         <source>Ctrl+Shift+F</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="195"/>
+        <location filename="../mainwindow.ui" line="193"/>
         <source>&amp;Go Full Screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="204"/>
+        <location filename="../mainwindow.ui" line="202"/>
         <source>&amp;About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="216"/>
+        <location filename="../mainwindow.ui" line="214"/>
         <source>&amp;Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="219"/>
+        <location filename="../mainwindow.ui" line="217"/>
         <source>Ctrl+,</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="231"/>
+        <location filename="../mainwindow.ui" line="229"/>
         <source>Zoom In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="234"/>
+        <location filename="../mainwindow.ui" line="232"/>
         <source>Ctrl+=</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="243"/>
+        <location filename="../mainwindow.ui" line="241"/>
         <source>Zoom Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="246"/>
+        <location filename="../mainwindow.ui" line="244"/>
         <source>Ctrl+-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="251"/>
+        <location filename="../mainwindow.ui" line="249"/>
         <source>Reset Zoom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="254"/>
+        <location filename="../mainwindow.ui" line="252"/>
         <source>Ctrl+0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="259"/>
+        <location filename="../mainwindow.ui" line="257"/>
         <source>Split Vertically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="262"/>
+        <location filename="../mainwindow.ui" line="260"/>
         <source>Ctrl+Shift+S, -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="270"/>
+        <location filename="../mainwindow.ui" line="268"/>
         <source>Ctrl+Shift+S, \</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="279"/>
+        <location filename="../mainwindow.ui" line="277"/>
         <source>File Bug</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="288"/>
+        <location filename="../mainwindow.ui" line="286"/>
         <source>Sources</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="267"/>
+        <location filename="../mainwindow.ui" line="265"/>
         <source>Split Horizontally</source>
         <translation type="unfinished"></translation>
     </message>
