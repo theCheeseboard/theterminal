@@ -18,18 +18,31 @@ int main(int argc, char *argv[])
 {
     tApplication a(argc, argv);
 
-    a.setOrganizationName("theSuite");
-    a.setOrganizationDomain("");
-    a.setApplicationName("theTerminal");
+    a.installTranslators();
+
+    a.setApplicationIcon(QIcon::fromTheme("theterminal", QIcon(":/icons/icon.svg")));
+    a.setApplicationVersion("3.0");
+    a.setGenericName(QApplication::translate("main", "Terminal"));
+    a.setAboutDialogSplashGraphic(a.aboutDialogSplashGraphicFromSvg(":/icons/aboutsplash.svg"));
+    a.setApplicationLicense(tApplication::Gpl3OrLater);
+    a.setCopyrightHolder("Victor Tran");
+    a.setCopyrightYear("2019");
+    #ifdef T_BLUEPRINT_BUILD
+        a.setApplicationName("theTerminal Blueprint");
+    #else
+        a.setApplicationName("theTerminal");
+    #endif
     if (QDir("/usr/share/theterminal/").exists()) {
         a.setShareDir("/usr/share/theterminal/");
     } else if (QDir(QDir::cleanPath(QApplication::applicationDirPath() + "/../share/theterminal/")).exists()) {
         a.setShareDir(QDir::cleanPath(QApplication::applicationDirPath() + "/../share/theterminal/"));
     }
-    a.installTranslators();
 
     QSettings settings;
+#ifndef Q_OS_MAC
+    //Never use CSDs on macOS
     tCsdGlobal::setCsdsEnabled(!settings.value("appearance/useSsds", false).toBool());
+#endif
 
     QCommandLineParser parser;
     parser.addOptions({

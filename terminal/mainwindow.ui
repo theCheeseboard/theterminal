@@ -14,7 +14,7 @@
    <string>theTerminal</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="utilities-terminal">
+   <iconset theme="utilities-terminal" resource="icons.qrc">
     <normaloff>:/icons/utilities-terminal.svg</normaloff>:/icons/utilities-terminal.svg</iconset>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
@@ -122,6 +122,9 @@
    <property name="text">
     <string>&amp;Exit</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
+   </property>
   </action>
   <action name="actionCopy">
    <property name="icon">
@@ -200,6 +203,9 @@
    <property name="text">
     <string>&amp;About</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
+   </property>
   </action>
   <action name="actionSettings">
    <property name="icon">
@@ -211,6 +217,9 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+,</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
   <action name="actionZoomIn">
@@ -263,7 +272,8 @@
   </action>
   <action name="actionFileBug">
    <property name="icon">
-    <iconset theme="tools-report-bug"/>
+    <iconset theme="tools-report-bug">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>File Bug</string>
@@ -271,7 +281,8 @@
   </action>
   <action name="actionSources">
    <property name="icon">
-    <iconset theme="commit"/>
+    <iconset theme="commit">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Sources</string>
@@ -279,6 +290,8 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

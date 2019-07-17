@@ -8,6 +8,7 @@
 #include <tapplication.h>
 #include <tcsdtools.h>
 #include <ttoast.h>
+#include <taboutdialog.h>
 
 struct MainWindowPrivate {
     tCsdTools csd;
@@ -169,8 +170,8 @@ void MainWindow::on_actionGo_Full_Screen_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    About* window = new About(this);
-    window->exec();
+    tAboutDialog about;
+    about.exec();
 }
 
 void MainWindow::on_actionSettings_triggered()

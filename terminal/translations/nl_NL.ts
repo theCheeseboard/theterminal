@@ -178,142 +178,142 @@
         <translation>&amp;Sluiten</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="132"/>
+        <location filename="../mainwindow.ui" line="135"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopiëren</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="135"/>
+        <location filename="../mainwindow.ui" line="138"/>
         <source>Ctrl+Shift+C</source>
         <translation>Ctrl+Shift+C</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="144"/>
+        <location filename="../mainwindow.ui" line="147"/>
         <source>&amp;Paste</source>
         <translation>&amp;Plakken</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="147"/>
+        <location filename="../mainwindow.ui" line="150"/>
         <source>Ctrl+Shift+V</source>
         <translation>Ctrl+Shift+V</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="156"/>
+        <location filename="../mainwindow.ui" line="159"/>
         <source>Ne&amp;w Tab</source>
         <translation>N&amp;ieuw tabblad</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="159"/>
+        <location filename="../mainwindow.ui" line="162"/>
         <source>Ctrl+Shift+T</source>
         <translation>Ctrl+Shift+T</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="168"/>
+        <location filename="../mainwindow.ui" line="171"/>
         <source>&amp;Close Tab</source>
         <translation>Tabblad &amp;sluiten</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="171"/>
+        <location filename="../mainwindow.ui" line="174"/>
         <source>Ctrl+Shift+W</source>
         <translation>Ctrl+Shift+W</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="180"/>
+        <location filename="../mainwindow.ui" line="183"/>
         <source>&amp;Find...</source>
         <translation>&amp;Zoeken...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="183"/>
+        <location filename="../mainwindow.ui" line="186"/>
         <source>Ctrl+Shift+F</source>
         <translation>Ctrl+Shift+F</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="192"/>
+        <location filename="../mainwindow.ui" line="195"/>
         <source>&amp;Go Full Screen</source>
         <translation>N&amp;aar volledig scherm gaan</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="201"/>
+        <location filename="../mainwindow.ui" line="204"/>
         <source>&amp;About</source>
         <translation>&amp;Over</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="210"/>
+        <location filename="../mainwindow.ui" line="216"/>
         <source>&amp;Settings</source>
         <translation>Ins&amp;tellingen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="213"/>
+        <location filename="../mainwindow.ui" line="219"/>
         <source>Ctrl+,</source>
         <translation>Ctrl+,</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="222"/>
+        <location filename="../mainwindow.ui" line="231"/>
         <source>Zoom In</source>
         <translation>Inzoomen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="225"/>
+        <location filename="../mainwindow.ui" line="234"/>
         <source>Ctrl+=</source>
         <translation>Ctrl+=</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="234"/>
+        <location filename="../mainwindow.ui" line="243"/>
         <source>Zoom Out</source>
         <translation>Uitzoomen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="237"/>
+        <location filename="../mainwindow.ui" line="246"/>
         <source>Ctrl+-</source>
         <translation>Ctrl+-</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="242"/>
+        <location filename="../mainwindow.ui" line="251"/>
         <source>Reset Zoom</source>
         <translation>Zoom herstellen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="245"/>
+        <location filename="../mainwindow.ui" line="254"/>
         <source>Ctrl+0</source>
         <translation>Ctrl+0</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="250"/>
+        <location filename="../mainwindow.ui" line="259"/>
         <source>Split Vertically</source>
         <translation>Verticaal splitsen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="253"/>
+        <location filename="../mainwindow.ui" line="262"/>
         <source>Ctrl+Shift+S, -</source>
         <translation>Ctrl+Shift+S, -</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="261"/>
+        <location filename="../mainwindow.ui" line="270"/>
         <source>Ctrl+Shift+S, \</source>
         <translation>Ctrl+Shift+S, \</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="269"/>
+        <location filename="../mainwindow.ui" line="279"/>
         <source>File Bug</source>
         <translation>Een bug rapporteren</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="277"/>
+        <location filename="../mainwindow.ui" line="288"/>
         <source>Sources</source>
         <translation>Bron</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="258"/>
+        <location filename="../mainwindow.ui" line="267"/>
         <source>Split Horizontally</source>
         <translation>Horizontaal splitsen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="163"/>
+        <location filename="../mainwindow.cpp" line="164"/>
         <source>Full Screen</source>
         <translation>Volledig scherm</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="164"/>
+        <location filename="../mainwindow.cpp" line="165"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
         <translation>Je bent in een volledig scherm. Je kunt het verlaten met Shift+F11.</translation>
     </message>
@@ -648,27 +648,32 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="36"/>
+        <location filename="../main.cpp" line="25"/>
+        <source>Terminal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="49"/>
         <source>workdir</source>
         <translation>werkmap</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="36"/>
+        <location filename="../main.cpp" line="49"/>
         <source>Set working directory</source>
         <translation>Stel werkmap in</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="37"/>
+        <location filename="../main.cpp" line="50"/>
         <source>Starts theTerminal in dropdown mode</source>
         <translation>Start theTerminal in dropdown-modus</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="38"/>
+        <location filename="../main.cpp" line="51"/>
         <source>Command to execute</source>
         <translation>Commando om uit te voeren</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="38"/>
+        <location filename="../main.cpp" line="51"/>
         <source>cmd</source>
         <translation>cmd</translation>
     </message>

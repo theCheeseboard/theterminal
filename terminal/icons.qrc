@@ -23,5 +23,6 @@
         <file>icons/go-down.svg</file>
         <file>icons/go-up.svg</file>
         <file>icons/window-close.svg</file>
+        <file>icons/aboutsplash.svg</file>
     </qresource>
 </RCC>
