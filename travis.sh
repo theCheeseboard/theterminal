@@ -37,8 +37,8 @@ if [ $STAGE = "script" ]; then
     sudo cp appimagetool-x86_64.AppImage /usr/bin/appimagetool
     sudo chmod +x /usr/bin/appimagetool
     chmod a+x linuxdeployqt-continuous-x86_64.AppImage
-    ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/theterminal.desktop -bundle-non-qt-libs
-    ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/theterminal.desktop -appimage
+    ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/theterminalb.desktop -bundle-non-qt-libs
+    ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/theterminalb.desktop -appimage
   else
     echo "[TRAVIS] Building for macOS"
     export PATH="/usr/local/opt/qt/bin:$PATH"
