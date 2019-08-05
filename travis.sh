@@ -37,8 +37,13 @@ if [ $STAGE = "script" ]; then
     sudo cp appimagetool-x86_64.AppImage /usr/bin/appimagetool
     sudo chmod +x /usr/bin/appimagetool
     chmod a+x linuxdeployqt-continuous-x86_64.AppImage
-    ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/theterminalb.desktop -bundle-non-qt-libs
-    ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/theterminalb.desktop -appimage
+
+    if [ $TRAVIS_BRANCH = "blueprint" ]; then
+        DESKTOP_ENTRY=com.vicr123.theterminal-blueprint
+    else
+        DESKTOP_ENTRY=com.vicr123.theterminal
+    fi
+    ./linuxdeployqt-continuous-x86_64.AppImage ~/appdir/usr/share/applications/$DESKTOP_ENTRY.desktop -appimage -extra-plugins=iconengines/libqsvgicon.so,imageformats/libqsvg.so
   else
     echo "[TRAVIS] Building for macOS"
     export PATH="/usr/local/opt/qt/bin:$PATH"
@@ -71,10 +76,11 @@ elif [ $STAGE = "before_install" ]; then
   fi
 elif [ $STAGE = "after_success" ]; then
   if [ $TRAVIS_OS_NAME = "linux" ]; then
-    echo "[TRAVIS] Publishing AppImage"
-    cd ~
+  echo "[TRAVIS] Publishing AppImage"
     wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-    bash upload.sh theTerminal*.AppImage*
+    cp theTerminal*.AppImage theTerminal-linux.AppImage
+    cp theTerminal*.AppImage.zsync theTerminal-linux.AppImage.zsync
+    bash upload.sh theTerminal-linux.AppImage*
   else
     echo "hello :)"
     #echo "[TRAVIS] Publishing Disk Image"
