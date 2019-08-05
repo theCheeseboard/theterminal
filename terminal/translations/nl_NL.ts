@@ -6,27 +6,27 @@
     <message>
         <location filename="../about.ui" line="14"/>
         <source>About theTerminal</source>
-        <translation type="unfinished"></translation>
+        <translation>Over theTerminal</translation>
     </message>
     <message>
         <location filename="../about.ui" line="25"/>
         <source>theTerminal 3.0</source>
-        <translation type="unfinished"></translation>
+        <translation>theTerminal 3.0</translation>
     </message>
     <message>
         <location filename="../about.ui" line="32"/>
         <source>Terminal Emulator</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminal Emulator</translation>
     </message>
     <message>
         <location filename="../about.ui" line="52"/>
         <source>Copyright (c) Victor Tran 2018. Licensed under the terms of the GNU General Public License, version 3 or later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Copyright (c) Victor Tran 2018. Gelicenseerd onder de termen van de GNU General Public License, versie 3 of later.</translation>
     </message>
     <message>
         <location filename="../about.ui" line="77"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>Oké</translation>
     </message>
 </context>
 <context>
@@ -34,18 +34,19 @@
     <message>
         <location filename="../dialogs/busydialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Formulier</translation>
     </message>
     <message>
         <location filename="../dialogs/busydialog.ui" line="71"/>
         <source>Terminal Busy</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminal is bezig</translation>
     </message>
     <message>
         <location filename="../dialogs/busydialog.ui" line="116"/>
         <source>&lt;p&gt;This terminal is busy with the following processes.&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;Closing this terminal will forcibly terminate these processes.&lt;/b&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Deze terminal is met de volgende processen bezig.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Het afsluiten van deze terminal zal deze processen forceren te stoppen.&lt;/b&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -53,22 +54,22 @@
     <message>
         <location filename="../commandpart.cpp" line="52"/>
         <source>Aborted</source>
-        <translation type="unfinished"></translation>
+        <translation>Afgebroken</translation>
     </message>
     <message>
         <location filename="../commandpart.cpp" line="55"/>
         <source>Floating Point Exception</source>
-        <translation type="unfinished"></translation>
+        <translation>Drijvend-punt-fout</translation>
     </message>
     <message>
         <location filename="../commandpart.cpp" line="58"/>
         <source>Segmentation Fault</source>
-        <translation type="unfinished"></translation>
+        <translation>Segmentatiefout</translation>
     </message>
     <message>
         <location filename="../commandpart.cpp" line="61"/>
         <source>Killed</source>
-        <translation type="unfinished"></translation>
+        <translation>Gedood</translation>
     </message>
 </context>
 <context>
@@ -76,57 +77,57 @@
     <message>
         <location filename="../dropdown.ui" line="174"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiëren</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="177"/>
         <source>Ctrl+Shift+C</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+C</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="186"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>Plakken</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="189"/>
         <source>Ctrl+Shift+V</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+V</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="198"/>
         <source>Find</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoeken</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="201"/>
         <source>Ctrl+Shift+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+F</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="16"/>
         <source>For current tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Voor huidig tabblad</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="18"/>
         <source>For theTerminal</source>
-        <translation type="unfinished"></translation>
+        <translation>Voor theTerminal</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="19"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Instellingen</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="30"/>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>Sluiten</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="79"/>
         <source>Terminal %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminal %1</translation>
     </message>
 </context>
 <context>
@@ -134,187 +135,187 @@
     <message>
         <location filename="../mainwindow.ui" line="14"/>
         <source>theTerminal</source>
-        <translation type="unfinished"></translation>
+        <translation>theTerminal</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="53"/>
         <source>Fi&amp;le</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Bestand</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="65"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="74"/>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Weergave</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="78"/>
         <source>Split</source>
-        <translation type="unfinished"></translation>
+        <translation>Splitsen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="93"/>
+        <location filename="../mainwindow.ui" line="91"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Hulp</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="111"/>
+        <location filename="../mainwindow.ui" line="109"/>
         <source>&amp;New Window</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nieuw scherm</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="114"/>
+        <location filename="../mainwindow.ui" line="112"/>
         <source>Ctrl+Shift+N</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+N</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="123"/>
+        <location filename="../mainwindow.ui" line="121"/>
         <source>&amp;Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Sluiten</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="132"/>
+        <location filename="../mainwindow.ui" line="133"/>
         <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Kopiëren</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="135"/>
+        <location filename="../mainwindow.ui" line="136"/>
         <source>Ctrl+Shift+C</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+C</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="144"/>
+        <location filename="../mainwindow.ui" line="145"/>
         <source>&amp;Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Plakken</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="147"/>
+        <location filename="../mainwindow.ui" line="148"/>
         <source>Ctrl+Shift+V</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+V</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="156"/>
+        <location filename="../mainwindow.ui" line="157"/>
         <source>Ne&amp;w Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>N&amp;ieuw tabblad</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="159"/>
+        <location filename="../mainwindow.ui" line="160"/>
         <source>Ctrl+Shift+T</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+T</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="168"/>
+        <location filename="../mainwindow.ui" line="169"/>
         <source>&amp;Close Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabblad &amp;sluiten</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="171"/>
+        <location filename="../mainwindow.ui" line="172"/>
         <source>Ctrl+Shift+W</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+W</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="180"/>
+        <location filename="../mainwindow.ui" line="181"/>
         <source>&amp;Find...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zoeken...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="183"/>
+        <location filename="../mainwindow.ui" line="184"/>
         <source>Ctrl+Shift+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+F</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="192"/>
+        <location filename="../mainwindow.ui" line="193"/>
         <source>&amp;Go Full Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>N&amp;aar volledig scherm gaan</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="201"/>
+        <location filename="../mainwindow.ui" line="202"/>
         <source>&amp;About</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Over</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="210"/>
+        <location filename="../mainwindow.ui" line="214"/>
         <source>&amp;Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ins&amp;tellingen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="213"/>
+        <location filename="../mainwindow.ui" line="217"/>
         <source>Ctrl+,</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+,</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="222"/>
+        <location filename="../mainwindow.ui" line="229"/>
         <source>Zoom In</source>
-        <translation type="unfinished"></translation>
+        <translation>Inzoomen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="225"/>
+        <location filename="../mainwindow.ui" line="232"/>
         <source>Ctrl+=</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+=</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="234"/>
+        <location filename="../mainwindow.ui" line="241"/>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitzoomen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="237"/>
+        <location filename="../mainwindow.ui" line="244"/>
         <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+-</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="242"/>
+        <location filename="../mainwindow.ui" line="249"/>
         <source>Reset Zoom</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoom herstellen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="245"/>
+        <location filename="../mainwindow.ui" line="252"/>
         <source>Ctrl+0</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+0</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="250"/>
+        <location filename="../mainwindow.ui" line="257"/>
         <source>Split Vertically</source>
-        <translation type="unfinished"></translation>
+        <translation>Verticaal splitsen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="253"/>
+        <location filename="../mainwindow.ui" line="260"/>
         <source>Ctrl+Shift+S, -</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+S, -</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="261"/>
+        <location filename="../mainwindow.ui" line="268"/>
         <source>Ctrl+Shift+S, \</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="269"/>
-        <source>File Bug</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+S, \</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="277"/>
+        <source>File Bug</source>
+        <translation>Een bug rapporteren</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="286"/>
         <source>Sources</source>
-        <translation type="unfinished"></translation>
+        <translation>Bron</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="258"/>
+        <location filename="../mainwindow.ui" line="265"/>
         <source>Split Horizontally</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="163"/>
-        <source>Full Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Horizontaal splitsen</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="164"/>
+        <source>Full Screen</source>
+        <translation>Volledig scherm</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="165"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
-        <translation type="unfinished"></translation>
+        <translation>Je bent in een volledig scherm. Je kunt het verlaten met Shift+F11.</translation>
     </message>
 </context>
 <context>
@@ -323,192 +324,192 @@
         <location filename="../settingswindow.ui" line="14"/>
         <location filename="../settingswindow.ui" line="99"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Instellingen</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="128"/>
         <location filename="../settingswindow.ui" line="204"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Algemeen</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="133"/>
         <location filename="../settingswindow.ui" line="330"/>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Uiterlijk</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="138"/>
         <location filename="../settingswindow.ui" line="715"/>
         <source>Scrolling</source>
-        <translation type="unfinished"></translation>
+        <translation>Scrollen</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="143"/>
         <location filename="../settingswindow.ui" line="962"/>
         <source>Bells</source>
-        <translation type="unfinished"></translation>
+        <translation>Bellen</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="148"/>
         <source>Dropdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Dropdown</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="244"/>
         <source>Shell</source>
-        <translation type="unfinished"></translation>
+        <translation>Shell</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="251"/>
         <source>Terminal Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminaltype</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="265"/>
         <source>Legacy</source>
-        <translation type="unfinished"></translation>
+        <translation>Oud</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="270"/>
         <source>Contemporary</source>
-        <translation type="unfinished"></translation>
+        <translation>Modern</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="281"/>
         <source>The Contemporary terminal uses theTerminal itself as the shell in a modern UI. Not everything may work properly.</source>
-        <translation type="unfinished"></translation>
+        <translation>De moderne terminal gebruikt theTerminal zelf als shell in een moderne gebruikersinterface. Het kan zijn dat niet alles goed werkt.</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="479"/>
         <source>Font</source>
-        <translation type="unfinished"></translation>
+        <translation>Lettertype</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="504"/>
         <source>Cursor</source>
-        <translation type="unfinished"></translation>
+        <translation>Aanwijzer</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="520"/>
         <source>TEXT</source>
-        <translation type="unfinished"></translation>
+        <translation>TEKST</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="527"/>
         <source>Blink Cursor</source>
-        <translation type="unfinished"></translation>
+        <translation>Knipperaanwijzer</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="573"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="586"/>
         <source>COLOURS</source>
-        <translation type="unfinished"></translation>
+        <translation>KLEUREN</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="603"/>
         <source>Opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>Ondoorzichtigheid</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="658"/>
         <source>TITLEBAR</source>
-        <translation type="unfinished"></translation>
+        <translation>TITELBALK</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="665"/>
         <source>Use System Titlebars</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruik systeemtitelbalken</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="788"/>
         <source>Limit Scrollback to</source>
-        <translation type="unfinished"></translation>
+        <translation>Terugscrollen beperken tot</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="807"/>
         <source> lines</source>
-        <translation type="unfinished"></translation>
+        <translation> regels</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="820"/>
         <source>No Scrollback</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet terugscrollen</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="827"/>
         <source>Infinite Scrollback</source>
-        <translation type="unfinished"></translation>
+        <translation>Eindeloos terugscrollen</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="840"/>
         <source>SCROLLBACK</source>
-        <translation type="unfinished"></translation>
+        <translation>TERUGSCROLLEN</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="879"/>
         <source>ScrollKeystrokeSwitch</source>
-        <translation type="unfinished"></translation>
+        <translation>ScrollToetscombinatieSchakelaar</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="886"/>
         <source>Scroll down on keystroke</source>
-        <translation type="unfinished"></translation>
+        <translation>Omlaag scrollen met toetscombinatie</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="912"/>
         <source>SCROLLING DOWN</source>
-        <translation type="unfinished"></translation>
+        <translation>OMLAAG SCROLLEN</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1036"/>
         <location filename="../settingswindow.ui" line="1108"/>
         <source>Play Sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Geluid afspelen</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1062"/>
         <source>ACTIVE TERMINAL</source>
-        <translation type="unfinished"></translation>
+        <translation>ACTIEVE TERMINAL</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1115"/>
         <source>Send Notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Melding versturen</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1122"/>
         <source>BellInactiveSoundSwitch</source>
-        <translation type="unfinished"></translation>
+        <translation>BellInactiefGeluidSchakelaar</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1148"/>
         <source>INACTIVE TERMINAL</source>
-        <translation type="unfinished"></translation>
+        <translation>INACTIEVE TERMINAL</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1198"/>
         <source>Drop Down Terminal</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminal naar beneden laten vallen</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1244"/>
         <source>F12</source>
-        <translation type="unfinished"></translation>
+        <translation>F12</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1254"/>
         <source>Keyboard Binding</source>
-        <translation type="unfinished"></translation>
+        <translation>Toetsenbordbinding</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="1261"/>
         <source>The Drop Down Terminal is not available on macOS.</source>
-        <translation type="unfinished"></translation>
+        <translation>De Drop Down Terminal is niet beschikbaar op MacOS.</translation>
     </message>
 </context>
 <context>
@@ -516,52 +517,52 @@
     <message>
         <location filename="../terminalpart.cpp" line="132"/>
         <source>Bell</source>
-        <translation type="unfinished"></translation>
+        <translation>Bel</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="133"/>
         <source>A bell was sounded!</source>
-        <translation type="unfinished"></translation>
+        <translation>Er is een bel geluid!</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="170"/>
         <source>For text &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Voor tekst &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="171"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiëren</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="176"/>
         <source>Open man page</source>
-        <translation type="unfinished"></translation>
+        <translation>Man-pagina openen</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="184"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>Plakken</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="183"/>
         <source>For this terminal</source>
-        <translation type="unfinished"></translation>
+        <translation>Voor deze terminal</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="83"/>
         <source>theterminal: %1: command not found</source>
-        <translation type="unfinished"></translation>
+        <translation>theterminal: %1: commando niet gevonden</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="187"/>
         <source>Find</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoeken</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="190"/>
         <source>Close Terminal</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminal sluiten</translation>
     </message>
 </context>
 <context>
@@ -569,7 +570,7 @@
     <message>
         <location filename="../terminalstatus.ui" line="38"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation>TekstLabel</translation>
     </message>
 </context>
 <context>
@@ -577,13 +578,13 @@
     <message>
         <location filename="../terminaltabber.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../terminaltabber.cpp" line="141"/>
         <location filename="../terminaltabber.cpp" line="143"/>
         <source>Terminal %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminal %1</translation>
     </message>
 </context>
 <context>
@@ -591,83 +592,90 @@
     <message>
         <location filename="../terminalwidget.cpp" line="34"/>
         <source>theterminal: cd: too many arguments</source>
-        <translation type="unfinished"></translation>
+        <translation>theterminal: cd: te veel argumenten</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="45"/>
         <source>theterminal: cd: %1: No such file or directory</source>
-        <translation type="unfinished"></translation>
+        <translation>theterminal: cd: %1: Geen dergelijk bestand of map</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="63"/>
         <source>theterminal: cannot access &apos;%1&apos; No such file or directory</source>
-        <translation type="unfinished"></translation>
+        <translation>theterminal: kan niet bij &apos;%1&apos; Geen dergelijk bestand of map</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="85"/>
         <source>Usage: tted [OPTIONS] [FILE]
 -h, --help                   Show this help output
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruik: tted [OPTIES] [BESTAND]
+-h, --help                   Geef deze hulpuitvoer weer
+</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="91"/>
         <source>theterminal: tted: not enough arguments</source>
-        <translation type="unfinished"></translation>
+        <translation>theterminal: tted: niet genoeg argumenten</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="100"/>
         <source>theterminal: tted: cannot access &apos;%1&apos; No such file or directory</source>
-        <translation type="unfinished"></translation>
+        <translation>theterminal: tted: kan niet bij &apos;%1&apos; Geen dergelijk bestand of map</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="347"/>
         <source>theterminal: %1: command not found</source>
-        <translation type="unfinished"></translation>
+        <translation>theterminal: %1: commando niet gevonden</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="626"/>
         <source>Close this tab?</source>
-        <translation type="unfinished"></translation>
+        <translation>Dit tabblad sluiten?</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="627"/>
         <location filename="../terminalwidget.cpp" line="632"/>
         <source>Closing this tab will also close %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dit tabblad sluiten zal ook %1 sluiten.</translation>
     </message>
     <message>
         <location filename="../terminalwidget.cpp" line="631"/>
         <source>Close tab?</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabblad sluiten?</translation>
     </message>
 </context>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="36"/>
+        <location filename="../main.cpp" line="25"/>
+        <source>Terminal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="49"/>
         <source>workdir</source>
-        <translation type="unfinished"></translation>
+        <translation>werkmap</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="36"/>
+        <location filename="../main.cpp" line="49"/>
         <source>Set working directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Stel werkmap in</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="37"/>
+        <location filename="../main.cpp" line="50"/>
         <source>Starts theTerminal in dropdown mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Start theTerminal in dropdown-modus</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="38"/>
+        <location filename="../main.cpp" line="51"/>
         <source>Command to execute</source>
-        <translation type="unfinished"></translation>
+        <translation>Commando om uit te voeren</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="38"/>
+        <location filename="../main.cpp" line="51"/>
         <source>cmd</source>
-        <translation type="unfinished"></translation>
+        <translation>cmd</translation>
     </message>
 </context>
 <context>
@@ -675,17 +683,17 @@
     <message>
         <location filename="../graphicalParts/ttedcommand.ui" line="301"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Opslaan</translation>
     </message>
     <message>
         <location filename="../graphicalParts/ttedcommand.ui" line="315"/>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongedaan maken</translation>
     </message>
     <message>
         <location filename="../graphicalParts/ttedcommand.ui" line="329"/>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>Opnieuw doen</translation>
     </message>
 </context>
 </TS>

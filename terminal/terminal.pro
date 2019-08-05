@@ -10,6 +10,8 @@ CONFIG   += c++14
 SHARE_APP_NAME = theterminal
 
 unix:!macx {
+    # Include the-libs build scripts
+    include(/usr/share/the-libs/pri/buildmaster.pri)
     QT += x11extras tttermwidget
     LIBS += -lX11
 
@@ -19,12 +21,52 @@ unix:!macx {
     } else {
         TARGET = theterminal
     }
+
+    FORMS += dropdown.ui
+
+    QMAKE_STRIP = echo
+    target.path = /usr/bin
+
+    blueprint {
+        appentry.path = /usr/share/applications
+        appentry.files = theterminalb.desktop
+    } else {
+        appentry.path = /usr/share/applications
+        appentry.files = theterminal.desktop theterminaldd.desktop
+    }
+
+    INSTALLS += target appentry
 }
 
 macx {
+    # Include the-libs build scripts
+    include(/usr/local/share/the-libs/pri/buildmaster.pri)
+
     LIBS += -F/usr/local/Frameworks/ -framework tttermwidget
     INCLUDEPATH += /usr/local/include /usr/local/include/the-libs /usr/local/Frameworks/tttermwidget.framework/Headers
-    TARGET = theTerminal
+
+    blueprint {
+        TARGET = "theTerminal Blueprint"
+        ICON = icon-bp.icns
+
+        QMAKE_POST_LINK += $$quote(install_name_tool -change tttermwidget.framework/Versions/1/tttermwidget @executable_path/../Frameworks/tttermwidget.framework/Versions/1/tttermwidget $${OUT_PWD}/theTerminal\\ Blueprint.app/Contents/MacOS/theTerminal\\ Blueprint)
+
+    } else {
+        TARGET = "theTerminal"
+        ICON = icon.icns
+
+        QMAKE_POST_LINK += $$quote(install_name_tool -change tttermwidget.framework/Versions/1/tttermwidget @executable_path/../Frameworks/tttermwidget.framework/Versions/1/tttermwidget $${OUT_PWD}/theTerminal.app/Contents/MacOS/theTerminal)
+    }
+
+    tttermwidget.files = /usr/local/Frameworks/tttermwidget.framework
+    tttermwidget.path = Contents/Frameworks
+
+    QMAKE_BUNDLE_DATA += tttermwidget
+}
+
+win32 {
+    # Include the-libs build scripts
+    include(C:/Program Files/thelibs/pri/buildmaster.pri)
 }
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -82,38 +124,6 @@ FORMS    += mainwindow.ui \
     graphicalParts/ttedcommand.ui \
     terminalstatus.ui \
     dialogs/busydialog.ui
-
-unix:!macx {
-    include(/usr/share/the-libs/pri/buildmaster.pri)
-    FORMS += dropdown.ui
-
-    QMAKE_STRIP = echo
-    target.path = /usr/bin
-
-    blueprint {
-        appentry.path = /usr/share/applications
-        appentry.files = theterminalb.desktop
-    } else {
-        appentry.path = /usr/share/applications
-        appentry.files = theterminal.desktop theterminaldd.desktop
-    }
-
-    INSTALLS += target appentry
-}
-
-macx {
-    include(/usr/local/share/the-libs/pri/buildmaster.pri)
-
-    tttermwidget.files = /usr/local/Frameworks/tttermwidget.framework
-    tttermwidget.path = Contents/Frameworks
-
-    QMAKE_BUNDLE_DATA += tttermwidget
-    QMAKE_POST_LINK += $$quote(install_name_tool -change tttermwidget.framework/Versions/1/tttermwidget @executable_path/../Frameworks/tttermwidget.framework/Versions/1/tttermwidget $${OUT_PWD}/theTerminal.app/Contents/MacOS/theTerminal)
-}
-
-win {
-    include(C:/Program Files/thelibs/pri/buildmaster.pri)
-}
 
 DISTFILES += \
     theterminaldd.desktop \
