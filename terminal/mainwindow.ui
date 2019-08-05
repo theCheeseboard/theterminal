@@ -14,7 +14,7 @@
    <string>theTerminal</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="utilities-terminal">
+   <iconset theme="theterminal" resource="icons.qrc">
     <normaloff>:/icons/utilities-terminal.svg</normaloff>:/icons/utilities-terminal.svg</iconset>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
@@ -288,6 +288,8 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

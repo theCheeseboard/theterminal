@@ -30,11 +30,17 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget *parent) :
     d->csd.installResizeAction(this);
     d->csdButtons = d->csd.csdBoxForWidget(this);
 
+#ifdef T_BLUEPRINT_BUILD
+    this->setWindowTitle(tr("theTerminal Blueprint"));
+#else
+    this->setWindowTitle(tr("theTerminal"));
+#endif
+
 #ifndef Q_OS_MAC
     ui->menuBar->setVisible(false);
 
     d->menuButton = new QToolButton();
-    d->menuButton->setIcon(QIcon::fromTheme("utilities-terminal"));
+    d->menuButton->setIcon(QIcon::fromTheme("theterminal", QIcon(":/icons/utilities-terminal.svg")));
     d->menuButton->setIconSize(QSize(24, 24) * theLibsGlobal::getDPIScaling());
     d->menuButton->setPopupMode(QToolButton::InstantPopup);
     d->menuButton->setAutoRaise(true);

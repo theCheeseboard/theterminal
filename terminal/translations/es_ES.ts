@@ -133,6 +133,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
+        <location filename="../mainwindow.cpp" line="36"/>
         <source>theTerminal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -307,12 +308,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="164"/>
+        <location filename="../mainwindow.cpp" line="34"/>
+        <source>theTerminal Blueprint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="170"/>
         <source>Full Screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="165"/>
+        <location filename="../mainwindow.cpp" line="171"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -514,52 +520,52 @@
 <context>
     <name>TerminalPart</name>
     <message>
-        <location filename="../terminalpart.cpp" line="132"/>
+        <location filename="../terminalpart.cpp" line="133"/>
         <source>Bell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="133"/>
+        <location filename="../terminalpart.cpp" line="134"/>
         <source>A bell was sounded!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="170"/>
+        <location filename="../terminalpart.cpp" line="171"/>
         <source>For text &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="171"/>
+        <location filename="../terminalpart.cpp" line="172"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="176"/>
+        <location filename="../terminalpart.cpp" line="177"/>
         <source>Open man page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="184"/>
+        <location filename="../terminalpart.cpp" line="185"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="183"/>
+        <location filename="../terminalpart.cpp" line="184"/>
         <source>For this terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="83"/>
+        <location filename="../terminalpart.cpp" line="84"/>
         <source>theterminal: %1: command not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="187"/>
+        <location filename="../terminalpart.cpp" line="188"/>
         <source>Find</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="190"/>
+        <location filename="../terminalpart.cpp" line="191"/>
         <source>Close Terminal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -650,27 +656,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="49"/>
+        <location filename="../main.cpp" line="51"/>
         <source>workdir</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="49"/>
+        <location filename="../main.cpp" line="51"/>
         <source>Set working directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="50"/>
+        <location filename="../main.cpp" line="52"/>
         <source>Starts theTerminal in dropdown mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="51"/>
+        <location filename="../main.cpp" line="53"/>
         <source>Command to execute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="51"/>
+        <location filename="../main.cpp" line="53"/>
         <source>cmd</source>
         <translation type="unfinished"></translation>
     </message>

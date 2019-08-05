@@ -29,8 +29,10 @@ int main(int argc, char *argv[])
     a.setCopyrightYear("2019");
     #ifdef T_BLUEPRINT_BUILD
         a.setApplicationName("theTerminal Blueprint");
+        a.setDesktopFileName("com.vicr123.theterminal-blueprint");
     #else
         a.setApplicationName("theTerminal");
+        a.setDesktopFileName("com.vicr123.theterminal");
     #endif
     if (QDir("/usr/share/theterminal/").exists()) {
         a.setShareDir("/usr/share/theterminal/");

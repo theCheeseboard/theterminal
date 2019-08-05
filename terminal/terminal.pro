@@ -29,10 +29,10 @@ unix:!macx {
 
     blueprint {
         appentry.path = /usr/share/applications
-        appentry.files = theterminalb.desktop
+        appentry.files = com.vicr123.theterminal-blueprint.desktop
     } else {
         appentry.path = /usr/share/applications
-        appentry.files = theterminal.desktop theterminaldd.desktop
+        appentry.files = com.vicr123.theterminal.desktop com.vicr123.theterminal.dropdown.desktop
     }
 
     INSTALLS += target appentry
@@ -126,9 +126,9 @@ FORMS    += mainwindow.ui \
     dialogs/busydialog.ui
 
 DISTFILES += \
-    theterminaldd.desktop \
-    theterminal.desktop \
-    theterminalb.desktop
+    com.vicr123.theterminal-blueprint.desktop \
+    com.vicr123.theterminal.desktop \
+    com.vicr123.theterminal.dropdown.desktop
 
 RESOURCES += \
     icons.qrc

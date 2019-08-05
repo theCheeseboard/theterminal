@@ -134,6 +134,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
+        <location filename="../mainwindow.cpp" line="36"/>
         <source>theTerminal</source>
         <translation>theTerminal</translation>
     </message>
@@ -308,12 +309,17 @@
         <translation>Chia theo hướng ngang</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="164"/>
+        <location filename="../mainwindow.cpp" line="34"/>
+        <source>theTerminal Blueprint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="170"/>
         <source>Full Screen</source>
         <translation>Toàn màn hình</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="165"/>
+        <location filename="../mainwindow.cpp" line="171"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
         <translation>Bạn trong chế độ toàn màn hình. Bạn có thể thoát chế độ toàn màn hình với SHIFT+F11.</translation>
     </message>
@@ -515,52 +521,52 @@
 <context>
     <name>TerminalPart</name>
     <message>
-        <location filename="../terminalpart.cpp" line="132"/>
+        <location filename="../terminalpart.cpp" line="133"/>
         <source>Bell</source>
         <translation>Chuông</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="133"/>
+        <location filename="../terminalpart.cpp" line="134"/>
         <source>A bell was sounded!</source>
         <translation>Một chuông bị rung!</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="170"/>
+        <location filename="../terminalpart.cpp" line="171"/>
         <source>For text &quot;%1&quot;</source>
         <translation>Cho văn bản &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="171"/>
+        <location filename="../terminalpart.cpp" line="172"/>
         <source>Copy</source>
         <translation>Chép</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="176"/>
+        <location filename="../terminalpart.cpp" line="177"/>
         <source>Open man page</source>
         <translation>Mở trang man</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="184"/>
+        <location filename="../terminalpart.cpp" line="185"/>
         <source>Paste</source>
         <translation>Dán</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="183"/>
+        <location filename="../terminalpart.cpp" line="184"/>
         <source>For this terminal</source>
         <translation>Cho đầu cuối này</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="83"/>
+        <location filename="../terminalpart.cpp" line="84"/>
         <source>theterminal: %1: command not found</source>
         <translation>theterminal: %1: không tìm thấy lệnh</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="187"/>
+        <location filename="../terminalpart.cpp" line="188"/>
         <source>Find</source>
         <translation>Tìm</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="190"/>
+        <location filename="../terminalpart.cpp" line="191"/>
         <source>Close Terminal</source>
         <translation>Đóng đầu cuối</translation>
     </message>
@@ -653,27 +659,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="49"/>
+        <location filename="../main.cpp" line="51"/>
         <source>workdir</source>
         <translation>workdir</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="49"/>
+        <location filename="../main.cpp" line="51"/>
         <source>Set working directory</source>
         <translation>Đặt thư mục làm việc</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="50"/>
+        <location filename="../main.cpp" line="52"/>
         <source>Starts theTerminal in dropdown mode</source>
         <translation>Khởi động theTerminal trong chế độ rơi xuống</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="51"/>
+        <location filename="../main.cpp" line="53"/>
         <source>Command to execute</source>
         <translation>Lệnh để chạy</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="51"/>
+        <location filename="../main.cpp" line="53"/>
         <source>cmd</source>
         <translation>cmd</translation>
     </message>
