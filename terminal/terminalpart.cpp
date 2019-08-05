@@ -57,9 +57,10 @@ TerminalPart::TerminalPart(TerminalPartConstruct args, QWidget* parent) : TTTerm
     d = new TerminalPartPrivate();
     setup();
 
-    /*QStringList environment;
-    environment.append("TERM=xterm");
-    this->setEnvironment(environment);*/
+    //Set environment variables
+    QProcessEnvironment currentEnvironment = QProcessEnvironment::systemEnvironment();
+    currentEnvironment.insert("TERM", "xterm-256color");
+    this->setEnvironment(currentEnvironment.toStringList());
 
     if (args.workDir != "") {
         this->setWorkingDirectory(args.workDir);
