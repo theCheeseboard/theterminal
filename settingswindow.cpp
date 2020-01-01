@@ -15,6 +15,8 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     ui->scrollbackSpin->setValue(settings.value("term/scrollback", -1).toInt());
 
     connect(filter, SIGNAL(keypressCaptureComplete()), this, SLOT(keypressCaptureComplete()));
+
+	ui->fontSizeSpin->setValue(settings.value("appearance/fontSize", 10).toInt());
 }
 
 SettingsWindow::~SettingsWindow()
@@ -56,4 +58,9 @@ void SettingsWindow::keypressCaptureComplete() {
 void SettingsWindow::on_scrollbackSpin_valueChanged(int arg1)
 {
     settings.setValue("term/scrollback", arg1);
+}
+
+void SettingsWindow::on_fontSizeSpin_valueChanged(int arg1)
+{
+    settings.setValue("appearance/fontSize", arg1);
 }

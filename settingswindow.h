@@ -45,6 +45,8 @@ private slots:
 
     void on_scrollbackSpin_valueChanged(int arg1);
 
+	void on_fontSizeSpin_valueChanged(int arg1);
+
 private:
     Ui::SettingsWindow *ui;
 
