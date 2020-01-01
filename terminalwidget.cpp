@@ -12,10 +12,10 @@ terminalWidget::terminalWidget(QString workDir, QWidget *parent) : QTermWidget(0
         this->copyOk = copyAvailable;
     });
 
-    /*QFont font;
-    font.setFamily("Hack");
-    font.setPointSize(10);
-    this->setTerminalFont(font);*/
+    QFont font;
+    font.setFamily("Monospace");
+    font.setPointSize(settings.value("appearance/fontSize", 10).toInt());
+    this->setTerminalFont(font);
 
     QStringList environment;
     environment.append("TERM=xterm");
