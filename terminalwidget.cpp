@@ -13,7 +13,7 @@ terminalWidget::terminalWidget(QString workDir, QWidget *parent) : QTermWidget(0
     });
 
     QFont font;
-    font.setFamily("Monospace");
+    font.setFamily(settings.value("appearance/font", "Monospace").toString());
     font.setPointSize(settings.value("appearance/fontSize", 10).toInt());
     this->setTerminalFont(font);
 

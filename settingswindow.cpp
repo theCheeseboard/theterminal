@@ -16,6 +16,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 
     connect(filter, SIGNAL(keypressCaptureComplete()), this, SLOT(keypressCaptureComplete()));
 
+	ui->fontComboBox->setCurrentFont(QFont(settings.value("appearance/font", "Monospace").toString()));
 	ui->fontSizeSpin->setValue(settings.value("appearance/fontSize", 10).toInt());
 }
 
@@ -58,6 +59,11 @@ void SettingsWindow::keypressCaptureComplete() {
 void SettingsWindow::on_scrollbackSpin_valueChanged(int arg1)
 {
     settings.setValue("term/scrollback", arg1);
+}
+
+void SettingsWindow::on_fontComboBox_currentFontChanged(const QFont &font)
+{
+	settings.setValue("appearance/font", font.family());
 }
 
 void SettingsWindow::on_fontSizeSpin_valueChanged(int arg1)

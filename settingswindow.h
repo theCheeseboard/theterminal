@@ -7,6 +7,7 @@
 #include <QKeySequenceEdit>
 #include <QX11Info>
 #include <QSpinBox>
+#include <QFont>
 #include "nativeeventfilter.h"
 #include <X11/Xlib.h>
 #include <X11/XF86keysym.h>
@@ -45,6 +46,7 @@ private slots:
 
     void on_scrollbackSpin_valueChanged(int arg1);
 
+	void on_fontComboBox_currentFontChanged(const QFont &font);
 	void on_fontSizeSpin_valueChanged(int arg1);
 
 private:

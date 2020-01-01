@@ -36,7 +36,8 @@
          <string>General</string>
         </property>
         <property name="icon">
-         <iconset theme="configure"/>
+         <iconset theme="configure">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </item>
        <item>
@@ -44,7 +45,8 @@
          <string>Dropdown</string>
         </property>
         <property name="icon">
-         <iconset theme="go-down"/>
+         <iconset theme="go-down">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </item>
        <item>
@@ -52,7 +54,8 @@
          <string>Appearance</string>
         </property>
         <property name="icon">
-         <iconset theme="video-display"/>
+         <iconset theme="video-display">
+          <normaloff>.</normaloff>.</iconset>
         </property>
        </item>
       </widget>
@@ -60,7 +63,7 @@
      <item>
       <widget class="QStackedWidget" name="pages">
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="page">
         <layout class="QGridLayout" name="gridLayout">
@@ -192,16 +195,26 @@
          </item>
         </layout>
        </widget>
-	   <widget class="QWidget" name="page_3">
+       <widget class="QWidget" name="page_3">
         <layout class="QGridLayout" name="gridLayout_3">
-         <item row="1" column="0">
+         <item row="3" column="0" colspan="3">
+          <widget class="QLabel" name="label_8">
+           <property name="text">
+            <string>These settings only applies to new terminals.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
           <widget class="QLabel" name="label_7">
            <property name="text">
             <string>Font Size</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
+         <item row="4" column="0">
           <spacer name="verticalSpacer_3">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -214,7 +227,26 @@
            </property>
           </spacer>
          </item>
-         <item row="1" column="1">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Font</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" colspan="3">
+          <widget class="QLabel" name="label_6">
+           <property name="font">
+            <font>
+             <pointsize>15</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Appearance</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
           <widget class="QSpinBox" name="fontSizeSpin">
            <property name="suffix">
             <string/>
@@ -233,38 +265,18 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="2">
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+         <item row="1" column="1" colspan="2">
+          <widget class="QFontComboBox" name="fontComboBox">
+           <property name="currentText">
+            <string>Nimbus Mono PS</string>
            </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
+           <property name="fontFilters">
+            <set>QFontComboBox::MonospacedFonts</set>
            </property>
-          </spacer>
-         </item>
-         <item row="0" column="0" colspan="3">
-          <widget class="QLabel" name="label_6">
-           <property name="font">
+           <property name="currentFont">
             <font>
-             <pointsize>15</pointsize>
+             <family>Nimbus Mono PS</family>
             </font>
-           </property>
-           <property name="text">
-            <string>Appearance</string>
-           </property>
-          </widget>
-	     </item>
-		 <item row="2" column="0" colspan="3">
-          <widget class="QLabel" name="label_8">
-           <property name="text">
-            <string>This setting only applies to new terminals.</string>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
            </property>
           </widget>
          </item>
