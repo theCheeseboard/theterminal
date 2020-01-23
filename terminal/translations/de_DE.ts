@@ -586,8 +586,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../terminaltabber.cpp" line="139"/>
         <location filename="../terminaltabber.cpp" line="141"/>
-        <location filename="../terminaltabber.cpp" line="143"/>
         <source>Terminal %1</source>
         <translation type="unfinished"></translation>
     </message>
