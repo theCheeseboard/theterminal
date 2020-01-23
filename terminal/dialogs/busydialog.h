@@ -26,18 +26,16 @@ namespace Ui {
     class BusyDialog;
 }
 
-class BusyDialog : public QWidget
-{
+class BusyDialog : public QWidget {
         Q_OBJECT
 
     public:
-        explicit BusyDialog(QStringList processes, QWidget *parent = nullptr);
+        explicit BusyDialog(QStringList processes, QWidget* parent = nullptr);
         ~BusyDialog();
 
     signals:
         void accept();
         void dismiss();
-        void done();
 
     private slots:
         void on_closeButton_clicked();
@@ -45,7 +43,7 @@ class BusyDialog : public QWidget
         void on_backButton_clicked();
 
     private:
-        Ui::BusyDialog *ui;
+        Ui::BusyDialog* ui;
 };
 
 #endif // BUSYDIALOG_H

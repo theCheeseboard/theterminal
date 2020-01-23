@@ -16,7 +16,7 @@ class TerminalPartPrivate {
         QSettings settings;
 
         enum QuitType {
-            UseSettings,
+            UseSettings = -1,
             AlwaysQuit = 0,
             NeverQuit,
             QuitOnCleanExit
@@ -109,11 +109,11 @@ void TerminalPart::setup() {
 
     reloadThemeSettings();
 
-    connect(this, &TerminalPart::copyAvailable, [=](bool copyAvailable) {
+    connect(this, &TerminalPart::copyAvailable, [ = ](bool copyAvailable) {
         d->copyOk = copyAvailable;
     });
 
-    connect(this, &TerminalPart::bell, [=] {
+    connect(this, &TerminalPart::bell, [ = ] {
         if (this->hasFocus()) {
             //Active terminal
             if (d->settings.value("bell/bellActiveSound", true).toBool()) {
@@ -139,7 +139,7 @@ void TerminalPart::setup() {
             }
         }
     });
-    connect(this, &TerminalPart::shellProgramFinished, [=](int exitCode) {
+    connect(this, &TerminalPart::shellProgramFinished, [ = ](int exitCode) {
         if (d->quitType == TerminalPartPrivate::UseSettings) {
             d->quitType = static_cast<TerminalPartPrivate::QuitType>(d->settings.value("term/quitType", 0).toInt());
         }
@@ -159,22 +159,22 @@ void TerminalPart::setup() {
                 }
         }
     });
-    connect(this, &TerminalPart::finished, this, [=] {
+    connect(this, &TerminalPart::finished, this, [ = ] {
         if (d->quitNeeded) emit closeTerminal();
     });
 
     this->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, &TerminalPart::customContextMenuRequested, [=](QPoint pos) {
+    connect(this, &TerminalPart::customContextMenuRequested, [ = ](QPoint pos) {
         QMenu* menu = new QMenu();
 
         if (this->selectedText(false) != "") {
             menu->addSection(tr("For text \"%1\"").arg(menu->fontMetrics().elidedText(this->selectedText(false).trimmed(), Qt::ElideMiddle, 200 * theLibsGlobal::getDPIScaling())));
-            QAction* copyAction = menu->addAction(QIcon::fromTheme("edit-copy"), tr("Copy"), [=] {
+            QAction* copyAction = menu->addAction(QIcon::fromTheme("edit-copy"), tr("Copy"), [ = ] {
                 this->copyClipboard();
             });
             copyAction->setEnabled(canCopy());
 
-            menu->addAction(tr("Open man page"), [=] {
+            menu->addAction(tr("Open man page"), [ = ] {
                 TerminalPartConstruct terminalPartArgs;
                 terminalPartArgs.manPage = this->selectedText(false);
                 emit openNewTerminal(new TerminalPart(terminalPartArgs));
@@ -182,13 +182,13 @@ void TerminalPart::setup() {
         }
 
         menu->addSection(tr("For this terminal"));
-        menu->addAction(QIcon::fromTheme("edit-paste"), tr("Paste"), [=] {
+        menu->addAction(QIcon::fromTheme("edit-paste"), tr("Paste"), [ = ] {
             this->pasteClipboard();
         });
-        menu->addAction(QIcon::fromTheme("edit-find"), tr("Find"), [=] {
+        menu->addAction(QIcon::fromTheme("edit-find"), tr("Find"), [ = ] {
             this->toggleShowSearchBar();
         });
-        menu->addAction(QIcon::fromTheme("dialog-close"), tr("Close Terminal"), [=] {
+        menu->addAction(QIcon::fromTheme("dialog-close"), tr("Close Terminal"), [ = ] {
             this->tryClose();
         });
 
@@ -202,7 +202,7 @@ bool TerminalPart::canCopy() {
     return d->copyOk;
 }
 
-void TerminalPart::resizeEvent(QResizeEvent *event) {
+void TerminalPart::resizeEvent(QResizeEvent* event) {
 
 }
 
@@ -266,10 +266,10 @@ void TerminalPart::tryClose() {
 
         BusyDialog* dialog = new BusyDialog(this->runningProcesses());
         tPopover* popover = new tPopover(dialog);
-        popover->setPopoverWidth(300 * theLibsGlobal::getDPIScaling());
+        popover->setPopoverWidth(SC_DPI(300));
         connect(popover, &tPopover::dismissed, dialog, &BusyDialog::deleteLater);
         connect(popover, &tPopover::dismissed, popover, &tPopover::deleteLater);
-        connect(dialog, &BusyDialog::done, popover, &tPopover::dismiss);
+        connect(dialog, &BusyDialog::dismiss, popover, &tPopover::dismiss);
         connect(dialog, &BusyDialog::accept, this, &TerminalPart::closeTerminal);
         popover->show(this);
     } else {
