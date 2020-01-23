@@ -4,20 +4,24 @@
 #include <tcsdtools.h>
 
 #ifndef Q_OS_MAC
-#include "dropdown.h"
+    #include "dropdown.h"
 #endif
 
 #ifdef Q_OS_MAC
-#include <CoreFoundation/CFBundle.h>
+    #include <CoreFoundation/CFBundle.h>
 #endif
 
 NativeEventFilter* filter;
 extern void setupBuiltinFunctions();
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char* argv[]) {
     tApplication a(argc, argv);
 
+    if (QDir("/usr/share/theterminal/").exists()) {
+        a.setShareDir("/usr/share/theterminal/");
+    } else if (QDir(QDir::cleanPath(QApplication::applicationDirPath() + "/../share/theterminal/")).exists()) {
+        a.setShareDir(QDir::cleanPath(QApplication::applicationDirPath() + "/../share/theterminal/"));
+    }
     a.installTranslators();
 
     a.setApplicationIcon(QIcon::fromTheme("theterminal", QIcon(":/icons/icon.svg")));
@@ -27,18 +31,15 @@ int main(int argc, char *argv[])
     a.setApplicationLicense(tApplication::Gpl3OrLater);
     a.setCopyrightHolder("Victor Tran");
     a.setCopyrightYear("2019");
-    #ifdef T_BLUEPRINT_BUILD
-        a.setApplicationName("theTerminal Blueprint");
-        a.setDesktopFileName("com.vicr123.theterminal-blueprint");
-    #else
-        a.setApplicationName("theTerminal");
-        a.setDesktopFileName("com.vicr123.theterminal");
-    #endif
-    if (QDir("/usr/share/theterminal/").exists()) {
-        a.setShareDir("/usr/share/theterminal/");
-    } else if (QDir(QDir::cleanPath(QApplication::applicationDirPath() + "/../share/theterminal/")).exists()) {
-        a.setShareDir(QDir::cleanPath(QApplication::applicationDirPath() + "/../share/theterminal/"));
-    }
+#ifdef T_BLUEPRINT_BUILD
+    a.setApplicationName("theTerminal Blueprint");
+    a.setDesktopFileName("com.vicr123.theterminal-blueprint");
+#else
+    a.setApplicationName("theTerminal");
+    a.setDesktopFileName("com.vicr123.theterminal");
+#endif
+
+    a.registerCrashTrap();
 
     QSettings settings;
 #ifndef Q_OS_MAC
@@ -48,9 +49,9 @@ int main(int argc, char *argv[])
 
     QCommandLineParser parser;
     parser.addOptions({
-        {{"w","workdir"}, a.translate("main", "Set working directory"), a.translate("main", "workdir")},
-        {{"d","dropdown"}, a.translate("main", "Starts theTerminal in dropdown mode")},
-        {{"e","exec"}, a.translate("main", "Command to execute"), a.translate("main", "cmd")}
+        {{"w", "workdir"}, a.translate("main", "Set working directory"), a.translate("main", "workdir")},
+        {{"d", "dropdown"}, a.translate("main", "Starts theTerminal in dropdown mode")},
+        {{"e", "exec"}, a.translate("main", "Command to execute"), a.translate("main", "cmd")}
     });
     parser.addHelpOption();
     parser.process(a);
@@ -66,9 +67,9 @@ int main(int argc, char *argv[])
     a.installNativeEventFilter(filter);
 
     if (parser.isSet("d")) {
-        #ifndef Q_OS_MAC
+#ifndef Q_OS_MAC
         Dropdown* w = new Dropdown(parser.value("workdir"));
-        #endif
+#endif
     } else {
         MainWindow* w = new MainWindow(parser.value("workdir"), parser.value("exec"));
         w->show();

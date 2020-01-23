@@ -13,10 +13,9 @@
 extern bool capturingKeyPress;
 extern NativeEventFilter* filter;
 
-SettingsWindow::SettingsWindow(QWidget *parent) :
+SettingsWindow::SettingsWindow(QWidget* parent) :
     QDialog(parent),
-    ui(new Ui::SettingsWindow)
-{
+    ui(new Ui::SettingsWindow) {
     ui->setupUi(this);
 
     this->resize(this->size() * theLibsGlobal::getDPIScaling());
@@ -98,24 +97,20 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     connect(filter, SIGNAL(keypressCaptureComplete()), this, SLOT(keypressCaptureComplete()));
 }
 
-SettingsWindow::~SettingsWindow()
-{
+SettingsWindow::~SettingsWindow() {
     disconnect(filter, SIGNAL(keypressCaptureComplete()), this, SLOT(keypressCaptureComplete()));
     delete ui;
 }
 
-void SettingsWindow::on_settingsLists_currentRowChanged(int currentRow)
-{
+void SettingsWindow::on_settingsLists_currentRowChanged(int currentRow) {
     ui->pages->setCurrentIndex(currentRow);
 }
 
-void SettingsWindow::on_DoneButton_clicked()
-{
+void SettingsWindow::on_DoneButton_clicked() {
     this->close();
 }
 
-void SettingsWindow::on_keybindingButton_toggled(bool checked)
-{
+void SettingsWindow::on_keybindingButton_toggled(bool checked) {
 #ifndef Q_OS_MAC
     if (checked) {
         //Capture keyboard
@@ -136,14 +131,12 @@ void SettingsWindow::keypressCaptureComplete() {
     ui->keybindingButton->setChecked(false);
 }
 
-void SettingsWindow::on_scrollbackSpin_valueChanged(int arg1)
-{
+void SettingsWindow::on_scrollbackSpin_valueChanged(int arg1) {
     settings.setValue("term/scrollback", arg1);
 }
 
 
-void SettingsWindow::on_termTypeComboBox_currentIndexChanged(int index)
-{
+void SettingsWindow::on_termTypeComboBox_currentIndexChanged(int index) {
     switch (index) {
         case 0: //Legacy
             settings.setValue("terminal/type", "legacy");
@@ -154,88 +147,74 @@ void SettingsWindow::on_termTypeComboBox_currentIndexChanged(int index)
     }
 }
 
-void SettingsWindow::on_coloursComboBox_currentIndexChanged(const QString &arg1)
-{
+void SettingsWindow::on_coloursComboBox_currentIndexChanged(const QString& arg1) {
     settings.setValue("theme/scheme", arg1);
     TerminalController::updateTerminalStyles();
 }
 
-void SettingsWindow::on_shellLineEdit_editingFinished()
-{
+void SettingsWindow::on_shellLineEdit_editingFinished() {
     settings.setValue("term/program", ui->shellLineEdit->text());
 }
 
-void SettingsWindow::on_fontComboBox_currentFontChanged(const QFont &f)
-{
+void SettingsWindow::on_fontComboBox_currentFontChanged(const QFont& f) {
     settings.setValue("theme/fontFamily", f.family());
     TerminalController::updateTerminalStyles();
 }
 
-void SettingsWindow::on_currentFontSize_valueChanged(int arg1)
-{
+void SettingsWindow::on_currentFontSize_valueChanged(int arg1) {
     settings.setValue("theme/fontSize", arg1);
     TerminalController::updateTerminalStyles();
 }
 
-void SettingsWindow::on_blockCursor_toggled(bool checked)
-{
+void SettingsWindow::on_blockCursor_toggled(bool checked) {
     if (checked) {
         settings.setValue("theme/cursorType", 0);
         TerminalController::updateTerminalStyles();
     }
 }
 
-void SettingsWindow::on_underlineCursor_toggled(bool checked)
-{
+void SettingsWindow::on_underlineCursor_toggled(bool checked) {
     if (checked) {
         settings.setValue("theme/cursorType", 1);
         TerminalController::updateTerminalStyles();
     }
 }
 
-void SettingsWindow::on_ibeamCursor_toggled(bool checked)
-{
+void SettingsWindow::on_ibeamCursor_toggled(bool checked) {
     if (checked) {
         settings.setValue("theme/cursorType", 2);
         TerminalController::updateTerminalStyles();
     }
 }
 
-void SettingsWindow::on_blinkCursorSwitch_toggled(bool checked)
-{
+void SettingsWindow::on_blinkCursorSwitch_toggled(bool checked) {
     settings.setValue("theme/blinkCursor", checked);
 }
 
-void SettingsWindow::on_bellActiveSoundSwitch_toggled(bool checked)
-{
+void SettingsWindow::on_bellActiveSoundSwitch_toggled(bool checked) {
     settings.setValue("bell/bellActiveSound", checked);
 }
 
-void SettingsWindow::on_bellInactiveSoundSwitch_toggled(bool checked)
-{
+void SettingsWindow::on_bellInactiveSoundSwitch_toggled(bool checked) {
     settings.setValue("bell/bellInactiveSound", checked);
 }
 
-void SettingsWindow::on_bellInactiveNotificationSwitch_toggled(bool checked)
-{
+void SettingsWindow::on_bellInactiveNotificationSwitch_toggled(bool checked) {
     settings.setValue("bell/bellInactiveNotification", checked);
 }
 
-void SettingsWindow::on_opacitySlider_valueChanged(int value)
-{
+void SettingsWindow::on_opacitySlider_valueChanged(int value) {
     settings.setValue("theme/opacity", value);
     TerminalController::updateTerminalStyles();
 }
 
-void SettingsWindow::on_noScrollbackRadioButton_toggled(bool checked)
-{
+void SettingsWindow::on_noScrollbackRadioButton_toggled(bool checked) {
     if (checked) {
         settings.setValue("term/scrollback", 0);
     }
 }
 
-void SettingsWindow::on_limitScrollbackRadioButton_toggled(bool checked)
-{
+void SettingsWindow::on_limitScrollbackRadioButton_toggled(bool checked) {
     if (checked) {
         settings.setValue("term/scrollback", ui->scrollbackSpin->value());
         ui->scrollbackSpin->setEnabled(true);
@@ -244,21 +223,18 @@ void SettingsWindow::on_limitScrollbackRadioButton_toggled(bool checked)
     }
 }
 
-void SettingsWindow::on_infiniteScrollbackRadioButton_toggled(bool checked)
-{
+void SettingsWindow::on_infiniteScrollbackRadioButton_toggled(bool checked) {
     if (checked) {
         settings.setValue("term/scrollback", -1);
     }
 }
 
-void SettingsWindow::on_scrollKeystrokeSwitch_toggled(bool checked)
-{
+void SettingsWindow::on_scrollKeystrokeSwitch_toggled(bool checked) {
     settings.setValue("scrolling/scrollOnKeystroke", checked);
     TerminalController::updateTerminalStyles();
 }
 
-void SettingsWindow::on_systemTitlebarsCheckbox_toggled(bool checked)
-{
+void SettingsWindow::on_systemTitlebarsCheckbox_toggled(bool checked) {
     settings.setValue("appearance/useSsds", checked);
     tCsdGlobal::setCsdsEnabled(!checked);
 }

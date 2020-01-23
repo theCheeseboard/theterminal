@@ -15,15 +15,14 @@ struct MainWindowPrivate {
     QList<TerminalTabber*> tabbers;
     TerminalTabber* currentTabber;
 
-    QToolButton *menuButton;
+    QToolButton* menuButton;
     QWidget* csdButtons;
     QSplitter* mainSplitter;
 };
 
-MainWindow::MainWindow(QString workDir, QString cmd, QWidget *parent) :
+MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
+    ui(new Ui::MainWindow) {
     ui->setupUi(this);
     d = new MainWindowPrivate();
 
@@ -91,8 +90,7 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget *parent) :
     this->centralWidget()->layout()->addWidget(d->mainSplitter);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete d;
     delete ui;
 }
@@ -105,14 +103,12 @@ TerminalWidget* MainWindow::currentTerminal() {
     return currentTabber()->currentTerminal();
 }
 
-void MainWindow::on_actionNew_Window_triggered()
-{
+void MainWindow::on_actionNew_Window_triggered() {
     MainWindow* win = new MainWindow();
     win->show();
 }
 
-void MainWindow::on_actionExit_triggered()
-{
+void MainWindow::on_actionExit_triggered() {
     tApplication::closeAllWindows();
 //    for (QWidget* w : QApplication::allWidgets()) {
 //        if (w && strcmp(w->metaObject()->className(), "MainWindow") == 0) {
@@ -122,13 +118,11 @@ void MainWindow::on_actionExit_triggered()
 //    }
 }
 
-void MainWindow::on_actionCopy_triggered()
-{
+void MainWindow::on_actionCopy_triggered() {
     currentTerminal()->copyClipboard();
 }
 
-void MainWindow::on_actionPaste_triggered()
-{
+void MainWindow::on_actionPaste_triggered() {
     currentTerminal()->pasteClipboard();
 }
 
@@ -140,27 +134,23 @@ void MainWindow::addTerminal(TerminalWidget* widget) {
     currentTabber()->addTab(widget);
 }
 
-void MainWindow::on_actionNew_Tab_triggered()
-{
+void MainWindow::on_actionNew_Tab_triggered() {
     addTerminal();
 }
 
-void MainWindow::closeTerminal(TerminalWidget *widget) {
+void MainWindow::closeTerminal(TerminalWidget* widget) {
     widget->close();
 }
 
-void MainWindow::on_actionClose_Tab_triggered()
-{
+void MainWindow::on_actionClose_Tab_triggered() {
     closeTerminal(currentTerminal());
 }
 
-void MainWindow::on_actionFind_triggered()
-{
+void MainWindow::on_actionFind_triggered() {
     currentTerminal()->toggleShowSearchBar();
 }
 
-void MainWindow::on_actionGo_Full_Screen_triggered()
-{
+void MainWindow::on_actionGo_Full_Screen_triggered() {
     if (this->isFullScreen()) {
         this->showNormal();
     } else {
@@ -174,20 +164,18 @@ void MainWindow::on_actionGo_Full_Screen_triggered()
     }
 }
 
-void MainWindow::on_actionAbout_triggered()
-{
+void MainWindow::on_actionAbout_triggered() {
     tAboutDialog about;
     about.exec();
 }
 
-void MainWindow::on_actionSettings_triggered()
-{
+void MainWindow::on_actionSettings_triggered() {
     SettingsWindow* settings = new SettingsWindow();
     settings->exec();
     settings->deleteLater();
 }
 
-void MainWindow::closeEvent(QCloseEvent *event) {
+void MainWindow::closeEvent(QCloseEvent* event) {
     if (d->tabbers.count() != 0) {
         event->ignore();
         for (TerminalTabber* tabber : d->tabbers) {
@@ -196,18 +184,15 @@ void MainWindow::closeEvent(QCloseEvent *event) {
     }
 }
 
-void MainWindow::on_actionZoomIn_triggered()
-{
+void MainWindow::on_actionZoomIn_triggered() {
     currentTerminal()->zoomIn();
 }
 
-void MainWindow::on_actionZoomOut_triggered()
-{
+void MainWindow::on_actionZoomOut_triggered() {
     currentTerminal()->zoomOut();
 }
 
-void MainWindow::on_actionResetZoom_triggered()
-{
+void MainWindow::on_actionResetZoom_triggered() {
     currentTerminal()->zoom100();
 }
 
@@ -243,10 +228,10 @@ TerminalTabber* MainWindow::splitVertically() {
     anim->setEndValue(newHeight);
     anim->setDuration(500);
     anim->setEasingCurve(QEasingCurve::OutCubic);
-    connect(anim, &tVariantAnimation::valueChanged, tabber, [=](QVariant value) {
+    connect(anim, &tVariantAnimation::valueChanged, tabber, [ = ](QVariant value) {
         tabber->setFixedHeight(value.toInt());
     });
-    connect(anim, &tVariantAnimation::finished, tabber, [=] {
+    connect(anim, &tVariantAnimation::finished, tabber, [ = ] {
         actingSplitter->setSizes(actingSplitter->sizes());
         tabber->setFixedHeight(QWIDGETSIZE_MAX);
         anim->deleteLater();
@@ -292,10 +277,10 @@ TerminalTabber* MainWindow::splitHorizontally() {
     anim->setEndValue(newWidth);
     anim->setDuration(500);
     anim->setEasingCurve(QEasingCurve::OutCubic);
-    connect(anim, &tVariantAnimation::valueChanged, tabber, [=](QVariant value) {
+    connect(anim, &tVariantAnimation::valueChanged, tabber, [ = ](QVariant value) {
         tabber->setFixedWidth(value.toInt());
     });
-    connect(anim, &tVariantAnimation::finished, tabber, [=] {
+    connect(anim, &tVariantAnimation::finished, tabber, [ = ] {
         actingSplitter->setSizes(actingSplitter->sizes());
         tabber->setFixedWidth(QWIDGETSIZE_MAX);
         anim->deleteLater();
@@ -312,7 +297,7 @@ TerminalTabber* MainWindow::splitHorizontally() {
 TerminalTabber* MainWindow::newTabber() {
     //Create a new tabber
     TerminalTabber* tabber = new TerminalTabber();
-    connect(tabber, &TerminalTabber::done, this, [=] {
+    connect(tabber, &TerminalTabber::done, this, [ = ] {
         //Clean up splitters
         QSplitter* parentSplitter = qobject_cast<QSplitter*>(tabber->parentWidget());
         tabber->setParent(nullptr); //Remove the tabber from its parent
@@ -354,31 +339,27 @@ TerminalTabber* MainWindow::newTabber() {
             QTimer::singleShot(0, this, &MainWindow::close);
         }
     });
-    connect(tabber, &TerminalTabber::gotFocus, this, [=] {
+    connect(tabber, &TerminalTabber::gotFocus, this, [ = ] {
         d->currentTabber = tabber;
     });
     d->tabbers.append(tabber);
     return tabber;
 }
 
-void MainWindow::on_actionSplitVertically_triggered()
-{
+void MainWindow::on_actionSplitVertically_triggered() {
     this->splitVertically();
 }
 
-void MainWindow::on_actionSplitHorizontally_triggered()
-{
+void MainWindow::on_actionSplitHorizontally_triggered() {
     this->splitHorizontally();
 }
 
-void MainWindow::on_actionFileBug_triggered()
-{
-    QDesktopServices::openUrl(QUrl("https://github.com/vicr123/theslate/issues"));
+void MainWindow::on_actionFileBug_triggered() {
+    QDesktopServices::openUrl(QUrl("https://github.com/vicr123/theterminal/issues"));
 }
 
-void MainWindow::on_actionSources_triggered()
-{
-    QDesktopServices::openUrl(QUrl("https://github.com/vicr123/theslate"));
+void MainWindow::on_actionSources_triggered() {
+    QDesktopServices::openUrl(QUrl("https://github.com/vicr123/theterminal"));
 }
 
 void MainWindow::moveTabberButtons() {

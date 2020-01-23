@@ -134,7 +134,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
-        <location filename="../mainwindow.cpp" line="36"/>
+        <location filename="../mainwindow.cpp" line="35"/>
         <source>theTerminal</source>
         <translation>theTerminal</translation>
     </message>
@@ -309,17 +309,17 @@
         <translation>Chia theo hướng ngang</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="34"/>
+        <location filename="../mainwindow.cpp" line="33"/>
         <source>theTerminal Blueprint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="170"/>
+        <location filename="../mainwindow.cpp" line="160"/>
         <source>Full Screen</source>
         <translation>Toàn màn hình</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="171"/>
+        <location filename="../mainwindow.cpp" line="161"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
         <translation>Bạn trong chế độ toàn màn hình. Bạn có thể thoát chế độ toàn màn hình với SHIFT+F11.</translation>
     </message>
@@ -654,32 +654,32 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="25"/>
+        <location filename="../main.cpp" line="29"/>
         <source>Terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="51"/>
+        <location filename="../main.cpp" line="52"/>
         <source>workdir</source>
         <translation>workdir</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="51"/>
+        <location filename="../main.cpp" line="52"/>
         <source>Set working directory</source>
         <translation>Đặt thư mục làm việc</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="52"/>
+        <location filename="../main.cpp" line="53"/>
         <source>Starts theTerminal in dropdown mode</source>
         <translation>Khởi động theTerminal trong chế độ rơi xuống</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="53"/>
+        <location filename="../main.cpp" line="54"/>
         <source>Command to execute</source>
         <translation>Lệnh để chạy</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="53"/>
+        <location filename="../main.cpp" line="54"/>
         <source>cmd</source>
         <translation>cmd</translation>
     </message>

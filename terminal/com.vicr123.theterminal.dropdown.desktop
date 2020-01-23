@@ -3,7 +3,10 @@
 Type=Application
 Version=1.0
 Name=theTerminal (Drop Down mode)
+Name[vi]=theTerminal (Chế độ rơi xuống)
+Name[nl]=theTerminal (Dropdown-modus)
 GenericName=Drop Down Terminal
+GenericName[nl]=Dropdown-terminal
 GenericName[vi]=Thiết bị đầu cuối rơi xuống
 Exec=theterminal -d
 Icon=utilities-terminal

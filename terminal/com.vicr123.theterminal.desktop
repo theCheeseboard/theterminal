@@ -4,6 +4,7 @@ Type=Application
 Version=1.0
 Name=theTerminal
 GenericName=Terminal
+GenericName[nl]=Terminal
 GenericName[vi]=Thiết bị đầu cuối
 Exec=theterminal
 Icon=utilities-terminal

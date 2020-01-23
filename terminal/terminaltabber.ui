@@ -78,9 +78,9 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QFrame" name="tabFrame">
+          <widget class="QScrollArea" name="scrollArea">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -88,39 +88,49 @@
            <property name="frameShape">
             <enum>QFrame::NoFrame</enum>
            </property>
-           <property name="frameShadow">
-            <enum>QFrame::Raised</enum>
+           <property name="widgetResizable">
+            <bool>true</bool>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <property name="spacing">
-             <number>0</number>
+           <widget class="QWidget" name="tabFrame">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>513</width>
+              <height>68</height>
+             </rect>
             </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>510</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
           </widget>
          </item>
         </layout>
@@ -140,6 +150,9 @@
    <extends>QStackedWidget</extends>
    <header location="global">tstackedwidget.h</header>
    <container>1</container>
+   <slots>
+    <signal>switchingFrame(int)</signal>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
