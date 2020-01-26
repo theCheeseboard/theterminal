@@ -50,7 +50,8 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
         ui->scrollbackSpin->setValue(scrollback);
     }
 
-    if (settings.value("terminal/type", "legacy").toString() == "legacy") {
+    //Force the legacy terminal
+    if (settings.value("terminal/type", "legacy").toString() == "legacy" || /* DISABLES CODE */ (true)) {
         ui->termTypeComboBox->setCurrentIndex(0);
     } else {
         ui->termTypeComboBox->setCurrentIndex(1);

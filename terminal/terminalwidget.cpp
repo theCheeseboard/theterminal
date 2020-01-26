@@ -8,15 +8,15 @@ extern int lookbehindSpace(QString str, int from);
 extern int lookaheadSpace(QString str, int from);
 extern QStringList splitSpaces(QString str);
 
-TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget *parent) :
+TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget* parent) :
     QWidget(parent),
-    ui(new Ui::TerminalWidget)
-{
+    ui(new Ui::TerminalWidget) {
     ui->setupUi(this);
     ui->autocompletePages->setFixedHeight(0);
     ui->commandLine->installEventFilter(this);
 
-    if (cmd != "" || settings.value("terminal/type", "legacy").toString() == "legacy") {
+    //Force the legacy terminal: the contemporary terminal is not ready.
+    if (cmd != "" || settings.value("terminal/type", "legacy").toString() == "legacy" || true) {
         //Create a legacy terminal part
         TerminalPartConstruct termPartArgs;
         termPartArgs.workDir = workDir;
@@ -26,7 +26,7 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget *parent) :
     } else {
         ui->terminalTypeStack->setCurrentWidget(ui->newTerminalPage);
         //Set up built in functions
-        builtinFunctions.insert("cd", [=](QString line) {
+        builtinFunctions.insert("cd", [ = ](QString line) {
             QStringList args = splitSpaces(line);
             args.takeFirst();
 
@@ -49,7 +49,7 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget *parent) :
             workingDirectory = dir;
             return 0;
         });
-        builtinFunctions.insert("ls", [=](QString line) {
+        builtinFunctions.insert("ls", [ = ](QString line) {
             QString dirString = line.remove(0, 2).trimmed(); //Remove the ls
             QStringList args = dirString.split(" ");
 
@@ -67,7 +67,7 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget *parent) :
 
             lsCommand* pane = new lsCommand();
             pane->setDir(dir, args);
-            connect(pane, &lsCommand::executeCommands, [=](QStringList commands) {
+            connect(pane, &lsCommand::executeCommands, [ = ](QStringList commands) {
                 awaitingCommands.append(commands);
 
                 if (currentCommandPart == nullptr) prepareForNextCommand();
@@ -77,13 +77,13 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget *parent) :
             currentCommandPart->executeWidget(pane);
             return 0;
         });
-        builtinFunctions.insert("tted", [=](QString line) {
+        builtinFunctions.insert("tted", [ = ](QString line) {
             QStringList args = splitSpaces(line);
             args.takeFirst();
 
             if (args.contains("--help") || args.contains("-")) {
                 currentCommandPart->appendOutput(tr("Usage: tted [OPTIONS] [FILE]\n"
-                                                    "-h, --help                   Show this help output\n"));
+                        "-h, --help                   Show this help output\n"));
                 return 0;
             }
 
@@ -109,7 +109,7 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget *parent) :
             }
             return 0;
         });
-        builtinFunctions.insert("export", [=](QString line) {
+        builtinFunctions.insert("export", [ = ](QString line) {
             QString envString = line.remove(0, 7).trimmed(); //Remove the export
             QString name, value = "";
 
@@ -123,11 +123,11 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget *parent) :
             currentEnvironment.insert(name, value);
             return 0;
         });
-        builtinFunctions.insert("exit", [=](QString line) {
+        builtinFunctions.insert("exit", [ = ](QString line) {
             QTimer::singleShot(0, this, SIGNAL(finished()));
             return 0;
         });
-        builtinFunctions.insert("clear", [=](QString line) {
+        builtinFunctions.insert("clear", [ = ](QString line) {
             for (CommandPart* part : commandParts) {
                 part->close();
             }
@@ -141,7 +141,7 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget *parent) :
         autocompleteAnimation = new tVariantAnimation();
         autocompleteAnimation->setEasingCurve(QEasingCurve::OutCubic);
         autocompleteAnimation->setDuration(250);
-        connect(autocompleteAnimation, &tVariantAnimation::valueChanged, [=](QVariant value) {
+        connect(autocompleteAnimation, &tVariantAnimation::valueChanged, [ = ](QVariant value) {
             ui->autocompletePages->setFixedHeight(value.toInt());
         });
         connect(this, SIGNAL(destroyed(QObject*)), autocompleteAnimation, SLOT(stop()));
@@ -164,14 +164,14 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget *parent) :
         currentEnvironment.insert("TERM", "xterm");
         prepareForNextCommand();
 
-        connect(ui->terminalArea->verticalScrollBar(), &QScrollBar::valueChanged, [=](int value) {
+        connect(ui->terminalArea->verticalScrollBar(), &QScrollBar::valueChanged, [ = ](int value) {
             if (value == ui->terminalArea->verticalScrollBar()->maximum()) {
                 currentlyAtBottom = true;
             } else {
                 currentlyAtBottom = false;
             }
         });
-        connect(ui->terminalArea->verticalScrollBar(), &QScrollBar::rangeChanged, [=](int min, int max) {
+        connect(ui->terminalArea->verticalScrollBar(), &QScrollBar::rangeChanged, [ = ](int min, int max) {
             if (currentlyAtBottom) ui->terminalArea->verticalScrollBar()->setValue(max);
         });
     }
@@ -183,12 +183,11 @@ TerminalWidget::TerminalWidget(TerminalPart* terminal, QWidget* parent) : QWidge
     initializeAsLegacy(terminal);
 }
 
-TerminalWidget::~TerminalWidget()
-{
+TerminalWidget::~TerminalWidget() {
     delete ui;
 }
 
-void TerminalWidget::initializeAsLegacy(TerminalPart *terminal) {
+void TerminalWidget::initializeAsLegacy(TerminalPart* terminal) {
     legacyTerminalPart = terminal;
     this->setFocusProxy(terminal);
 
@@ -200,7 +199,7 @@ void TerminalWidget::initializeAsLegacy(TerminalPart *terminal) {
     ui->terminalTypeStack->setCurrentWidget(ui->legacyTerminalPage);
     connect(legacyTerminalPart, SIGNAL(closeTerminal()), this, SIGNAL(finished()));
     connect(legacyTerminalPart, SIGNAL(bell(QString)), this, SIGNAL(bell(QString)));
-    connect(legacyTerminalPart, &TerminalPart::openNewTerminal, [=](TerminalPart* terminal) {
+    connect(legacyTerminalPart, &TerminalPart::openNewTerminal, [ = ](TerminalPart * terminal) {
         emit openNewTerminal(new TerminalWidget(terminal));
     });
 }
@@ -291,7 +290,7 @@ void TerminalWidget::runCommand(QString command) {
     currentCommandPart->setCommandText(command);
 
     CommandPart* part = currentCommandPart;
-    connect(currentCommandPart, &CommandPart::dismiss, [=] {
+    connect(currentCommandPart, &CommandPart::dismiss, [ = ] {
         commandParts.removeOne(part);
         commandsLayout->removeWidget(part);
         part->deleteLater();
@@ -319,12 +318,12 @@ void TerminalWidget::runCommand(QString command) {
 
         if (cmd != "") {
             if (isLast) {
-                connect(currentCommandPart, &CommandPart::finished, [=](int exitCode) {
+                connect(currentCommandPart, &CommandPart::finished, [ = ](int exitCode) {
                     prepareForNextCommand();
                 });
                 adjustCurrentTerminal();
 
-                QTimer::singleShot(0, [=] {
+                QTimer::singleShot(0, [ = ] {
                     ui->terminalArea->verticalScrollBar()->setValue(ui->terminalArea->verticalScrollBar()->maximum());
                     currentCommandPart->executeCommand(ui->terminalArea->height() - 18, previousProcess, cmd);
                 });
@@ -383,8 +382,7 @@ QString TerminalWidget::executableSearch(QString executable, QString command) {
     return "";
 }
 
-void TerminalWidget::on_commandLine_returnPressed()
-{
+void TerminalWidget::on_commandLine_returnPressed() {
     runCommand(ui->commandLine->text());
     ui->commandLine->setText("");
 }
@@ -397,7 +395,7 @@ QProcessEnvironment TerminalWidget::getEnv() {
     return currentEnvironment;
 }
 
-void TerminalWidget::resizeEvent(QResizeEvent *event) {
+void TerminalWidget::resizeEvent(QResizeEvent* event) {
     adjustCurrentTerminal();
 }
 
@@ -407,8 +405,7 @@ void TerminalWidget::adjustCurrentTerminal() {
     }
 }
 
-void TerminalWidget::on_commandLine_cursorPositionChanged(int arg1, int arg2)
-{
+void TerminalWidget::on_commandLine_cursorPositionChanged(int arg1, int arg2) {
     ui->fileAutocompleteWidget->blockSignals(true);
     ui->fileAutocompleteWidget->clear();
     ui->fileAutocompleteWidget->blockSignals(false);
@@ -449,7 +446,7 @@ void TerminalWidget::on_commandLine_cursorPositionChanged(int arg1, int arg2)
         QStringList dirs = currentEnvironment.value("PATH").split(":");
         QStringList knownExecutables;
 
-        auto addExecutable = [=, &items, &knownExecutables](QString name) {
+        auto addExecutable = [ =, &items, &knownExecutables](QString name) {
             if (name.startsWith(word) && !knownExecutables.contains(name)) {
                 knownExecutables.append(name);
                 QListWidgetItem* item = new QListWidgetItem();
@@ -523,7 +520,7 @@ void TerminalWidget::closeAutocomplete() {
     }
 }
 
-bool TerminalWidget::eventFilter(QObject *watched, QEvent *event) {
+bool TerminalWidget::eventFilter(QObject* watched, QEvent* event) {
     if (watched == ui->commandLine) {
         if (event->type() == QEvent::KeyPress) {
             QKeyEvent* e = (QKeyEvent*) event;
@@ -576,8 +573,7 @@ bool TerminalWidget::eventFilter(QObject *watched, QEvent *event) {
     return false;
 }
 
-void TerminalWidget::on_fileAutocompleteWidget_currentRowChanged(int currentRow)
-{
+void TerminalWidget::on_fileAutocompleteWidget_currentRowChanged(int currentRow) {
     ui->commandLine->blockSignals(true);
     QString wordToReplace;
     if (currentRow == -1) {
@@ -606,7 +602,7 @@ void TerminalWidget::scrollToBottom() {
     anim->setEndValue(ui->terminalArea->verticalScrollBar()->maximum());
     anim->setEasingCurve(QEasingCurve::OutCubic);
     anim->setDuration(250);
-    connect(anim, &tVariantAnimation::valueChanged, [=](QVariant value) {
+    connect(anim, &tVariantAnimation::valueChanged, [ = ](QVariant value) {
         anim->setEndValue(ui->terminalArea->verticalScrollBar()->maximum());
         ui->terminalArea->verticalScrollBar()->setValue(value.toInt());
     });
