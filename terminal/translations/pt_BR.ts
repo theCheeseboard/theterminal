@@ -340,19 +340,19 @@
     </message>
     <message>
         <location filename="../settingswindow.ui" line="133"/>
-        <location filename="../settingswindow.ui" line="330"/>
+        <location filename="../settingswindow.ui" line="333"/>
         <source>Appearance</source>
         <translation>Aparência</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="138"/>
-        <location filename="../settingswindow.ui" line="715"/>
+        <location filename="../settingswindow.ui" line="718"/>
         <source>Scrolling</source>
         <translation>Rolagem</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="143"/>
-        <location filename="../settingswindow.ui" line="962"/>
+        <location filename="../settingswindow.ui" line="965"/>
         <source>Bells</source>
         <translation>Sinos</translation>
     </message>
@@ -372,148 +372,148 @@
         <translation>Tipo de Terminal</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="265"/>
+        <location filename="../settingswindow.ui" line="268"/>
         <source>Legacy</source>
         <translation>Compatível</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="270"/>
+        <location filename="../settingswindow.ui" line="273"/>
         <source>Contemporary</source>
         <translation>Contemporary</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="281"/>
+        <location filename="../settingswindow.ui" line="284"/>
         <source>The Contemporary terminal uses theTerminal itself as the shell in a modern UI. Not everything may work properly.</source>
         <translation>O terminal Contemporary usa theTerminal em si como a shell numa interface moderna. Talvez algumas coisas não funcionem.</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="479"/>
+        <location filename="../settingswindow.ui" line="482"/>
         <source>Font</source>
         <translation>Fonte</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="504"/>
+        <location filename="../settingswindow.ui" line="507"/>
         <source>Cursor</source>
         <translation>Cursor</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="520"/>
+        <location filename="../settingswindow.ui" line="523"/>
         <source>TEXT</source>
         <translation>TEXTO</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="527"/>
+        <location filename="../settingswindow.ui" line="530"/>
         <source>Blink Cursor</source>
         <translation>Piscar do Cursor</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="573"/>
+        <location filename="../settingswindow.ui" line="576"/>
         <source>Theme</source>
         <translation>Tema</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="586"/>
+        <location filename="../settingswindow.ui" line="589"/>
         <source>COLOURS</source>
         <translation>CORES</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="603"/>
+        <location filename="../settingswindow.ui" line="606"/>
         <source>Opacity</source>
         <translation>Opacidade</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="658"/>
+        <location filename="../settingswindow.ui" line="661"/>
         <source>TITLEBAR</source>
         <translation>BARRA DE TÍTULO</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="665"/>
+        <location filename="../settingswindow.ui" line="668"/>
         <source>Use System Titlebars</source>
         <translation>Usar Barra do Sistema</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="788"/>
+        <location filename="../settingswindow.ui" line="791"/>
         <source>Limit Scrollback to</source>
         <translation>Limitar Rolagem para Trás para</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="807"/>
+        <location filename="../settingswindow.ui" line="810"/>
         <source> lines</source>
         <translation> linhas</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="820"/>
+        <location filename="../settingswindow.ui" line="823"/>
         <source>No Scrollback</source>
         <translation>Sem Rolagem para Trás</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="827"/>
+        <location filename="../settingswindow.ui" line="830"/>
         <source>Infinite Scrollback</source>
         <translation>Rolagem para Trás Infinita</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="840"/>
+        <location filename="../settingswindow.ui" line="843"/>
         <source>SCROLLBACK</source>
         <translation>ROLAGEM PARA TRÁS</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="879"/>
+        <location filename="../settingswindow.ui" line="882"/>
         <source>ScrollKeystrokeSwitch</source>
         <translation>ScrollKeystrokeSwitch</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="886"/>
+        <location filename="../settingswindow.ui" line="889"/>
         <source>Scroll down on keystroke</source>
         <translation>Rolar para baixo ao apertar tecla</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="912"/>
+        <location filename="../settingswindow.ui" line="915"/>
         <source>SCROLLING DOWN</source>
         <translation>ROLAGEM PARA BAIXO</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1036"/>
-        <location filename="../settingswindow.ui" line="1108"/>
+        <location filename="../settingswindow.ui" line="1039"/>
+        <location filename="../settingswindow.ui" line="1111"/>
         <source>Play Sound</source>
         <translation>Tocar Som</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1062"/>
+        <location filename="../settingswindow.ui" line="1065"/>
         <source>ACTIVE TERMINAL</source>
         <translation>TERMINAL ATIVO</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1115"/>
+        <location filename="../settingswindow.ui" line="1118"/>
         <source>Send Notification</source>
         <translation>Mandar Notificação</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1122"/>
+        <location filename="../settingswindow.ui" line="1125"/>
         <source>BellInactiveSoundSwitch</source>
         <translation>BellInactiveSoundSwitch</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1148"/>
+        <location filename="../settingswindow.ui" line="1151"/>
         <source>INACTIVE TERMINAL</source>
         <translation>TERMINAL INATIVO</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1198"/>
+        <location filename="../settingswindow.ui" line="1201"/>
         <source>Drop Down Terminal</source>
         <translation>Terminal em Menu</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1244"/>
+        <location filename="../settingswindow.ui" line="1247"/>
         <source>F12</source>
         <translation>F12</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1254"/>
+        <location filename="../settingswindow.ui" line="1257"/>
         <source>Keyboard Binding</source>
         <translation>Tecla</translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1261"/>
+        <location filename="../settingswindow.ui" line="1264"/>
         <source>The Drop Down Terminal is not available on macOS.</source>
         <translation>O Terminal de Menu não está disponível no macOS.</translation>
     </message>
@@ -630,23 +630,23 @@
         <translation>theterminal:  tted: não pôde acessar &apos;%1&apos; Diretório ou arquivo inexistente</translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="347"/>
+        <location filename="../terminalwidget.cpp" line="346"/>
         <source>theterminal: %1: command not found</source>
         <translation>theterminal: %1: comando não achado</translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="626"/>
+        <location filename="../terminalwidget.cpp" line="622"/>
         <source>Close this tab?</source>
         <translation>Fechar esta aba?</translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="627"/>
-        <location filename="../terminalwidget.cpp" line="632"/>
+        <location filename="../terminalwidget.cpp" line="623"/>
+        <location filename="../terminalwidget.cpp" line="628"/>
         <source>Closing this tab will also close %1.</source>
         <translation>Fechar esta aba também fechará %1.</translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="631"/>
+        <location filename="../terminalwidget.cpp" line="627"/>
         <source>Close tab?</source>
         <translation>Fechar aba?</translation>
     </message>
