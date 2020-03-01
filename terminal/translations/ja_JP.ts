@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" sourcelanguage="en_US">
+<TS version="2.1" sourcelanguage="en_US" language="ja_JP">
 <context>
     <name>About</name>
     <message>
         <location filename="../about.ui" line="14"/>
         <source>About theTerminal</source>
-        <translation type="unfinished"></translation>
+        <translation>theTerminalについて</translation>
     </message>
     <message>
         <location filename="../about.ui" line="25"/>
         <source>theTerminal 3.0</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">theTerminal 3.0</translation>
     </message>
     <message>
         <location filename="../about.ui" line="32"/>
         <source>Terminal Emulator</source>
-        <translation type="unfinished"></translation>
+        <translation>ターミナルエミュレータ</translation>
     </message>
     <message>
         <location filename="../about.ui" line="52"/>
         <source>Copyright (c) Victor Tran 2018. Licensed under the terms of the GNU General Public License, version 3 or later.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Copyright (c) Victor Tran 2018. Licensed under the terms of the GNU General Public License, version 3 or later.</translation>
     </message>
     <message>
         <location filename="../about.ui" line="77"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">OK</translation>
     </message>
 </context>
 <context>
@@ -34,12 +34,12 @@
     <message>
         <location filename="../dialogs/busydialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>フォーム</translation>
     </message>
     <message>
         <location filename="../dialogs/busydialog.ui" line="71"/>
         <source>Terminal Busy</source>
-        <translation type="unfinished"></translation>
+        <translation>ターミナルはビジー状態です</translation>
     </message>
     <message>
         <location filename="../dialogs/busydialog.ui" line="116"/>
@@ -53,7 +53,7 @@
     <message>
         <location filename="../commandpart.cpp" line="52"/>
         <source>Aborted</source>
-        <translation type="unfinished"></translation>
+        <translation>中断</translation>
     </message>
     <message>
         <location filename="../commandpart.cpp" line="55"/>
@@ -68,7 +68,7 @@
     <message>
         <location filename="../commandpart.cpp" line="61"/>
         <source>Killed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">キルした</translation>
     </message>
 </context>
 <context>
@@ -76,32 +76,32 @@
     <message>
         <location filename="../dropdown.ui" line="174"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>コピー</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="177"/>
         <source>Ctrl+Shift+C</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+Shift+C</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="186"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>貼り付け</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="189"/>
         <source>Ctrl+Shift+V</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+Shift+V</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="198"/>
         <source>Find</source>
-        <translation type="unfinished"></translation>
+        <translation>検索</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="201"/>
         <source>Ctrl+Shift+F</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+Shift+F</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="16"/>
