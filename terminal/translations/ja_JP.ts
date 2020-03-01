@@ -63,7 +63,7 @@
     <message>
         <location filename="../commandpart.cpp" line="58"/>
         <source>Segmentation Fault</source>
-        <translation type="unfinished"></translation>
+        <translation>セグメンテーション障害</translation>
     </message>
     <message>
         <location filename="../commandpart.cpp" line="61"/>
@@ -106,27 +106,27 @@
     <message>
         <location filename="../dropdown.cpp" line="16"/>
         <source>For current tab</source>
-        <translation type="unfinished"></translation>
+        <translation>現在のタブ</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="18"/>
         <source>For theTerminal</source>
-        <translation type="unfinished"></translation>
+        <translation>theTerminal</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="19"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>設定</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="30"/>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>終了</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="79"/>
         <source>Terminal %1</source>
-        <translation type="unfinished"></translation>
+        <translation>ターミナル %1</translation>
     </message>
 </context>
 <context>
@@ -135,7 +135,7 @@
         <location filename="../mainwindow.ui" line="14"/>
         <location filename="../mainwindow.cpp" line="35"/>
         <source>theTerminal</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">theTerminal</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="53"/>
@@ -145,67 +145,67 @@
     <message>
         <location filename="../mainwindow.ui" line="65"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>編集</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="74"/>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation>表示</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="78"/>
         <source>Split</source>
-        <translation type="unfinished"></translation>
+        <translation>スプリット</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="91"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>ヘルプ</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="109"/>
         <source>&amp;New Window</source>
-        <translation type="unfinished"></translation>
+        <translation>新しいウィンドウ</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="112"/>
         <source>Ctrl+Shift+N</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+Shift+N</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="121"/>
         <source>&amp;Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>終了</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="133"/>
         <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>コピー</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="136"/>
         <source>Ctrl+Shift+C</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+Shift+C</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="145"/>
         <source>&amp;Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>貼り付け</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="148"/>
         <source>Ctrl+Shift+V</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+Shift+V</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="157"/>
         <source>Ne&amp;w Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>新しいタブ</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="160"/>
         <source>Ctrl+Shift+T</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+Shift+T</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="169"/>
