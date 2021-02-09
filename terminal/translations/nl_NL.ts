@@ -311,7 +311,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="33"/>
         <source>theTerminal Blueprint</source>
-        <translation type="unfinished"></translation>
+        <translation>theTerminal Blueprint</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="160"/>
@@ -656,7 +656,7 @@
     <message>
         <location filename="../main.cpp" line="29"/>
         <source>Terminal</source>
-        <translation type="unfinished"></translation>
+        <translation>Terminal</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="52"/>
