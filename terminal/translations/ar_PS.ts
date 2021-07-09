@@ -6,27 +6,27 @@
     <message>
         <location filename="../about.ui" line="14"/>
         <source>About theTerminal</source>
-        <translation type="unfinished"></translation>
+        <translation>حول theTerminal</translation>
     </message>
     <message>
         <location filename="../about.ui" line="25"/>
         <source>theTerminal 3.0</source>
-        <translation type="unfinished"></translation>
+        <translation>theTerminal 3.0</translation>
     </message>
     <message>
         <location filename="../about.ui" line="32"/>
         <source>Terminal Emulator</source>
-        <translation type="unfinished"></translation>
+        <translation>محاكي لوحة التحكم</translation>
     </message>
     <message>
         <location filename="../about.ui" line="52"/>
         <source>Copyright (c) Victor Tran 2018. Licensed under the terms of the GNU General Public License, version 3 or later.</source>
-        <translation type="unfinished"></translation>
+        <translation>حقوق النشر (c) Victor Tran 2018. مرخص تحت شروط GNU General Public License, الاصدار 3 او ما بعد.</translation>
     </message>
     <message>
         <location filename="../about.ui" line="77"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation>حسنًا</translation>
     </message>
 </context>
 <context>
@@ -34,18 +34,19 @@
     <message>
         <location filename="../dialogs/busydialog.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>استمارة</translation>
     </message>
     <message>
         <location filename="../dialogs/busydialog.ui" line="71"/>
         <source>Terminal Busy</source>
-        <translation type="unfinished"></translation>
+        <translation>لوحة التحكم مشغولة</translation>
     </message>
     <message>
         <location filename="../dialogs/busydialog.ui" line="116"/>
         <source>&lt;p&gt;This terminal is busy with the following processes.&lt;/p&gt;
 &lt;p&gt;&lt;b&gt;Closing this terminal will forcibly terminate these processes.&lt;/b&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;لوحة التحكم هذه مشغولة مع العمليات التالية.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;اغلاق لوحة التحكم سوف يوقف كل هذه العمليات بشكل اجباري.&lt;/b&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -53,22 +54,22 @@
     <message>
         <location filename="../commandpart.cpp" line="52"/>
         <source>Aborted</source>
-        <translation type="unfinished"></translation>
+        <translation>اجهض</translation>
     </message>
     <message>
         <location filename="../commandpart.cpp" line="55"/>
         <source>Floating Point Exception</source>
-        <translation type="unfinished"></translation>
+        <translation>Floating Point متوقعة</translation>
     </message>
     <message>
         <location filename="../commandpart.cpp" line="58"/>
         <source>Segmentation Fault</source>
-        <translation type="unfinished"></translation>
+        <translation>خظأ في التجزئة</translation>
     </message>
     <message>
         <location filename="../commandpart.cpp" line="61"/>
         <source>Killed</source>
-        <translation type="unfinished"></translation>
+        <translation>قتل/توقف</translation>
     </message>
 </context>
 <context>
@@ -76,57 +77,57 @@
     <message>
         <location filename="../dropdown.ui" line="174"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>نسخ</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="177"/>
         <source>Ctrl+Shift+C</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+C</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="186"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>لصق</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="189"/>
         <source>Ctrl+Shift+V</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+V</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="198"/>
         <source>Find</source>
-        <translation type="unfinished"></translation>
+        <translation>ايجاد</translation>
     </message>
     <message>
         <location filename="../dropdown.ui" line="201"/>
         <source>Ctrl+Shift+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+F</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="16"/>
         <source>For current tab</source>
-        <translation type="unfinished"></translation>
+        <translation>للنافذة الحالية</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="18"/>
         <source>For theTerminal</source>
-        <translation type="unfinished"></translation>
+        <translation>ل-theTerminal</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="19"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>الاعدادات</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="30"/>
         <source>Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>الخروج</translation>
     </message>
     <message>
         <location filename="../dropdown.cpp" line="79"/>
         <source>Terminal %1</source>
-        <translation type="unfinished"></translation>
+        <translation>لوحة التحكم %1</translation>
     </message>
 </context>
 <context>
@@ -135,192 +136,192 @@
         <location filename="../mainwindow.ui" line="14"/>
         <location filename="../mainwindow.cpp" line="35"/>
         <source>theTerminal</source>
-        <translation type="unfinished"></translation>
+        <translation>theTerminal</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="53"/>
         <source>Fi&amp;le</source>
-        <translation type="unfinished"></translation>
+        <translation>Fi&amp;le</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="65"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>التعديل</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="74"/>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;عرض</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="78"/>
         <source>Split</source>
-        <translation type="unfinished"></translation>
+        <translation>فصل</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="91"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>المساعدة</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="109"/>
         <source>&amp;New Window</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;نافذة جديدة</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="112"/>
         <source>Ctrl+Shift+N</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+N</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="121"/>
         <source>&amp;Exit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;الخروج</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="133"/>
         <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;نسخ</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="136"/>
         <source>Ctrl+Shift+C</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+C</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="145"/>
         <source>&amp;Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;لصق</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="148"/>
         <source>Ctrl+Shift+V</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+V</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="157"/>
         <source>Ne&amp;w Tab</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">نافذت Ne&amp;w</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="160"/>
         <source>Ctrl+Shift+T</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+T</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="169"/>
         <source>&amp;Close Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;اغلاق النافذة</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="172"/>
         <source>Ctrl+Shift+W</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+W</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="181"/>
         <source>&amp;Find...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;جد...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="184"/>
         <source>Ctrl+Shift+F</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+F</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="193"/>
         <source>&amp;Go Full Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;ادخل الى وضع ملئ الشاشة</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="202"/>
         <source>&amp;About</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;حول</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="214"/>
         <source>&amp;Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;الاعدادات</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="217"/>
         <source>Ctrl+,</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+,</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="229"/>
         <source>Zoom In</source>
-        <translation type="unfinished"></translation>
+        <translation>التكبير</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="232"/>
         <source>Ctrl+=</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+=</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="241"/>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
+        <translation>التصغير</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="244"/>
         <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+-</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="249"/>
         <source>Reset Zoom</source>
-        <translation type="unfinished"></translation>
+        <translation>اعادة تعين التكبير</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="252"/>
         <source>Ctrl+0</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+0</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="257"/>
         <source>Split Vertically</source>
-        <translation type="unfinished"></translation>
+        <translation>افصل عاموديًا</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="260"/>
         <source>Ctrl+Shift+S, -</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+S, -</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="268"/>
         <source>Ctrl+Shift+S, \</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+S, \</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="277"/>
         <source>File Bug</source>
-        <translation type="unfinished"></translation>
+        <translation>التبليغ عن خطأ برمجي</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="286"/>
         <source>Sources</source>
-        <translation type="unfinished"></translation>
+        <translation>المصادر</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="265"/>
         <source>Split Horizontally</source>
-        <translation type="unfinished"></translation>
+        <translation>افصل افقيًا</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="33"/>
         <source>theTerminal Blueprint</source>
-        <translation type="unfinished"></translation>
+        <translation>مخطط theTerminal</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="160"/>
         <source>Full Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>وضع ملئ الشاشة</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="161"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
-        <translation type="unfinished"></translation>
+        <translation>انت في وضع ملئ الشاشة. يمكنك الخروج عن طريق ضغظ SHIFT+F11.</translation>
     </message>
 </context>
 <context>
@@ -329,136 +330,136 @@
         <location filename="../settingswindow.ui" line="14"/>
         <location filename="../settingswindow.ui" line="99"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>الاعدادات</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="128"/>
         <location filename="../settingswindow.ui" line="204"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>عام</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="133"/>
         <location filename="../settingswindow.ui" line="333"/>
         <source>Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>المظهر</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="138"/>
         <location filename="../settingswindow.ui" line="718"/>
         <source>Scrolling</source>
-        <translation type="unfinished"></translation>
+        <translation>التمرير</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="143"/>
         <location filename="../settingswindow.ui" line="965"/>
         <source>Bells</source>
-        <translation type="unfinished"></translation>
+        <translation>الاجراس</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="148"/>
         <source>Dropdown</source>
-        <translation type="unfinished"></translation>
+        <translation>لوحة ساقطة</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="244"/>
         <source>Shell</source>
-        <translation type="unfinished"></translation>
+        <translation>Shell</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="251"/>
         <source>Terminal Type</source>
-        <translation type="unfinished"></translation>
+        <translation>نوع لوحة التحكم</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="268"/>
         <source>Legacy</source>
-        <translation type="unfinished"></translation>
+        <translation>قديم</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="273"/>
         <source>Contemporary</source>
-        <translation type="unfinished"></translation>
+        <translation>معاصر</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="284"/>
         <source>The Contemporary terminal uses theTerminal itself as the shell in a modern UI. Not everything may work properly.</source>
-        <translation type="unfinished"></translation>
+        <translation>لوحة التحكم المعاصرة تستخدم theTerminal بحد ذاتها كال-shell مع واجة حديثة. قد لا تعمل بعض الاشياء بشكل صحيح.</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="482"/>
         <source>Font</source>
-        <translation type="unfinished"></translation>
+        <translation>الخط</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="507"/>
         <source>Cursor</source>
-        <translation type="unfinished"></translation>
+        <translation>الفأرة</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="523"/>
         <source>TEXT</source>
-        <translation type="unfinished"></translation>
+        <translation>نص</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="530"/>
         <source>Blink Cursor</source>
-        <translation type="unfinished"></translation>
+        <translation>اومض المأشر</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="576"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>السمة</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="589"/>
         <source>COLOURS</source>
-        <translation type="unfinished"></translation>
+        <translation>الالوان</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="606"/>
         <source>Opacity</source>
-        <translation type="unfinished"></translation>
+        <translation>الشفافية</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="661"/>
         <source>TITLEBAR</source>
-        <translation type="unfinished"></translation>
+        <translation>شريط العنوان</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="668"/>
         <source>Use System Titlebars</source>
-        <translation type="unfinished"></translation>
+        <translation>استخدم شريط العنوان الخاص بالنظام</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="791"/>
         <source>Limit Scrollback to</source>
-        <translation type="unfinished"></translation>
+        <translation>حدد Scrollback ل-</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="810"/>
         <source> lines</source>
-        <translation type="unfinished"></translation>
+        <translation> خطوط</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="823"/>
         <source>No Scrollback</source>
-        <translation type="unfinished"></translation>
+        <translation>لا Scrollback</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="830"/>
         <source>Infinite Scrollback</source>
-        <translation type="unfinished"></translation>
+        <translation>Scrollback لا نهائي</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="843"/>
         <source>SCROLLBACK</source>
-        <translation type="unfinished"></translation>
+        <translation>SCROLLBACK</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="882"/>
         <source>ScrollKeystrokeSwitch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ScrollKeystrokeSwitch</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="889"/>
