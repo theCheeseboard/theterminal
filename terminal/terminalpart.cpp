@@ -4,10 +4,10 @@
 #include <QFontDatabase>
 #include <QMenu>
 #include <QStack>
-#include <tsystemsound.h>
+#include <tapplication.h>
 #include <tnotification.h>
 #include <tpopover.h>
-#include <tapplication.h>
+#include <tsystemsound.h>
 
 #include "dialogs/busydialog.h"
 
@@ -53,11 +53,12 @@ TerminalPart::TerminalPart(QString workDir, QWidget *parent) : TTTermWidget(0, t
     this->startShellProgram();
 }*/
 
-TerminalPart::TerminalPart(TerminalPartConstruct args, QWidget* parent) : TTTermWidget(0, args.connectPty, parent) {
+TerminalPart::TerminalPart(TerminalPartConstruct args, QWidget* parent) :
+    TTTermWidget(0, args.connectPty, parent) {
     d = new TerminalPartPrivate();
     setup();
 
-    //Set environment variables
+    // Set environment variables
     QProcessEnvironment currentEnvironment = QProcessEnvironment::systemEnvironment();
     currentEnvironment.insert("TERM", "xterm-256color");
     this->setEnvironment(currentEnvironment.toStringList());
@@ -69,7 +70,7 @@ TerminalPart::TerminalPart(TerminalPartConstruct args, QWidget* parent) : TTTerm
     this->update();
 
     if (args.manPage != "") {
-        this->setShellProgram(theLibsGlobal::searchInPath("man").first());
+        this->setShellProgram(libContemporaryCommon::searchInPath("man").first());
         this->setArgs({args.manPage});
         d->quitType = TerminalPartPrivate::QuitOnCleanExit;
     } else if (args.shell != "") {
@@ -77,7 +78,7 @@ TerminalPart::TerminalPart(TerminalPartConstruct args, QWidget* parent) : TTTerm
         QString shellProgram = shellArgs.takeFirst();
         this->setArgs(shellArgs);
         if (!shellProgram.startsWith("/")) {
-            QStringList availableApps = theLibsGlobal::searchInPath(shellProgram);
+            QStringList availableApps = libContemporaryCommon::searchInPath(shellProgram);
             if (availableApps.count() > 0) {
                 shellProgram = availableApps.first();
             } else {
@@ -99,7 +100,7 @@ TerminalPart::~TerminalPart() {
 }
 
 void TerminalPart::setup() {
-    //Register this terminal part
+    // Register this terminal part
     TerminalController::addTerminalPart(this);
 
     this->setScrollBarPosition(TTTermWidget::ScrollBarRight);
@@ -109,26 +110,26 @@ void TerminalPart::setup() {
 
     reloadThemeSettings();
 
-    connect(this, &TerminalPart::copyAvailable, [ = ](bool copyAvailable) {
+    connect(this, &TerminalPart::copyAvailable, [=](bool copyAvailable) {
         d->copyOk = copyAvailable;
     });
 
-    connect(this, &TerminalPart::bell, [ = ] {
+    connect(this, &TerminalPart::bell, [=] {
         if (this->hasFocus()) {
-            //Active terminal
+            // Active terminal
             if (d->settings.value("bell/bellActiveSound", true).toBool()) {
-                //Play an audible bell
+                // Play an audible bell
                 tSystemSound::play("bell");
             }
         } else {
-            //Inactive terminal
+            // Inactive terminal
             bool bellSound = d->settings.value("bell/bellInactiveSound", true).toBool();
             bool notification = d->settings.value("bell/bellInactiveNotification", true).toBool();
             if (bellSound && !notification) {
-                //Play an audible bell
+                // Play an audible bell
                 tSystemSound::play("bell");
             } else if (bellSound && notification) {
-                //Post a system notification with the bell sound
+                // Post a system notification with the bell sound
                 tNotification* notification = new tNotification();
                 notification->setSummary(tr("Bell"));
                 notification->setText(tr("A bell was sounded!"));
@@ -139,7 +140,7 @@ void TerminalPart::setup() {
             }
         }
     });
-    connect(this, &TerminalPart::shellProgramFinished, [ = ](int exitCode) {
+    connect(this, &TerminalPart::shellProgramFinished, [=](int exitCode) {
         if (d->quitType == TerminalPartPrivate::UseSettings) {
             d->quitType = static_cast<TerminalPartPrivate::QuitType>(d->settings.value("term/quitType", 0).toInt());
         }
@@ -159,22 +160,22 @@ void TerminalPart::setup() {
                 }
         }
     });
-    connect(this, &TerminalPart::finished, this, [ = ] {
+    connect(this, &TerminalPart::finished, this, [=] {
         if (d->quitNeeded) emit closeTerminal();
     });
 
     this->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, &TerminalPart::customContextMenuRequested, [ = ](QPoint pos) {
+    connect(this, &TerminalPart::customContextMenuRequested, [=](QPoint pos) {
         QMenu* menu = new QMenu();
 
         if (this->selectedText(false) != "") {
-            menu->addSection(tr("For text \"%1\"").arg(menu->fontMetrics().elidedText(this->selectedText(false).trimmed(), Qt::ElideMiddle, 200 * theLibsGlobal::getDPIScaling())));
-            QAction* copyAction = menu->addAction(QIcon::fromTheme("edit-copy"), tr("Copy"), [ = ] {
+            menu->addSection(tr("For text \"%1\"").arg(menu->fontMetrics().elidedText(this->selectedText(false).trimmed(), Qt::ElideMiddle, SC_DPI_W(200, menu))));
+            QAction* copyAction = menu->addAction(QIcon::fromTheme("edit-copy"), tr("Copy"), [=] {
                 this->copyClipboard();
             });
             copyAction->setEnabled(canCopy());
 
-            menu->addAction(tr("Open man page"), [ = ] {
+            menu->addAction(tr("Open man page"), [=] {
                 TerminalPartConstruct terminalPartArgs;
                 terminalPartArgs.manPage = this->selectedText(false);
                 emit openNewTerminal(new TerminalPart(terminalPartArgs));
@@ -182,13 +183,13 @@ void TerminalPart::setup() {
         }
 
         menu->addSection(tr("For this terminal"));
-        menu->addAction(QIcon::fromTheme("edit-paste"), tr("Paste"), [ = ] {
+        menu->addAction(QIcon::fromTheme("edit-paste"), tr("Paste"), [=] {
             this->pasteClipboard();
         });
-        menu->addAction(QIcon::fromTheme("edit-find"), tr("Find"), [ = ] {
+        menu->addAction(QIcon::fromTheme("edit-find"), tr("Find"), [=] {
             this->toggleShowSearchBar();
         });
-        menu->addAction(QIcon::fromTheme("dialog-close"), tr("Close Terminal"), [ = ] {
+        menu->addAction(QIcon::fromTheme("dialog-close"), tr("Close Terminal"), [=] {
             this->tryClose();
         });
 
@@ -203,7 +204,6 @@ bool TerminalPart::canCopy() {
 }
 
 void TerminalPart::resizeEvent(QResizeEvent* event) {
-
 }
 
 void TerminalPart::zoomIn() {
@@ -255,7 +255,7 @@ void TerminalPart::reloadThemeSettings() {
     this->setTerminalFont(f);
 
     this->setTerminalOpacity(d->settings.value("theme/opacity", 100).toInt() / 100.0);
-    //this->setScrollOnKeypress(d->settings.value("scrolling/scrollOnKeystroke", true).toBool());
+    // this->setScrollOnKeypress(d->settings.value("scrolling/scrollOnKeystroke", true).toBool());
 }
 
 void TerminalPart::tryClose() {

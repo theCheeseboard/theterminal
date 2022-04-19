@@ -1,42 +1,28 @@
 #ifndef NATIVEEVENTFILTER_H
 #define NATIVEEVENTFILTER_H
 
-#include <QObject>
 #include <QAbstractNativeEventFilter>
+#include <QObject>
 #include <QSettings>
 
-#ifdef Q_OS_LINUX
-#include <QX11Info>
-#include <xcb/xcb.h>
-#include <xcb/xcb_atom.h>
-#include <X11/XF86keysym.h>
-#include <X11/keysym.h>
-#include <X11/Xlib.h>
-#include <X11/XKBlib.h>
+class NativeEventFilter : public QObject,
+                          public QAbstractNativeEventFilter {
+        Q_OBJECT
+    public:
+        explicit NativeEventFilter(QObject* parent = 0);
 
-#undef None
-#undef Status
-#undef Bool
-#endif
+    signals:
+        void toggleTerminal();
+        void keypressCaptureComplete();
 
-class NativeEventFilter : public QObject, public QAbstractNativeEventFilter
-{
-    Q_OBJECT
-public:
-    explicit NativeEventFilter(QObject *parent = 0);
+    public slots:
+        void captureKeyPresses(bool capture);
 
-signals:
-    void toggleTerminal();
-    void keypressCaptureComplete();
+    private:
+        bool nativeEventFilter(const QByteArray& eventType, void* message, qintptr* result);
 
-public slots:
-    void captureKeyPresses(bool capture);
-
-private:
-    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result);
-
-    bool capturingKeyPress = false;
-    QSettings settings;
+        bool capturingKeyPress = false;
+        QSettings settings;
 };
 
 #endif // NATIVEEVENTFILTER_H

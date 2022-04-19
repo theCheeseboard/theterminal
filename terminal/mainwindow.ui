@@ -14,7 +14,7 @@
    <string>theTerminal</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="theterminal" resource="icons.qrc">
+   <iconset theme="theterminal">
     <normaloff>:/icons/utilities-terminal.svg</normaloff>:/icons/utilities-terminal.svg</iconset>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>570</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -288,8 +288,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

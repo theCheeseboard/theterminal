@@ -1,12 +1,13 @@
 #include "settingswindow.h"
 #include "ui_settingswindow.h"
 
-#include <the-libs_global.h>
-#include <QDir>
 #include "terminalcontroller.h"
+#include <QDir>
 #include <QScroller>
+#include <libcontemporary_global.h>
 #include <tapplication.h>
 #include <tcsdtools.h>
+#include <tx11info.h>
 
 #include "models/colorschemeselectiondelegate.h"
 
@@ -18,8 +19,7 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
     ui(new Ui::SettingsWindow) {
     ui->setupUi(this);
 
-    this->resize(this->size() * theLibsGlobal::getDPIScaling());
-    ui->leftPane->setMaximumWidth(ui->leftPane->maximumWidth() * theLibsGlobal::getDPIScaling());
+    ui->leftPane->setMaximumWidth(SC_DPI_W(ui->leftPane->maximumWidth(), this));
 
 #ifdef Q_OS_MAC
     ui->keybindingButton->setVisible(false);
@@ -50,7 +50,7 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
         ui->scrollbackSpin->setValue(scrollback);
     }
 
-    //Force the legacy terminal
+    // Force the legacy terminal
     if (settings.value("terminal/type", "legacy").toString() == "legacy" || /* DISABLES CODE */ (true)) {
         ui->termTypeComboBox->setCurrentIndex(0);
     } else {
@@ -58,13 +58,13 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
     }
 
     switch (settings.value("theme/cursorType", 0).toInt()) {
-        case 0: //Block
+        case 0: // Block
             ui->blockCursor->setChecked(true);
             break;
-        case 1: //Underline
+        case 1: // Underline
             ui->underlineCursor->setChecked(true);
             break;
-        case 2: //I-beam
+        case 2: // I-beam
             ui->ibeamCursor->setChecked(true);
             break;
     }
@@ -114,13 +114,13 @@ void SettingsWindow::on_DoneButton_clicked() {
 void SettingsWindow::on_keybindingButton_toggled(bool checked) {
 #ifndef Q_OS_MAC
     if (checked) {
-        //Capture keyboard
-        XGrabKeyboard(QX11Info::display(), RootWindow(QX11Info::display(), 0), True, GrabModeAsync, GrabModeAsync, CurrentTime);
+        // Capture keyboard
+        XGrabKeyboard(tX11Info::display(), RootWindow(tX11Info::display(), 0), true, GrabModeAsync, GrabModeAsync, CurrentTime);
         filter->captureKeyPresses(true);
 
         ui->keybindingButton->setText("Strike a key!");
     } else {
-        XUngrabKeyboard(QX11Info::display(), CurrentTime);
+        XUngrabKeyboard(tX11Info::display(), CurrentTime);
         filter->captureKeyPresses(false);
 
         ui->keybindingButton->setText(settings.value("dropdown/keyString", "F12").toString());
@@ -136,13 +136,12 @@ void SettingsWindow::on_scrollbackSpin_valueChanged(int arg1) {
     settings.setValue("term/scrollback", arg1);
 }
 
-
 void SettingsWindow::on_termTypeComboBox_currentIndexChanged(int index) {
     switch (index) {
-        case 0: //Legacy
+        case 0: // Legacy
             settings.setValue("terminal/type", "legacy");
             break;
-        case 1: //Contemporary
+        case 1: // Contemporary
             settings.setValue("terminal/type", "contemporary");
             break;
     }

@@ -20,27 +20,19 @@
 #include "terminaltabber.h"
 #include "ui_terminaltabber.h"
 
-#include <QStack>
 #include "terminalwidget.h"
+#include <QStack>
 #include <tcsdtools.h>
 
 #ifdef T_OS_UNIX_NOT_MAC
-    #include <QX11Info>
     #include <X11/Xlib.h>
 
     #undef FocusIn
 #endif
 
 struct TerminalTabberPrivate {
-    tCsdTools csd;
-    QList<TerminalWidget*> allTerminals;
-    TerminalWidget* currentTerminal;
-
-#ifdef Q_OS_MAC
-    QTabBar* tabBar;
-#else
-    QMap<TerminalWidget*, QPushButton*> terminalButtons;
-#endif
+        tCsdTools csd;
+        QList<TerminalWidget*> allTerminals;
 };
 
 TerminalTabber::TerminalTabber(QWidget* parent) :
@@ -54,24 +46,19 @@ TerminalTabber::TerminalTabber(QWidget* parent) :
         static_cast<QBoxLayout*>(ui->csdWidget->layout())->setDirection(QBoxLayout::RightToLeft);
     }
 
-#ifdef Q_OS_MAC
-    ui->tabFrame->setVisible(false);
-    d->tabBar = new QTabBar();
-    d->tabBar->setDocumentMode(true);
-    d->tabBar->setTabsClosable(true);
-    static_cast<QBoxLayout*>(this->layout())->insertWidget(0, d->tabBar);
-
-    connect(d->tabBar, &QTabBar::currentChanged, [ = ](int index) {
-        if (index != -1) {
-            changeToTerminal(d->allTerminals.value(index));
-        }
-    });
-    connect(d->tabBar, &QTabBar::tabCloseRequested, [ = ](int index) {
-        d->allTerminals.value(index)->close();
-    });
-#endif
-
     ui->termStack->setCurrentAnimation(tStackedWidget::SlideHorizontal);
+    qApp->installEventFilter(this);
+
+    connect(ui->termStack, &tStackedWidget::switchingFrame, this, [=](int switchingTo) {
+        QWidget* widget = ui->termStack->widget(switchingTo);
+        widget->setFocus();
+        this->setFocusProxy(widget);
+    });
+
+    ui->tabber->setShowNewTabButton(true);
+    connect(ui->tabber, &tWindowTabber::newTabRequested, this, [=] {
+        this->addTab(new TerminalWidget());
+    });
 }
 
 TerminalTabber::~TerminalTabber() {
@@ -82,7 +69,7 @@ TerminalTabber::~TerminalTabber() {
 void TerminalTabber::addTab(TerminalWidget* tab) {
     d->allTerminals.append(tab);
 
-    //Install an event filter on all the tab's childrem
+    // Install an event filter on all the tab's childrem
     QStack<QWidget*> filterInstalls;
     filterInstalls.push(tab);
     while (!filterInstalls.isEmpty()) {
@@ -95,82 +82,41 @@ void TerminalTabber::addTab(TerminalWidget* tab) {
         w->installEventFilter(this);
     }
 
-#ifndef Q_OS_MAC
-    QPushButton* button = new QPushButton();
-    button->setCheckable(true);
-    button->setAutoExclusive(true);
-    button->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    d->terminalButtons.insert(tab, button);
-#endif
+    tWindowTabberButton* button = new tWindowTabberButton();
+    connect(tab, &TerminalWidget::finished, [=] {
+        ui->tabber->removeButton(button);
 
-    connect(tab, &TerminalWidget::finished, [ = ]() {
         int index = d->allTerminals.indexOf(tab);
-#ifdef Q_OS_MAC
-        d->tabBar->removeTab(index);
-#else
-        delete d->terminalButtons.value(tab);
-        d->terminalButtons.remove(tab);
-#endif
         d->allTerminals.removeOne(tab);
         ui->termStack->removeWidget(tab);
-        delete tab;
+        tab->deleteLater();
 
         if (d->allTerminals.count() == 0) {
             emit done();
         } else {
             if (index == 0) {
-                changeToTerminal(0);
+                ui->termStack->setCurrentIndex(0);
             } else {
-                changeToTerminal(index - 1);
+                ui->termStack->setCurrentIndex(index - 1);
             }
         }
     });
-    connect(tab, &TerminalWidget::switchToThis, [ = ] {
-        changeToTerminal(tab);
+    connect(tab, &TerminalWidget::switchToThis, [=] {
+        ui->termStack->setCurrentWidget(tab);
     });
     connect(tab, &TerminalWidget::openNewTerminal, this, QOverload<TerminalWidget*>::of(&TerminalTabber::addTab));
-    /*connect(widget, &TerminalWidget::copyAvailable, [=](bool canCopy) {
-        if (currentTerminal == widget) {
-            ui->actionCopy->setEnabled(canCopy);
-        }
-    });*/
-
-#ifdef Q_OS_MAC
-    d->tabBar->addTab(tr("Terminal %1").arg(d->allTerminals.indexOf(tab) + 1));
-#else
-    button->setText(tr("Terminal %1").arg(d->allTerminals.indexOf(tab) + 1));
-    ui->tabFrame->layout()->addWidget(button);
-    ui->tabFrame->layout()->removeItem(ui->horizontalSpacer);
-    ui->tabFrame->layout()->addItem(ui->horizontalSpacer);
-    connect(button, &QPushButton::clicked, [ = ]() {
-        changeToTerminal(tab);
-    });
-#endif
 
     ui->termStack->addWidget(tab);
 
-    changeToTerminal(tab);
+    button->setText(tr("Terminal %1").arg(d->allTerminals.indexOf(tab) + 1));
+    button->syncWithStackedWidget(ui->termStack, tab);
+    ui->tabber->addButton(button);
+
+    ui->termStack->setCurrentWidget(tab);
 }
 
 TerminalWidget* TerminalTabber::currentTerminal() {
-    return d->currentTerminal;
-}
-
-void TerminalTabber::changeToTerminal(TerminalWidget* widget) {
-    ui->termStack->setCurrentWidget(widget);
-#ifdef Q_OS_MAC
-    d->tabBar->setCurrentIndex(d->allTerminals.indexOf(widget));
-#else
-    d->terminalButtons.value(widget)->setChecked(true);
-#endif
-
-    widget->setFocus();
-    d->currentTerminal = widget;
-    this->setFocusProxy(widget);
-}
-
-void TerminalTabber::changeToTerminal(int index) {
-    changeToTerminal(d->allTerminals.at(index));
+    return qobject_cast<TerminalWidget*>(ui->termStack->currentWidget());
 }
 
 void TerminalTabber::setMenuButton(QWidget* menuButton) {
@@ -191,14 +137,14 @@ void TerminalTabber::setCsdButtons(QWidget* csdButtons) {
 
 void TerminalTabber::closeAllTabs() {
     for (TerminalWidget* widget : d->allTerminals) {
-        QTimer::singleShot(0, [ = ] {
+        QTimer::singleShot(0, [=] {
             widget->close();
         });
     }
 }
 
 void TerminalTabber::focusInEvent(QFocusEvent* event) {
-    //Pass on focus to the current terminal
+    // Pass on focus to the current terminal
     currentTerminal()->setFocus();
 }
 
@@ -206,5 +152,9 @@ bool TerminalTabber::eventFilter(QObject* watched, QEvent* event) {
     if (event->type() == QEvent::FocusIn) {
         emit gotFocus();
     }
+
+    if (event->type() == QEvent::MouseMove && watched == qApp) {
+    }
+
     return false;
 }

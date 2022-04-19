@@ -1,18 +1,16 @@
 #include "terminalstatus.h"
 #include "ui_terminalstatus.h"
 
-TerminalStatus::TerminalStatus(QWidget *parent) :
+TerminalStatus::TerminalStatus(QWidget* parent) :
     QWidget(parent),
-    ui(new Ui::TerminalStatus)
-{
+    ui(new Ui::TerminalStatus) {
     ui->setupUi(this);
 
     ui->gitIcon->setPixmap(QIcon::fromTheme("branch").pixmap(16, 16));
     ui->gitCommitIcon->setPixmap(QIcon::fromTheme("commit").pixmap(16, 16));
 }
 
-TerminalStatus::~TerminalStatus()
-{
+TerminalStatus::~TerminalStatus() {
     delete ui;
 }
 
@@ -28,7 +26,7 @@ void TerminalStatus::setDir(QDir dir) {
         gitDetect->deleteLater();
 
         if (exitCode == 0) {
-            QStringList branches = QString(gitDetect->readAll()).split("\n", QString::SkipEmptyParts);
+            QStringList branches = QString(gitDetect->readAll()).split("\n", Qt::SkipEmptyParts);
             for (QString branch : branches) {
                 if (branch.startsWith("*")) {
                     ui->gitLabel->setText(branch.mid(2).trimmed());

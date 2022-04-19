@@ -1,23 +1,29 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QDesktopServices>
+#include <QShortcut>
 #include <QSplitter>
 #include <QToolButton>
-#include <QShortcut>
-#include <QDesktopServices>
+#include <taboutdialog.h>
 #include <tapplication.h>
 #include <tcsdtools.h>
 #include <ttoast.h>
-#include <taboutdialog.h>
+
+#include "about.h"
+#include "settingswindow.h"
+#include "terminaltabber.h"
+#include "terminalwidget.h"
+#include <QPushButton>
 
 struct MainWindowPrivate {
-    tCsdTools csd;
-    QList<TerminalTabber*> tabbers;
-    TerminalTabber* currentTabber;
+        tCsdTools csd;
+        QList<TerminalTabber*> tabbers;
+        TerminalTabber* currentTabber;
 
-    QToolButton* menuButton;
-    QWidget* csdButtons;
-    QSplitter* mainSplitter;
+        QToolButton* menuButton;
+        QWidget* csdButtons;
+        QSplitter* mainSplitter;
 };
 
 MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
@@ -40,7 +46,7 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
 
     d->menuButton = new QToolButton();
     d->menuButton->setIcon(QIcon::fromTheme("theterminal", QIcon(":/icons/utilities-terminal.svg")));
-    d->menuButton->setIconSize(QSize(24, 24) * theLibsGlobal::getDPIScaling());
+    d->menuButton->setIconSize(SC_DPI_WT(QSize(24, 24), QSize, this));
     d->menuButton->setPopupMode(QToolButton::InstantPopup);
     d->menuButton->setAutoRaise(true);
 
@@ -66,16 +72,14 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
     d->menuButton->setMenu(menu);
 #endif
 
-    this->resize(this->size() * theLibsGlobal::getDPIScaling());
-
-    //Make the background translucent in case the user wants the terminal to be translucent
+    // Make the background translucent in case the user wants the terminal to be translucent
     this->setAttribute(Qt::WA_NoSystemBackground);
     this->setAttribute(Qt::WA_TranslucentBackground);
 
     QShortcut* fullscreenShortcut = new QShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F11), this);
     connect(fullscreenShortcut, &QShortcut::activated, this, &MainWindow::on_actionGo_Full_Screen_triggered);
 
-    //Create a new tabber
+    // Create a new tabber
     TerminalTabber* tabber = newTabber();
 #ifndef Q_OS_MAC
     tabber->setMenuButton(d->menuButton);
@@ -110,12 +114,12 @@ void MainWindow::on_actionNew_Window_triggered() {
 
 void MainWindow::on_actionExit_triggered() {
     tApplication::closeAllWindows();
-//    for (QWidget* w : QApplication::allWidgets()) {
-//        if (w && strcmp(w->metaObject()->className(), "MainWindow") == 0) {
-//            MainWindow* win = (MainWindow*) w;
-//            win->close();
-//        }
-//    }
+    //    for (QWidget* w : QApplication::allWidgets()) {
+    //        if (w && strcmp(w->metaObject()->className(), "MainWindow") == 0) {
+    //            MainWindow* win = (MainWindow*) w;
+    //            win->close();
+    //        }
+    //    }
 }
 
 void MainWindow::on_actionCopy_triggered() {
@@ -197,7 +201,7 @@ void MainWindow::on_actionResetZoom_triggered() {
 }
 
 TerminalTabber* MainWindow::splitVertically() {
-    //Create a new tabber
+    // Create a new tabber
     TerminalWidget* terminal = new TerminalWidget();
     TerminalTabber* tabber = newTabber();
     tabber->addTab(terminal);
@@ -209,12 +213,12 @@ TerminalTabber* MainWindow::splitVertically() {
     QSplitter* splitter = qobject_cast<QSplitter*>(currentTabber()->parentWidget());
     int index = splitter->indexOf(currentTabber());
     if (splitter->orientation() == Qt::Vertical) {
-        //Add the tabber to this splitter
+        // Add the tabber to this splitter
         splitter->insertWidget(index + 1, tabber);
         newHeight = splitter->height() / splitter->count();
         actingSplitter = splitter;
     } else {
-        //Create a vertical splitter and replace the widget
+        // Create a vertical splitter and replace the widget
         newHeight = splitter->widget(index)->height() / 2;
         actingSplitter = new QSplitter(Qt::Vertical);
         QWidget* oldWidget = splitter->replaceWidget(index, actingSplitter);
@@ -228,10 +232,10 @@ TerminalTabber* MainWindow::splitVertically() {
     anim->setEndValue(newHeight);
     anim->setDuration(500);
     anim->setEasingCurve(QEasingCurve::OutCubic);
-    connect(anim, &tVariantAnimation::valueChanged, tabber, [ = ](QVariant value) {
+    connect(anim, &tVariantAnimation::valueChanged, tabber, [=](QVariant value) {
         tabber->setFixedHeight(value.toInt());
     });
-    connect(anim, &tVariantAnimation::finished, tabber, [ = ] {
+    connect(anim, &tVariantAnimation::finished, tabber, [=] {
         actingSplitter->setSizes(actingSplitter->sizes());
         tabber->setFixedHeight(QWIDGETSIZE_MAX);
         anim->deleteLater();
@@ -246,7 +250,7 @@ TerminalTabber* MainWindow::splitVertically() {
 }
 
 TerminalTabber* MainWindow::splitHorizontally() {
-    //Create a new tabber
+    // Create a new tabber
     TerminalWidget* terminal = new TerminalWidget();
     TerminalTabber* tabber = newTabber();
     tabber->addTab(terminal);
@@ -258,12 +262,12 @@ TerminalTabber* MainWindow::splitHorizontally() {
     QSplitter* splitter = qobject_cast<QSplitter*>(currentTabber()->parentWidget());
     int index = splitter->indexOf(currentTabber());
     if (splitter->orientation() == Qt::Horizontal) {
-        //Add the tabber to this splitter
+        // Add the tabber to this splitter
         splitter->insertWidget(index + 1, tabber);
         newWidth = splitter->width() / splitter->count();
         actingSplitter = splitter;
     } else {
-        //Create a horizontal splitter and replace the widget
+        // Create a horizontal splitter and replace the widget
         newWidth = splitter->widget(index)->width() / 2;
         actingSplitter = new QSplitter(Qt::Horizontal);
         QWidget* oldWidget = splitter->replaceWidget(index, actingSplitter);
@@ -277,10 +281,10 @@ TerminalTabber* MainWindow::splitHorizontally() {
     anim->setEndValue(newWidth);
     anim->setDuration(500);
     anim->setEasingCurve(QEasingCurve::OutCubic);
-    connect(anim, &tVariantAnimation::valueChanged, tabber, [ = ](QVariant value) {
+    connect(anim, &tVariantAnimation::valueChanged, tabber, [=](QVariant value) {
         tabber->setFixedWidth(value.toInt());
     });
-    connect(anim, &tVariantAnimation::finished, tabber, [ = ] {
+    connect(anim, &tVariantAnimation::finished, tabber, [=] {
         actingSplitter->setSizes(actingSplitter->sizes());
         tabber->setFixedWidth(QWIDGETSIZE_MAX);
         anim->deleteLater();
@@ -295,20 +299,20 @@ TerminalTabber* MainWindow::splitHorizontally() {
 }
 
 TerminalTabber* MainWindow::newTabber() {
-    //Create a new tabber
+    // Create a new tabber
     TerminalTabber* tabber = new TerminalTabber();
-    connect(tabber, &TerminalTabber::done, this, [ = ] {
-        //Clean up splitters
+    connect(tabber, &TerminalTabber::done, this, [=] {
+        // Clean up splitters
         QSplitter* parentSplitter = qobject_cast<QSplitter*>(tabber->parentWidget());
-        tabber->setParent(nullptr); //Remove the tabber from its parent
+        tabber->setParent(nullptr); // Remove the tabber from its parent
 
-        //Find the next available tabber to make the current tabber
+        // Find the next available tabber to make the current tabber
         {
             QWidget* nextSplitter = parentSplitter;
             while (qobject_cast<TerminalTabber*>(nextSplitter) == nullptr) {
                 QSplitter* splitter = qobject_cast<QSplitter*>(nextSplitter);
                 if (splitter->count() == 0) {
-                    //Bail out!
+                    // Bail out!
                     nextSplitter = nullptr;
                     break;
                 } else {
@@ -323,7 +327,7 @@ TerminalTabber* MainWindow::newTabber() {
         }
 
         while (parentSplitter->count() == 1 && parentSplitter != d->mainSplitter) {
-            //We can clean up this splitter
+            // We can clean up this splitter
             QWidget* cleanupWidget = parentSplitter->widget(0);
             QSplitter* parentParentSplitter = qobject_cast<QSplitter*>(parentSplitter->parentWidget());
             parentParentSplitter->replaceWidget(parentParentSplitter->indexOf(parentSplitter), cleanupWidget);
@@ -339,7 +343,7 @@ TerminalTabber* MainWindow::newTabber() {
             QTimer::singleShot(0, this, &MainWindow::close);
         }
     });
-    connect(tabber, &TerminalTabber::gotFocus, this, [ = ] {
+    connect(tabber, &TerminalTabber::gotFocus, this, [=] {
         d->currentTabber = tabber;
     });
     d->tabbers.append(tabber);
@@ -363,13 +367,13 @@ void MainWindow::on_actionSources_triggered() {
 }
 
 void MainWindow::moveTabberButtons() {
-    //Ensure the top left splitter has the menu button
+    // Ensure the top left splitter has the menu button
     {
         QWidget* nextSplitter = d->mainSplitter;
         while (qobject_cast<TerminalTabber*>(nextSplitter) == nullptr) {
             QSplitter* splitter = qobject_cast<QSplitter*>(nextSplitter);
             if (splitter->count() == 0) {
-                //Bail out!
+                // Bail out!
                 nextSplitter = nullptr;
                 break;
             } else {
@@ -381,18 +385,18 @@ void MainWindow::moveTabberButtons() {
 #ifndef Q_OS_MAC
             qobject_cast<TerminalTabber*>(nextSplitter)->setMenuButton(d->menuButton);
 #endif
-            //If CSDs are on the left, make this the CSD splitter too
+            // If CSDs are on the left, make this the CSD splitter too
             if (tCsdGlobal::windowControlsEdge() == tCsdGlobal::Left) qobject_cast<TerminalTabber*>(nextSplitter)->setCsdButtons(d->csdButtons);
         }
     }
 
-    //Ensure the top right splitter has the CSD buttons if CSDs are on the right
+    // Ensure the top right splitter has the CSD buttons if CSDs are on the right
     if (tCsdGlobal::windowControlsEdge() == tCsdGlobal::Right) {
         QWidget* nextSplitter = d->mainSplitter;
         while (qobject_cast<TerminalTabber*>(nextSplitter) == nullptr) {
             QSplitter* splitter = qobject_cast<QSplitter*>(nextSplitter);
             if (splitter->count() == 0) {
-                //Bail out!
+                // Bail out!
                 nextSplitter = nullptr;
                 break;
             } else {

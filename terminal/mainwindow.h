@@ -2,27 +2,23 @@
 #define MAINWINDOW_H
 
 #ifdef Q_OS_MAC
-#include <QTabBar>
+    #include <QTabBar>
 #endif
 
 #include <QMainWindow>
-#include <QPushButton>
-#include "terminaltabber.h"
-#include "terminalwidget.h"
-#include "about.h"
-#include "settingswindow.h"
 
 namespace Ui {
-class MainWindow;
+    class MainWindow;
 }
 
+class TerminalWidget;
+class TerminalTabber;
 struct MainWindowPrivate;
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
+class MainWindow : public QMainWindow {
+        Q_OBJECT
 
     public:
-        explicit MainWindow(QString workDir = "", QString cmd = "", QWidget *parent = 0);
+        explicit MainWindow(QString workDir = "", QString cmd = "", QWidget* parent = 0);
         ~MainWindow();
 
     public slots:
@@ -66,7 +62,7 @@ class MainWindow : public QMainWindow
         void on_actionSources_triggered();
 
     private:
-        Ui::MainWindow *ui;
+        Ui::MainWindow* ui;
         MainWindowPrivate* d;
 
         void closeEvent(QCloseEvent* event);

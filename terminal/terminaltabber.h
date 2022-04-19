@@ -28,12 +28,11 @@ namespace Ui {
 
 class TerminalWidget;
 struct TerminalTabberPrivate;
-class TerminalTabber : public QWidget
-{
+class TerminalTabber : public QWidget {
         Q_OBJECT
 
     public:
-        explicit TerminalTabber(QWidget *parent = nullptr);
+        explicit TerminalTabber(QWidget* parent = nullptr);
         ~TerminalTabber();
 
         TerminalWidget* currentTerminal();
@@ -43,9 +42,6 @@ class TerminalTabber : public QWidget
         void setCsdButtons(QWidget* csdButtons);
         void addTab(TerminalWidget* tab);
 
-        void changeToTerminal(TerminalWidget* widget);
-        void changeToTerminal(int index);
-
         void closeAllTabs();
 
     signals:
@@ -53,10 +49,10 @@ class TerminalTabber : public QWidget
         void gotFocus();
 
     private:
-        Ui::TerminalTabber *ui;
+        Ui::TerminalTabber* ui;
         TerminalTabberPrivate* d;
 
-        void focusInEvent(QFocusEvent *event) override;
+        void focusInEvent(QFocusEvent* event) override;
         bool eventFilter(QObject* watched, QEvent* event) override;
 };
 

@@ -15,9 +15,9 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget* parent) :
     ui->autocompletePages->setFixedHeight(0);
     ui->commandLine->installEventFilter(this);
 
-    //Force the legacy terminal: the contemporary terminal is not ready.
+    // Force the legacy terminal: the contemporary terminal is not ready.
     if (cmd != "" || settings.value("terminal/type", "legacy").toString() == "legacy" || true) {
-        //Create a legacy terminal part
+        // Create a legacy terminal part
         TerminalPartConstruct termPartArgs;
         termPartArgs.workDir = workDir;
         termPartArgs.shell = cmd;
@@ -25,8 +25,8 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget* parent) :
         initializeAsLegacy(new TerminalPart(termPartArgs));
     } else {
         ui->terminalTypeStack->setCurrentWidget(ui->newTerminalPage);
-        //Set up built in functions
-        builtinFunctions.insert("cd", [ = ](QString line) {
+        // Set up built in functions
+        builtinFunctions.insert("cd", [=](QString line) {
             QStringList args = splitSpaces(line);
             args.takeFirst();
 
@@ -49,8 +49,8 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget* parent) :
             workingDirectory = dir;
             return 0;
         });
-        builtinFunctions.insert("ls", [ = ](QString line) {
-            QString dirString = line.remove(0, 2).trimmed(); //Remove the ls
+        builtinFunctions.insert("ls", [=](QString line) {
+            QString dirString = line.remove(0, 2).trimmed(); // Remove the ls
             QStringList args = dirString.split(" ");
 
             dirString.remove("-a");
@@ -67,7 +67,7 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget* parent) :
 
             lsCommand* pane = new lsCommand();
             pane->setDir(dir, args);
-            connect(pane, &lsCommand::executeCommands, [ = ](QStringList commands) {
+            connect(pane, &lsCommand::executeCommands, [=](QStringList commands) {
                 awaitingCommands.append(commands);
 
                 if (currentCommandPart == nullptr) prepareForNextCommand();
@@ -77,13 +77,13 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget* parent) :
             currentCommandPart->executeWidget(pane);
             return 0;
         });
-        builtinFunctions.insert("tted", [ = ](QString line) {
+        builtinFunctions.insert("tted", [=](QString line) {
             QStringList args = splitSpaces(line);
             args.takeFirst();
 
             if (args.contains("--help") || args.contains("-")) {
                 currentCommandPart->appendOutput(tr("Usage: tted [OPTIONS] [FILE]\n"
-                        "-h, --help                   Show this help output\n"));
+                                                    "-h, --help                   Show this help output\n"));
                 return 0;
             }
 
@@ -109,8 +109,8 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget* parent) :
             }
             return 0;
         });
-        builtinFunctions.insert("export", [ = ](QString line) {
-            QString envString = line.remove(0, 7).trimmed(); //Remove the export
+        builtinFunctions.insert("export", [=](QString line) {
+            QString envString = line.remove(0, 7).trimmed(); // Remove the export
             QString name, value = "";
 
             if (envString.contains("=")) {
@@ -123,25 +123,25 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget* parent) :
             currentEnvironment.insert(name, value);
             return 0;
         });
-        builtinFunctions.insert("exit", [ = ](QString line) {
+        builtinFunctions.insert("exit", [=](QString line) {
             QTimer::singleShot(0, this, SIGNAL(finished()));
             return 0;
         });
-        builtinFunctions.insert("clear", [ = ](QString line) {
+        builtinFunctions.insert("clear", [=](QString line) {
             for (CommandPart* part : commandParts) {
                 part->close();
             }
             return 0;
         });
 
-        //Create a new terminal
+        // Create a new terminal
         ui->commandLine->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
         workingDirectory = QDir(workDir);
 
         autocompleteAnimation = new tVariantAnimation();
         autocompleteAnimation->setEasingCurve(QEasingCurve::OutCubic);
         autocompleteAnimation->setDuration(250);
-        connect(autocompleteAnimation, &tVariantAnimation::valueChanged, [ = ](QVariant value) {
+        connect(autocompleteAnimation, &tVariantAnimation::valueChanged, [=](QVariant value) {
             ui->autocompletePages->setFixedHeight(value.toInt());
         });
         connect(this, SIGNAL(destroyed(QObject*)), autocompleteAnimation, SLOT(stop()));
@@ -164,20 +164,21 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget* parent) :
         currentEnvironment.insert("TERM", "xterm");
         prepareForNextCommand();
 
-        connect(ui->terminalArea->verticalScrollBar(), &QScrollBar::valueChanged, [ = ](int value) {
+        connect(ui->terminalArea->verticalScrollBar(), &QScrollBar::valueChanged, [=](int value) {
             if (value == ui->terminalArea->verticalScrollBar()->maximum()) {
                 currentlyAtBottom = true;
             } else {
                 currentlyAtBottom = false;
             }
         });
-        connect(ui->terminalArea->verticalScrollBar(), &QScrollBar::rangeChanged, [ = ](int min, int max) {
+        connect(ui->terminalArea->verticalScrollBar(), &QScrollBar::rangeChanged, [=](int min, int max) {
             if (currentlyAtBottom) ui->terminalArea->verticalScrollBar()->setValue(max);
         });
     }
 }
 
-TerminalWidget::TerminalWidget(TerminalPart* terminal, QWidget* parent) : QWidget(parent), ui(new Ui::TerminalWidget) {
+TerminalWidget::TerminalWidget(TerminalPart* terminal, QWidget* parent) :
+    QWidget(parent), ui(new Ui::TerminalWidget) {
     ui->setupUi(this);
 
     initializeAsLegacy(terminal);
@@ -193,13 +194,13 @@ void TerminalWidget::initializeAsLegacy(TerminalPart* terminal) {
 
     QBoxLayout* layout = new QBoxLayout(QBoxLayout::TopToBottom);
     layout->addWidget(legacyTerminalPart);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     ui->legacyTerminalPage->setLayout(layout);
 
     ui->terminalTypeStack->setCurrentWidget(ui->legacyTerminalPage);
     connect(legacyTerminalPart, SIGNAL(closeTerminal()), this, SIGNAL(finished()));
     connect(legacyTerminalPart, SIGNAL(bell(QString)), this, SIGNAL(bell(QString)));
-    connect(legacyTerminalPart, &TerminalPart::openNewTerminal, [ = ](TerminalPart * terminal) {
+    connect(legacyTerminalPart, &TerminalPart::openNewTerminal, [=](TerminalPart* terminal) {
         emit openNewTerminal(new TerminalWidget(terminal));
     });
 }
@@ -234,7 +235,7 @@ void TerminalWidget::prepareForNextCommand() {
 
         ui->commandLine->setVisible(true);
         ui->commandLine->setFocus();
-    } else { //Execute the next command
+    } else { // Execute the next command
         runCommand(awaitingCommands.takeFirst());
     }
 }
@@ -290,7 +291,7 @@ void TerminalWidget::runCommand(QString command) {
     currentCommandPart->setCommandText(command);
 
     CommandPart* part = currentCommandPart;
-    connect(currentCommandPart, &CommandPart::dismiss, [ = ] {
+    connect(currentCommandPart, &CommandPart::dismiss, [=] {
         commandParts.removeOne(part);
         commandsLayout->removeWidget(part);
         part->deleteLater();
@@ -305,9 +306,9 @@ void TerminalWidget::runCommand(QString command) {
         bool isLast = (i == pipeline.count() - 1);
         QString executable = command.split(" ").first();
 
-        //Check if a builtin function exists
+        // Check if a builtin function exists
         if (builtinFunctions.contains(executable)) {
-            //Run function
+            // Run function
             int retval = builtinFunctions.value(executable)(command);
             currentCommandPart->setReturnValue(retval);
             prepareForNextCommand();
@@ -318,12 +319,12 @@ void TerminalWidget::runCommand(QString command) {
 
         if (cmd != "") {
             if (isLast) {
-                connect(currentCommandPart, &CommandPart::finished, [ = ](int exitCode) {
+                connect(currentCommandPart, &CommandPart::finished, [=](int exitCode) {
                     prepareForNextCommand();
                 });
                 adjustCurrentTerminal();
 
-                QTimer::singleShot(0, [ = ] {
+                QTimer::singleShot(0, [=] {
                     ui->terminalArea->verticalScrollBar()->setValue(ui->terminalArea->verticalScrollBar()->maximum());
                     currentCommandPart->executeCommand(ui->terminalArea->height() - 18, previousProcess, cmd);
                 });
@@ -342,7 +343,7 @@ void TerminalWidget::runCommand(QString command) {
                 previousProcess = proc;
             }
         } else {
-            //Conclusion: command not found :(
+            // Conclusion: command not found :(
             currentCommandPart->appendOutput(tr("theterminal: %1: command not found").arg(executable));
             currentCommandPart->setReturnValue(1);
             prepareForNextCommand();
@@ -351,8 +352,7 @@ void TerminalWidget::runCommand(QString command) {
 }
 
 QString TerminalWidget::executableSearch(QString executable, QString command) {
-
-    //Check if executable is itself an executable file
+    // Check if executable is itself an executable file
     if (executable.startsWith("/")) {
         QFileInfo file(executable);
         if (file.isExecutable()) {
@@ -366,7 +366,7 @@ QString TerminalWidget::executableSearch(QString executable, QString command) {
         }
     }
 
-    //Check if executable exists in the PATH
+    // Check if executable exists in the PATH
     if (!executable.startsWith("/")) {
         QStringList dirs = currentEnvironment.value("PATH").split(":");
         for (QString dirString : dirs) {
@@ -401,7 +401,7 @@ void TerminalWidget::resizeEvent(QResizeEvent* event) {
 
 void TerminalWidget::adjustCurrentTerminal() {
     if (currentCommandPart != nullptr) {
-        //currentCommandPart->setFixedHeight(ui->terminalArea->height() + ui->autocompletePages->height() - 18);
+        // currentCommandPart->setFixedHeight(ui->terminalArea->height() + ui->autocompletePages->height() - 18);
     }
 }
 
@@ -432,7 +432,7 @@ void TerminalWidget::on_commandLine_cursorPositionChanged(int arg1, int arg2) {
     }
 
     QList<QListWidgetItem*> items;
-    if (word.startsWith("$")) { //Search environment variables
+    if (word.startsWith("$")) { // Search environment variables
         for (QString key : currentEnvironment.keys()) {
             if (key.startsWith(word.mid(1))) {
                 QString value = currentEnvironment.value(key);
@@ -442,11 +442,11 @@ void TerminalWidget::on_commandLine_cursorPositionChanged(int arg1, int arg2) {
                 items.append(item);
             }
         }
-    } else if (startPos == 0 && !command.startsWith("/") && command.length() != 0) { //Search commands
+    } else if (startPos == 0 && !command.startsWith("/") && command.length() != 0) { // Search commands
         QStringList dirs = currentEnvironment.value("PATH").split(":");
         QStringList knownExecutables;
 
-        auto addExecutable = [ =, &items, &knownExecutables](QString name) {
+        auto addExecutable = [=, &items, &knownExecutables](QString name) {
             if (name.startsWith(word) && !knownExecutables.contains(name)) {
                 knownExecutables.append(name);
                 QListWidgetItem* item = new QListWidgetItem();
@@ -465,19 +465,19 @@ void TerminalWidget::on_commandLine_cursorPositionChanged(int arg1, int arg2) {
                 addExecutable(info.fileName());
             }
         }
-    } else { //Search files
+    } else { // Search files
         bool performSearch = false;
 
         QDir dir = workingDirectory;
         int lastDir = word.lastIndexOf("/") + 1;
         if (lastDir != 0) {
-            performSearch = true; //Always perform search on files when finding /
+            performSearch = true; // Always perform search on files when finding /
             autocompleteInitialStart = startPos + lastDir;
             dir.cd(word.left(lastDir));
             word = word.mid(lastDir);
         }
 
-        if (word.length() != 0) performSearch = true; //Perform search when there is something to autocomplete
+        if (word.length() != 0) performSearch = true; // Perform search when there is something to autocomplete
 
         if (performSearch) {
             QFileInfoList files = dir.entryInfoList(commandFilters);
@@ -528,7 +528,7 @@ bool TerminalWidget::eventFilter(QObject* watched, QEvent* event) {
                 case Qt::Key_Down:
                 case Qt::Key_Tab:
                     if (autocompleteOpen) {
-                        //Go down through autocomplete
+                        // Go down through autocomplete
                         int newIndex = ui->fileAutocompleteWidget->currentRow() + 1;
                         if (newIndex == ui->fileAutocompleteWidget->count()) {
                             ui->fileAutocompleteWidget->setCurrentRow(-1);
@@ -537,8 +537,8 @@ bool TerminalWidget::eventFilter(QObject* watched, QEvent* event) {
                             ui->fileAutocompleteWidget->setCurrentRow(newIndex);
                         }
                     } else {
-                        //Go down through history
-                        //Disable autocomplete
+                        // Go down through history
+                        // Disable autocomplete
                         ui->commandLine->blockSignals(true);
                         ui->commandLine->setText(history.historyDown(ui->commandLine->text()));
                         ui->commandLine->blockSignals(false);
@@ -546,7 +546,7 @@ bool TerminalWidget::eventFilter(QObject* watched, QEvent* event) {
                     break;
                 case Qt::Key_Up:
                     if (autocompleteOpen) {
-                        //Go up through autocomplete
+                        // Go up through autocomplete
                         int newIndex = ui->fileAutocompleteWidget->currentRow() - 1;
                         if (newIndex == -1) {
                             ui->fileAutocompleteWidget->setCurrentRow(-1);
@@ -557,8 +557,8 @@ bool TerminalWidget::eventFilter(QObject* watched, QEvent* event) {
                             ui->fileAutocompleteWidget->setCurrentRow(newIndex);
                         }
                     } else {
-                        //Go up through history
-                        //Disable autocomplete
+                        // Go up through history
+                        // Disable autocomplete
                         ui->commandLine->blockSignals(true);
                         ui->commandLine->setText(history.historyUp(ui->commandLine->text()));
                         ui->commandLine->blockSignals(false);
@@ -602,7 +602,7 @@ void TerminalWidget::scrollToBottom() {
     anim->setEndValue(ui->terminalArea->verticalScrollBar()->maximum());
     anim->setEasingCurve(QEasingCurve::OutCubic);
     anim->setDuration(250);
-    connect(anim, &tVariantAnimation::valueChanged, [ = ](QVariant value) {
+    connect(anim, &tVariantAnimation::valueChanged, [=](QVariant value) {
         anim->setEndValue(ui->terminalArea->verticalScrollBar()->maximum());
         ui->terminalArea->verticalScrollBar()->setValue(value.toInt());
     });
@@ -612,7 +612,7 @@ void TerminalWidget::scrollToBottom() {
 
 void TerminalWidget::close() {
     if (legacyTerminalPart == nullptr) {
-        //Using Contemporary terminal
+        // Using Contemporary terminal
         if (currentCommand != "") {
             emit switchToThis();
             QMessageBox* box = new QMessageBox();
@@ -635,8 +635,8 @@ void TerminalWidget::close() {
             emit finished();
         }
     } else {
-        //Using legacy terminal
+        // Using legacy terminal
         legacyTerminalPart->tryClose();
-        //emit finished();
+        // emit finished();
     }
 }

@@ -1,26 +1,25 @@
 #ifndef TERMINALPART_H
 #define TERMINALPART_H
 
-#include <tttermwidget/tttermwidget.h>
 #include <QDebug>
 #include <QSettings>
+#include <lib/tttermwidget.h>
 
 class TerminalPartPrivate;
 
 struct TerminalPartConstruct {
-    QString workDir = "";
-    QString manPage = "";
-    QString shell = "";
-    bool connectPty = true;
-    bool startShell = true;
+        QString workDir = "";
+        QString manPage = "";
+        QString shell = "";
+        bool connectPty = true;
+        bool startShell = true;
 };
 
-class TerminalPart : public TTTermWidget
-{
-    Q_OBJECT
+class TerminalPart : public TTTermWidget {
+        Q_OBJECT
     public:
-        //explicit TerminalPart(bool connectPty, QWidget* parent);
-        //explicit TerminalPart(QString workDir = "", QWidget *parent = 0);
+        // explicit TerminalPart(bool connectPty, QWidget* parent);
+        // explicit TerminalPart(QString workDir = "", QWidget *parent = 0);
         explicit TerminalPart(TerminalPartConstruct args, QWidget* parent = nullptr);
         ~TerminalPart();
 

@@ -19,17 +19,16 @@
  * *************************************/
 #include "colorschemeselectiondelegate.h"
 
-#include <QPainter>
-#include <QFontDatabase>
 #include <QDebug>
-#include <the-libs_global.h>
+#include <QFontDatabase>
+#include <QPainter>
+#include <libcontemporary_global.h>
 
-ColorSchemeSelectionDelegate::ColorSchemeSelectionDelegate(QObject *parent) : QAbstractItemDelegate(parent)
-{
-
+ColorSchemeSelectionDelegate::ColorSchemeSelectionDelegate(QObject* parent) :
+    QAbstractItemDelegate(parent) {
 }
 
-void ColorSchemeSelectionDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
+void ColorSchemeSelectionDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const {
     QString item = index.data(Qt::UserRole).toString();
     QSettings itemData(item, QSettings::IniFormat);
 
@@ -83,17 +82,16 @@ void ColorSchemeSelectionDelegate::paint(QPainter *painter, const QStyleOptionVi
         painter->setPen(Qt::transparent);
 
         for (QRect selectionRect : {
-             QRect(0, option.rect.top(), SC_DPI(3), option.rect.height()),
-             QRect(0, option.rect.bottom() + 1 - SC_DPI(3), option.rect.width(), SC_DPI(3)),
-             QRect(option.rect.right() + 1 - SC_DPI(3), option.rect.top(), SC_DPI(3), option.rect.height()),
-             QRect(0, option.rect.top(), option.rect.width(), SC_DPI(3))
-        }) {
+                 QRect(0, option.rect.top(), SC_DPI(3), option.rect.height()),
+                 QRect(0, option.rect.bottom() + 1 - SC_DPI(3), option.rect.width(), SC_DPI(3)),
+                 QRect(option.rect.right() + 1 - SC_DPI(3), option.rect.top(), SC_DPI(3), option.rect.height()),
+                 QRect(0, option.rect.top(), option.rect.width(), SC_DPI(3))}) {
             painter->drawRect(selectionRect);
         }
     }
 }
 
-QSize ColorSchemeSelectionDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
+QSize ColorSchemeSelectionDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const {
     QFontMetrics metrics(getFont());
 
     QSize sizeHint;

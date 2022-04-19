@@ -1,7 +1,9 @@
 #include "mainwindow.h"
-#include <tapplication.h>
 #include <QCommandLineParser>
+#include <tapplication.h>
 #include <tcsdtools.h>
+#include <tsettings.h>
+#include <tstylemanager.h>
 
 #ifndef Q_OS_MAC
     #include "dropdown.h"
@@ -25,12 +27,12 @@ int main(int argc, char* argv[]) {
     a.installTranslators();
 
     a.setApplicationIcon(QIcon::fromTheme("theterminal", QIcon(":/icons/icon.svg")));
-    a.setApplicationVersion("3.0");
+    a.setApplicationVersion("4.0");
     a.setGenericName(QApplication::translate("main", "Terminal"));
     a.setAboutDialogSplashGraphic(a.aboutDialogSplashGraphicFromSvg(":/icons/aboutsplash.svg"));
     a.setApplicationLicense(tApplication::Gpl3OrLater);
     a.setCopyrightHolder("Victor Tran");
-    a.setCopyrightYear("2019");
+    a.setCopyrightYear("2022");
 #ifdef T_BLUEPRINT_BUILD
     a.setApplicationName("theTerminal Blueprint");
     a.setDesktopFileName("com.vicr123.theterminal-blueprint");
@@ -41,21 +43,27 @@ int main(int argc, char* argv[]) {
 
     a.registerCrashTrap();
 
-    QSettings settings;
+    tSettings settings;
 #ifndef Q_OS_MAC
-    //Never use CSDs on macOS
-    tCsdGlobal::setCsdsEnabled(!settings.value("appearance/useSsds", false).toBool());
+    // Never use CSDs on macOS
+    tCsdGlobal::setCsdsEnabled(!settings.value("appearance/useSsds").toBool());
 #endif
 
     QCommandLineParser parser;
     parser.addOptions({
-        {{"w", "workdir"}, a.translate("main", "Set working directory"), a.translate("main", "workdir")},
-        {{"d", "dropdown"}, a.translate("main", "Starts theTerminal in dropdown mode")},
-        {{"e", "exec"}, a.translate("main", "Command to execute"), a.translate("main", "cmd")}
+        {{"w", "workdir"},       a.translate("main", "Set working directory"),               a.translate("main", "workdir")},
+        {{"d", "dropdown"},      a.translate("main", "Starts theTerminal in dropdown mode")},
+        {{"e", "exec"}, a.translate("main", "Command to execute"),                                 a.translate("main",                   "cmd")                }
     });
     parser.addHelpOption();
     parser.process(a);
 
+    QObject::connect(&settings, &tSettings::settingChanged, [=](QString key, QVariant value) {
+        if (key == "theme/mode") {
+            tStyleManager::setOverrideStyleForApplication(value.toString() == "light" ? tStyleManager::ContemporaryLight : tStyleManager::ContemporaryDark);
+        }
+    });
+    tStyleManager::setOverrideStyleForApplication(settings.value("theme/mode").toString() == "light" ? tStyleManager::ContemporaryLight : tStyleManager::ContemporaryDark);
 
 #ifdef Q_OS_MAC
     QIcon::setFallbackSearchPaths(QStringList() << ":/");
@@ -77,7 +85,6 @@ int main(int argc, char* argv[]) {
 
     return a.exec();
 }
-
 
 int lookbehindSpace(QString str, int from) {
     bool inQuotes = false;

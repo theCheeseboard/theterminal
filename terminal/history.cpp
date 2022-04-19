@@ -1,7 +1,7 @@
 #include "history.h"
 
-History::History(QObject *parent) : QObject(parent)
-{
+History::History(QObject* parent) :
+    QObject(parent) {
     watcher = new QFileSystemWatcher();
     connect(watcher, &QFileSystemWatcher::fileChanged, this, [=] {
         if (justSaved) {
@@ -17,7 +17,7 @@ History::History(QObject *parent) : QObject(parent)
 void History::loadHistory() {
     QFile historyFile(QDir::homePath() + "/.theterminal_history");
     historyFile.open(QFile::ReadOnly);
-    items = QString(historyFile.readAll()).split("\n", QString::SkipEmptyParts);
+    items = QString(historyFile.readAll()).split("\n", Qt::SkipEmptyParts);
     historyFile.close();
 
     if (watcher->files().isEmpty()) {

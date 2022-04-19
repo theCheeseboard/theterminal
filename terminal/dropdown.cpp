@@ -1,12 +1,15 @@
 #include "dropdown.h"
 #include "ui_dropdown.h"
 
+#include <tx11info.h>
+
+#include <X11/keysym.h>
+
 extern NativeEventFilter* filter;
 
-Dropdown::Dropdown(QString workdir, QWidget *parent) :
+Dropdown::Dropdown(QString workdir, QWidget* parent) :
     QDialog(parent),
-    ui(new Ui::Dropdown)
-{
+    ui(new Ui::Dropdown) {
     ui->setupUi(this);
     this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
@@ -17,15 +20,15 @@ Dropdown::Dropdown(QString workdir, QWidget *parent) :
     menu->addAction(ui->actionFind);
     menu->addSection(tr("For theTerminal"));
     menu->addAction(QIcon::fromTheme("configure"), tr("Settings"), [=] {
-        KeyCode kc = XKeysymToKeycode(QX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong());
-        XUngrabKey(QX11Info::display(), kc, AnyModifier, DefaultRootWindow(QX11Info::display()));
+        KeyCode kc = XKeysymToKeycode(tX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong());
+        XUngrabKey(tX11Info::display(), kc, AnyModifier, DefaultRootWindow(tX11Info::display()));
 
         SettingsWindow* settingsWin = new SettingsWindow();
         settingsWin->exec();
         settingsWin->deleteLater();
 
-        kc = XKeysymToKeycode(QX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong());
-        XGrabKey(QX11Info::display(), kc, AnyModifier, DefaultRootWindow(QX11Info::display()), true, GrabModeAsync, GrabModeAsync);
+        kc = XKeysymToKeycode(tX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong());
+        XGrabKey(tX11Info::display(), kc, AnyModifier, DefaultRootWindow(tX11Info::display()), true, GrabModeAsync, GrabModeAsync);
     });
     menu->addAction(QIcon::fromTheme("application-exit"), tr("Exit"), [=] {
         this->close();
@@ -41,21 +44,19 @@ Dropdown::Dropdown(QString workdir, QWidget *parent) :
         }
     });
 
-    //Make the background translucent in case the user wants the terminal to be translucent
+    // Make the background translucent in case the user wants the terminal to be translucent
     this->setAttribute(Qt::WA_NoSystemBackground);
     this->setAttribute(Qt::WA_TranslucentBackground);
 
-    KeyCode keycode = XKeysymToKeycode(QX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong());
-    XGrabKey(QX11Info::display(), keycode, AnyModifier, DefaultRootWindow(QX11Info::display()), true, GrabModeAsync, GrabModeAsync);
+    KeyCode keycode = XKeysymToKeycode(tX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong());
+    XGrabKey(tX11Info::display(), keycode, AnyModifier, DefaultRootWindow(tX11Info::display()), true, GrabModeAsync, GrabModeAsync);
 
     newTab(workdir);
 }
 
-Dropdown::~Dropdown()
-{
+Dropdown::~Dropdown() {
     delete ui;
 }
-
 
 void Dropdown::newTab(QString workDir) {
     newTab(new TerminalWidget(workDir));
@@ -87,7 +88,7 @@ void Dropdown::newTab(TerminalWidget* widget) {
     ui->stackedTabs->setCurrentWidget(widget);
 }
 
-void Dropdown::closeTab(TerminalWidget *widget) {
+void Dropdown::closeTab(TerminalWidget* widget) {
     delete terminalButtons.value(widget);
     terminalButtons.remove(widget);
 
@@ -144,45 +145,42 @@ void Dropdown::hide() {
     animation->start();
 }
 
-void Dropdown::on_AddTab_clicked()
-{
+void Dropdown::on_AddTab_clicked() {
     newTab(QDir::homePath());
 }
 
-void Dropdown::on_CloseTab_clicked()
-{
+void Dropdown::on_CloseTab_clicked() {
     closeTab((TerminalWidget*) ui->stackedTabs->currentWidget());
 }
 
-void Dropdown::on_stackedTabs_currentChanged(int arg1)
-{
+void Dropdown::on_stackedTabs_currentChanged(int arg1) {
     if (terminalButtons.count() > 0) {
         TerminalWidget* widget = (TerminalWidget*) ui->stackedTabs->widget(arg1);
         terminalButtons.value(widget)->setChecked(true);
     }
 }
 
-void Dropdown::paintEvent(QPaintEvent *event) {
+void Dropdown::paintEvent(QPaintEvent* event) {
     QPainter painter(this);
     painter.setPen(this->palette().color(QPalette::WindowText));
-    //painter.drawLine(0, 0, 0, this->height() - 1);
+    // painter.drawLine(0, 0, 0, this->height() - 1);
     painter.drawLine(0, this->height() - 1, this->width() - 1, this->height() - 1);
-    //painter.drawLine(this->width() - 1, this->height() - 1, this->width() - 1, 0);
+    // painter.drawLine(this->width() - 1, this->height() - 1, this->width() - 1, 0);
 }
 
-void Dropdown::setGeometry(int x, int y, int w, int h) { //Use wmctrl command because KWin has a problem with moving windows offscreen.
+void Dropdown::setGeometry(int x, int y, int w, int h) { // Use wmctrl command because KWin has a problem with moving windows offscreen.
     QDialog::setGeometry(x, y, w, h);
     QProcess::execute("wmctrl -r " + this->windowTitle() + " -e 0," +
                       QString::number(x) + "," + QString::number(y) + "," +
                       QString::number(w) + "," + QString::number(h));
-    this->setFixedSize(w, h);}
+    this->setFixedSize(w, h);
+}
 
 void Dropdown::setGeometry(QRect geometry) {
     this->setGeometry(geometry.x(), geometry.y(), geometry.width(), geometry.height());
 }
 
-void Dropdown::on_expand_clicked()
-{
+void Dropdown::on_expand_clicked() {
     QRect screenGeometry = currentScreen->geometry();
     if (isExpanded) {
         isExpanded = false;
@@ -221,17 +219,14 @@ TerminalWidget* Dropdown::currentTerminal() {
     return (TerminalWidget*) ui->stackedTabs->currentWidget();
 }
 
-void Dropdown::on_actionCopy_triggered()
-{
+void Dropdown::on_actionCopy_triggered() {
     currentTerminal()->copyClipboard();
 }
 
-void Dropdown::on_actionPaste_triggered()
-{
+void Dropdown::on_actionPaste_triggered() {
     currentTerminal()->pasteClipboard();
 }
 
-void Dropdown::on_actionFind_triggered()
-{
+void Dropdown::on_actionFind_triggered() {
     currentTerminal()->toggleShowSearchBar();
 }

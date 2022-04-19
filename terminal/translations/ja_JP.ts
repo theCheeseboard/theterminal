@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" sourcelanguage="en_US" language="ja_JP">
+<TS version="2.1" language="ja_JP" sourcelanguage="en_US">
 <context>
     <name>About</name>
     <message>
@@ -225,7 +225,7 @@
     <message>
         <location filename="../mainwindow.ui" line="184"/>
         <source>Ctrl+Shift+F</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+Shift+F</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="193"/>
@@ -329,7 +329,7 @@
         <location filename="../settingswindow.ui" line="14"/>
         <location filename="../settingswindow.ui" line="99"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">設定</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="128"/>
@@ -537,7 +537,7 @@
     <message>
         <location filename="../terminalpart.cpp" line="172"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">コピー</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="177"/>
@@ -547,7 +547,7 @@
     <message>
         <location filename="../terminalpart.cpp" line="185"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">貼り付け</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="184"/>
@@ -562,7 +562,7 @@
     <message>
         <location filename="../terminalpart.cpp" line="188"/>
         <source>Find</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">検索</translation>
     </message>
     <message>
         <location filename="../terminalpart.cpp" line="191"/>
@@ -583,13 +583,13 @@
     <message>
         <location filename="../terminaltabber.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">フォーム</translation>
     </message>
     <message>
-        <location filename="../terminaltabber.cpp" line="139"/>
-        <location filename="../terminaltabber.cpp" line="141"/>
+        <location filename="../terminaltabber.cpp" line="140"/>
+        <location filename="../terminaltabber.cpp" line="142"/>
         <source>Terminal %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ターミナル %1</translation>
     </message>
 </context>
 <context>
