@@ -1,29 +1,8 @@
 #ifndef SETTINGSWINDOW_H
 #define SETTINGSWINDOW_H
 
-#include "nativeeventfilter.h"
-#include <QComboBox>
 #include <QDialog>
-#include <QKeySequenceEdit>
-#include <QListWidget>
-#include <QSpinBox>
-#include <QStackedWidget>
-
-#ifdef Q_OS_LINUX
-    #include <X11/XF86keysym.h>
-    #include <X11/Xatom.h>
-    #include <X11/Xlib.h>
-
-    #undef Unsorted
-    #undef None
-    #undef KeyPress
-    #undef KeyRelease
-    #undef FocusIn
-    #undef FocusOut
-    #undef FontChange
-    #undef Expose
-    #undef Bool
-#endif
+#include <tsettings.h>
 
 namespace Ui {
     class SettingsWindow;
@@ -86,7 +65,7 @@ class SettingsWindow : public QDialog {
     private:
         Ui::SettingsWindow* ui;
 
-        QSettings settings;
+        tSettings settings;
 };
 
 #endif // SETTINGSWINDOW_H

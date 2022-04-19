@@ -22,6 +22,7 @@
 
 #include "terminalwidget.h"
 #include <QStack>
+#include <QTimer>
 #include <tcsdtools.h>
 
 #ifdef T_OS_UNIX_NOT_MAC
@@ -111,6 +112,10 @@ void TerminalTabber::addTab(TerminalWidget* tab) {
     button->setText(tr("Terminal %1").arg(d->allTerminals.indexOf(tab) + 1));
     button->syncWithStackedWidget(ui->termStack, tab);
     ui->tabber->addButton(button);
+
+    connect(tab, &TerminalWidget::titleChanged, this, [=] {
+        button->setText(tab->title());
+    });
 
     ui->termStack->setCurrentWidget(tab);
 }

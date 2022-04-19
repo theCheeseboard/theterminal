@@ -8,6 +8,7 @@
 #include <taboutdialog.h>
 #include <tapplication.h>
 #include <tcsdtools.h>
+#include <thelpmenu.h>
 #include <ttoast.h>
 
 #include "about.h"
@@ -41,7 +42,9 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
     this->setWindowTitle(tr("theTerminal"));
 #endif
 
-#ifndef Q_OS_MAC
+#ifdef Q_OS_MAC
+    ui->menuBar->addMenu(new tHelpMenu(this));
+#else
     ui->menuBar->setVisible(false);
 
     d->menuButton = new QToolButton();
@@ -64,8 +67,10 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
     menu->addAction(ui->actionGo_Full_Screen);
     menu->addMenu(ui->menuSplit);
     menu->addSeparator();
+    menu->addAction(ui->actionPrint);
+    menu->addSeparator();
     menu->addAction(ui->actionSettings);
-    menu->addMenu(ui->menuHelp);
+    menu->addMenu(new tHelpMenu(this));
     menu->addSeparator();
     menu->addAction(ui->actionClose_Tab);
     menu->addAction(ui->actionExit);
@@ -76,7 +81,7 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
     this->setAttribute(Qt::WA_NoSystemBackground);
     this->setAttribute(Qt::WA_TranslucentBackground);
 
-    QShortcut* fullscreenShortcut = new QShortcut(QKeySequence(Qt::SHIFT + Qt::Key_F11), this);
+    QShortcut* fullscreenShortcut = new QShortcut(QKeySequence(Qt::SHIFT | Qt::Key_F11), this);
     connect(fullscreenShortcut, &QShortcut::activated, this, &MainWindow::on_actionGo_Full_Screen_triggered);
 
     // Create a new tabber
@@ -114,12 +119,6 @@ void MainWindow::on_actionNew_Window_triggered() {
 
 void MainWindow::on_actionExit_triggered() {
     tApplication::closeAllWindows();
-    //    for (QWidget* w : QApplication::allWidgets()) {
-    //        if (w && strcmp(w->metaObject()->className(), "MainWindow") == 0) {
-    //            MainWindow* win = (MainWindow*) w;
-    //            win->close();
-    //        }
-    //    }
 }
 
 void MainWindow::on_actionCopy_triggered() {
@@ -412,4 +411,8 @@ void MainWindow::moveTabberButtons() {
             qobject_cast<TerminalTabber*>(nextSplitter)->setCsdButtons(d->csdButtons);
         }
     }
+}
+
+void MainWindow::on_actionPrint_triggered() {
+    currentTerminal()->print();
 }

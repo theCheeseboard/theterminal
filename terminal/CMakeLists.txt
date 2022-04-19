@@ -16,27 +16,24 @@ set(SOURCES
     terminalpart.cpp
     terminaltabber.cpp
     terminalwidget.cpp
-    commandpart.cpp
-    graphicalParts/lscommand.cpp
-    graphicalParts/ttedcommand.cpp
     terminalstatus.cpp
     history.cpp
     terminalcontroller.cpp
     dialogs/busydialog.cpp
     dropdown.cpp
+    print/printcontroller.cpp
 
     mainwindow.ui
     about.ui
     settingswindow.ui
     terminaltabber.ui
     terminalwidget.ui
-    commandpart.ui
-    graphicalParts/lscommand.ui
-    graphicalParts/ttedcommand.ui
     terminalstatus.ui
     dialogs/busydialog.ui
 
-    icons.qrc)
+    icons.qrc
+
+    defaults.conf)
 
 set(HEADERS
     mainwindow.h
@@ -47,14 +44,12 @@ set(HEADERS
     terminalpart.h
     terminaltabber.h
     terminalwidget.h
-    commandpart.h
-    graphicalParts/lscommand.h
-    graphicalParts/ttedcommand.h
     terminalstatus.h
     history.h
     terminalcontroller.h
     dialogs/busydialog.h
-    dropdown.h)
+    dropdown.h
+    print/printcontroller.h)
 
 add_executable(theterminal ${SOURCES} ${HEADERS})
 

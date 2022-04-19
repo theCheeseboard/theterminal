@@ -14,7 +14,7 @@
    <string>theTerminal</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="theterminal">
+   <iconset theme="theterminal" resource="icons.qrc">
     <normaloff>:/icons/utilities-terminal.svg</normaloff>:/icons/utilities-terminal.svg</iconset>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>570</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -54,6 +54,8 @@
     </property>
     <addaction name="actionNew_Window"/>
     <addaction name="actionNew_Tab"/>
+    <addaction name="separator"/>
+    <addaction name="actionPrint"/>
     <addaction name="separator"/>
     <addaction name="actionSettings"/>
     <addaction name="separator"/>
@@ -86,19 +88,9 @@
     <addaction name="separator"/>
     <addaction name="menuSplit"/>
    </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-    <addaction name="actionFileBug"/>
-    <addaction name="actionSources"/>
-    <addaction name="separator"/>
-    <addaction name="actionAbout"/>
-   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
-   <addaction name="menuHelp"/>
   </widget>
   <action name="actionNew_Window">
    <property name="icon">
@@ -193,18 +185,6 @@
     <string>&amp;Go Full Screen</string>
    </property>
   </action>
-  <action name="actionAbout">
-   <property name="icon">
-    <iconset theme="help-about">
-     <normaloff>.</normaloff>.</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;About</string>
-   </property>
-   <property name="menuRole">
-    <enum>QAction::AboutRole</enum>
-   </property>
-  </action>
   <action name="actionSettings">
    <property name="icon">
     <iconset theme="configure">
@@ -268,26 +248,21 @@
     <string>Ctrl+Shift+S, \</string>
    </property>
   </action>
-  <action name="actionFileBug">
+  <action name="actionPrint">
    <property name="icon">
-    <iconset theme="tools-report-bug">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="document-print"/>
    </property>
    <property name="text">
-    <string>File Bug</string>
+    <string>Print</string>
    </property>
-  </action>
-  <action name="actionSources">
-   <property name="icon">
-    <iconset theme="commit">
-     <normaloff>.</normaloff>.</iconset>
-   </property>
-   <property name="text">
-    <string>Sources</string>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

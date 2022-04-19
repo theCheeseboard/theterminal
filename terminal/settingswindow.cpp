@@ -9,7 +9,19 @@
 #include <tcsdtools.h>
 #include <tx11info.h>
 
+#include "nativeeventfilter.h"
+#include <QComboBox>
+#include <QDialog>
+#include <QKeySequenceEdit>
+#include <QListWidget>
+#include <QSpinBox>
+#include <QStackedWidget>
+
 #include "models/colorschemeselectiondelegate.h"
+
+#include <X11/XF86keysym.h>
+#include <X11/Xatom.h>
+#include <X11/Xlib.h>
 
 extern bool capturingKeyPress;
 extern NativeEventFilter* filter;
@@ -29,18 +41,27 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
 #endif
     on_keybindingButton_toggled(false);
 
-    ui->shellLineEdit->setText(settings.value("term/program", qgetenv("SHELL")).toString());
-    ui->fontComboBox->setCurrentFont(QFont(settings.value("theme/fontFamily", QFontDatabase::systemFont(QFontDatabase::FixedFont).family()).toString()));
-    ui->currentFontSize->setValue(settings.value("theme/fontSize", QFontDatabase::systemFont(QFontDatabase::FixedFont).pointSize()).toInt());
-    ui->blinkCursorSwitch->setChecked(settings.value("theme/blinkCursor", true).toBool());
-    ui->bellActiveSoundSwitch->setChecked(settings.value("bell/bellActiveSound", true).toBool());
-    ui->bellInactiveSoundSwitch->setChecked(settings.value("bell/bellInactiveSound", true).toBool());
-    ui->bellInactiveNotificationSwitch->setChecked(settings.value("bell/bellInactiveNotification", true).toBool());
-    ui->opacitySlider->setValue(settings.value("theme/opacity", 100).toInt());
-    ui->scrollKeystrokeSwitch->setChecked(settings.value("scrolling/scrollOnKeystroke", true).toBool());
-    ui->systemTitlebarsCheckbox->setChecked(settings.value("appearance/useSsds", false).toBool());
+    QString termProgram = settings.value("term/program").toString();
+    if (termProgram.isEmpty()) termProgram = qEnvironmentVariable("SHELL");
+    ui->shellLineEdit->setText(termProgram);
 
-    int scrollback = settings.value("term/scrollback", -1).toInt();
+    QString fontFamily = settings.value("theme/fontFamily").toString();
+    if (fontFamily.isEmpty()) fontFamily = QFontDatabase::systemFont(QFontDatabase::FixedFont).family();
+    ui->fontComboBox->setCurrentFont(QFont(fontFamily));
+
+    int fontSize = settings.value("theme/fontSize").toInt();
+    if (fontSize == -1) fontSize = QFontDatabase::systemFont(QFontDatabase::FixedFont).pointSize();
+    ui->currentFontSize->setValue(fontSize);
+
+    ui->blinkCursorSwitch->setChecked(settings.value("theme/blinkCursor").toBool());
+    ui->bellActiveSoundSwitch->setChecked(settings.value("bell/bellActiveSound").toBool());
+    ui->bellInactiveSoundSwitch->setChecked(settings.value("bell/bellInactiveSound").toBool());
+    ui->bellInactiveNotificationSwitch->setChecked(settings.value("bell/bellInactiveNotification").toBool());
+    ui->opacitySlider->setValue(settings.value("theme/opacity").toInt());
+    ui->scrollKeystrokeSwitch->setChecked(settings.value("scrolling/scrollOnKeystroke").toBool());
+    ui->systemTitlebarsCheckbox->setChecked(settings.value("appearance/useSsds").toBool());
+
+    int scrollback = settings.value("term/scrollback").toInt();
     if (scrollback == -1) {
         ui->infiniteScrollbackRadioButton->setChecked(true);
     } else if (scrollback == 0) {
@@ -50,14 +71,7 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
         ui->scrollbackSpin->setValue(scrollback);
     }
 
-    // Force the legacy terminal
-    if (settings.value("terminal/type", "legacy").toString() == "legacy" || /* DISABLES CODE */ (true)) {
-        ui->termTypeComboBox->setCurrentIndex(0);
-    } else {
-        ui->termTypeComboBox->setCurrentIndex(1);
-    }
-
-    switch (settings.value("theme/cursorType", 0).toInt()) {
+    switch (settings.value("theme/cursorType").toInt()) {
         case 0: // Block
             ui->blockCursor->setChecked(true);
             break;
@@ -83,7 +97,7 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
         for (QFileInfo col : systemColors.entryInfoList()) {
             if (col.suffix() == "colorscheme") {
                 ui->coloursComboBox->addItem(col.baseName(), col.filePath());
-                if (col.baseName() == settings.value("theme/scheme", "Linux").toString()) {
+                if (col.baseName() == settings.value("theme/scheme").toString()) {
                     ui->coloursComboBox->setCurrentIndex(ui->coloursComboBox->count() - 1);
                 }
             }
@@ -123,7 +137,7 @@ void SettingsWindow::on_keybindingButton_toggled(bool checked) {
         XUngrabKeyboard(tX11Info::display(), CurrentTime);
         filter->captureKeyPresses(false);
 
-        ui->keybindingButton->setText(settings.value("dropdown/keyString", "F12").toString());
+        ui->keybindingButton->setText(settings.value("dropdown/keyString").toString());
     }
 #endif
 }

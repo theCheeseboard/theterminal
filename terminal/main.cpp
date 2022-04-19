@@ -33,6 +33,8 @@ int main(int argc, char* argv[]) {
     a.setApplicationLicense(tApplication::Gpl3OrLater);
     a.setCopyrightHolder("Victor Tran");
     a.setCopyrightYear("2022");
+    a.setApplicationUrl(tApplication::Sources, QUrl("https://github.com/vicr123/theterminal"));
+    a.setApplicationUrl(tApplication::FileBug, QUrl("https://github.com/vicr123/theterminal/issues"));
 #ifdef T_BLUEPRINT_BUILD
     a.setApplicationName("theTerminal Blueprint");
     a.setDesktopFileName("com.vicr123.theterminal-blueprint");
@@ -120,29 +122,4 @@ int lookaheadSpace(QString str, int from) {
         }
     }
     return -1;
-}
-
-QStringList splitSpaces(QString str) {
-    bool inQuotes = false;
-    QString currentString;
-    QStringList list;
-
-    for (int i = 0; i < str.length(); i++) {
-        if (str.at(i) == '\"') {
-            inQuotes = !inQuotes;
-        } else if (inQuotes) {
-            currentString.append(str.at(i));
-        } else {
-            if (str.at(i) == ' ') {
-                list.append(currentString);
-                currentString.clear();
-            } else {
-                currentString.append(str.at(i));
-            }
-        }
-    }
-
-    if (currentString != "") list.append(currentString);
-
-    return list;
 }
