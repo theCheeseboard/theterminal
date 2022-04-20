@@ -74,9 +74,8 @@ TerminalPart::TerminalPart(TerminalPartConstruct args, QWidget* parent) :
         this->setArgs({args.manPage});
         d->quitType = TerminalPartPrivate::QuitOnCleanExit;
     } else if (args.shell != "") {
-        QStringList shellArgs = args.shell.split(" ");
-        QString shellProgram = shellArgs.takeFirst();
-        this->setArgs(shellArgs);
+        this->setArgs(args.shellArgs);
+        QString shellProgram = args.shell;
         if (!shellProgram.startsWith("/")) {
             QStringList availableApps = libContemporaryCommon::searchInPath(shellProgram);
             if (availableApps.count() > 0) {

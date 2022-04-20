@@ -54,6 +54,7 @@
     </property>
     <addaction name="actionNew_Window"/>
     <addaction name="actionNew_Tab"/>
+    <addaction name="actionConnect_to_Server"/>
     <addaction name="separator"/>
     <addaction name="actionPrint"/>
     <addaction name="separator"/>
@@ -250,13 +251,22 @@
   </action>
   <action name="actionPrint">
    <property name="icon">
-    <iconset theme="document-print"/>
+    <iconset theme="document-print">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Print</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+P</string>
+    <string>Ctrl+Shift+P</string>
+   </property>
+  </action>
+  <action name="actionConnect_to_Server">
+   <property name="icon">
+    <iconset theme="network-connect"/>
+   </property>
+   <property name="text">
+    <string>Connect to Server</string>
    </property>
   </action>
  </widget>

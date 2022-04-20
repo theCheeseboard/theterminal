@@ -17,7 +17,7 @@ class TerminalWidget : public QWidget {
         Q_OBJECT
 
     public:
-        explicit TerminalWidget(QString workDir = "", QString cmd = "", QWidget* parent = nullptr);
+        explicit TerminalWidget(QString workDir = "", QString cmd = "", QStringList args = {}, QWidget* parent = nullptr);
         ~TerminalWidget();
 
         QString title();

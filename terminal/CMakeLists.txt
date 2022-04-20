@@ -21,6 +21,7 @@ set(SOURCES
     terminalcontroller.cpp
     dialogs/busydialog.cpp
     print/printcontroller.cpp
+    dialogs/remoteconnectionpopover.cpp
 
     mainwindow.ui
     about.ui
@@ -29,6 +30,7 @@ set(SOURCES
     terminalwidget.ui
     terminalstatus.ui
     dialogs/busydialog.ui
+    dialogs/remoteconnectionpopover.ui
 
     icons.qrc
 
@@ -47,7 +49,8 @@ set(HEADERS
     history.h
     terminalcontroller.h
     dialogs/busydialog.h
-    print/printcontroller.h)
+    print/printcontroller.h
+    dialogs/remoteconnectionpopover.h)
 
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")

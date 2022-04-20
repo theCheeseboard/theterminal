@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "dialogs/remoteconnectionpopover.h"
 #include <QDesktopServices>
 #include <QShortcut>
 #include <QSplitter>
@@ -9,6 +10,7 @@
 #include <tapplication.h>
 #include <tcsdtools.h>
 #include <thelpmenu.h>
+#include <tpopover.h>
 #include <ttoast.h>
 
 #include "about.h"
@@ -56,6 +58,7 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
     QMenu* menu = new QMenu();
     menu->addAction(ui->actionNew_Window);
     menu->addAction(ui->actionNew_Tab);
+    menu->addAction(ui->actionConnect_to_Server);
     menu->addSeparator();
     menu->addAction(ui->actionCopy);
     menu->addAction(ui->actionPaste);
@@ -415,4 +418,18 @@ void MainWindow::moveTabberButtons() {
 
 void MainWindow::on_actionPrint_triggered() {
     currentTerminal()->print();
+}
+
+void MainWindow::on_actionConnect_to_Server_triggered() {
+    RemoteConnectionPopover* jp = new RemoteConnectionPopover(this);
+    tPopover* popover = new tPopover(jp);
+    popover->setPopoverWidth(SC_DPI_W(-200, this));
+    popover->setPopoverSide(tPopover::Bottom);
+    connect(jp, &RemoteConnectionPopover::openTerminal, this, [=](TerminalWidget* terminal) {
+        addTerminal(terminal);
+    });
+    connect(jp, &RemoteConnectionPopover::done, popover, &tPopover::dismiss);
+    connect(popover, &tPopover::dismissed, popover, &tPopover::deleteLater);
+    connect(popover, &tPopover::dismissed, jp, &RemoteConnectionPopover::deleteLater);
+    popover->show(this->window());
 }

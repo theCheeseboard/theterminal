@@ -11,6 +11,7 @@ struct TerminalPartConstruct {
         QString workDir = "";
         QString manPage = "";
         QString shell = "";
+        QStringList shellArgs;
         bool connectPty = true;
         bool startShell = true;
 };

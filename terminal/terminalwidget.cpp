@@ -50,7 +50,7 @@ struct TerminalWidgetPrivate {
         History history;
 };
 
-TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget* parent) :
+TerminalWidget::TerminalWidget(QString workDir, QString cmd, QStringList args, QWidget* parent) :
     QWidget(parent),
     ui(new Ui::TerminalWidget) {
     d = new TerminalWidgetPrivate();
@@ -63,6 +63,7 @@ TerminalWidget::TerminalWidget(QString workDir, QString cmd, QWidget* parent) :
     TerminalPartConstruct termPartArgs;
     termPartArgs.workDir = workDir;
     termPartArgs.shell = cmd;
+    termPartArgs.shellArgs = args;
 
     initializeAsLegacy(new TerminalPart(termPartArgs));
 }
