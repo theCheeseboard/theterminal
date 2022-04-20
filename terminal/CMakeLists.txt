@@ -20,7 +20,6 @@ set(SOURCES
     history.cpp
     terminalcontroller.cpp
     dialogs/busydialog.cpp
-    dropdown.cpp
     print/printcontroller.cpp
 
     mainwindow.ui
@@ -48,8 +47,13 @@ set(HEADERS
     history.h
     terminalcontroller.h
     dialogs/busydialog.h
-    dropdown.h
     print/printcontroller.h)
+
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    set(SOURCES ${SOURCES} dropdown.cpp)
+    set(HEADERS ${HEADERS} dropdown.h)
+endif()
 
 add_executable(theterminal ${SOURCES} ${HEADERS})
 

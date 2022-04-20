@@ -171,7 +171,7 @@ void TerminalWidget::close() {
 
 #ifdef Q_OS_MAC
             box->setText(tr("Close this tab?"));
-            box->setInformativeText(tr("Closing this tab will also close %1.").arg(currentCommand));
+            box->setInformativeText(tr("Closing this tab will also close %1.").arg(d->currentCommand));
             box->setIconPixmap(QIcon(":/icons/utilities-terminal.svg").pixmap(48, 48));
             box->setWindowFlags(Qt::Sheet);
 #else

@@ -16,12 +16,15 @@
 #include <QListWidget>
 #include <QSpinBox>
 #include <QStackedWidget>
+#include <lib/tttermwidget.h>
 
 #include "models/colorschemeselectiondelegate.h"
 
+#ifndef Q_OS_MAC
 #include <X11/XF86keysym.h>
 #include <X11/Xatom.h>
 #include <X11/Xlib.h>
+#endif
 
 extern bool capturingKeyPress;
 extern NativeEventFilter* filter;
@@ -83,16 +86,9 @@ SettingsWindow::SettingsWindow(QWidget* parent) :
             break;
     }
 
-    QStringList systemColorsDirs;
-#ifdef Q_OS_MAC
-    systemColorsDirs.append(tApplication::macOSBundlePath() + "/Contents/Frameworks/tttermwidget.framework/Resources/color-schemes");
-#else
-    systemColorsDirs.append("/usr/share/tttermwidget/color-schemes");
-    systemColorsDirs.append(QDir::cleanPath(QApplication::applicationDirPath() + "/../share/tttermwidget/color-schemes/"));
-#endif
     ui->coloursComboBox->setItemDelegate(new ColorSchemeSelectionDelegate());
     ui->coloursComboBox->blockSignals(true);
-    for (QString systemColorsDir : systemColorsDirs) {
+    for (QString systemColorsDir : TTTermWidget::colorSchemeDirs()) {
         QDir systemColors(systemColorsDir);
         for (QFileInfo col : systemColors.entryInfoList()) {
             if (col.suffix() == "colorscheme") {

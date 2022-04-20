@@ -1,16 +1,14 @@
 #include "mainwindow.h"
+#include "nativeeventfilter.h"
 #include <QCommandLineParser>
 #include <tapplication.h>
 #include <tcsdtools.h>
 #include <tsettings.h>
 #include <tstylemanager.h>
+#include <QDir>
 
 #ifndef Q_OS_MAC
     #include "dropdown.h"
-#endif
-
-#ifdef Q_OS_MAC
-    #include <CoreFoundation/CFBundle.h>
 #endif
 
 NativeEventFilter* filter;
@@ -46,10 +44,10 @@ int main(int argc, char* argv[]) {
     a.registerCrashTrap();
 
     tSettings settings;
-#ifndef Q_OS_MAC
+//#ifndef Q_OS_MAC
     // Never use CSDs on macOS
     tCsdGlobal::setCsdsEnabled(!settings.value("appearance/useSsds").toBool());
-#endif
+//#endif
 
     QCommandLineParser parser;
     parser.addOptions({

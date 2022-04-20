@@ -140,7 +140,7 @@ void TerminalPart::setup() {
             }
         }
     });
-    connect(this, &TerminalPart::shellProgramFinished, [=](int exitCode) {
+    connect(this, &TerminalPart::shellProgramFinished, this, [=](int exitCode) {
         if (d->quitType == TerminalPartPrivate::UseSettings) {
             d->quitType = static_cast<TerminalPartPrivate::QuitType>(d->settings.value("term/quitType", 0).toInt());
         }
