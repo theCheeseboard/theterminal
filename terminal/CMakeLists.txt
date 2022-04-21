@@ -18,6 +18,7 @@ set(SOURCES
     terminalwidget.cpp
     terminalstatus.cpp
     history.cpp
+    common.cpp
     terminalcontroller.cpp
     dialogs/busydialog.cpp
     print/printcontroller.cpp
@@ -47,6 +48,7 @@ set(HEADERS
     terminalwidget.h
     terminalstatus.h
     history.h
+    common.h
     terminalcontroller.h
     dialogs/busydialog.h
     print/printcontroller.h
@@ -54,7 +56,9 @@ set(HEADERS
 
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    set(SOURCES ${SOURCES} dropdown.cpp)
+    set(SOURCES ${SOURCES}
+        dropdown.cpp
+        dropdown.ui)
     set(HEADERS ${HEADERS} dropdown.h)
 endif()
 

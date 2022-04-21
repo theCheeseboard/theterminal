@@ -19,6 +19,8 @@
 #include "terminalwidget.h"
 #include <QPushButton>
 
+#include "common.h"
+
 struct MainWindowPrivate {
         tCsdTools csd;
         QList<TerminalTabber*> tabbers;
@@ -43,6 +45,14 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
 #else
     this->setWindowTitle(tr("theTerminal"));
 #endif
+
+    ui->actionNew_Tab->setShortcut(Common::shortcutForPlatform(Common::NewTab));
+    ui->actionCopy->setShortcut(Common::shortcutForPlatform(Common::Copy));
+    ui->actionPaste->setShortcut(Common::shortcutForPlatform(Common::Paste));
+    ui->actionFind->setShortcut(Common::shortcutForPlatform(Common::Find));
+    ui->actionPrint->setShortcut(Common::shortcutForPlatform(Common::Print));
+    ui->actionClose_Tab->setShortcut(Common::shortcutForPlatform(Common::CloseTab));
+    ui->actionExit->setShortcut(Common::shortcutForPlatform(Common::Exit));
 
 #ifdef Q_OS_MAC
     ui->menuBar->addMenu(new tHelpMenu(this));

@@ -21,6 +21,7 @@ namespace Ui {
     class Dropdown;
 }
 
+struct DropdownPrivate;
 class Dropdown : public QDialog {
         Q_OBJECT
         Q_PROPERTY(QRect geometry READ geometry WRITE setGeometry)
@@ -42,11 +43,7 @@ class Dropdown : public QDialog {
         void closeTab(TerminalWidget* widget);
 
     private slots:
-        void on_AddTab_clicked();
-
         void on_CloseTab_clicked();
-
-        void on_stackedTabs_currentChanged(int arg1);
 
         void on_expand_clicked();
 
@@ -58,11 +55,7 @@ class Dropdown : public QDialog {
 
     private:
         Ui::Dropdown* ui;
-
-        QMap<TerminalWidget*, QPushButton*> terminalButtons;
-        bool isExpanded = false;
-        QScreen* currentScreen = NULL;
-        QSettings settings;
+        DropdownPrivate* d;
 
         void paintEvent(QPaintEvent* event);
 };

@@ -78,37 +78,16 @@
           <number>0</number>
          </property>
          <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>289</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
+          <widget class="tWindowTabber" name="tabber" native="true"/>
          </item>
          <item>
-          <widget class="QPushButton" name="expand">
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+          <widget class="QToolButton" name="CloseTab">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset theme="go-down">
-             <normaloff>.</normaloff>.</iconset>
-           </property>
-           <property name="flat">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="CloseTab">
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
            </property>
@@ -119,13 +98,19 @@
             <iconset theme="tab-close">
              <normaloff>.</normaloff>.</iconset>
            </property>
-           <property name="flat">
+           <property name="autoRaise">
             <bool>true</bool>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="AddTab">
+          <widget class="QToolButton" name="expand">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
            </property>
@@ -133,16 +118,22 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset theme="tab-new">
+            <iconset theme="go-down">
              <normaloff>.</normaloff>.</iconset>
            </property>
-           <property name="flat">
+           <property name="autoRaise">
             <bool>true</bool>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QToolButton" name="menuButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="focusPolicy">
             <enum>Qt::NoFocus</enum>
            </property>
@@ -207,6 +198,15 @@
    <class>tStackedWidget</class>
    <extends>QStackedWidget</extends>
    <header location="global">tstackedwidget.h</header>
+   <container>1</container>
+   <slots>
+    <signal>switchingFrame(int)</signal>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>tWindowTabber</class>
+   <extends>QWidget</extends>
+   <header location="global">twindowtabber.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -8,10 +8,17 @@
 
 extern NativeEventFilter* filter;
 
+struct DropdownPrivate {
+        bool isExpanded = false;
+        QScreen* currentScreen = NULL;
+        QSettings settings;
+};
+
 Dropdown::Dropdown(QString workdir, QWidget* parent) :
     QDialog(parent),
     ui(new Ui::Dropdown) {
     ui->setupUi(this);
+    d = new DropdownPrivate();
     this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
 
     ui->stackedTabs->setCurrentAnimation(tStackedWidget::SlideHorizontal);
@@ -21,14 +28,14 @@ Dropdown::Dropdown(QString workdir, QWidget* parent) :
     menu->addAction(ui->actionFind);
     menu->addSection(tr("For theTerminal"));
     menu->addAction(QIcon::fromTheme("configure"), tr("Settings"), [=] {
-        KeyCode kc = XKeysymToKeycode(tX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong());
+        KeyCode kc = XKeysymToKeycode(tX11Info::display(), d->settings.value("dropdown/key", XK_F12).toLongLong());
         XUngrabKey(tX11Info::display(), kc, AnyModifier, DefaultRootWindow(tX11Info::display()));
 
         SettingsWindow* settingsWin = new SettingsWindow();
         settingsWin->exec();
         settingsWin->deleteLater();
 
-        kc = XKeysymToKeycode(tX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong());
+        kc = XKeysymToKeycode(tX11Info::display(), d->settings.value("dropdown/key", XK_F12).toLongLong());
         XGrabKey(tX11Info::display(), kc, AnyModifier, DefaultRootWindow(tX11Info::display()), true, GrabModeAsync, GrabModeAsync);
     });
     menu->addAction(QIcon::fromTheme("application-exit"), tr("Exit"), [=] {
@@ -49,7 +56,12 @@ Dropdown::Dropdown(QString workdir, QWidget* parent) :
     this->setAttribute(Qt::WA_NoSystemBackground);
     this->setAttribute(Qt::WA_TranslucentBackground);
 
-    KeyCode keycode = XKeysymToKeycode(tX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong());
+    ui->tabber->setShowNewTabButton(true);
+    connect(ui->tabber, &tWindowTabber::newTabRequested, this, [=] {
+        newTab(QDir::homePath());
+    });
+
+    KeyCode keycode = XKeysymToKeycode(tX11Info::display(), d->settings.value("dropdown/key", XK_F12).toLongLong());
     XGrabKey(tX11Info::display(), keycode, AnyModifier, DefaultRootWindow(tX11Info::display()), true, GrabModeAsync, GrabModeAsync);
 
     newTab(workdir);
@@ -57,6 +69,7 @@ Dropdown::Dropdown(QString workdir, QWidget* parent) :
 
 Dropdown::~Dropdown() {
     delete ui;
+    delete d;
 }
 
 void Dropdown::newTab(QString workDir) {
@@ -64,13 +77,13 @@ void Dropdown::newTab(QString workDir) {
 }
 
 void Dropdown::newTab(TerminalWidget* widget) {
-    QPushButton* button = new QPushButton();
-    widget->setContextMenuPolicy(Qt::CustomContextMenu);
-    button->setCheckable(true);
-    button->setAutoExclusive(true);
-    button->setFocusPolicy(Qt::NoFocus);
+    //    QPushButton* button = new QPushButton();
+    //    widget->setContextMenuPolicy(Qt::CustomContextMenu);
+    //    button->setCheckable(true);
+    //    button->setAutoExclusive(true);
+    //    button->setFocusPolicy(Qt::NoFocus);
     ui->stackedTabs->addWidget(widget);
-    terminalButtons.insert(widget, button);
+    //    terminalButtons.insert(widget, button);
 
     connect(widget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     connect(widget, &TerminalWidget::finished, [=]() {
@@ -78,20 +91,28 @@ void Dropdown::newTab(TerminalWidget* widget) {
     });
     connect(widget, &TerminalWidget::openNewTerminal, this, QOverload<TerminalWidget*>::of(&Dropdown::newTab));
 
-    button->setText(tr("Terminal %1").arg(ui->stackedTabs->indexOf(widget) + 1));
-    ui->tabFrame->layout()->addWidget(button);
-    ui->tabFrame->layout()->removeWidget(ui->endWidgets);
-    ui->tabFrame->layout()->addWidget(ui->endWidgets);
-    connect(button, &QPushButton::clicked, [=]() {
-        ui->stackedTabs->setCurrentWidget(widget);
-    });
+    //    button->setText(tr("Terminal %1").arg(ui->stackedTabs->indexOf(widget) + 1));
+    //    ui->tabFrame->layout()->addWidget(button);
+    //    ui->tabFrame->layout()->removeWidget(ui->endWidgets);
+    //    ui->tabFrame->layout()->addWidget(ui->endWidgets);
+    //    connect(button, &QPushButton::clicked, [=]() {
+    //        ui->stackedTabs->setCurrentWidget(widget);
+    //    });
 
     ui->stackedTabs->setCurrentWidget(widget);
+
+    tWindowTabberButton* button = new tWindowTabberButton();
+    button->setText(tr("Terminal %1").arg(ui->stackedTabs->indexOf(widget) + 1));
+    button->syncWithStackedWidget(ui->stackedTabs, widget);
+    ui->tabber->addButton(button);
+    connect(widget, &TerminalWidget::titleChanged, this, [=] {
+        button->setText(widget->title());
+    });
 }
 
 void Dropdown::closeTab(TerminalWidget* widget) {
-    delete terminalButtons.value(widget);
-    terminalButtons.remove(widget);
+    //    delete terminalButtons.value(widget);
+    //    terminalButtons.remove(widget);
 
     ui->stackedTabs->removeWidget(widget);
     if (ui->stackedTabs->count() == 0) {
@@ -103,12 +124,12 @@ void Dropdown::closeTab(TerminalWidget* widget) {
 void Dropdown::show() {
     for (QScreen* screen : QApplication::screens()) {
         if (screen->geometry().contains(QCursor::pos())) {
-            currentScreen = screen;
+            d->currentScreen = screen;
         }
     }
 
-    if (currentScreen != NULL) {
-        QRect screenGeometry = currentScreen->geometry();
+    if (d->currentScreen != nullptr) {
+        QRect screenGeometry = d->currentScreen->geometry();
         QRect endGeometry;
         endGeometry.setRect(screenGeometry.left() /*+ screenGeometry.width() / 20*/, screenGeometry.top(), screenGeometry.width() /* * 0.9*/, screenGeometry.height() / 2);
 
@@ -140,25 +161,14 @@ void Dropdown::hide() {
     connect(animation, SIGNAL(finished()), animation, SLOT(deleteLater()));
     connect(animation, &tPropertyAnimation::finished, [=]() {
         QDialog::hide();
-        isExpanded = false;
+        d->isExpanded = false;
         ui->expand->setIcon(QIcon::fromTheme("go-down"));
     });
     animation->start();
 }
 
-void Dropdown::on_AddTab_clicked() {
-    newTab(QDir::homePath());
-}
-
 void Dropdown::on_CloseTab_clicked() {
     closeTab((TerminalWidget*) ui->stackedTabs->currentWidget());
-}
-
-void Dropdown::on_stackedTabs_currentChanged(int arg1) {
-    if (terminalButtons.count() > 0) {
-        TerminalWidget* widget = (TerminalWidget*) ui->stackedTabs->widget(arg1);
-        terminalButtons.value(widget)->setChecked(true);
-    }
 }
 
 void Dropdown::paintEvent(QPaintEvent* event) {
@@ -182,9 +192,9 @@ void Dropdown::setGeometry(QRect geometry) {
 }
 
 void Dropdown::on_expand_clicked() {
-    QRect screenGeometry = currentScreen->geometry();
-    if (isExpanded) {
-        isExpanded = false;
+    QRect screenGeometry = d->currentScreen->geometry();
+    if (d->isExpanded) {
+        d->isExpanded = false;
         ui->expand->setIcon(QIcon::fromTheme("go-down"));
 
         QRect endGeometry;
@@ -198,7 +208,7 @@ void Dropdown::on_expand_clicked() {
         connect(animation, SIGNAL(finished()), animation, SLOT(deleteLater()));
         animation->start();
     } else {
-        isExpanded = true;
+        d->isExpanded = true;
         ui->expand->setIcon(QIcon::fromTheme("go-up"));
 
         QRect endGeometry;
