@@ -16,7 +16,7 @@ jobs:
       - uses: vicr123/libcontemporary/brew-universalinstall@actions
         name: "Install Dependencies"
         with:
-          packages: "qt:cmake:ninja"
+          packages: "qt:cmake:ninja:utf8proc"
       - uses: vicr123/libcontemporary/build-project@actions
         name: "Build libcontemporary"
         with:
