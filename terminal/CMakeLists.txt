@@ -71,19 +71,15 @@ set_target_properties(theterminal PROPERTIES
 
 cntp_init(theterminal 17)
 cntp_translate(theterminal)
+cntp_target_name(theterminal "theTerminal")
 cntp_mac_icon(theterminal
     ICON icon.icns
     BLUEPRINT_ICON icon-bp.icns)
-
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    set_target_properties(theterminal PROPERTIES
-            OUTPUT_NAME theTerminal)
-endif()
+cntp_target_desktop_file(theterminal
+    DESKTOP_FILE com.vicr123.theterminal.desktop
+    BLUEPRINT_DESKTOP_FILE com.vicr123.theterminal_blueprint.desktop)
 
 target_link_libraries(theterminal Qt6::Widgets Qt6::DBus libcontemporary tttermwidget)
-cntp_target_install_desktop_file_switch(theterminal
-    com.vicr123.theterminal.desktop
-    com.vicr123.theterminal_blueprint.desktop)
 
 install(TARGETS theterminal
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
