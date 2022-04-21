@@ -1,0 +1,51 @@
+name: "macOS CI"
+on:
+  push:
+    branches:
+      - master
+      - blueprint
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macOS-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: vicr123/libcontemporary/brew-universalinstall@actions
+        name: "Install Dependencies"
+        with:
+          packages: "qt:cmake:ninja"
+      - uses: vicr123/libcontemporary/build-project@actions
+        name: "Build libcontemporary"
+        with:
+          project: "vicr123/libcontemporary"
+          commitish: "blueprint"
+      - uses: vicr123/libcontemporary/build-project@actions
+        name: "Build contemporary-theme"
+        with:
+          project: "vicr123/contemporary-theme"
+          commitish: "blueprint"
+      - uses: vicr123/libcontemporary/build-project@actions
+        name: "Build tttermwidget"
+        with:
+          project: "vicr123/tttermwidget"
+          commitish: "master"
+      - uses: actions/checkout@v1
+        with:
+          submodules: 'recursive'
+      - uses: vicr123/libcontemporary/build-project@actions
+        name: "Build project"
+        with:
+          project: "."
+      - uses: vicr123/libcontemporary/deploy-project@actions
+        id: deploy
+        name: "Deploy project"
+        with:
+          subdir: "application"
+      - uses: actions/upload-artifact@v1
+        name: Upload Artifact to GitHub Actions
+        with:
+          name: "theTerminal-macOS"
+          path: ${{ steps.deploy.outputs.package }}

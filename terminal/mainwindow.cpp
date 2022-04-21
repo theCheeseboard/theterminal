@@ -46,6 +46,7 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
     this->setWindowTitle(tr("theTerminal"));
 #endif
 
+    ui->actionNew_Window->setShortcut(Common::shortcutForPlatform(Common::NewWindow));
     ui->actionNew_Tab->setShortcut(Common::shortcutForPlatform(Common::NewTab));
     ui->actionCopy->setShortcut(Common::shortcutForPlatform(Common::Copy));
     ui->actionPaste->setShortcut(Common::shortcutForPlatform(Common::Paste));

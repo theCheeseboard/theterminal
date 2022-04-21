@@ -66,10 +66,19 @@ add_executable(theterminal ${SOURCES} ${HEADERS})
 
 set_target_properties(theterminal PROPERTIES
         MACOSX_BUNDLE TRUE
+        MACOSX_BUNDLE_GUI_IDENTIFIER com.vicr123.theterminal
         CNTP_DATA_SUBDIR theterminal)
 
 cntp_init(theterminal 17)
 cntp_translate(theterminal)
+cntp_mac_icon(theterminal
+    ICON icon.icns
+    BLUEPRINT_ICON icon-bp.icns)
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set_target_properties(theterminal PROPERTIES
+            OUTPUT_NAME theTerminal)
+endif()
 
 target_link_libraries(theterminal Qt6::Widgets Qt6::DBus libcontemporary tttermwidget)
 cntp_target_install_desktop_file_switch(theterminal
