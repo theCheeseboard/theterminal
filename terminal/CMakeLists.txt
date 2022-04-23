@@ -33,9 +33,7 @@ set(SOURCES
     dialogs/busydialog.ui
     dialogs/remoteconnectionpopover.ui
 
-    icons.qrc
-
-    defaults.conf)
+    icons.qrc)
 
 set(HEADERS
     mainwindow.h
@@ -76,8 +74,10 @@ cntp_mac_icon(theterminal
     ICON icon.icns
     BLUEPRINT_ICON icon-bp.icns)
 cntp_target_desktop_file(theterminal
-    DESKTOP_FILE com.vicr123.theterminal.desktop
+    DESKTOP_FILE com.vicr123.theterminal.desktop com.vicr123.theterminal.dropdown.desktop
     BLUEPRINT_DESKTOP_FILE com.vicr123.theterminal_blueprint.desktop)
+cntp_defaults_file(theterminal
+    DEFAULTS_FILE theterminal.conf)
 
 target_link_libraries(theterminal Qt6::Widgets Qt6::DBus libcontemporary tttermwidget)
 
