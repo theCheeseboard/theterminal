@@ -4,5 +4,5 @@
         "background": "dist/app-dmg-background.png"
     },
     "desktop-id": "com.vicr123.theterminal",
-    "theme-colors": ["#ff6400", "#ffc800"]
+    "theme-colors": ["#003296", "#0064c8"]
 }
