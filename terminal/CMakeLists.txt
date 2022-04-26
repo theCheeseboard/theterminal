@@ -70,9 +70,9 @@ set_target_properties(theterminal PROPERTIES
 cntp_init(theterminal 17)
 cntp_translate(theterminal)
 cntp_target_name(theterminal "theTerminal")
-cntp_mac_icon(theterminal
-    ICON icon.icns
-    BLUEPRINT_ICON icon-bp.icns)
+cntp_app_icon(theterminal
+    BASEICON icons/baseicon.svg
+    BASEICON_MAC icons/baseicon-mac.svg)
 cntp_target_desktop_file(theterminal
     DESKTOP_FILE com.vicr123.theterminal.desktop com.vicr123.theterminal.dropdown.desktop
     BLUEPRINT_DESKTOP_FILE com.vicr123.theterminal_blueprint.desktop)

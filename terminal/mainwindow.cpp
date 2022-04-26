@@ -61,7 +61,7 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
     ui->menuBar->setVisible(false);
 
     d->menuButton = new QToolButton();
-    d->menuButton->setIcon(QIcon::fromTheme("theterminal", QIcon(":/icons/utilities-terminal.svg")));
+    d->menuButton->setIcon(tApplication::applicationIcon());
     d->menuButton->setIconSize(SC_DPI_WT(QSize(24, 24), QSize, this));
     d->menuButton->setPopupMode(QToolButton::InstantPopup);
     d->menuButton->setAutoRaise(true);

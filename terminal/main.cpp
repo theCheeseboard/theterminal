@@ -1,11 +1,11 @@
 #include "mainwindow.h"
 #include "nativeeventfilter.h"
 #include <QCommandLineParser>
+#include <QDir>
 #include <tapplication.h>
 #include <tcsdtools.h>
 #include <tsettings.h>
 #include <tstylemanager.h>
-#include <QDir>
 
 #ifndef Q_OS_MAC
     #include "dropdown.h"
@@ -33,21 +33,16 @@ int main(int argc, char* argv[]) {
     a.setCopyrightYear("2022");
     a.setApplicationUrl(tApplication::Sources, QUrl("https://github.com/vicr123/theterminal"));
     a.setApplicationUrl(tApplication::FileBug, QUrl("https://github.com/vicr123/theterminal/issues"));
-#ifdef T_BLUEPRINT_BUILD
-    a.setApplicationName("theTerminal Blueprint");
-    a.setDesktopFileName("com.vicr123.theterminal-blueprint");
-#else
-    a.setApplicationName("theTerminal");
-    a.setDesktopFileName("com.vicr123.theterminal");
-#endif
+    a.setApplicationName(T_APPMETA_READABLE_NAME);
+    a.setDesktopFileName(T_APPMETA_DESKTOP_ID);
 
     a.registerCrashTrap();
 
     tSettings settings;
-//#ifndef Q_OS_MAC
+    //#ifndef Q_OS_MAC
     // Never use CSDs on macOS
     tCsdGlobal::setCsdsEnabled(!settings.value("appearance/useSsds").toBool());
-//#endif
+    //#endif
 
     QCommandLineParser parser;
     parser.addOptions({
