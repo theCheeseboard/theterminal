@@ -2,6 +2,7 @@
 #include "nativeeventfilter.h"
 #include <QCommandLineParser>
 #include <QDir>
+#include <QWindow>
 #include <tapplication.h>
 #include <tcsdtools.h>
 #include <tsettings.h>
@@ -64,6 +65,20 @@ int main(int argc, char* argv[]) {
     QIcon::setFallbackSearchPaths(QStringList() << ":/");
     QIcon::setThemeName("icons");
     a.setAttribute(Qt::AA_DontShowIconsInMenus, true);
+    a.setQuitOnLastWindowClosed(false);
+
+    QObject::connect(&a, &tApplication::dockIconClicked, [&] {
+        for (QWidget* widget : a.topLevelWidgets()) {
+            if (MainWindow* mainWindow = qobject_cast<MainWindow*>(widget)) {
+                mainWindow->show();
+                mainWindow->activateWindow();
+                return;
+            }
+        }
+
+        MainWindow* w = new MainWindow();
+        w->show();
+    });
 #endif
 
     filter = new NativeEventFilter;

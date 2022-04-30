@@ -132,7 +132,11 @@ void MainWindow::on_actionNew_Window_triggered() {
 }
 
 void MainWindow::on_actionExit_triggered() {
+#ifdef Q_OS_MAC
+    tApplication::exit();
+#else
     tApplication::closeAllWindows();
+#endif
 }
 
 void MainWindow::on_actionCopy_triggered() {
@@ -199,6 +203,8 @@ void MainWindow::closeEvent(QCloseEvent* event) {
             tabber->closeAllTabs();
         }
     }
+
+    this->deleteLater();
 }
 
 void MainWindow::on_actionZoomIn_triggered() {
