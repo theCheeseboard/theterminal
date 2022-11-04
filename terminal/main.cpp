@@ -17,12 +17,7 @@ extern void setupBuiltinFunctions();
 
 int main(int argc, char* argv[]) {
     tApplication a(argc, argv);
-
-    if (QDir("/usr/share/theterminal/").exists()) {
-        a.setShareDir("/usr/share/theterminal/");
-    } else if (QDir(QDir::cleanPath(QApplication::applicationDirPath() + "/../share/theterminal/")).exists()) {
-        a.setShareDir(QDir::cleanPath(QApplication::applicationDirPath() + "/../share/theterminal/"));
-    }
+    a.setApplicationShareDir("theterminal");
     a.installTranslators();
 
     a.setApplicationIcon(QIcon::fromTheme("theterminal", QIcon(":/icons/icon.svg")));
@@ -131,3 +126,5 @@ int lookaheadSpace(QString str, int from) {
     }
     return -1;
 }
+
+

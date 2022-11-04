@@ -5,26 +5,31 @@
     <name>About</name>
     <message>
         <location filename="../about.ui" line="14"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_about.h" line="96"/>
         <source>About theTerminal</source>
         <translation>theTerminalについて</translation>
     </message>
     <message>
         <location filename="../about.ui" line="25"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_about.h" line="97"/>
         <source>theTerminal 3.0</source>
         <translation type="unfinished">theTerminal 3.0</translation>
     </message>
     <message>
         <location filename="../about.ui" line="32"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_about.h" line="98"/>
         <source>Terminal Emulator</source>
         <translation>ターミナルエミュレータ</translation>
     </message>
     <message>
         <location filename="../about.ui" line="52"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_about.h" line="99"/>
         <source>Copyright (c) Victor Tran 2018. Licensed under the terms of the GNU General Public License, version 3 or later.</source>
         <translation type="unfinished">Copyright (c) Victor Tran 2018. Licensed under the terms of the GNU General Public License, version 3 or later.</translation>
     </message>
     <message>
         <location filename="../about.ui" line="77"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_about.h" line="100"/>
         <source>OK</source>
         <translation type="unfinished">OK</translation>
     </message>
@@ -51,80 +56,78 @@
 <context>
     <name>CommandPart</name>
     <message>
-        <location filename="../commandpart.cpp" line="52"/>
         <source>Aborted</source>
-        <translation>中断</translation>
+        <translation type="vanished">中断</translation>
     </message>
     <message>
-        <location filename="../commandpart.cpp" line="55"/>
-        <source>Floating Point Exception</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../commandpart.cpp" line="58"/>
         <source>Segmentation Fault</source>
-        <translation>セグメンテーション障害</translation>
+        <translation type="vanished">セグメンテーション障害</translation>
     </message>
     <message>
-        <location filename="../commandpart.cpp" line="61"/>
         <source>Killed</source>
-        <translation type="unfinished">キルした</translation>
+        <translation type="obsolete">キルした</translation>
     </message>
 </context>
 <context>
     <name>Dropdown</name>
     <message>
-        <location filename="../dropdown.ui" line="174"/>
+        <location filename="../dropdown.ui" line="165"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_dropdown.h" line="177"/>
         <source>Copy</source>
         <translation>コピー</translation>
     </message>
     <message>
-        <location filename="../dropdown.ui" line="177"/>
+        <location filename="../dropdown.ui" line="168"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_dropdown.h" line="179"/>
         <source>Ctrl+Shift+C</source>
         <translation type="unfinished">Ctrl+Shift+C</translation>
     </message>
     <message>
-        <location filename="../dropdown.ui" line="186"/>
+        <location filename="../dropdown.ui" line="177"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_dropdown.h" line="181"/>
         <source>Paste</source>
         <translation>貼り付け</translation>
     </message>
     <message>
-        <location filename="../dropdown.ui" line="189"/>
+        <location filename="../dropdown.ui" line="180"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_dropdown.h" line="183"/>
         <source>Ctrl+Shift+V</source>
         <translation type="unfinished">Ctrl+Shift+V</translation>
     </message>
     <message>
-        <location filename="../dropdown.ui" line="198"/>
+        <location filename="../dropdown.ui" line="189"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_dropdown.h" line="185"/>
         <source>Find</source>
         <translation>検索</translation>
     </message>
     <message>
-        <location filename="../dropdown.ui" line="201"/>
+        <location filename="../dropdown.ui" line="192"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_dropdown.h" line="187"/>
         <source>Ctrl+Shift+F</source>
         <translation type="unfinished">Ctrl+Shift+F</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="16"/>
+        <location filename="../dropdown.cpp" line="27"/>
         <source>For current tab</source>
         <translation>現在のタブ</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="18"/>
+        <location filename="../dropdown.cpp" line="29"/>
         <source>For theTerminal</source>
         <translation>theTerminal</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="19"/>
+        <location filename="../dropdown.cpp" line="30"/>
         <source>Settings</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="30"/>
+        <location filename="../dropdown.cpp" line="41"/>
         <source>Exit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="79"/>
+        <location filename="../dropdown.cpp" line="105"/>
         <source>Terminal %1</source>
         <translation>ターミナル %1</translation>
     </message>
@@ -133,193 +136,269 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
-        <location filename="../mainwindow.cpp" line="35"/>
+        <location filename="../mainwindow.cpp" line="46"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="250"/>
         <source>theTerminal</source>
         <translation type="unfinished">theTerminal</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="53"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="306"/>
         <source>Fi&amp;le</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="65"/>
+        <location filename="../mainwindow.ui" line="68"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="307"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="74"/>
+        <location filename="../mainwindow.ui" line="77"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="308"/>
         <source>&amp;View</source>
         <translation>表示</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="78"/>
+        <location filename="../mainwindow.ui" line="81"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="309"/>
         <source>Split</source>
         <translation>スプリット</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="91"/>
         <source>Help</source>
-        <translation>ヘルプ</translation>
+        <translation type="vanished">ヘルプ</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="109"/>
+        <location filename="../mainwindow.ui" line="102"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="251"/>
         <source>&amp;New Window</source>
         <translation>新しいウィンドウ</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="112"/>
+        <location filename="../mainwindow.ui" line="105"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="253"/>
         <source>Ctrl+Shift+N</source>
         <translation type="unfinished">Ctrl+Shift+N</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="121"/>
+        <location filename="../mainwindow.ui" line="114"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="255"/>
         <source>&amp;Exit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="133"/>
+        <location filename="../mainwindow.ui" line="126"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="256"/>
         <source>&amp;Copy</source>
         <translation>コピー</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="136"/>
+        <location filename="../mainwindow.ui" line="129"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="258"/>
         <source>Ctrl+Shift+C</source>
         <translation type="unfinished">Ctrl+Shift+C</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="145"/>
+        <location filename="../mainwindow.ui" line="138"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="260"/>
         <source>&amp;Paste</source>
         <translation>貼り付け</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="148"/>
+        <location filename="../mainwindow.ui" line="141"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="262"/>
         <source>Ctrl+Shift+V</source>
         <translation type="unfinished">Ctrl+Shift+V</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="157"/>
+        <location filename="../mainwindow.ui" line="150"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="264"/>
         <source>Ne&amp;w Tab</source>
         <translation>新しいタブ</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="160"/>
+        <location filename="../mainwindow.ui" line="153"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="266"/>
         <source>Ctrl+Shift+T</source>
         <translation type="unfinished">Ctrl+Shift+T</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="169"/>
+        <location filename="../mainwindow.ui" line="162"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="268"/>
         <source>&amp;Close Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="172"/>
+        <location filename="../mainwindow.ui" line="165"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="270"/>
         <source>Ctrl+Shift+W</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="181"/>
+        <location filename="../mainwindow.ui" line="174"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="272"/>
         <source>&amp;Find...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="184"/>
+        <location filename="../mainwindow.ui" line="177"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="274"/>
         <source>Ctrl+Shift+F</source>
         <translation type="unfinished">Ctrl+Shift+F</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="193"/>
+        <location filename="../mainwindow.ui" line="186"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="276"/>
         <source>&amp;Go Full Screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="202"/>
-        <source>&amp;About</source>
+        <location filename="../mainwindow.ui" line="258"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="301"/>
+        <source>Print</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="214"/>
+        <location filename="../mainwindow.ui" line="261"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="303"/>
+        <source>Ctrl+Shift+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="269"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="305"/>
+        <source>Connect to Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="195"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="277"/>
         <source>&amp;Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="217"/>
+        <location filename="../mainwindow.ui" line="198"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="279"/>
         <source>Ctrl+,</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="229"/>
+        <location filename="../mainwindow.ui" line="210"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="281"/>
         <source>Zoom In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="232"/>
+        <location filename="../mainwindow.ui" line="213"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="283"/>
         <source>Ctrl+=</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="241"/>
+        <location filename="../mainwindow.ui" line="222"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="285"/>
         <source>Zoom Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="244"/>
+        <location filename="../mainwindow.ui" line="225"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="287"/>
         <source>Ctrl+-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="249"/>
+        <location filename="../mainwindow.ui" line="230"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="289"/>
         <source>Reset Zoom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="252"/>
+        <location filename="../mainwindow.ui" line="233"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="291"/>
         <source>Ctrl+0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="257"/>
+        <location filename="../mainwindow.ui" line="238"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="293"/>
         <source>Split Vertically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="260"/>
+        <location filename="../mainwindow.ui" line="241"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="295"/>
         <source>Ctrl+Shift+S, -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="268"/>
+        <location filename="../mainwindow.ui" line="249"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="299"/>
         <source>Ctrl+Shift+S, \</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="277"/>
-        <source>File Bug</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="286"/>
-        <source>Sources</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="265"/>
+        <location filename="../mainwindow.ui" line="246"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_mainwindow.h" line="297"/>
         <source>Split Horizontally</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="33"/>
+        <location filename="../mainwindow.cpp" line="44"/>
         <source>theTerminal Blueprint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="160"/>
+        <location filename="../mainwindow.cpp" line="177"/>
         <source>Full Screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="161"/>
+        <location filename="../mainwindow.cpp" line="178"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RemoteConnectionPopover</name>
+    <message>
+        <location filename="../dialogs/remoteconnectionpopover.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished">フォーム</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/remoteconnectionpopover.ui" line="35"/>
+        <source>Connect to Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/remoteconnectionpopover.ui" line="45"/>
+        <source>Protocol</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/remoteconnectionpopover.ui" line="52"/>
+        <source>Connection Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/remoteconnectionpopover.ui" line="59"/>
+        <source>SSH</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/remoteconnectionpopover.ui" line="69"/>
+        <source>Telnet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/remoteconnectionpopover.ui" line="79"/>
+        <source>Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/remoteconnectionpopover.ui" line="89"/>
+        <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -328,191 +407,210 @@
     <message>
         <location filename="../settingswindow.ui" line="14"/>
         <location filename="../settingswindow.ui" line="99"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="788"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="790"/>
         <source>Settings</source>
         <translation type="unfinished">設定</translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="128"/>
         <location filename="../settingswindow.ui" line="204"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="795"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="806"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="133"/>
-        <location filename="../settingswindow.ui" line="333"/>
+        <location filename="../settingswindow.ui" line="293"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="797"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="808"/>
         <source>Appearance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="138"/>
-        <location filename="../settingswindow.ui" line="718"/>
+        <location filename="../settingswindow.ui" line="675"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="799"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="818"/>
         <source>Scrolling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="143"/>
-        <location filename="../settingswindow.ui" line="965"/>
+        <location filename="../settingswindow.ui" line="920"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="801"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="827"/>
         <source>Bells</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="148"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="803"/>
         <source>Dropdown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settingswindow.ui" line="244"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="807"/>
         <source>Shell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="251"/>
-        <source>Terminal Type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settingswindow.ui" line="268"/>
-        <source>Legacy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settingswindow.ui" line="273"/>
-        <source>Contemporary</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settingswindow.ui" line="284"/>
-        <source>The Contemporary terminal uses theTerminal itself as the shell in a modern UI. Not everything may work properly.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settingswindow.ui" line="482"/>
+        <location filename="../settingswindow.ui" line="442"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="809"/>
         <source>Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="507"/>
+        <location filename="../settingswindow.ui" line="467"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="810"/>
         <source>Cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="523"/>
+        <location filename="../settingswindow.ui" line="482"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="811"/>
         <source>TEXT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="530"/>
+        <location filename="../settingswindow.ui" line="489"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="812"/>
         <source>Blink Cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="576"/>
+        <location filename="../settingswindow.ui" line="535"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="813"/>
         <source>Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="589"/>
+        <location filename="../settingswindow.ui" line="547"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="814"/>
         <source>COLOURS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="606"/>
+        <location filename="../settingswindow.ui" line="564"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="815"/>
         <source>Opacity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="661"/>
+        <location filename="../settingswindow.ui" line="618"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="816"/>
         <source>TITLEBAR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="668"/>
+        <location filename="../settingswindow.ui" line="625"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="817"/>
         <source>Use System Titlebars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="791"/>
+        <location filename="../settingswindow.ui" line="748"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="819"/>
         <source>Limit Scrollback to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="810"/>
+        <location filename="../settingswindow.ui" line="767"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="820"/>
         <source> lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="823"/>
+        <location filename="../settingswindow.ui" line="780"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="821"/>
         <source>No Scrollback</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="830"/>
+        <location filename="../settingswindow.ui" line="787"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="822"/>
         <source>Infinite Scrollback</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="843"/>
+        <location filename="../settingswindow.ui" line="799"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="823"/>
         <source>SCROLLBACK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="882"/>
+        <location filename="../settingswindow.ui" line="838"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="824"/>
         <source>ScrollKeystrokeSwitch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="889"/>
+        <location filename="../settingswindow.ui" line="845"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="825"/>
         <source>Scroll down on keystroke</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="915"/>
+        <location filename="../settingswindow.ui" line="870"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="826"/>
         <source>SCROLLING DOWN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1039"/>
-        <location filename="../settingswindow.ui" line="1111"/>
+        <location filename="../settingswindow.ui" line="994"/>
+        <location filename="../settingswindow.ui" line="1065"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="828"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="830"/>
         <source>Play Sound</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1065"/>
+        <location filename="../settingswindow.ui" line="1019"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="829"/>
         <source>ACTIVE TERMINAL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1118"/>
+        <location filename="../settingswindow.ui" line="1072"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="831"/>
         <source>Send Notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1125"/>
+        <location filename="../settingswindow.ui" line="1079"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="832"/>
         <source>BellInactiveSoundSwitch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1151"/>
+        <location filename="../settingswindow.ui" line="1104"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="833"/>
         <source>INACTIVE TERMINAL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1201"/>
+        <location filename="../settingswindow.ui" line="1154"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="834"/>
         <source>Drop Down Terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1247"/>
+        <location filename="../settingswindow.ui" line="1200"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="835"/>
         <source>F12</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1257"/>
+        <location filename="../settingswindow.ui" line="1210"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="836"/>
         <source>Keyboard Binding</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settingswindow.ui" line="1264"/>
+        <location filename="../settingswindow.ui" line="1217"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_settingswindow.h" line="837"/>
         <source>The Drop Down Terminal is not available on macOS.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -520,37 +618,37 @@
 <context>
     <name>TerminalPart</name>
     <message>
-        <location filename="../terminalpart.cpp" line="133"/>
+        <location filename="../terminalpart.cpp" line="134"/>
         <source>Bell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="134"/>
+        <location filename="../terminalpart.cpp" line="135"/>
         <source>A bell was sounded!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="171"/>
+        <location filename="../terminalpart.cpp" line="172"/>
         <source>For text &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="172"/>
+        <location filename="../terminalpart.cpp" line="173"/>
         <source>Copy</source>
         <translation type="unfinished">コピー</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="177"/>
+        <location filename="../terminalpart.cpp" line="178"/>
         <source>Open man page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="185"/>
+        <location filename="../terminalpart.cpp" line="186"/>
         <source>Paste</source>
         <translation type="unfinished">貼り付け</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="184"/>
+        <location filename="../terminalpart.cpp" line="185"/>
         <source>For this terminal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -560,12 +658,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="188"/>
+        <location filename="../terminalpart.cpp" line="189"/>
         <source>Find</source>
         <translation type="unfinished">検索</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="191"/>
+        <location filename="../terminalpart.cpp" line="192"/>
         <source>Close Terminal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -574,6 +672,7 @@
     <name>TerminalStatus</name>
     <message>
         <location filename="../terminalstatus.ui" line="38"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_terminalstatus.h" line="141"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -582,12 +681,12 @@
     <name>TerminalTabber</name>
     <message>
         <location filename="../terminaltabber.ui" line="14"/>
+        <location filename="../../../build-theterminal-Chroot_6-Debug/terminal/theterminal_autogen/include/ui_terminaltabber.h" line="85"/>
         <source>Form</source>
         <translation type="unfinished">フォーム</translation>
     </message>
     <message>
-        <location filename="../terminaltabber.cpp" line="140"/>
-        <location filename="../terminaltabber.cpp" line="142"/>
+        <location filename="../terminaltabber.cpp" line="112"/>
         <source>Terminal %1</source>
         <translation type="unfinished">ターミナル %1</translation>
     </message>
@@ -595,55 +694,18 @@
 <context>
     <name>TerminalWidget</name>
     <message>
-        <location filename="../terminalwidget.cpp" line="34"/>
-        <source>theterminal: cd: too many arguments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../terminalwidget.cpp" line="45"/>
-        <source>theterminal: cd: %1: No such file or directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../terminalwidget.cpp" line="63"/>
-        <source>theterminal: cannot access &apos;%1&apos; No such file or directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../terminalwidget.cpp" line="85"/>
-        <source>Usage: tted [OPTIONS] [FILE]
--h, --help                   Show this help output
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../terminalwidget.cpp" line="91"/>
-        <source>theterminal: tted: not enough arguments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../terminalwidget.cpp" line="100"/>
-        <source>theterminal: tted: cannot access &apos;%1&apos; No such file or directory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../terminalwidget.cpp" line="346"/>
-        <source>theterminal: %1: command not found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../terminalwidget.cpp" line="622"/>
+        <location filename="../terminalwidget.cpp" line="174"/>
         <source>Close this tab?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="623"/>
-        <location filename="../terminalwidget.cpp" line="628"/>
+        <location filename="../terminalwidget.cpp" line="175"/>
+        <location filename="../terminalwidget.cpp" line="180"/>
         <source>Closing this tab will also close %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalwidget.cpp" line="627"/>
+        <location filename="../terminalwidget.cpp" line="179"/>
         <source>Close tab?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -651,51 +713,33 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="29"/>
+        <location filename="../main.cpp" line="24"/>
         <source>Terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="52"/>
+        <location filename="../main.cpp" line="49"/>
         <source>workdir</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="52"/>
+        <location filename="../main.cpp" line="49"/>
         <source>Set working directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="53"/>
+        <location filename="../main.cpp" line="50"/>
         <source>Starts theTerminal in dropdown mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="54"/>
+        <location filename="../main.cpp" line="51"/>
         <source>Command to execute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="54"/>
+        <location filename="../main.cpp" line="51"/>
         <source>cmd</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ttedCommand</name>
-    <message>
-        <location filename="../graphicalParts/ttedcommand.ui" line="301"/>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../graphicalParts/ttedcommand.ui" line="315"/>
-        <source>Undo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../graphicalParts/ttedcommand.ui" line="329"/>
-        <source>Redo</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

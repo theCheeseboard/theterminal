@@ -27,7 +27,7 @@ bool NativeEventFilter::nativeEventFilter(const QByteArray& eventType, void* mes
 
                 settings.setValue("dropdown/key", QVariant::fromValue(keyPressed));
                 settings.setValue("dropdown/keyState", button->state);
-                settings.setValue("dropdown/keyString", XKeysymToString(keyPressed));
+                settings.setValue("dropdown/keyString", QString::fromUtf8(XKeysymToString(keyPressed)));
                 captureKeyPresses(false);
                 emit keypressCaptureComplete();
                 return true;
