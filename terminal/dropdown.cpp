@@ -1,6 +1,8 @@
 #include "dropdown.h"
 #include "ui_dropdown.h"
 
+#include "mainwindow.h"
+#include "nativeeventfilter.h"
 #include <tx11info.h>
 
 #include <X11/Xlib.h>
@@ -31,9 +33,7 @@ Dropdown::Dropdown(QString workdir, QWidget* parent) :
         KeyCode kc = XKeysymToKeycode(tX11Info::display(), d->settings.value("dropdown/key", XK_F12).toLongLong());
         XUngrabKey(tX11Info::display(), kc, AnyModifier, DefaultRootWindow(tX11Info::display()));
 
-        SettingsWindow* settingsWin = new SettingsWindow();
-        settingsWin->exec();
-        settingsWin->deleteLater();
+        MainWindow::openSettingsWindow(this);
 
         kc = XKeysymToKeycode(tX11Info::display(), d->settings.value("dropdown/key", XK_F12).toLongLong());
         XGrabKey(tX11Info::display(), kc, AnyModifier, DefaultRootWindow(tX11Info::display()), true, GrabModeAsync, GrabModeAsync);

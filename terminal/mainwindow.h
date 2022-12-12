@@ -21,6 +21,8 @@ class MainWindow : public QMainWindow {
         explicit MainWindow(QString workDir = "", QString cmd = "", QWidget* parent = 0);
         ~MainWindow();
 
+        static void openSettingsWindow(QWidget* parent);
+
     public slots:
         void on_actionNew_Window_triggered();
         void on_actionExit_triggered();

@@ -8,39 +8,36 @@ find_package(tttermwidget REQUIRED)
 
 set(SOURCES
     main.cpp
-    mainwindow.cpp
-    about.cpp
+    mainwindow.cpp mainwindow.ui
     models/colorschemeselectiondelegate.cpp
     nativeeventfilter.cpp
-    settingswindow.cpp
     terminalpart.cpp
-    terminaltabber.cpp
-    terminalwidget.cpp
-    terminalstatus.cpp
+    terminaltabber.cpp terminaltabber.ui
+    terminalwidget.cpp terminalwidget.ui
+    terminalstatus.cpp terminalstatus.ui
     history.cpp
     common.cpp
     terminalcontroller.cpp
-    dialogs/busydialog.cpp
+    dialogs/busydialog.cpp dialogs/busydialog.ui
     print/printcontroller.cpp
-    dialogs/remoteconnectionpopover.cpp
+    dialogs/remoteconnectionpopover.cpp dialogs/remoteconnectionpopover.ui
 
-    mainwindow.ui
-    about.ui
-    settingswindow.ui
-    terminaltabber.ui
-    terminalwidget.ui
-    terminalstatus.ui
-    dialogs/busydialog.ui
-    dialogs/remoteconnectionpopover.ui
+    settingspanes/shellsettingspane.cpp settingspanes/shellsettingspane.ui
+    settingspanes/textsettingspane.cpp settingspanes/textsettingspane.ui
+    settingspanes/colourssettingspane.cpp settingspanes/colourssettingspane.ui
+    settingspanes/scrollbacksettingspane.cpp settingspanes/scrollbacksettingspane.ui
+    settingspanes/scrollingdownsettingspane.cpp settingspanes/scrollingdownsettingspane.ui
+    settingspanes/activeterminalbellssettingspane.cpp settingspanes/activeterminalbellssettingspane.ui
+    settingspanes/inactiveterminalbellssettingspane.cpp settingspanes/inactiveterminalbellssettingspane.ui
+    settingspanes/dropdownterminalkeyboardbindingsettingspane.cpp settingspanes/dropdownterminalkeyboardbindingsettingspane.ui
 
-    icons.qrc)
+    icons.qrc
+)
 
 set(HEADERS
     mainwindow.h
-    about.h
     models/colorschemeselectiondelegate.h
     nativeeventfilter.h
-    settingswindow.h
     terminalpart.h
     terminaltabber.h
     terminalwidget.h
@@ -50,7 +47,17 @@ set(HEADERS
     terminalcontroller.h
     dialogs/busydialog.h
     print/printcontroller.h
-    dialogs/remoteconnectionpopover.h)
+    dialogs/remoteconnectionpopover.h
+
+    settingspanes/shellsettingspane.h
+    settingspanes/textsettingspane.h
+    settingspanes/colourssettingspane.h
+    settingspanes/scrollbacksettingspane.h
+    settingspanes/scrollingdownsettingspane.h
+    settingspanes/activeterminalbellssettingspane.h
+    settingspanes/inactiveterminalbellssettingspane.h
+    settingspanes/dropdownterminalkeyboardbindingsettingspane.h
+)
 
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")

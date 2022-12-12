@@ -11,10 +11,17 @@
 #include <tcsdtools.h>
 #include <thelpmenu.h>
 #include <tpopover.h>
+#include <tsettingswindow/tsettingswindow.h>
 #include <ttoast.h>
 
-#include "about.h"
-#include "settingswindow.h"
+#include "settingspanes/activeterminalbellssettingspane.h"
+#include "settingspanes/colourssettingspane.h"
+#include "settingspanes/dropdownterminalkeyboardbindingsettingspane.h"
+#include "settingspanes/inactiveterminalbellssettingspane.h"
+#include "settingspanes/scrollbacksettingspane.h"
+#include "settingspanes/scrollingdownsettingspane.h"
+#include "settingspanes/shellsettingspane.h"
+#include "settingspanes/textsettingspane.h"
 #include "terminaltabber.h"
 #include "terminalwidget.h"
 #include <QPushButton>
@@ -32,27 +39,24 @@ struct MainWindowPrivate {
 };
 
 MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow) {
+    QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     d = new MainWindowPrivate();
 
     d->csd.installResizeAction(this);
     d->csdButtons = d->csd.csdBoxForWidget(this);
 
-#ifdef T_BLUEPRINT_BUILD
-    this->setWindowTitle(tr("theTerminal Blueprint"));
-#else
-    this->setWindowTitle(tr("theTerminal"));
-#endif
+    this->setWindowTitle(tApplication::applicationDisplayName());
 
-    ui->actionNew_Window->setShortcut(Common::shortcutForPlatform(Common::NewWindow));
+    ui->actionNew_Window->setShortcut(
+        Common::shortcutForPlatform(Common::NewWindow));
     ui->actionNew_Tab->setShortcut(Common::shortcutForPlatform(Common::NewTab));
     ui->actionCopy->setShortcut(Common::shortcutForPlatform(Common::Copy));
     ui->actionPaste->setShortcut(Common::shortcutForPlatform(Common::Paste));
     ui->actionFind->setShortcut(Common::shortcutForPlatform(Common::Find));
     ui->actionPrint->setShortcut(Common::shortcutForPlatform(Common::Print));
-    ui->actionClose_Tab->setShortcut(Common::shortcutForPlatform(Common::CloseTab));
+    ui->actionClose_Tab->setShortcut(
+        Common::shortcutForPlatform(Common::CloseTab));
     ui->actionExit->setShortcut(Common::shortcutForPlatform(Common::Exit));
 
 #ifdef Q_OS_MAC
@@ -91,12 +95,15 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
     d->menuButton->setMenu(menu);
 #endif
 
-    // Make the background translucent in case the user wants the terminal to be translucent
+    // Make the background translucent in case the user wants the terminal to be
+    // translucent
     this->setAttribute(Qt::WA_NoSystemBackground);
     this->setAttribute(Qt::WA_TranslucentBackground);
 
-    QShortcut* fullscreenShortcut = new QShortcut(QKeySequence(Qt::SHIFT | Qt::Key_F11), this);
-    connect(fullscreenShortcut, &QShortcut::activated, this, &MainWindow::on_actionGo_Full_Screen_triggered);
+    QShortcut* fullscreenShortcut =
+        new QShortcut(QKeySequence(Qt::SHIFT | Qt::Key_F11), this);
+    connect(fullscreenShortcut, &QShortcut::activated, this,
+        &MainWindow::on_actionGo_Full_Screen_triggered);
 
     // Create a new tabber
     TerminalTabber* tabber = newTabber();
@@ -116,6 +123,29 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
 MainWindow::~MainWindow() {
     delete d;
     delete ui;
+}
+
+void MainWindow::openSettingsWindow(QWidget* parent) {
+    tSettingsWindow window(parent);
+    window.appendSection(tr("General"));
+    window.appendPane(new ShellSettingsPane());
+
+    window.appendSection(tr("Appearance"));
+    window.appendPane(new TextSettingsPane());
+    window.appendPane(new ColoursSettingsPane());
+
+    window.appendSection(tr("Scrolling"));
+    window.appendPane(new ScrollbackSettingsPane());
+    window.appendPane(new ScrollingDownSettingsPane());
+
+    window.appendSection(tr("Bells"));
+    window.appendPane(new ActiveTerminalBellsSettingsPane());
+    window.appendPane(new InactiveTerminalBellsSettingsPane());
+
+    window.appendSection(tr("Dropdown Terminal"));
+    window.appendPane(new DropdownTerminalKeyboardBindingSettingsPane());
+
+    window.exec();
 }
 
 TerminalTabber* MainWindow::currentTabber() {
@@ -179,7 +209,8 @@ void MainWindow::on_actionGo_Full_Screen_triggered() {
 
         tToast* toast = new tToast();
         toast->setTitle(tr("Full Screen"));
-        toast->setText(tr("You're in full screen. You can exit full screen with SHIFT+F11."));
+        toast->setText(
+            tr("You're in full screen. You can exit full screen with SHIFT+F11."));
         toast->show(this);
         connect(toast, &tToast::dismissed, toast, &tToast::deleteLater);
     }
@@ -191,9 +222,7 @@ void MainWindow::on_actionAbout_triggered() {
 }
 
 void MainWindow::on_actionSettings_triggered() {
-    SettingsWindow* settings = new SettingsWindow();
-    settings->exec();
-    settings->deleteLater();
+    openSettingsWindow(this);
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
@@ -229,7 +258,8 @@ TerminalTabber* MainWindow::splitVertically() {
     int newHeight;
 
     QSplitter* actingSplitter;
-    QSplitter* splitter = qobject_cast<QSplitter*>(currentTabber()->parentWidget());
+    QSplitter* splitter =
+        qobject_cast<QSplitter*>(currentTabber()->parentWidget());
     int index = splitter->indexOf(currentTabber());
     if (splitter->orientation() == Qt::Vertical) {
         // Add the tabber to this splitter
@@ -251,7 +281,8 @@ TerminalTabber* MainWindow::splitVertically() {
     anim->setEndValue(newHeight);
     anim->setDuration(500);
     anim->setEasingCurve(QEasingCurve::OutCubic);
-    connect(anim, &tVariantAnimation::valueChanged, tabber, [=](QVariant value) {
+    connect(anim, &tVariantAnimation::valueChanged, tabber,
+        [=](QVariant value) {
         tabber->setFixedHeight(value.toInt());
     });
     connect(anim, &tVariantAnimation::finished, tabber, [=] {
@@ -278,7 +309,8 @@ TerminalTabber* MainWindow::splitHorizontally() {
     int newWidth;
 
     QSplitter* actingSplitter;
-    QSplitter* splitter = qobject_cast<QSplitter*>(currentTabber()->parentWidget());
+    QSplitter* splitter =
+        qobject_cast<QSplitter*>(currentTabber()->parentWidget());
     int index = splitter->indexOf(currentTabber());
     if (splitter->orientation() == Qt::Horizontal) {
         // Add the tabber to this splitter
@@ -300,7 +332,8 @@ TerminalTabber* MainWindow::splitHorizontally() {
     anim->setEndValue(newWidth);
     anim->setDuration(500);
     anim->setEasingCurve(QEasingCurve::OutCubic);
-    connect(anim, &tVariantAnimation::valueChanged, tabber, [=](QVariant value) {
+    connect(anim, &tVariantAnimation::valueChanged, tabber,
+        [=](QVariant value) {
         tabber->setFixedWidth(value.toInt());
     });
     connect(anim, &tVariantAnimation::finished, tabber, [=] {
@@ -322,7 +355,8 @@ TerminalTabber* MainWindow::newTabber() {
     TerminalTabber* tabber = new TerminalTabber();
     connect(tabber, &TerminalTabber::done, this, [=] {
         // Clean up splitters
-        QSplitter* parentSplitter = qobject_cast<QSplitter*>(tabber->parentWidget());
+        QSplitter* parentSplitter =
+            qobject_cast<QSplitter*>(tabber->parentWidget());
         tabber->setParent(nullptr); // Remove the tabber from its parent
 
         // Find the next available tabber to make the current tabber
@@ -348,8 +382,10 @@ TerminalTabber* MainWindow::newTabber() {
         while (parentSplitter->count() == 1 && parentSplitter != d->mainSplitter) {
             // We can clean up this splitter
             QWidget* cleanupWidget = parentSplitter->widget(0);
-            QSplitter* parentParentSplitter = qobject_cast<QSplitter*>(parentSplitter->parentWidget());
-            parentParentSplitter->replaceWidget(parentParentSplitter->indexOf(parentSplitter), cleanupWidget);
+            QSplitter* parentParentSplitter =
+                qobject_cast<QSplitter*>(parentSplitter->parentWidget());
+            parentParentSplitter->replaceWidget(
+                parentParentSplitter->indexOf(parentSplitter), cleanupWidget);
 
             parentSplitter->deleteLater();
             parentSplitter = parentParentSplitter;
@@ -362,7 +398,8 @@ TerminalTabber* MainWindow::newTabber() {
             QTimer::singleShot(0, this, &MainWindow::close);
         }
     });
-    connect(tabber, &TerminalTabber::gotFocus, this, [=] {
+    connect(tabber, &TerminalTabber::gotFocus, this,
+        [=] {
         d->currentTabber = tabber;
     });
     d->tabbers.append(tabber);
@@ -378,7 +415,8 @@ void MainWindow::on_actionSplitHorizontally_triggered() {
 }
 
 void MainWindow::on_actionFileBug_triggered() {
-    QDesktopServices::openUrl(QUrl("https://github.com/vicr123/theterminal/issues"));
+    QDesktopServices::openUrl(
+        QUrl("https://github.com/vicr123/theterminal/issues"));
 }
 
 void MainWindow::on_actionSources_triggered() {
@@ -402,10 +440,13 @@ void MainWindow::moveTabberButtons() {
 
         if (nextSplitter != nullptr) {
 #ifndef Q_OS_MAC
-            qobject_cast<TerminalTabber*>(nextSplitter)->setMenuButton(d->menuButton);
+            qobject_cast<TerminalTabber*>(nextSplitter)
+                ->setMenuButton(d->menuButton);
 #endif
             // If CSDs are on the left, make this the CSD splitter too
-            if (tCsdGlobal::windowControlsEdge() == tCsdGlobal::Left) qobject_cast<TerminalTabber*>(nextSplitter)->setCsdButtons(d->csdButtons);
+            if (tCsdGlobal::windowControlsEdge() == tCsdGlobal::Left)
+                qobject_cast<TerminalTabber*>(nextSplitter)
+                    ->setCsdButtons(d->csdButtons);
         }
     }
 
@@ -428,7 +469,8 @@ void MainWindow::moveTabberButtons() {
         }
 
         if (nextSplitter != nullptr) {
-            qobject_cast<TerminalTabber*>(nextSplitter)->setCsdButtons(d->csdButtons);
+            qobject_cast<TerminalTabber*>(nextSplitter)
+                ->setCsdButtons(d->csdButtons);
         }
     }
 }
@@ -442,11 +484,13 @@ void MainWindow::on_actionConnect_to_Server_triggered() {
     tPopover* popover = new tPopover(jp);
     popover->setPopoverWidth(SC_DPI_W(-200, this));
     popover->setPopoverSide(tPopover::Bottom);
-    connect(jp, &RemoteConnectionPopover::openTerminal, this, [=](TerminalWidget* terminal) {
+    connect(jp, &RemoteConnectionPopover::openTerminal, this,
+        [=](TerminalWidget* terminal) {
         addTerminal(terminal);
     });
     connect(jp, &RemoteConnectionPopover::done, popover, &tPopover::dismiss);
     connect(popover, &tPopover::dismissed, popover, &tPopover::deleteLater);
-    connect(popover, &tPopover::dismissed, jp, &RemoteConnectionPopover::deleteLater);
+    connect(popover, &tPopover::dismissed, jp,
+        &RemoteConnectionPopover::deleteLater);
     popover->show(this->window());
 }

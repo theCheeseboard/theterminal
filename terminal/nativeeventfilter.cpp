@@ -23,14 +23,6 @@ bool NativeEventFilter::nativeEventFilter(const QByteArray& eventType, void* mes
             xcb_key_release_event_t* button = static_cast<xcb_key_release_event_t*>(message);
 
             if (capturingKeyPress) {
-                KeySym keyPressed = XkbKeycodeToKeysym(tX11Info::display(), button->detail, 0, button->state & ShiftMask ? 1 : 0);
-
-                settings.setValue("dropdown/key", QVariant::fromValue(keyPressed));
-                settings.setValue("dropdown/keyState", button->state);
-                settings.setValue("dropdown/keyString", QString::fromUtf8(XKeysymToString(keyPressed)));
-                captureKeyPresses(false);
-                emit keypressCaptureComplete();
-                return true;
             } else {
                 if (button->detail == XKeysymToKeycode(tX11Info::display(), settings.value("dropdown/key", XK_F12).toLongLong())) {
                     emit toggleTerminal();

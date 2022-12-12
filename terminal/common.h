@@ -22,6 +22,7 @@
 
 #include <QKeySequence>
 
+class QWidget;
 namespace Common {
     enum Action {
         NewWindow,

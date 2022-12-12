@@ -70,9 +70,16 @@ TerminalPart::TerminalPart(TerminalPartConstruct args, QWidget* parent) :
     this->update();
 
     if (args.manPage != "") {
-        this->setShellProgram(libContemporaryCommon::searchInPath("man").first());
-        this->setArgs({args.manPage});
-        d->quitType = TerminalPartPrivate::QuitOnCleanExit;
+        auto manExecutable = libContemporaryCommon::searchInPath("man");
+        if (manExecutable.isEmpty()) {
+            this->setShellProgram("echo");
+            this->setArgs({tr("theterminal: %1: command not found").arg("man")});
+            d->quitType = TerminalPartPrivate::NeverQuit;
+        } else {
+            this->setShellProgram(manExecutable.first());
+            this->setArgs({args.manPage});
+            d->quitType = TerminalPartPrivate::QuitOnCleanExit;
+        }
     } else if (args.shell != "") {
         this->setArgs(args.shellArgs);
         QString shellProgram = args.shell;

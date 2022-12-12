@@ -1,8 +1,6 @@
 #ifndef DROPDOWN_H
 #define DROPDOWN_H
 
-#include "nativeeventfilter.h"
-#include "settingswindow.h"
 #include "terminalwidget.h"
 #include <QApplication>
 #include <QDialog>

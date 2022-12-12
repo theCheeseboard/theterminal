@@ -260,10 +260,14 @@
    <property name="shortcut">
     <string>Ctrl+Shift+P</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionConnect_to_Server">
    <property name="icon">
-    <iconset theme="network-connect"/>
+    <iconset theme="network-connect">
+     <normaloff>.</normaloff>.</iconset>
    </property>
    <property name="text">
     <string>Connect to Server</string>
