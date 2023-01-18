@@ -1,0 +1,17 @@
+{
+    "name": "theTerminal",
+    "subprojects": [
+        {
+            "name": "theTerminal Desktop",
+            "type": "qt",
+            "path": "/terminal/translations/{lang}.ts",
+            "baseLang": "en_US"
+        },
+        {
+            "name": "theTerminal Desktop File",
+            "type": "webext-json",
+            "path": "/terminal/translations/desktop/com.vicr123.theterminal/{lang}.json",
+            "baseLang": "en"
+        }
+    ]
+}
