@@ -2,14 +2,14 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
-Name=theTerminal (Drop Down mode)
+Name[]=theTerminal (Drop Down mode)
 Name[nl]=theTerminal (Dropdown-modus)
 Name[pt]=theTerminal (Modo menu)
 Name[vi]=theTerminal (Chế độ rơi xuống)
-GenericName=Drop Down Terminal
+GenericName[]=Drop Down Terminal
 GenericName[nl]=Dropdown-terminal
 GenericName[pt]=Terminal Menu
 GenericName[vi]=Thiết bị đầu cuối rơi xuống
 Exec=theterminal -d
-Icon=utilities-terminal
+Icon=com.vicr123.theterminal
 Categories=Utility;System;TerminalEmulator;

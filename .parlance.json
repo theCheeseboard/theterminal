@@ -12,6 +12,12 @@
             "type": "webext-json",
             "path": "/terminal/translations/desktop/com.vicr123.theterminal/{lang}.json",
             "baseLang": "en"
+        },
+        {
+            "name": "theTerminal Dropdown Desktop File",
+            "type": "webext-json",
+            "path": "/terminal/translations/desktop/com.vicr123.theterminal.dropdown/{lang}.json",
+            "baseLang": "en"
         }
     ]
 }

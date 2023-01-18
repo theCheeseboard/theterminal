@@ -1,2 +1,8 @@
 {
+    "GenericName": {
+        "message": "Terminal"
+    },
+    "Name": {
+        "message": "theTerminal Blueprint"
+    }
 }

@@ -2,11 +2,11 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
-Name=theTerminal Blueprint
-GenericName=Terminal
+Name[]=theTerminal Blueprint
+GenericName[]=Terminal
 GenericName[nl]=Terminal
 GenericName[pt]=Terminal
 GenericName[vi]=Thiết bị đầu cuối
 Exec=theterminalb
-Icon=utilities-terminal
+Icon=com.vicr123.theterminal-blueprint
 Categories=Utility;System;TerminalEmulator;
