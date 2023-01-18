@@ -85,6 +85,14 @@ QString TerminalWidget::title() {
     return d->legacyTerminalPart->title();
 }
 
+QString TerminalWidget::workingDirectory() {
+    return d->legacyTerminalPart->workingDirectory();
+}
+
+QStringList TerminalWidget::runningProcesses() {
+    return d->legacyTerminalPart->runningProcesses();
+}
+
 void TerminalWidget::print() {
     PrintController* controller = new PrintController(this);
     controller->confirmAndPerformPrint();
@@ -142,10 +150,6 @@ void TerminalWidget::zoom100() {
     if (ui->terminalTypeStack->currentWidget() == ui->legacyTerminalPage) {
         d->legacyTerminalPart->zoom100();
     }
-}
-
-QDir TerminalWidget::getWorkingDir() {
-    return d->workingDirectory;
 }
 
 QProcessEnvironment TerminalWidget::getEnv() {

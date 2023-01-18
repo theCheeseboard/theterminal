@@ -20,7 +20,6 @@ int main(int argc, char* argv[]) {
     a.setApplicationShareDir("theterminal");
     a.installTranslators();
 
-    a.setApplicationIcon(QIcon::fromTheme("theterminal", QIcon(":/icons/icon.svg")));
     a.setApplicationVersion("4.0");
     a.setGenericName(QApplication::translate("main", "Terminal"));
     a.setAboutDialogSplashGraphic(a.aboutDialogSplashGraphicFromSvg(":/icons/aboutsplash.svg"));
@@ -126,5 +125,3 @@ int lookaheadSpace(QString str, int from) {
     }
     return -1;
 }
-
-

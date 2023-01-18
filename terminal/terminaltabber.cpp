@@ -34,6 +34,8 @@
 struct TerminalTabberPrivate {
         tCsdTools csd;
         QList<TerminalWidget*> allTerminals;
+
+        QTimer* tabTitleUpdater;
 };
 
 TerminalTabber::TerminalTabber(QWidget* parent) :
@@ -60,6 +62,10 @@ TerminalTabber::TerminalTabber(QWidget* parent) :
     connect(ui->tabber, &tWindowTabber::newTabRequested, this, [=] {
         this->addTab(new TerminalWidget());
     });
+
+    d->tabTitleUpdater = new QTimer(this);
+    d->tabTitleUpdater->setInterval(1000);
+    d->tabTitleUpdater->start();
 }
 
 TerminalTabber::~TerminalTabber() {
@@ -113,8 +119,11 @@ void TerminalTabber::addTab(TerminalWidget* tab) {
     button->syncWithStackedWidget(ui->termStack, tab);
     ui->tabber->addButton(button);
 
-    connect(tab, &TerminalWidget::titleChanged, this, [=] {
-        button->setText(tab->title());
+    connect(tab, &TerminalWidget::titleChanged, this, [this, button, tab] {
+        updateTabTitle(button, tab);
+    });
+    connect(d->tabTitleUpdater, &QTimer::timeout, tab, [this, button, tab] {
+        updateTabTitle(button, tab);
     });
 
     ui->termStack->setCurrentWidget(tab);
@@ -162,4 +171,25 @@ bool TerminalTabber::eventFilter(QObject* watched, QEvent* event) {
     }
 
     return false;
+}
+
+void TerminalTabber::updateTabTitle(tWindowTabberButton* button, TerminalWidget* tab) {
+    button->setText(tab->title());
+
+    auto runningProcesses = tab->runningProcesses();
+    for (const auto& process : runningProcesses) {
+        if (process == "sudo" || process == "su" || process == "pkexec") {
+            button->setSupplementaryText(process);
+            return;
+        } else if (process == "ssh") {
+            button->setSupplementaryText("SSH");
+            return;
+        } else if (process == "telnet") {
+            button->setSupplementaryText("Telnet");
+            return;
+        }
+    }
+    QString workingDirectory = tab->workingDirectory();
+    if (workingDirectory.contains(QDir::homePath())) workingDirectory.replace(QDir::homePath(), "~");
+    button->setSupplementaryText(workingDirectory);
 }

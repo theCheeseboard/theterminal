@@ -21,6 +21,8 @@ class TerminalWidget : public QWidget {
         ~TerminalWidget();
 
         QString title();
+        QString workingDirectory();
+        QStringList runningProcesses();
 
         void print();
 
@@ -33,7 +35,6 @@ class TerminalWidget : public QWidget {
         void zoomOut();
         void zoom100();
 
-        QDir getWorkingDir();
         QProcessEnvironment getEnv();
 
     private slots:

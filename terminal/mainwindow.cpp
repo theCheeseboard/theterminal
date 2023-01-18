@@ -46,6 +46,7 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
     d->csd.installResizeAction(this);
     d->csdButtons = d->csd.csdBoxForWidget(this);
 
+    this->setWindowIcon(tApplication::applicationIcon());
     this->setWindowTitle(tApplication::applicationDisplayName());
 
     ui->actionNew_Window->setShortcut(

@@ -26,6 +26,7 @@ namespace Ui {
     class TerminalTabber;
 }
 
+class tWindowTabberButton;
 class TerminalWidget;
 struct TerminalTabberPrivate;
 class TerminalTabber : public QWidget {
@@ -54,6 +55,8 @@ class TerminalTabber : public QWidget {
 
         void focusInEvent(QFocusEvent* event) override;
         bool eventFilter(QObject* watched, QEvent* event) override;
+
+        void updateTabTitle(tWindowTabberButton* button, TerminalWidget* tab);
 };
 
 #endif // TERMINALTABBER_H
