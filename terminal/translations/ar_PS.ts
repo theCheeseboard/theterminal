@@ -457,37 +457,37 @@
         <translation type="vanished">مخطط theTerminal</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="212"/>
+        <location filename="../mainwindow.cpp" line="218"/>
         <source>Full Screen</source>
         <translation>وضع ملئ الشاشة</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="214"/>
+        <location filename="../mainwindow.cpp" line="220"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
         <translation>انت في وضع ملئ الشاشة. يمكنك الخروج عن طريق ضغظ SHIFT+F11.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="131"/>
+        <location filename="../mainwindow.cpp" line="137"/>
         <source>General</source>
         <translation type="unfinished">عام</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="134"/>
+        <location filename="../mainwindow.cpp" line="140"/>
         <source>Appearance</source>
         <translation type="unfinished">المظهر</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="138"/>
+        <location filename="../mainwindow.cpp" line="144"/>
         <source>Scrolling</source>
         <translation type="unfinished">التمرير</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="142"/>
+        <location filename="../mainwindow.cpp" line="148"/>
         <source>Bells</source>
         <translation type="unfinished">الاجراس</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="146"/>
+        <location filename="../mainwindow.cpp" line="152"/>
         <source>Dropdown Terminal</source>
         <translation type="unfinished"></translation>
     </message>

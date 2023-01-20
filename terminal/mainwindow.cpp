@@ -28,6 +28,9 @@
 
 #include "common.h"
 
+#include <tcommandpalette/tcommandpaletteactionscope.h>
+#include <tcommandpalette/tcommandpalettecontroller.h>
+
 struct MainWindowPrivate {
         tCsdTools csd;
         QList<TerminalTabber*> tabbers;
@@ -60,9 +63,12 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
         Common::shortcutForPlatform(Common::CloseTab));
     ui->actionExit->setShortcut(Common::shortcutForPlatform(Common::Exit));
 
-#ifdef Q_OS_MAC
+    tCommandPaletteActionScope* commandPaletteActionScope;
+    auto commandPalette = tCommandPaletteController::defaultController(this->window(), &commandPaletteActionScope);
+    commandPaletteActionScope->addMenuBar(ui->menuBar);
+
     ui->menuBar->addMenu(new tHelpMenu(this));
-#else
+#ifndef Q_OS_MAC
     ui->menuBar->setVisible(false);
 
     d->menuButton = new QToolButton();
@@ -88,9 +94,9 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
     menu->addSeparator();
     menu->addAction(ui->actionPrint);
     menu->addSeparator();
+    menu->addAction(commandPalette->commandPaletteAction());
     menu->addAction(ui->actionSettings);
     menu->addMenu(new tHelpMenu(this));
-    menu->addSeparator();
     menu->addAction(ui->actionClose_Tab);
     menu->addAction(ui->actionExit);
     d->menuButton->setMenu(menu);
