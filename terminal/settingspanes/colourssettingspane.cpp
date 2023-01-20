@@ -51,6 +51,6 @@ void ColoursSettingsPane::on_opacitySlider_valueChanged(int value) {
 }
 
 void ColoursSettingsPane::on_coloursComboBox_currentIndexChanged(int index) {
-    d->settings.setValue("theme/scheme", ui->coloursComboBox->itemData(index));
+    d->settings.setValue("theme/scheme", ui->coloursComboBox->itemText(index));
     TerminalController::updateTerminalStyles();
 }

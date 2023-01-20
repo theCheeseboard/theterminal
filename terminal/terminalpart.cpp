@@ -102,6 +102,7 @@ TerminalPart::TerminalPart(TerminalPartConstruct args, QWidget* parent) :
 }
 
 TerminalPart::~TerminalPart() {
+    emit destroying();
     disconnect(this, nullptr, this, nullptr);
     delete d;
 }

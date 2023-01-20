@@ -21,18 +21,17 @@
 #include "terminalpart.h"
 
 struct TerminalControllerPrivate {
-    QList<TerminalPart*> terminals;
+        QList<TerminalPart*> terminals;
 };
 TerminalControllerPrivate* TerminalController::d = new TerminalControllerPrivate();
 
-TerminalController::TerminalController(QObject *parent) : QObject(parent)
-{
-
+TerminalController::TerminalController(QObject* parent) :
+    QObject(parent) {
 }
 
-void TerminalController::addTerminalPart(TerminalPart *part) {
+void TerminalController::addTerminalPart(TerminalPart* part) {
     d->terminals.append(part);
-    connect(part, &TerminalPart::destroyed, [=] {
+    connect(part, &TerminalPart::destroying, [=] {
         d->terminals.removeAll(part);
     });
 }

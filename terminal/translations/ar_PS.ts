@@ -148,27 +148,27 @@
         <translation>Ctrl+Shift+F</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="30"/>
+        <location filename="../dropdown.cpp" line="31"/>
         <source>For current tab</source>
         <translation>للنافذة الحالية</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="34"/>
+        <location filename="../dropdown.cpp" line="35"/>
         <source>For theTerminal</source>
         <translation>ل-theTerminal</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="35"/>
+        <location filename="../dropdown.cpp" line="36"/>
         <source>Settings</source>
         <translation>الاعدادات</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="44"/>
+        <location filename="../dropdown.cpp" line="45"/>
         <source>Exit</source>
         <translation>الخروج</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="98"/>
+        <location filename="../dropdown.cpp" line="99"/>
         <source>Terminal %1</source>
         <translation>لوحة التحكم %1</translation>
     </message>
@@ -720,37 +720,37 @@
 <context>
     <name>TerminalPart</name>
     <message>
-        <location filename="../terminalpart.cpp" line="141"/>
+        <location filename="../terminalpart.cpp" line="142"/>
         <source>Bell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="142"/>
+        <location filename="../terminalpart.cpp" line="143"/>
         <source>A bell was sounded!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="179"/>
+        <location filename="../terminalpart.cpp" line="180"/>
         <source>For text &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="180"/>
+        <location filename="../terminalpart.cpp" line="181"/>
         <source>Copy</source>
         <translation type="unfinished">نسخ</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="185"/>
+        <location filename="../terminalpart.cpp" line="186"/>
         <source>Open man page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="193"/>
+        <location filename="../terminalpart.cpp" line="194"/>
         <source>Paste</source>
         <translation type="unfinished">لصق</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="192"/>
+        <location filename="../terminalpart.cpp" line="193"/>
         <source>For this terminal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -761,12 +761,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="196"/>
+        <location filename="../terminalpart.cpp" line="197"/>
         <source>Find</source>
         <translation type="unfinished">ايجاد</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="199"/>
+        <location filename="../terminalpart.cpp" line="200"/>
         <source>Close Terminal</source>
         <translation type="unfinished"></translation>
     </message>

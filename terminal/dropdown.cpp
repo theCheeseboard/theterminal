@@ -23,6 +23,7 @@ Dropdown::Dropdown(QString workdir, QWidget* parent) :
     ui->setupUi(this);
     d = new DropdownPrivate();
     this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    this->setWindowIcon(tApplication::applicationIcon());
 
     ui->stackedTabs->setCurrentAnimation(tStackedWidget::SlideHorizontal);
 

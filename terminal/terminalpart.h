@@ -27,6 +27,7 @@ class TerminalPart : public TTTermWidget {
     signals:
         void closeTerminal();
         void openNewTerminal(TerminalPart* part);
+        void destroying();
 
     public slots:
         bool canCopy();

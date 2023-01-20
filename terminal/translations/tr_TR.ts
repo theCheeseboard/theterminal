@@ -148,27 +148,27 @@
         <translation>Ctrl+ÜstKarakter+F</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="30"/>
+        <location filename="../dropdown.cpp" line="31"/>
         <source>For current tab</source>
         <translation>Mevcut sekme için</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="34"/>
+        <location filename="../dropdown.cpp" line="35"/>
         <source>For theTerminal</source>
         <translation>Terminal için</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="35"/>
+        <location filename="../dropdown.cpp" line="36"/>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="44"/>
+        <location filename="../dropdown.cpp" line="45"/>
         <source>Exit</source>
         <translation>Vazgeç</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="98"/>
+        <location filename="../dropdown.cpp" line="99"/>
         <source>Terminal %1</source>
         <translation>Terminal %1</translation>
     </message>
@@ -764,37 +764,37 @@
 <context>
     <name>TerminalPart</name>
     <message>
-        <location filename="../terminalpart.cpp" line="141"/>
+        <location filename="../terminalpart.cpp" line="142"/>
         <source>Bell</source>
         <translation>Çan</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="142"/>
+        <location filename="../terminalpart.cpp" line="143"/>
         <source>A bell was sounded!</source>
         <translation>Bir zil çaldı!</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="179"/>
+        <location filename="../terminalpart.cpp" line="180"/>
         <source>For text &quot;%1&quot;</source>
         <translation>&quot;%1&quot; metni için</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="180"/>
+        <location filename="../terminalpart.cpp" line="181"/>
         <source>Copy</source>
         <translation>Kopyala</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="185"/>
+        <location filename="../terminalpart.cpp" line="186"/>
         <source>Open man page</source>
         <translation>Man sayfasını aç</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="193"/>
+        <location filename="../terminalpart.cpp" line="194"/>
         <source>Paste</source>
         <translation>Yapıştırmak</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="192"/>
+        <location filename="../terminalpart.cpp" line="193"/>
         <source>For this terminal</source>
         <translation>Bu terminal için</translation>
     </message>
@@ -805,12 +805,12 @@
         <translation>theterminal: %1: komut bulunamadı</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="196"/>
+        <location filename="../terminalpart.cpp" line="197"/>
         <source>Find</source>
         <translation>Bul</translation>
     </message>
     <message>
-        <location filename="../terminalpart.cpp" line="199"/>
+        <location filename="../terminalpart.cpp" line="200"/>
         <source>Close Terminal</source>
         <translation>Terminali Kapat</translation>
     </message>
