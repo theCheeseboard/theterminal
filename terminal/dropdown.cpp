@@ -12,7 +12,8 @@ extern NativeEventFilter* filter;
 
 struct DropdownPrivate {
         bool isExpanded = false;
-        QScreen* currentScreen = NULL;
+        QScreen* currentScreen = nullptr;
+        QTimer* tabTitleUpdater;
         QSettings settings;
 };
 
@@ -64,6 +65,10 @@ Dropdown::Dropdown(QString workdir, QWidget* parent) :
     KeyCode keycode = XKeysymToKeycode(tX11Info::display(), d->settings.value("dropdown/key", XK_F12).toLongLong());
     XGrabKey(tX11Info::display(), keycode, AnyModifier, DefaultRootWindow(tX11Info::display()), true, GrabModeAsync, GrabModeAsync);
 
+    d->tabTitleUpdater = new QTimer(this);
+    d->tabTitleUpdater->setInterval(1000);
+    d->tabTitleUpdater->start();
+
     newTab(workdir);
 }
 
@@ -77,13 +82,7 @@ void Dropdown::newTab(QString workDir) {
 }
 
 void Dropdown::newTab(TerminalWidget* widget) {
-    //    QPushButton* button = new QPushButton();
-    //    widget->setContextMenuPolicy(Qt::CustomContextMenu);
-    //    button->setCheckable(true);
-    //    button->setAutoExclusive(true);
-    //    button->setFocusPolicy(Qt::NoFocus);
     ui->stackedTabs->addWidget(widget);
-    //    terminalButtons.insert(widget, button);
 
     connect(widget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     connect(widget, &TerminalWidget::finished, [=]() {
@@ -91,22 +90,17 @@ void Dropdown::newTab(TerminalWidget* widget) {
     });
     connect(widget, &TerminalWidget::openNewTerminal, this, QOverload<TerminalWidget*>::of(&Dropdown::newTab));
 
-    //    button->setText(tr("Terminal %1").arg(ui->stackedTabs->indexOf(widget) + 1));
-    //    ui->tabFrame->layout()->addWidget(button);
-    //    ui->tabFrame->layout()->removeWidget(ui->endWidgets);
-    //    ui->tabFrame->layout()->addWidget(ui->endWidgets);
-    //    connect(button, &QPushButton::clicked, [=]() {
-    //        ui->stackedTabs->setCurrentWidget(widget);
-    //    });
-
     ui->stackedTabs->setCurrentWidget(widget);
 
     tWindowTabberButton* button = new tWindowTabberButton();
     button->setText(tr("Terminal %1").arg(ui->stackedTabs->indexOf(widget) + 1));
     button->syncWithStackedWidget(ui->stackedTabs, widget);
     ui->tabber->addButton(button);
-    connect(widget, &TerminalWidget::titleChanged, this, [=] {
-        button->setText(widget->title());
+    connect(widget, &TerminalWidget::titleChanged, this, [this, button, widget] {
+        updateTabTitle(button, widget);
+    });
+    connect(d->tabTitleUpdater, &QTimer::timeout, widget, [this, button, widget] {
+        updateTabTitle(button, widget);
     });
 }
 
@@ -177,6 +171,27 @@ void Dropdown::paintEvent(QPaintEvent* event) {
     // painter.drawLine(0, 0, 0, this->height() - 1);
     painter.drawLine(0, this->height() - 1, this->width() - 1, this->height() - 1);
     // painter.drawLine(this->width() - 1, this->height() - 1, this->width() - 1, 0);
+}
+
+void Dropdown::updateTabTitle(tWindowTabberButton* button, TerminalWidget* tab) {
+    button->setText(tab->title());
+
+    auto runningProcesses = tab->runningProcesses();
+    for (const auto& process : runningProcesses) {
+        if (process == "sudo" || process == "su" || process == "pkexec") {
+            button->setSupplementaryText(process);
+            return;
+        } else if (process == "ssh") {
+            button->setSupplementaryText("SSH");
+            return;
+        } else if (process == "telnet") {
+            button->setSupplementaryText("Telnet");
+            return;
+        }
+    }
+    QString workingDirectory = tab->workingDirectory();
+    if (workingDirectory.contains(QDir::homePath())) workingDirectory.replace(QDir::homePath(), "~");
+    button->setSupplementaryText(workingDirectory);
 }
 
 void Dropdown::setGeometry(int x, int y, int w, int h) { // Use wmctrl command because KWin has a problem with moving windows offscreen.

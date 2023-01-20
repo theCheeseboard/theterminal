@@ -63,11 +63,12 @@ MainWindow::MainWindow(QString workDir, QString cmd, QWidget* parent) :
         Common::shortcutForPlatform(Common::CloseTab));
     ui->actionExit->setShortcut(Common::shortcutForPlatform(Common::Exit));
 
+    ui->menuBar->addMenu(new tHelpMenu(this));
+
     tCommandPaletteActionScope* commandPaletteActionScope;
     auto commandPalette = tCommandPaletteController::defaultController(this->window(), &commandPaletteActionScope);
     commandPaletteActionScope->addMenuBar(ui->menuBar);
 
-    ui->menuBar->addMenu(new tHelpMenu(this));
 #ifndef Q_OS_MAC
     ui->menuBar->setVisible(false);
 

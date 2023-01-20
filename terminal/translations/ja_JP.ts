@@ -143,27 +143,27 @@
         <translation type="unfinished">Ctrl+Shift+F</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="29"/>
+        <location filename="../dropdown.cpp" line="30"/>
         <source>For current tab</source>
         <translation>現在のタブ</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="31"/>
+        <location filename="../dropdown.cpp" line="32"/>
         <source>For theTerminal</source>
         <translation>theTerminal</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="32"/>
+        <location filename="../dropdown.cpp" line="33"/>
         <source>Settings</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="41"/>
+        <location filename="../dropdown.cpp" line="42"/>
         <source>Exit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="105"/>
+        <location filename="../dropdown.cpp" line="96"/>
         <source>Terminal %1</source>
         <translation>ターミナル %1</translation>
     </message>
@@ -436,37 +436,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="218"/>
+        <location filename="../mainwindow.cpp" line="219"/>
         <source>Full Screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="220"/>
+        <location filename="../mainwindow.cpp" line="221"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="137"/>
+        <location filename="../mainwindow.cpp" line="138"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="140"/>
+        <location filename="../mainwindow.cpp" line="141"/>
         <source>Appearance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="144"/>
+        <location filename="../mainwindow.cpp" line="145"/>
         <source>Scrolling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="148"/>
+        <location filename="../mainwindow.cpp" line="149"/>
         <source>Bells</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="152"/>
+        <location filename="../mainwindow.cpp" line="153"/>
         <source>Dropdown Terminal</source>
         <translation type="unfinished"></translation>
     </message>

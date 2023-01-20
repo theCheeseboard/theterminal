@@ -148,27 +148,27 @@
         <translation>Ctrl+Shift+F</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="29"/>
+        <location filename="../dropdown.cpp" line="30"/>
         <source>For current tab</source>
         <translation>للنافذة الحالية</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="31"/>
+        <location filename="../dropdown.cpp" line="32"/>
         <source>For theTerminal</source>
         <translation>ل-theTerminal</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="32"/>
+        <location filename="../dropdown.cpp" line="33"/>
         <source>Settings</source>
         <translation>الاعدادات</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="41"/>
+        <location filename="../dropdown.cpp" line="42"/>
         <source>Exit</source>
         <translation>الخروج</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="105"/>
+        <location filename="../dropdown.cpp" line="96"/>
         <source>Terminal %1</source>
         <translation>لوحة التحكم %1</translation>
     </message>
@@ -457,37 +457,37 @@
         <translation type="vanished">مخطط theTerminal</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="218"/>
+        <location filename="../mainwindow.cpp" line="219"/>
         <source>Full Screen</source>
         <translation>وضع ملئ الشاشة</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="220"/>
+        <location filename="../mainwindow.cpp" line="221"/>
         <source>You&apos;re in full screen. You can exit full screen with SHIFT+F11.</source>
         <translation>انت في وضع ملئ الشاشة. يمكنك الخروج عن طريق ضغظ SHIFT+F11.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="137"/>
+        <location filename="../mainwindow.cpp" line="138"/>
         <source>General</source>
         <translation type="unfinished">عام</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="140"/>
+        <location filename="../mainwindow.cpp" line="141"/>
         <source>Appearance</source>
         <translation type="unfinished">المظهر</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="144"/>
+        <location filename="../mainwindow.cpp" line="145"/>
         <source>Scrolling</source>
         <translation type="unfinished">التمرير</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="148"/>
+        <location filename="../mainwindow.cpp" line="149"/>
         <source>Bells</source>
         <translation type="unfinished">الاجراس</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="152"/>
+        <location filename="../mainwindow.cpp" line="153"/>
         <source>Dropdown Terminal</source>
         <translation type="unfinished"></translation>
     </message>

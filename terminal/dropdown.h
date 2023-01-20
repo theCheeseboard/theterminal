@@ -19,6 +19,7 @@ namespace Ui {
     class Dropdown;
 }
 
+class tWindowTabberButton;
 struct DropdownPrivate;
 class Dropdown : public QDialog {
         Q_OBJECT
@@ -56,6 +57,7 @@ class Dropdown : public QDialog {
         DropdownPrivate* d;
 
         void paintEvent(QPaintEvent* event);
+        void updateTabTitle(tWindowTabberButton* button, TerminalWidget* tab);
 };
 
 #endif // DROPDOWN_H
