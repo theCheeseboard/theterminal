@@ -153,22 +153,22 @@
         <translation>Para aba atual</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="32"/>
+        <location filename="../dropdown.cpp" line="34"/>
         <source>For theTerminal</source>
         <translation>Para theTerminal</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="33"/>
+        <location filename="../dropdown.cpp" line="35"/>
         <source>Settings</source>
         <translation>Configurações</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="42"/>
+        <location filename="../dropdown.cpp" line="44"/>
         <source>Exit</source>
         <translation>Sair</translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="96"/>
+        <location filename="../dropdown.cpp" line="98"/>
         <source>Terminal %1</source>
         <translation>Terminal %1</translation>
     </message>

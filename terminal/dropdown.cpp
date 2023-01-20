@@ -28,6 +28,8 @@ Dropdown::Dropdown(QString workdir, QWidget* parent) :
 
     QMenu* menu = new QMenu();
     menu->addSection(tr("For current tab"));
+    menu->addAction(ui->actionCopy);
+    menu->addAction(ui->actionPaste);
     menu->addAction(ui->actionFind);
     menu->addSection(tr("For theTerminal"));
     menu->addAction(QIcon::fromTheme("configure"), tr("Settings"), [=] {

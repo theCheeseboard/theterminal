@@ -110,22 +110,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="32"/>
+        <location filename="../dropdown.cpp" line="34"/>
         <source>For theTerminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="33"/>
+        <location filename="../dropdown.cpp" line="35"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="42"/>
+        <location filename="../dropdown.cpp" line="44"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dropdown.cpp" line="96"/>
+        <location filename="../dropdown.cpp" line="98"/>
         <source>Terminal %1</source>
         <translation type="unfinished"></translation>
     </message>
