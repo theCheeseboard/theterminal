@@ -118,11 +118,11 @@ void TerminalPart::setup() {
 
     reloadThemeSettings();
 
-    connect(this, &TerminalPart::copyAvailable, [=](bool copyAvailable) {
+    connect(this, &TerminalPart::copyAvailable, this, [this](bool copyAvailable) {
         d->copyOk = copyAvailable;
     });
 
-    connect(this, &TerminalPart::bell, [=] {
+    connect(this, &TerminalPart::bell, this, [this] {
         if (this->hasFocus()) {
             // Active terminal
             if (d->settings.value("bell/bellActiveSound", true).toBool()) {
@@ -148,7 +148,7 @@ void TerminalPart::setup() {
             }
         }
     });
-    connect(this, &TerminalPart::shellProgramFinished, this, [=](int exitCode) {
+    connect(this, &TerminalPart::shellProgramFinished, this, [this](int exitCode) {
         if (d->quitType == TerminalPartPrivate::UseSettings) {
             d->quitType = static_cast<TerminalPartPrivate::QuitType>(d->settings.value("term/quitType", 0).toInt());
         }

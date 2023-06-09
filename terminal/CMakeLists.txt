@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21.0)
 
 project(theterminal VERSION 1.0.0 LANGUAGES CXX)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets DBus)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets DBus)
 find_package(libcontemporary REQUIRED)
 find_package(tttermwidget REQUIRED)
 
@@ -74,7 +74,7 @@ set_target_properties(theterminal PROPERTIES
         MACOSX_BUNDLE_GUI_IDENTIFIER com.vicr123.theterminal
         CNTP_DATA_SUBDIR theterminal)
 
-cntp_init(theterminal 17)
+cntp_init(theterminal 20)
 cntp_translate(theterminal)
 cntp_target_name(theterminal "theTerminal")
 cntp_app_icon(theterminal
@@ -86,7 +86,7 @@ cntp_target_desktop_file(theterminal
 cntp_defaults_file(theterminal
     DEFAULTS_FILE theterminal.conf)
 
-target_link_libraries(theterminal Qt6::Widgets Qt6::DBus libcontemporary tttermwidget)
+target_link_libraries(theterminal Qt::Widgets Qt::DBus libcontemporary tttermwidget)
 
 install(TARGETS theterminal
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
