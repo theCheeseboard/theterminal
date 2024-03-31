@@ -32,6 +32,7 @@ class TerminalScreen : public QObject {
 
         void setCharacter(int col, int row, CharacterSpace character);
         CharacterSpace character(int col, int row);
+        void pushToHistory();
 
     signals:
         void colsChanged();
@@ -39,6 +40,7 @@ class TerminalScreen : public QObject {
         void caretColChanged();
         void caretRowChanged();
         void rowContentChanged(int row);
+        void historyRolled();
 
     private:
         TerminalScreenPrivate* d;

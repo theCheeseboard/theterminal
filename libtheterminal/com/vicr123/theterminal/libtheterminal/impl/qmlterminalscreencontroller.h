@@ -30,6 +30,7 @@ class QmlTerminalScreenController : public QObject {
         quint64 scrollbackLines();
 
         Q_SCRIPTABLE void start(QString process);
+        Q_SCRIPTABLE void pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QString keyChar);
         Q_SCRIPTABLE QVariantList runs(int row);
 
     signals:

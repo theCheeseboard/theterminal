@@ -166,8 +166,12 @@ bool UnixPty::start(QString process, QProcessEnvironment environment, QString wo
         emit readyRead();
     });
 
+    QProcessEnvironment finalEnv;
+    finalEnv.insert("TERM", "xterm-256color");
+    finalEnv.insert(environment);
+
     d->runningProcess->setWorkingDirectory(workingDirectory);
-    d->runningProcess->setProcessEnvironment(environment);
+    d->runningProcess->setProcessEnvironment(finalEnv);
     d->runningProcess->setReadChannel(QProcess::StandardOutput);
     d->runningProcess->setChildProcessModifier([this] {
         dup2(d->ptySlave, STDIN_FILENO);

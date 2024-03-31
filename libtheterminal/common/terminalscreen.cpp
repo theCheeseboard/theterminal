@@ -98,3 +98,10 @@ void TerminalScreen::setCharacter(int col, int row, CharacterSpace character) {
 TerminalScreen::CharacterSpace TerminalScreen::character(int col, int row) {
     return d->characters.at(row)->at(col);
 }
+
+void TerminalScreen::pushToHistory() {
+    // TODO: Push the top row to history
+    d->characters.removeFirst();
+    d->characters.append(CharacterLine(new QList<TerminalScreen::CharacterSpace>(d->cols)));
+    emit historyRolled();
+}

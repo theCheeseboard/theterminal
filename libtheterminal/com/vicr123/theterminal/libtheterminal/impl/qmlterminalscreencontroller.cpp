@@ -1,5 +1,6 @@
 #include "qmlterminalscreencontroller.h"
 
+#include <Emulation/vt100emulation.h>
 #include <QCache>
 #include <QCoreApplication>
 #include <QTimer>
@@ -11,14 +12,12 @@ struct QmlTerminalScreenControllerPrivate {
         IPty* pty = nullptr;
         TerminalScreen* terminalScreen = nullptr;
         QMap<int, QVariantList> cachedRuns;
-        // QTimer* contentChangeDebounce;
+
+        VT100Emulation* emulation = nullptr;
 };
 
 QmlTerminalScreenController::QmlTerminalScreenController(QObject* parent) :
     QObject{parent}, d{new QmlTerminalScreenControllerPrivate()} {
-    // d->contentChangeDebounce = new QTimer(this);
-    // d->contentChangeDebounce->setInterval(50);
-
     d->terminalScreen = new TerminalScreen(this);
     connect(d->terminalScreen, &TerminalScreen::colsChanged, this, &QmlTerminalScreenController::colsChanged);
     connect(d->terminalScreen, &TerminalScreen::rowsChanged, this, &QmlTerminalScreenController::rowsChanged);
@@ -27,6 +26,16 @@ QmlTerminalScreenController::QmlTerminalScreenController(QObject* parent) :
     connect(d->terminalScreen, &TerminalScreen::rowContentChanged, this, [this](int row) {
         d->cachedRuns.remove(row);
         emit rowContentChanged(row);
+    });
+    connect(d->terminalScreen, &TerminalScreen::historyRolled, this, [this] {
+        for (auto i = 0; i < d->terminalScreen->rows(); i++) {
+            if (d->cachedRuns.contains(i + 1)) {
+                d->cachedRuns.insert(i, d->cachedRuns.value(i + 1));
+            }
+            emit rowContentChanged(i);
+        }
+        d->cachedRuns.remove(d->terminalScreen->rows() - 1);
+        emit rowContentChanged(d->terminalScreen->rows() - 1);
     });
 }
 
@@ -62,25 +71,15 @@ quint64 QmlTerminalScreenController::scrollbackLines() {
     return 0;
 }
 
-#include <QTimer>
 void QmlTerminalScreenController::start(QString process) {
     d->pty = IPty::createPty(this);
     d->pty->start("fish", QProcessEnvironment::systemEnvironment(), QCoreApplication::applicationDirPath(), 80, 24);
-    connect(d->pty->device(), &QIODevice::readyRead, this, [this] {
-        for (auto character : d->pty->device()->readAll()) {
-            if (character == '\n') {
-                d->terminalScreen->setCaretCol(0);
-                d->terminalScreen->setCaretRow(d->terminalScreen->caretRow() + 1);
-            } else {
-                d->terminalScreen->setCharacter(d->terminalScreen->caretCol(), d->terminalScreen->caretRow(), {character});
-                d->terminalScreen->setCaretCol(d->terminalScreen->caretCol() + 1);
-            }
-        }
-    });
 
-    QTimer::singleShot(1000, this, [this] {
-        d->pty->device()->write("diskutil list\n");
-    });
+    d->emulation = new VT100Emulation(d->pty->device(), d->terminalScreen, this);
+}
+
+void QmlTerminalScreenController::pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QString keyChar) {
+    d->emulation->pressKey(modifiers, key, keyChar);
 }
 
 QVariantList QmlTerminalScreenController::runs(int row) {
