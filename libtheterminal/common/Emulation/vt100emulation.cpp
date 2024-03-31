@@ -3,6 +3,7 @@
 #include "../StateMachine/terminalstatemachine.h"
 #include "../terminalscreen.h"
 #include <QIODevice>
+#include <QRegularExpression>
 #include <tlogger.h>
 
 struct VT100EmulationPrivate {
@@ -62,46 +63,22 @@ void VT100Emulation::setupStateMachine() {
     d->escapeStateMachine.addTransition(csr, transitionDigits, csrN);
     d->escapeStateMachine.addTransition(csrN, transitionDigits, csrN);
 
-    auto eraseInDisplay = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
-        auto type = escapeSequence.at(1);
-        switch (type.unicode()) {
-            case 'J':
-            case '0':
-                {
-                    // Clear from caret to end of screen
-                    for (auto i = d->screen->caretRow(); i < d->screen->rows(); i++) {
-                        for (auto j = (i == d->screen->caretRow() ? d->screen->caretCol() : 0); j < d->screen->cols(); j++) {
-                            d->screen->setCharacter(j, i, {' '});
-                        }
-                    }
-                    break;
-                }
-            case '1':
-                // Clear from beginning of screen to caret
-                for (auto i = 0; i < d->screen->rows(); i++) {
-                    for (auto j = 0; j < d->screen->cols(); j++) {
-                        if (j == d->screen->caretCol() && i == d->screen->caretRow()) return;
-                        d->screen->setCharacter(j, i, {' '});
-                    }
-                }
-                break;
-            case '3':
-                // Clear entire screen and scrollback buffer
-                // fall through
-            case '2':
-                // Clear entire screen
-                for (auto i = 0; i < d->screen->rows(); i++) {
-                    for (auto j = 0; j < d->screen->cols(); j++) {
-                        d->screen->setCharacter(j, i, {' '});
-                    }
-                }
-                break;
-            default:
-                tDebug("VT100Emulation") << "Erase In Display: unkown erase type: " << escapeSequence;
-        }
-    });
+    auto eraseInDisplay = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::escapeEraseInDisplay, this, std::placeholders::_1));
     d->escapeStateMachine.addTransition(csr, 'J', eraseInDisplay);
     d->escapeStateMachine.addTransition(csrN, 'J', eraseInDisplay);
+
+    auto csrBeforeM = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(csr, ';', csrBeforeM);
+    d->escapeStateMachine.addTransition(csrN, ';', csrBeforeM);
+
+    auto csrM = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(csrBeforeM, transitionDigits, csrM);
+    d->escapeStateMachine.addTransition(csrM, transitionDigits, csrM);
+
+    auto cursorPosition = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::escapeCursorPosition, this, std::placeholders::_1));
+    d->escapeStateMachine.addTransition(csr, 'H', cursorPosition);
+    d->escapeStateMachine.addTransition(csrN, 'H', cursorPosition);
+    d->escapeStateMachine.addTransition(csrM, 'H', cursorPosition);
 }
 
 void VT100Emulation::processCharacter(QChar c) {
@@ -157,4 +134,56 @@ void VT100Emulation::echo(QChar c) {
         d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), {c});
         d->screen->setCaretCol(d->screen->caretCol() + 1);
     }
+}
+
+void VT100Emulation::escapeEraseInDisplay(QString escapeSequence) {
+    auto type = escapeSequence.at(1);
+    switch (type.unicode()) {
+        case 'J':
+        case '0':
+            {
+                // Clear from caret to end of screen
+                for (auto i = d->screen->caretRow(); i < d->screen->rows(); i++) {
+                    for (auto j = (i == d->screen->caretRow() ? d->screen->caretCol() : 0); j < d->screen->cols(); j++) {
+                        d->screen->setCharacter(j, i, {' '});
+                    }
+                }
+                break;
+            }
+        case '1':
+            // Clear from beginning of screen to caret
+            for (auto i = 0; i < d->screen->rows(); i++) {
+                for (auto j = 0; j < d->screen->cols(); j++) {
+                    if (j == d->screen->caretCol() && i == d->screen->caretRow()) return;
+                    d->screen->setCharacter(j, i, {' '});
+                }
+            }
+            break;
+        case '3':
+            // Clear entire screen and scrollback buffer
+            // fall through
+        case '2':
+            // Clear entire screen
+            for (auto i = 0; i < d->screen->rows(); i++) {
+                for (auto j = 0; j < d->screen->cols(); j++) {
+                    d->screen->setCharacter(j, i, {' '});
+                }
+            }
+            break;
+        default:
+            tDebug("VT100Emulation") << "Erase In Display: unkown erase type: " << escapeSequence;
+    }
+}
+
+void VT100Emulation::escapeCursorPosition(QString escapeSequence) {
+    QRegularExpression cursorPositionRegex("\\[(?<row>\\d+)?(?:;(?<col>\\d+))?H");
+    auto matches = cursorPositionRegex.match(escapeSequence);
+    auto rowStr = matches.captured("row");
+    auto colStr = matches.captured("col");
+
+    if (rowStr.isEmpty()) rowStr = "1";
+    if (colStr.isEmpty()) colStr = "1";
+
+    d->screen->setCaretCol(colStr.toInt() - 1);
+    d->screen->setCaretRow(rowStr.toInt() - 1);
 }

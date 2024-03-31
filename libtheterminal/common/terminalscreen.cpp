@@ -74,6 +74,9 @@ int TerminalScreen::caretCol() {
 }
 
 void TerminalScreen::setCaretCol(int col) {
+    if (col <= 0) col = 0;
+    if (col >= d->cols) col = d->cols - 1;
+
     d->caretCol = col;
     emit caretColChanged();
 }
@@ -83,6 +86,9 @@ int TerminalScreen::caretRow() {
 }
 
 void TerminalScreen::setCaretRow(int row) {
+    if (row <= 0) row = 0;
+    if (row >= d->rows) row = d->rows - 1;
+
     d->caretRow = row;
     emit caretRowChanged();
 }
