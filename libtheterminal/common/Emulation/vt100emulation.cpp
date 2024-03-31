@@ -77,6 +77,22 @@ void VT100Emulation::setupStateMachine() {
         return c.toLatin1() >= 0x40 && c.toLatin1() <= 0x7E;
     }, csiEnd);
 
+    auto osc = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(initialState, ']', osc);
+    d->escapeStateMachine.addTransition(osc, [](QChar c) {
+        return c.toLatin1() != '\e' && c.toLatin1() != '\x07';
+    }, osc);
+
+    auto oscEscEnd = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(osc, '\e', oscEscEnd);
+    d->escapeStateMachine.addTransition(oscEscEnd, [](QChar c) {
+        return c.toLatin1() != '\\';
+    }, osc);
+
+    auto oscEnd = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::invokeOsc, this, std::placeholders::_1));
+    d->escapeStateMachine.addTransition(oscEscEnd, '\\', oscEnd);
+    d->escapeStateMachine.addTransition(osc, '\x07' /* BEL */, oscEnd);
+
     auto nextLine = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
         echo('\n');
     });
@@ -200,6 +216,8 @@ void VT100Emulation::echo(QChar c) {
         d->screen->setCaretCol(d->screen->caretCol() - 1);
     } else if (c == '\r') {
         d->screen->setCaretCol(0);
+    } else if (c == '\x07') { // BEL
+        // TODO
     } else {
         d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), {c});
         d->screen->setCaretCol(d->screen->caretCol() + 1);
@@ -355,4 +373,8 @@ void VT100Emulation::escapeCursorPosition(QString escapeSequence) {
 
     d->screen->setCaretCol(colStr.toInt() - 1);
     d->screen->setCaretRow(rowStr.toInt() - 1);
+}
+
+void VT100Emulation::invokeOsc(QString osc) {
+    tWarn("VT100Emulation") << "Unknown OSC sequence: " << osc; // d->csiStateMachine.replayBuffer();
 }

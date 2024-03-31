@@ -32,6 +32,8 @@ class VT100Emulation : public QObject {
         void escapeEraseInLine(QString escapeSequence);
         void escapeEraseInDisplay(QString escapeSequence);
         void escapeCursorPosition(QString escapeSequence);
+
+        void invokeOsc(QString osc);
 };
 
 #endif // VT100EMULATION_H
