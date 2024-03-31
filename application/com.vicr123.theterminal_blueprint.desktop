@@ -1,0 +1,9 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name[]=theTerminal Blueprint
+GenericName[]=Terminal
+Exec=theterminal-blueprint %U
+Icon=com.vicr123.theterminal_blueprint
+StartupWMClass=theTerminal
