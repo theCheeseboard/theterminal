@@ -85,6 +85,13 @@ void VT100Emulation::setupCsiStateMachine() {
     d->csiStateMachine.addTransition({csr, csrN}, 'C', moveCursorRelative);
     d->csiStateMachine.addTransition({csr, csrN}, 'D', moveCursorRelative);
 
+    auto moveLineRelative = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::escapeMoveLineRelative, this, std::placeholders::_1));
+    d->csiStateMachine.addTransition({csr, csrN}, 'E', moveLineRelative);
+    d->csiStateMachine.addTransition({csr, csrN}, 'F', moveLineRelative);
+
+    auto moveColumnRelative = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::escapeMoveColumnRelative, this, std::placeholders::_1));
+    d->csiStateMachine.addTransition({csr, csrN}, 'G', moveColumnRelative);
+
     auto eraseInDisplay = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::escapeEraseInDisplay, this, std::placeholders::_1));
     d->csiStateMachine.addTransition({csr, csrN}, 'J', eraseInDisplay);
 
@@ -119,7 +126,7 @@ void VT100Emulation::processCharacter(QChar c) {
 
     switch (d->escapeStateMachine.pushCharacter(c)) {
         case TerminalStateMachine::Result::Rejected:
-            tWarn("VT100Emulation") << "Unknown escape sequence: " << QString(d->csiStateMachine.replayBuffer().toUtf8().toHex());
+            tWarn("VT100Emulation") << "Unknown escape sequence: " << QString(d->csiStateMachine.replayBuffer().toUtf8().toHex()) << " | " << d->csiStateMachine.replayBuffer();
             // Fall through
         case TerminalStateMachine::Result::Accepted:
             d->escapeMode = false;
@@ -142,7 +149,7 @@ void VT100Emulation::write(QString characters) {
 
 void VT100Emulation::echo(QChar c) {
     if (c == '\n') {
-        d->screen->setCaretCol(0);
+        // d->screen->setCaretCol(0);
         if (d->screen->caretRow() == d->screen->rows() - 1) {
             d->screen->pushToHistory();
             d->screen->setCaretRow(d->screen->rows() - 1);
@@ -152,6 +159,8 @@ void VT100Emulation::echo(QChar c) {
     } else if (c == '\b') {
         d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), {' '});
         d->screen->setCaretCol(d->screen->caretCol() - 1);
+    } else if (c == '\r') {
+        d->screen->setCaretCol(0);
     } else {
         d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), {c});
         d->screen->setCaretCol(d->screen->caretCol() + 1);
@@ -200,6 +209,34 @@ void VT100Emulation::escapeMoveCursorRelative(QString escapeSequence) {
     }
 }
 
+void VT100Emulation::escapeMoveLineRelative(QString escapeSequence) {
+    static QRegularExpression cursorPositionRelativeRegex("\\[(?<num>\\d+)?(?<dir>E|F)");
+    auto matches = cursorPositionRelativeRegex.match(escapeSequence);
+    auto numStr = matches.captured("num");
+    auto dir = matches.captured("dir");
+
+    if (numStr.isEmpty()) numStr = "1";
+    auto num = numStr.toInt();
+    d->screen->setCaretCol(0);
+    if (dir == "E") {
+        // Move down
+        d->screen->setCaretRow(d->screen->caretRow() + num);
+    } else if (dir == "F") {
+        // Move up
+        d->screen->setCaretRow(d->screen->caretRow() - num);
+    }
+}
+
+void VT100Emulation::escapeMoveColumnRelative(QString escapeSequence) {
+    static QRegularExpression cursorPositionRelativeRegex("\\[(?<num>\\d+)?G");
+    auto matches = cursorPositionRelativeRegex.match(escapeSequence);
+    auto numStr = matches.captured("num");
+
+    if (numStr.isEmpty()) numStr = "1";
+    auto num = numStr.toInt();
+    d->screen->setCaretCol(num - 1);
+}
+
 void VT100Emulation::escapeEraseInLine(QString escapeSequence) {
     auto type = escapeSequence.at(1);
     switch (type.unicode()) {
@@ -214,7 +251,7 @@ void VT100Emulation::escapeEraseInLine(QString escapeSequence) {
             }
         case '1':
             // Clear from beginning of screen to caret
-            for (auto i = 0; i < d->screen->caretCol(); i++) {
+            for (auto i = 0; i <= d->screen->caretCol(); i++) {
                 d->screen->setCharacter(i, d->screen->caretRow(), {' '});
             }
             break;

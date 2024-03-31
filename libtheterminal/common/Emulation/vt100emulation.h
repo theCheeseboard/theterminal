@@ -27,6 +27,8 @@ class VT100Emulation : public QObject {
 
         void invokeCsi(QString csi);
         void escapeMoveCursorRelative(QString escapeSequence);
+        void escapeMoveLineRelative(QString escapeSequence);
+        void escapeMoveColumnRelative(QString escapeSequence);
         void escapeEraseInLine(QString escapeSequence);
         void escapeEraseInDisplay(QString escapeSequence);
         void escapeCursorPosition(QString escapeSequence);
