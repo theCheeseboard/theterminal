@@ -59,4 +59,5 @@ install(TARGETS libtheterminal
 
 cntp_mark_support_library_directory()
 
+add_subdirectory(common)
 add_subdirectory(com/vicr123/theterminal/libtheterminal)

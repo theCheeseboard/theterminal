@@ -11,17 +11,16 @@ Item {
         anchors.topMargin: SafeZone.top + 3
         anchors.fill: parent
 
-        readonly property int charHeight: Math.floor(screen.height / (textMetrics.boundingRect.height + 1))
-        readonly property int charWidth: Math.floor(screen.width / (textMetrics.boundingRect.width + 1))
+        readonly property int charHeight: Math.floor(screen.height / (fontMetrics.height + 1))
+        readonly property int charWidth: Math.floor(screen.width / (fontMetrics.averageCharacterWidth))
 
         ScrollView {
             anchors.fill: parent
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
-            TextMetrics {
-                id: textMetrics
+            FontMetrics {
+                id: fontMetrics
                 font.family: "JetBrains Mono"
-                text: "x"
             }
 
             Column {

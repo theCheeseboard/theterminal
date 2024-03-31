@@ -1,11 +1,13 @@
 #include <QCommandLineParser>
 #include <QJsonArray>
+#include <QQmlApplicationEngine>
+#include <QQuickStyle>
 #include <QUrl>
+#include <ipty.h>
 #include <tapplication.h>
+#include <tlogger.h>
 #include <tsettings.h>
 #include <tstylemanager.h>
-#include <QQuickStyle>
-#include <QQmlApplicationEngine>
 
 int main(int argc, char* argv[]) {
     tApplication a(argc, argv);
@@ -40,15 +42,21 @@ int main(int argc, char* argv[]) {
     const QUrl url(u"qrc:/qt/qml/com/vicr123/theterminal/Main.qml"_qs);
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreationFailed, &a, [](QUrl url) {
-            QCoreApplication::exit(-1);
-        },
-        Qt::QueuedConnection);
+        QCoreApplication::exit(-1);
+    }, Qt::QueuedConnection);
     QObject::connect(
         &engine, &QQmlApplicationEngine::warnings, &a, [](const QList<QQmlError>& warnings) {
 
-        },
-        Qt::QueuedConnection);
+    }, Qt::QueuedConnection);
     engine.load(url);
+
+    auto pty = IPty::createPty();
+    pty->start("fish", QProcessEnvironment::systemEnvironment(), QCoreApplication::applicationDirPath(), 80, 24);
+    QObject::connect(pty->device(), &QIODevice::readyRead, [pty] {
+        tDebug("UnixPty") << QString(pty->device()->readAll());
+    });
+
+    pty->device()->write("diskutil list\n");
 
     return a.exec();
 }

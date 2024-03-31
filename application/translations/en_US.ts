@@ -72,7 +72,7 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="16"/>
+        <location filename="../main.cpp" line="18"/>
         <source>Terminal</source>
         <translation type="unfinished"></translation>
     </message>
