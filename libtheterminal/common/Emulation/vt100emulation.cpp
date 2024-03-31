@@ -46,6 +46,18 @@ void VT100Emulation::pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QStr
     if (key == Qt::Key_Return) {
         this->write("\n");
         return;
+    } else if (key == Qt::Key_Left) {
+        this->write("\e[D");
+        return;
+    } else if (key == Qt::Key_Right) {
+        this->write("\e[C");
+        return;
+    } else if (key == Qt::Key_Down) {
+        this->write("\e[B");
+        return;
+    } else if (key == Qt::Key_Up) {
+        this->write("\e[A");
+        return;
     }
 
     this->write(keyChar);
@@ -64,6 +76,35 @@ void VT100Emulation::setupStateMachine() {
     d->escapeStateMachine.addTransition(csi, [](QChar c) {
         return c.toLatin1() >= 0x40 && c.toLatin1() <= 0x7E;
     }, csiEnd);
+
+    auto nextLine = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        echo('\n');
+    });
+    d->escapeStateMachine.addTransition(initialState, 'D', nextLine);
+
+    auto nextLineCarriageReturn = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        echo('\r');
+        echo('\n');
+    });
+    d->escapeStateMachine.addTransition(initialState, 'E', nextLineCarriageReturn);
+
+    auto previousLine = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->screen->setCaretRow(d->screen->caretRow() - 1);
+    });
+    d->escapeStateMachine.addTransition(initialState, 'M', previousLine);
+
+    auto octothorpe = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(initialState, '#', octothorpe);
+
+    auto alignmentPattern = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        // Fill the screen with Es
+        for (auto i = 0; i < d->screen->rows(); i++) {
+            for (auto j = 0; j < d->screen->cols(); j++) {
+                d->screen->setCharacter(j, i, {'E'});
+            }
+        }
+    });
+    d->escapeStateMachine.addTransition(octothorpe, '8', alignmentPattern);
 }
 
 void VT100Emulation::setupCsiStateMachine() {
@@ -149,7 +190,6 @@ void VT100Emulation::write(QString characters) {
 
 void VT100Emulation::echo(QChar c) {
     if (c == '\n') {
-        // d->screen->setCaretCol(0);
         if (d->screen->caretRow() == d->screen->rows() - 1) {
             d->screen->pushToHistory();
             d->screen->setCaretRow(d->screen->rows() - 1);
@@ -157,7 +197,6 @@ void VT100Emulation::echo(QChar c) {
             d->screen->setCaretRow(d->screen->caretRow() + 1);
         }
     } else if (c == '\b') {
-        d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), {' '});
         d->screen->setCaretCol(d->screen->caretCol() - 1);
     } else if (c == '\r') {
         d->screen->setCaretCol(0);
@@ -284,8 +323,8 @@ void VT100Emulation::escapeEraseInDisplay(QString escapeSequence) {
             // Clear from beginning of screen to caret
             for (auto i = 0; i < d->screen->rows(); i++) {
                 for (auto j = 0; j < d->screen->cols(); j++) {
-                    if (j == d->screen->caretCol() && i == d->screen->caretRow()) return;
                     d->screen->setCharacter(j, i, {' '});
+                    if (j == d->screen->caretCol() && i == d->screen->caretRow()) return;
                 }
             }
             break;

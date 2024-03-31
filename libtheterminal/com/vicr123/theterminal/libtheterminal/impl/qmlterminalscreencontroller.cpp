@@ -21,6 +21,14 @@ QmlTerminalScreenController::QmlTerminalScreenController(QObject* parent) :
     d->terminalScreen = new TerminalScreen(this);
     connect(d->terminalScreen, &TerminalScreen::colsChanged, this, &QmlTerminalScreenController::colsChanged);
     connect(d->terminalScreen, &TerminalScreen::rowsChanged, this, &QmlTerminalScreenController::rowsChanged);
+    connect(d->terminalScreen, &TerminalScreen::colsChanged, this, [this] {
+        if (!d->pty) return;
+        d->pty->setWindowSize(d->terminalScreen->cols(), d->terminalScreen->rows());
+    });
+    connect(d->terminalScreen, &TerminalScreen::rowsChanged, this, [this] {
+        if (!d->pty) return;
+        d->pty->setWindowSize(d->terminalScreen->cols(), d->terminalScreen->rows());
+    });
     connect(d->terminalScreen, &TerminalScreen::caretColChanged, this, &QmlTerminalScreenController::caretColChanged);
     connect(d->terminalScreen, &TerminalScreen::caretRowChanged, this, &QmlTerminalScreenController::caretRowChanged);
     connect(d->terminalScreen, &TerminalScreen::rowContentChanged, this, [this](int row) {
@@ -73,7 +81,7 @@ quint64 QmlTerminalScreenController::scrollbackLines() {
 
 void QmlTerminalScreenController::start(QString process) {
     d->pty = IPty::createPty(this);
-    d->pty->start("sh", QProcessEnvironment::systemEnvironment(), QCoreApplication::applicationDirPath(), 80, 24);
+    d->pty->start("sh", QProcessEnvironment::systemEnvironment(), QCoreApplication::applicationDirPath(), d->terminalScreen->cols(), d->terminalScreen->rows());
 
     d->emulation = new VT100Emulation(d->pty->device(), d->terminalScreen, this);
 }

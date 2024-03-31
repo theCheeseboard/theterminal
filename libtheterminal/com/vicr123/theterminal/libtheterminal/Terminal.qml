@@ -109,14 +109,16 @@ Item {
                     color: "white"
 
                     Behavior on x {
-                        SmoothedAnimation {
-                            velocity: 1000
+                        NumberAnimation {
+                            duration: 100
+                            easing.type: Easing.OutCubic
                         }
                     }
 
                     Behavior on y {
-                        SmoothedAnimation {
-                            velocity: 1000
+                        NumberAnimation {
+                            duration: 100
+                            easing.type: Easing.OutCubic
                         }
                     }
                 }
