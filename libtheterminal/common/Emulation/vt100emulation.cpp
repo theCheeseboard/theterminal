@@ -24,7 +24,8 @@ VT100Emulation::VT100Emulation(QIODevice* device, TerminalScreen* screen, QObjec
     setupStateMachine();
 
     connect(device, &QIODevice::readyRead, this, [this] {
-        for (auto character : d->device->readAll()) {
+        auto buf = d->device->readAll();
+        for (auto character : buf) {
             processCharacter(character);
         }
     });
@@ -48,12 +49,59 @@ void VT100Emulation::pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QStr
 }
 
 void VT100Emulation::setupStateMachine() {
+    auto transitionDigits = [](QChar c) {
+        return c >= '0' && c <= '9';
+    };
+
     auto initialState = d->escapeStateMachine.addState();
 
     auto csr = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(initialState, '[', csr);
 
     auto csrN = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(csr, transitionDigits, csrN);
+    d->escapeStateMachine.addTransition(csrN, transitionDigits, csrN);
+
+    auto eraseInDisplay = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        auto type = escapeSequence.at(1);
+        switch (type.unicode()) {
+            case 'J':
+            case '0':
+                {
+                    // Clear from caret to end of screen
+                    for (auto i = d->screen->caretRow(); i < d->screen->rows(); i++) {
+                        for (auto j = (i == d->screen->caretRow() ? d->screen->caretCol() : 0); j < d->screen->cols(); j++) {
+                            d->screen->setCharacter(j, i, {' '});
+                        }
+                    }
+                    break;
+                }
+            case '1':
+                // Clear from beginning of screen to caret
+                for (auto i = 0; i < d->screen->rows(); i++) {
+                    for (auto j = 0; j < d->screen->cols(); j++) {
+                        if (j == d->screen->caretCol() && i == d->screen->caretRow()) return;
+                        d->screen->setCharacter(j, i, {' '});
+                    }
+                }
+                break;
+            case '3':
+                // Clear entire screen and scrollback buffer
+                // fall through
+            case '2':
+                // Clear entire screen
+                for (auto i = 0; i < d->screen->rows(); i++) {
+                    for (auto j = 0; j < d->screen->cols(); j++) {
+                        d->screen->setCharacter(j, i, {' '});
+                    }
+                }
+                break;
+            default:
+                tDebug("VT100Emulation") << "Erase In Display: unkown erase type: " << escapeSequence;
+        }
+    });
+    d->escapeStateMachine.addTransition(csr, 'J', eraseInDisplay);
+    d->escapeStateMachine.addTransition(csrN, 'J', eraseInDisplay);
 }
 
 void VT100Emulation::processCharacter(QChar c) {
@@ -71,8 +119,10 @@ void VT100Emulation::processCharacter(QChar c) {
     }
 
     switch (d->escapeStateMachine.pushCharacter(c)) {
-        case TerminalStateMachine::Result::Accepted:
         case TerminalStateMachine::Result::Rejected:
+            tWarn("VT100Emulation") << "Unknown escape sequence: " << QString(d->escapeStateMachine.replayBuffer());
+            // Fall through
+        case TerminalStateMachine::Result::Accepted:
             d->escapeMode = false;
             for (auto replayCharacter : d->escapeStateMachine.replayBuffer()) {
                 processCharacter(replayCharacter);
@@ -107,9 +157,4 @@ void VT100Emulation::echo(QChar c) {
         d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), {c});
         d->screen->setCaretCol(d->screen->caretCol() + 1);
     }
-}
-
-void VT100Emulation::failEscapeSequence() {
-    tWarn("VT100Emulation") << "Unknown escape sequence: " << QString(d->currentEscapeSequence.toHex());
-    d->escapeMode = false;
 }

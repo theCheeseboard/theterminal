@@ -4,10 +4,18 @@
 
 struct TerminalStateMachinePrivate {
         quint64 maxState = 0;
-        QMap<quint64, std::function<void()>> finalStates;
+        QMap<quint64, TerminalStateMachine::AcceptFunction> finalStates;
         QMultiMap<quint64, QPair<TerminalStateMachine::StateTransitionFunction, quint64>> transitions;
 
-        quint64 currentState = 0;
+        struct CurrentState {
+                quint64 stateNumber;
+                quint64 lastFinalState;
+                QString replayBuffer;
+                QString escapeBuffer;
+                bool brakes = false;
+        };
+
+        QList<CurrentState> currentState;
         quint64 lastFinalState = 0;
         QString replayBuffer;
         QString escapeBuffer;
@@ -22,26 +30,83 @@ TerminalStateMachine::~TerminalStateMachine() {
 }
 
 TerminalStateMachine::Result TerminalStateMachine::pushCharacter(QChar c) {
+    // NOTE: This logic does not pick up the longest accepting string.
+    // In the event that there is a graph like so:
+    //
+    //            C---2--[E]
+    //           /
+    //          1
+    //         /
+    //        A
+    //         \
+    //          1
+    //           \
+    //           [B]
+    //
+    // The string "12" will land on the accepting state B, not E.
+
     d->replayBuffer.append(c);
-    auto transitions = d->transitions.values(d->currentState);
-    for (const auto& transition : transitions) {
-        if (transition.first(c)) {
-            d->currentState = transition.second;
-            if (d->finalStates.contains(d->currentState)) {
-                d->lastFinalState = d->currentState;
-                d->escapeBuffer.append(d->replayBuffer);
-                d->replayBuffer.clear();
+
+    // Work around
+    bool forceEndStateMachine = false;
+
+    // Create a list of new states. Traverse all current states at the same time.
+    // At the end of this block, the newCurrentState variable will contain all
+    // valid transitions from all current states
+    QList<TerminalStateMachinePrivate::CurrentState> newCurrentState;
+    for (auto state : d->currentState) {
+        bool madeTransition = false;
+        // Get all transitions for this state
+        auto transitions = d->transitions.values(state.stateNumber);
+        for (const auto& transition : transitions) {
+            // If we can take this transition, add the new state to the newCurrentState variable.
+            if (transition.first(c)) {
+                // Preserve all existing data for now
+                TerminalStateMachinePrivate::CurrentState newState;
+                newState.stateNumber = transition.second;
+                newState.lastFinalState = state.lastFinalState;
+                newState.escapeBuffer = state.escapeBuffer;
+                newState.replayBuffer = state.replayBuffer.append(c);
+
+                madeTransition = true;
+
+                // If we have transitioned into a final state, update the data accordingly.
+                if (d->finalStates.contains(newState.stateNumber)) {
+                    newState.lastFinalState = newState.stateNumber;
+                    newState.escapeBuffer = state.escapeBuffer.append(state.replayBuffer);
+                    newState.replayBuffer.clear();
+                }
+                newCurrentState.append(newState);
             }
-            return Result::Pending;
+        }
+
+        if (!madeTransition && state.lastFinalState != 0) {
+            forceEndStateMachine = true;
         }
     }
 
-    if (d->lastFinalState == 0) {
+    // At this point, all state transitions should be contained in newCurrentState.
+    // If there are no items in there, that means that there were no valid transitions.
+    if (newCurrentState.empty() || forceEndStateMachine) {
+        // Before we decide to reject, read the current state (before newCurrentState)
+        // and if any of them landed on a final state, call the state machine accepted.
+        for (const auto& state : d->currentState) {
+            if (state.lastFinalState != 0) {
+                // We got to a final state!
+                d->escapeBuffer = state.escapeBuffer;
+                d->replayBuffer = state.replayBuffer + c;
+                d->finalStates.value(state.lastFinalState)(state.escapeBuffer);
+                return Result::Accepted;
+            }
+        }
+
+        // None of the current states passed a final state, therefore we reject.
         return Result::Rejected;
-    } else {
-        d->finalStates.value(d->lastFinalState)();
-        return Result::Accepted;
     }
+
+    // Update the current state and wait
+    d->currentState = newCurrentState;
+    return Result::Pending;
 }
 
 QString TerminalStateMachine::replayBuffer() {
@@ -53,7 +118,10 @@ QString TerminalStateMachine::escapeBuffer() {
 }
 
 void TerminalStateMachine::reset() {
-    d->currentState = 0;
+    // d->currentState = 0;
+    d->currentState = {
+        {0, 0}
+    };
     d->lastFinalState = 0;
     d->replayBuffer.clear();
     d->escapeBuffer.clear();
@@ -63,7 +131,7 @@ quint64 TerminalStateMachine::addState() {
     return d->maxState++;
 }
 
-quint64 TerminalStateMachine::addFinalState(std::function<void()> function) {
+quint64 TerminalStateMachine::addFinalState(AcceptFunction function) {
     auto stateNum = addState();
     d->finalStates.insert(stateNum, function);
     return stateNum;

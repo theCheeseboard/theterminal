@@ -11,6 +11,7 @@ class TerminalStateMachine : public QObject {
         ~TerminalStateMachine();
 
         using StateTransitionFunction = std::function<bool(QChar)>;
+        using AcceptFunction = std::function<void(QString)>;
 
         enum class Result {
             Accepted,
@@ -24,7 +25,7 @@ class TerminalStateMachine : public QObject {
         void reset();
 
         quint64 addState();
-        quint64 addFinalState(std::function<void()> function);
+        quint64 addFinalState(AcceptFunction function);
         void addTransition(quint64 state1, QChar c, quint64 state2);
         void addTransition(quint64 state1, StateTransitionFunction function, quint64 state2);
 

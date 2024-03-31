@@ -23,8 +23,6 @@ class VT100Emulation : public QObject {
         void processCharacter(QChar c);
         void write(QString characters);
         void echo(QChar c);
-
-        void failEscapeSequence();
 };
 
 #endif // VT100EMULATION_H
