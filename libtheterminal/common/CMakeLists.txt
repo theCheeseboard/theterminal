@@ -1,6 +1,7 @@
 qt_add_library(libtheterminal-common SHARED
     PtyImpl/unixpty.h PtyImpl/unixpty.cpp
     ipty.h ipty.cpp
+    terminalscreen.h terminalscreen.cpp
 )
 
 install(EXPORT libtheterminalCommonTargets

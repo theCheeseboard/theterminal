@@ -50,13 +50,5 @@ int main(int argc, char* argv[]) {
     }, Qt::QueuedConnection);
     engine.load(url);
 
-    auto pty = IPty::createPty();
-    pty->start("fish", QProcessEnvironment::systemEnvironment(), QCoreApplication::applicationDirPath(), 80, 24);
-    QObject::connect(pty->device(), &QIODevice::readyRead, [pty] {
-        tDebug("UnixPty") << QString(pty->device()->readAll());
-    });
-
-    pty->device()->write("diskutil list\n");
-
     return a.exec();
 }

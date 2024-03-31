@@ -11,8 +11,34 @@ Item {
         anchors.topMargin: SafeZone.top + 3
         anchors.fill: parent
 
-        readonly property int charHeight: Math.floor(screen.height / (fontMetrics.height + 1))
-        readonly property int charWidth: Math.floor(screen.width / (fontMetrics.averageCharacterWidth))
+        focus: true
+
+        Impl.QmlTerminalScreenController {
+            id: controller
+            cols: screen.cols
+            rows: screen.rows
+        }
+
+        property string shell: "/bin/bash";
+
+        readonly property int rows: Math.floor(screen.height / (fontMetrics.height + 1))
+        readonly property int cols: Math.floor(screen.width / (fontMetrics.averageCharacterWidth))
+
+        Component.onCompleted: () => {
+                                   controller.start(screen.shell);
+                               }
+
+
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.IBeamCursor
+            hoverEnabled: true
+            z: 10
+        }
+
+        Keys.onPressed: event => {
+
+                        }
 
         ScrollView {
             anchors.fill: parent
@@ -24,10 +50,11 @@ Item {
             }
 
             Column {
+                id: screenRows
                 spacing: 0
 
                 Repeater {
-                    model: 90
+                    model: controller.scrollbackLines
                     Row {
                         Impl.TerminalScreenRun {
                             text: "bash $ in scrollback"
@@ -35,18 +62,42 @@ Item {
                     }
                 }
                 Repeater {
-                    model: screen.charHeight
+                    model: screen.rows
                     Row {
-                        Impl.TerminalScreenRun {
-                            text: "s".repeat(screen.charWidth / 2)
+                        id: screenRow
+
+                        required property int index
+                        Repeater {
+                            id: screenRowRepeater
+                            model: controller.runs(screenRow.index)
+
+                            Impl.TerminalScreenRun {
+                                required property var modelData
+
+                                text: modelData.text
+                                backgroundColor: modelData.backgroundColor
+                                color: modelData.color
+                            }
                         }
-                        Impl.TerminalScreenRun {
-                            text: "s".repeat(screen.charWidth / 2)
-                            backgroundColor: "#FF0000"
-                            color: "white"
+
+                        Connections {
+                            target: controller
+                            function onRowContentChanged(index) {
+                                if (screenRow.index !== index) return;
+                                screenRowRepeater.model = controller.runs(screenRow.index);
+                            }
                         }
                     }
                 }
+            }
+
+            Rectangle {
+                id: caret
+                x: fontMetrics.averageCharacterWidth * controller.caretCol
+                y: (fontMetrics.height + 1) * controller.caretRow
+                height: fontMetrics.height
+                width: fontMetrics.averageCharacterWidth
+                color: "white"
             }
         }
     }
