@@ -19,11 +19,15 @@ class VT100Emulation : public QObject {
         VT100EmulationPrivate* d;
 
         void setupStateMachine();
+        void setupCsiStateMachine();
 
         void processCharacter(QChar c);
         void write(QString characters);
         void echo(QChar c);
 
+        void invokeCsi(QString csi);
+        void escapeMoveCursorRelative(QString escapeSequence);
+        void escapeEraseInLine(QString escapeSequence);
         void escapeEraseInDisplay(QString escapeSequence);
         void escapeCursorPosition(QString escapeSequence);
 };

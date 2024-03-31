@@ -94,7 +94,7 @@ TerminalStateMachine::Result TerminalStateMachine::pushCharacter(QChar c) {
             if (state.lastFinalState != 0) {
                 // We got to a final state!
                 d->escapeBuffer = state.escapeBuffer;
-                d->replayBuffer = state.replayBuffer + c;
+                d->replayBuffer = QString(state.replayBuffer).append(c);
                 d->finalStates.value(state.lastFinalState)(state.escapeBuffer);
                 return Result::Accepted;
             }
@@ -143,6 +143,18 @@ void TerminalStateMachine::addTransition(quint64 state1, QChar c, quint64 state2
     }, state2);
 }
 
+void TerminalStateMachine::addTransition(QList<quint64> state1s, QChar c, quint64 state2) {
+    for (auto state : state1s) {
+        addTransition(state, c, state2);
+    }
+}
+
 void TerminalStateMachine::addTransition(quint64 state1, StateTransitionFunction function, quint64 state2) {
     d->transitions.insert(state1, {function, state2});
+}
+
+void TerminalStateMachine::addTransition(QList<quint64> state1s, StateTransitionFunction function, quint64 state2) {
+    for (auto state : state1s) {
+        addTransition(state, function, state2);
+    }
 }
