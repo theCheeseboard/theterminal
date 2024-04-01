@@ -218,6 +218,11 @@ void VT100Emulation::echo(QChar c) {
         d->screen->setCaretCol(0);
     } else if (c == '\x07') { // BEL
         // TODO
+    } else if (c == '\t') {
+        do {
+            d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), {' '});
+            d->screen->setCaretCol(d->screen->caretCol() + 1);
+        } while (d->screen->caretCol() % 8 != 0 && d->screen->caretCol() != d->screen->cols() - 1);
     } else {
         d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), {c});
         d->screen->setCaretCol(d->screen->caretCol() + 1);
