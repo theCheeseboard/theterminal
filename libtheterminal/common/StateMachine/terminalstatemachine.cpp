@@ -54,7 +54,8 @@ TerminalStateMachine::Result TerminalStateMachine::pushCharacter(QChar c) {
     // At the end of this block, the newCurrentState variable will contain all
     // valid transitions from all current states
     QList<TerminalStateMachinePrivate::CurrentState> newCurrentState;
-    for (auto state : d->currentState) {
+    for (const auto& constState : d->currentState) {
+        auto state = constState;
         bool madeTransition = false;
         // Get all transitions for this state
         auto transitions = d->transitions.values(state.stateNumber);

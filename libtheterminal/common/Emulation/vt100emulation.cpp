@@ -14,6 +14,9 @@ struct VT100EmulationPrivate {
         bool escapeMode = false;
         TerminalStateMachine escapeStateMachine;
         TerminalStateMachine csiStateMachine;
+
+        int savedCaretRow = 0;
+        int savedCaretCol = 0;
 };
 
 #include <QTimer>
@@ -121,6 +124,18 @@ void VT100Emulation::setupStateMachine() {
         }
     });
     d->escapeStateMachine.addTransition(octothorpe, '8', alignmentPattern);
+
+    auto pushCaret = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->savedCaretCol = d->screen->caretCol();
+        d->savedCaretRow = d->screen->caretRow();
+    });
+    d->escapeStateMachine.addTransition(initialState, '7', pushCaret);
+
+    auto popCaret = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->screen->setCaretCol(d->savedCaretCol);
+        d->screen->setCaretRow(d->savedCaretRow);
+    });
+    d->escapeStateMachine.addTransition(initialState, '8', popCaret);
 }
 
 void VT100Emulation::setupCsiStateMachine() {
@@ -165,6 +180,26 @@ void VT100Emulation::setupCsiStateMachine() {
     auto cursorPosition = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::escapeCursorPosition, this, std::placeholders::_1));
     d->csiStateMachine.addTransition({csr, csrN, csrM}, 'H', cursorPosition);
     d->csiStateMachine.addTransition({csr, csrN, csrM}, 'f', cursorPosition);
+
+    auto sgrData = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition({csr, sgrData}, [](QChar c) {
+        return (c >= '0' && c <= '9') || c == ';';
+    }, sgrData);
+
+    auto sgr = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::escapeSgr, this, std::placeholders::_1));
+    // d->csiStateMachine.addTransition(sgrData, 'm', sgr);
+
+    auto pushCaret = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->savedCaretCol = d->screen->caretCol();
+        d->savedCaretRow = d->screen->caretRow();
+    });
+    d->escapeStateMachine.addTransition(csr, 's', pushCaret);
+
+    auto popCaret = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->screen->setCaretCol(d->savedCaretCol);
+        d->screen->setCaretRow(d->savedCaretRow);
+    });
+    d->escapeStateMachine.addTransition(csr, 'u', popCaret);
 }
 
 void VT100Emulation::processCharacter(QChar c) {
@@ -378,6 +413,9 @@ void VT100Emulation::escapeCursorPosition(QString escapeSequence) {
 
     d->screen->setCaretCol(colStr.toInt() - 1);
     d->screen->setCaretRow(rowStr.toInt() - 1);
+}
+
+void VT100Emulation::escapeSgr(QString escapeSequence) {
 }
 
 void VT100Emulation::invokeOsc(QString osc) {
