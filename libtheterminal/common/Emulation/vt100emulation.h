@@ -26,13 +26,13 @@ class VT100Emulation : public QObject {
         void echo(QChar c);
 
         void invokeCsi(QString csi);
-        void escapeMoveCursorRelative(QString escapeSequence);
-        void escapeMoveLineRelative(QString escapeSequence);
-        void escapeMoveColumnRelative(QString escapeSequence);
-        void escapeEraseInLine(QString escapeSequence);
-        void escapeEraseInDisplay(QString escapeSequence);
-        void escapeCursorPosition(QString escapeSequence);
-        void escapeSgr(QString escapeSequence);
+        void csiMoveCursorRelative(QString escapeSequence);
+        void csiMoveLineRelative(QString escapeSequence);
+        void csiMoveColumnRelative(QString escapeSequence);
+        void csiEraseInLine(QString escapeSequence);
+        void csiEraseInDisplay(QString escapeSequence);
+        void csiCursorPosition(QString escapeSequence);
+        void csiSgr(QString escapeSequence);
 
         void invokeOsc(QString osc);
 };

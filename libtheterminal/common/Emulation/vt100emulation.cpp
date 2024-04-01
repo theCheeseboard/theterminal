@@ -136,6 +136,20 @@ void VT100Emulation::setupStateMachine() {
         d->screen->setCaretRow(d->savedCaretRow);
     });
     d->escapeStateMachine.addTransition(initialState, '8', popCaret);
+
+    auto charsetChange = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(initialState, '(', charsetChange);
+    d->escapeStateMachine.addTransition(initialState, ')', charsetChange);
+
+    auto decCharset = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+
+    });
+    d->escapeStateMachine.addTransition(charsetChange, '0', decCharset);
+
+    auto asciiCharset = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+
+    });
+    d->escapeStateMachine.addTransition(charsetChange, 'B', asciiCharset);
 }
 
 void VT100Emulation::setupCsiStateMachine() {
@@ -151,23 +165,23 @@ void VT100Emulation::setupCsiStateMachine() {
     auto csrN = d->csiStateMachine.addState();
     d->csiStateMachine.addTransition({csr, csrN}, transitionDigits, csrN);
 
-    auto moveCursorRelative = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::escapeMoveCursorRelative, this, std::placeholders::_1));
+    auto moveCursorRelative = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiMoveCursorRelative, this, std::placeholders::_1));
     d->csiStateMachine.addTransition({csr, csrN}, 'A', moveCursorRelative);
     d->csiStateMachine.addTransition({csr, csrN}, 'B', moveCursorRelative);
     d->csiStateMachine.addTransition({csr, csrN}, 'C', moveCursorRelative);
     d->csiStateMachine.addTransition({csr, csrN}, 'D', moveCursorRelative);
 
-    auto moveLineRelative = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::escapeMoveLineRelative, this, std::placeholders::_1));
+    auto moveLineRelative = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiMoveLineRelative, this, std::placeholders::_1));
     d->csiStateMachine.addTransition({csr, csrN}, 'E', moveLineRelative);
     d->csiStateMachine.addTransition({csr, csrN}, 'F', moveLineRelative);
 
-    auto moveColumnRelative = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::escapeMoveColumnRelative, this, std::placeholders::_1));
+    auto moveColumnRelative = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiMoveColumnRelative, this, std::placeholders::_1));
     d->csiStateMachine.addTransition({csr, csrN}, 'G', moveColumnRelative);
 
-    auto eraseInDisplay = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::escapeEraseInDisplay, this, std::placeholders::_1));
+    auto eraseInDisplay = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiEraseInDisplay, this, std::placeholders::_1));
     d->csiStateMachine.addTransition({csr, csrN}, 'J', eraseInDisplay);
 
-    auto eraseInLine = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::escapeEraseInLine, this, std::placeholders::_1));
+    auto eraseInLine = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiEraseInLine, this, std::placeholders::_1));
     d->csiStateMachine.addTransition({csr, csrN}, 'K', eraseInLine);
 
     auto csrBeforeM = d->csiStateMachine.addState();
@@ -177,7 +191,7 @@ void VT100Emulation::setupCsiStateMachine() {
     d->csiStateMachine.addTransition(csrBeforeM, transitionDigits, csrM);
     d->csiStateMachine.addTransition(csrM, transitionDigits, csrM);
 
-    auto cursorPosition = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::escapeCursorPosition, this, std::placeholders::_1));
+    auto cursorPosition = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiCursorPosition, this, std::placeholders::_1));
     d->csiStateMachine.addTransition({csr, csrN, csrM}, 'H', cursorPosition);
     d->csiStateMachine.addTransition({csr, csrN, csrM}, 'f', cursorPosition);
 
@@ -186,8 +200,8 @@ void VT100Emulation::setupCsiStateMachine() {
         return (c >= '0' && c <= '9') || c == ';';
     }, sgrData);
 
-    auto sgr = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::escapeSgr, this, std::placeholders::_1));
-    // d->csiStateMachine.addTransition(sgrData, 'm', sgr);
+    auto sgr = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiSgr, this, std::placeholders::_1));
+    d->csiStateMachine.addTransition({csr, sgrData}, 'm', sgr);
 
     auto pushCaret = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
         d->savedCaretCol = d->screen->caretCol();
@@ -283,7 +297,7 @@ void VT100Emulation::invokeCsi(QString csi) {
     };
 }
 
-void VT100Emulation::escapeMoveCursorRelative(QString escapeSequence) {
+void VT100Emulation::csiMoveCursorRelative(QString escapeSequence) {
     static QRegularExpression cursorPositionRelativeRegex("\\[(?<num>\\d+)?(?<dir>A|B|C|D)");
     auto matches = cursorPositionRelativeRegex.match(escapeSequence);
     auto numStr = matches.captured("num");
@@ -306,7 +320,7 @@ void VT100Emulation::escapeMoveCursorRelative(QString escapeSequence) {
     }
 }
 
-void VT100Emulation::escapeMoveLineRelative(QString escapeSequence) {
+void VT100Emulation::csiMoveLineRelative(QString escapeSequence) {
     static QRegularExpression cursorPositionRelativeRegex("\\[(?<num>\\d+)?(?<dir>E|F)");
     auto matches = cursorPositionRelativeRegex.match(escapeSequence);
     auto numStr = matches.captured("num");
@@ -324,7 +338,7 @@ void VT100Emulation::escapeMoveLineRelative(QString escapeSequence) {
     }
 }
 
-void VT100Emulation::escapeMoveColumnRelative(QString escapeSequence) {
+void VT100Emulation::csiMoveColumnRelative(QString escapeSequence) {
     static QRegularExpression cursorPositionRelativeRegex("\\[(?<num>\\d+)?G");
     auto matches = cursorPositionRelativeRegex.match(escapeSequence);
     auto numStr = matches.captured("num");
@@ -334,7 +348,7 @@ void VT100Emulation::escapeMoveColumnRelative(QString escapeSequence) {
     d->screen->setCaretCol(num - 1);
 }
 
-void VT100Emulation::escapeEraseInLine(QString escapeSequence) {
+void VT100Emulation::csiEraseInLine(QString escapeSequence) {
     auto type = escapeSequence.at(1);
     switch (type.unicode()) {
         case 'K':
@@ -363,7 +377,7 @@ void VT100Emulation::escapeEraseInLine(QString escapeSequence) {
     }
 }
 
-void VT100Emulation::escapeEraseInDisplay(QString escapeSequence) {
+void VT100Emulation::csiEraseInDisplay(QString escapeSequence) {
     auto type = escapeSequence.at(1);
     switch (type.unicode()) {
         case 'J':
@@ -402,7 +416,7 @@ void VT100Emulation::escapeEraseInDisplay(QString escapeSequence) {
     }
 }
 
-void VT100Emulation::escapeCursorPosition(QString escapeSequence) {
+void VT100Emulation::csiCursorPosition(QString escapeSequence) {
     static QRegularExpression cursorPositionRegex("\\[(?<row>\\d+)?(?:;(?<col>\\d+))?(?:H|f)");
     auto matches = cursorPositionRegex.match(escapeSequence);
     auto rowStr = matches.captured("row");
@@ -415,7 +429,7 @@ void VT100Emulation::escapeCursorPosition(QString escapeSequence) {
     d->screen->setCaretRow(rowStr.toInt() - 1);
 }
 
-void VT100Emulation::escapeSgr(QString escapeSequence) {
+void VT100Emulation::csiSgr(QString escapeSequence) {
 }
 
 void VT100Emulation::invokeOsc(QString osc) {
