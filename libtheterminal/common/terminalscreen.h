@@ -1,8 +1,8 @@
 #ifndef TERMINALSCREEN_H
 #define TERMINALSCREEN_H
 
-#include <QObject>
 #include "libtheterminal-common-exports.h"
+#include <QObject>
 
 struct TerminalScreenPrivate;
 class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
@@ -15,8 +15,16 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
         explicit TerminalScreen(QObject* parent = nullptr);
         ~TerminalScreen();
 
+        enum class RowScaleMode {
+            Normal = 0,
+            DoubleWidth = 1,
+            DoubleHeightUpper = 2,
+            DoubleHeightLower = 3
+        };
+        Q_ENUM(RowScaleMode)
+
         struct CharacterSpace {
-            QChar character = ' ';
+                QChar character = ' ';
         };
 
         int cols();
@@ -34,6 +42,9 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
         void setCharacter(int col, int row, CharacterSpace character);
         CharacterSpace character(int col, int row);
         void pushToHistory();
+
+        void setRowScaleMode(int row, RowScaleMode mode);
+        RowScaleMode rowScaleMode(int row);
 
     signals:
         void colsChanged();

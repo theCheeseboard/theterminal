@@ -115,6 +115,26 @@ void VT100Emulation::setupStateMachine() {
     auto octothorpe = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(initialState, '#', octothorpe);
 
+    auto doubleHeightUpper = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->screen->setRowScaleMode(d->screen->caretRow(), TerminalScreen::RowScaleMode::DoubleHeightUpper);
+    });
+    d->escapeStateMachine.addTransition(octothorpe, '3', doubleHeightUpper);
+
+    auto doubleHeightLower = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->screen->setRowScaleMode(d->screen->caretRow(), TerminalScreen::RowScaleMode::DoubleHeightLower);
+    });
+    d->escapeStateMachine.addTransition(octothorpe, '4', doubleHeightLower);
+
+    auto normalWidth = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->screen->setRowScaleMode(d->screen->caretRow(), TerminalScreen::RowScaleMode::Normal);
+    });
+    d->escapeStateMachine.addTransition(octothorpe, '5', normalWidth);
+
+    auto doubleWidth = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->screen->setRowScaleMode(d->screen->caretRow(), TerminalScreen::RowScaleMode::DoubleWidth);
+    });
+    d->escapeStateMachine.addTransition(octothorpe, '6', doubleWidth);
+
     auto alignmentPattern = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
         // Fill the screen with Es
         for (auto i = 0; i < d->screen->rows(); i++) {
@@ -406,6 +426,7 @@ void VT100Emulation::csiEraseInDisplay(QString escapeSequence) {
         case '2':
             // Clear entire screen
             for (auto i = 0; i < d->screen->rows(); i++) {
+                d->screen->setRowScaleMode(i, TerminalScreen::RowScaleMode::Normal);
                 for (auto j = 0; j < d->screen->cols(); j++) {
                     d->screen->setCharacter(j, i, {' '});
                 }

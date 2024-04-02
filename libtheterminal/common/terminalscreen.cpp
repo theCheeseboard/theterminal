@@ -12,6 +12,7 @@ struct TerminalScreenPrivate {
         int caretRow = 0;
 
         QList<CharacterLine> characters;
+        QList<TerminalScreen::RowScaleMode> rowScaleModes;
 };
 
 TerminalScreen::TerminalScreen(QObject* parent) :
@@ -55,6 +56,7 @@ void TerminalScreen::setRows(int rows) {
         // TODO: Move everything
     }
     d->characters.resize(rows);
+    d->rowScaleModes.resize(rows);
     for (auto i = 0; i < rows; i++) {
         if (d->characters.value(i) == nullptr) {
             d->characters.replace(i, CharacterLine(new QList<TerminalScreen::CharacterSpace>(d->cols)));
@@ -109,5 +111,16 @@ void TerminalScreen::pushToHistory() {
     // TODO: Push the top row to history
     d->characters.removeFirst();
     d->characters.append(CharacterLine(new QList<TerminalScreen::CharacterSpace>(d->cols)));
+    d->rowScaleModes.removeFirst();
+    d->rowScaleModes.append(RowScaleMode::Normal);
     emit historyRolled();
+}
+
+void TerminalScreen::setRowScaleMode(int row, RowScaleMode mode) {
+    d->rowScaleModes.insert(row, mode);
+    emit rowContentChanged(row);
+}
+
+TerminalScreen::RowScaleMode TerminalScreen::rowScaleMode(int row) {
+    return d->rowScaleModes.at(row);
 }

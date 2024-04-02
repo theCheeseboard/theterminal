@@ -75,6 +75,14 @@ Item {
                             id: screenRow
 
                             required property int index
+                            property var rowScaleMode: controller.rowScaleMode(index)
+
+                            clip: true
+                            transform: Scale {
+                                    xScale: screenRow.rowScaleMode !== 0 ? 2 : 1
+                                    yScale: screenRow.rowScaleMode >= 2 ? 2 : 1
+                                }
+
                             Repeater {
                                 id: screenRowRepeater
                                 model: controller.runs(screenRow.index)
@@ -85,6 +93,10 @@ Item {
                                     text: modelData.text
                                     backgroundColor: modelData.backgroundColor
                                     color: modelData.color
+
+                                    transform: Translate {
+                                        y: screenRow.rowScaleMode === 3 ? -screenRow.height / 2 : 0
+                                    }
                                 }
                             }
 
@@ -92,7 +104,8 @@ Item {
                                 target: controller
                                 function onRowContentChanged(index) {
                                     if (screenRow.index !== index) return;
-                                    screenRowRepeater.model = controller.runs(screenRow.index);
+                                    screenRow.rowScaleMode = controller.rowScaleMode(index)
+                                    screenRowRepeater.model = controller.runs(index);
                                 }
                             }
                         }

@@ -32,6 +32,7 @@ class QmlTerminalScreenController : public QObject {
         Q_SCRIPTABLE void start(QString process);
         Q_SCRIPTABLE void pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QString keyChar);
         Q_SCRIPTABLE QVariantList runs(int row);
+        Q_SCRIPTABLE TerminalScreen::RowScaleMode rowScaleMode(int row);
 
     signals:
         void colsChanged();

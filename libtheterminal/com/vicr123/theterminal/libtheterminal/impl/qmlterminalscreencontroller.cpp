@@ -126,3 +126,15 @@ QVariantList QmlTerminalScreenController::runs(int row) {
     d->cachedRuns.insert(row, runs);
     return runs;
 }
+
+TerminalScreen::RowScaleMode QmlTerminalScreenController::rowScaleMode(int row) {
+    if (row < 0) {
+        return {};
+    }
+
+    if (row >= d->terminalScreen->rows()) {
+        return {};
+    }
+
+    return d->terminalScreen->rowScaleMode(row);
+}
