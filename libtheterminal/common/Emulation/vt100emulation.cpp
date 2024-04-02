@@ -249,14 +249,37 @@ void VT100Emulation::setupCsiStateMachine() {
 
 void VT100Emulation::processCharacter(QChar c) {
     // Process any immediate control characters
-    if (c.unicode() == 0xE) {
-        // Switch into G1 mode
-        d->currentCharacterSet = &d->characterSetG1;
-        return;
-    } else if (c.unicode() == 0xF) {
-        // Switch into G0 mode
-        d->currentCharacterSet = &d->characterSetG0;
-        return;
+    switch (c.unicode()) {
+            //     case 0x0: // Null
+            //         return;
+        case 0x7: // Bell
+            echo('\x7');
+            return;
+        case 0x8: // Backspace
+            echo('\b');
+            return;
+        // case 0x9: // Tab
+        //     echo('\t');
+        //     return;
+        case 0xA: // LF
+        case 0xB:
+        case 0xC:
+            echo('\n');
+            return;
+        case 0xD: // CR
+            echo('\r');
+            return;
+        case 0xE: // Switch into G1 mode
+            d->currentCharacterSet = &d->characterSetG1;
+            return;
+        case 0xF: // Switch into G0 mode
+            d->currentCharacterSet = &d->characterSetG0;
+            return;
+        case 0x18: // Cancel escape sequence
+        case 0x1A:
+            d->escapeMode = false;
+            echo('?');
+            return;
     }
 
     // Ensure that we are not currently reading escape characters
