@@ -17,6 +17,7 @@ struct VT100EmulationPrivate {
 
         int savedCaretRow = 0;
         int savedCaretCol = 0;
+        TerminalScreen::CharacterSpace::CharacterFormat savedCaretFormat;
 };
 
 #include <QTimer>
@@ -148,12 +149,14 @@ void VT100Emulation::setupStateMachine() {
     auto pushCaret = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
         d->savedCaretCol = d->screen->caretCol();
         d->savedCaretRow = d->screen->caretRow();
+        d->savedCaretFormat = d->screen->currentCharacterFormat();
     });
     d->escapeStateMachine.addTransition(initialState, '7', pushCaret);
 
     auto popCaret = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
         d->screen->setCaretCol(d->savedCaretCol);
         d->screen->setCaretRow(d->savedCaretRow);
+        d->screen->setCurrentCharacterFormat(d->savedCaretFormat);
     });
     d->escapeStateMachine.addTransition(initialState, '8', popCaret);
 
@@ -458,21 +461,30 @@ void VT100Emulation::csiSgr(QString escapeSequence) {
         return;
     }
 
+    auto format = d->screen->currentCharacterFormat();
     do {
         auto command = sgrCommands.takeFirst().toInt();
-        auto format = d->screen->currentCharacterFormat();
         switch (command) {
             case 0: // reset
                 format = {};
                 break;
+            case 4: // underline
+                format.underline = true;
+                break;
             case 5: // blink
                 format.blink = true;
+                break;
+            case 24: // underline off
+                format.underline = true;
+                break;
+            case 25: // blink off
+                format.blink = false;
                 break;
             default:
                 tWarn("VT100Emulation") << "Unknown SGR command: " << command;
         }
-        d->screen->setCurrentCharacterFormat(format);
     } while (!sgrCommands.isEmpty());
+    d->screen->setCurrentCharacterFormat(format);
 }
 
 void VT100Emulation::invokeOsc(QString osc) {

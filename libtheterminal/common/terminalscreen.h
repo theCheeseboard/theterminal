@@ -29,6 +29,8 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
                 struct CharacterFormat {
                         bool operator==(const CharacterSpace::CharacterFormat&) const = default;
                         bool operator!=(const CharacterSpace::CharacterFormat&) const = default;
+
+                        bool underline = false;
                         bool blink = false;
                 } format;
         };

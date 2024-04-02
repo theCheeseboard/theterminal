@@ -148,6 +148,7 @@ QVariantMap QmlTerminalScreenController::initFormat(TerminalScreen::CharacterSpa
     QVariantMap map;
     map.insert("color", QColor(Qt::white));
     map.insert("backgroundColor", QColor(Qt::black));
+    map.insert("underline", format.underline);
     map.insert("blink", format.blink);
     return map;
 }
