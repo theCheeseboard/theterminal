@@ -25,7 +25,15 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
 
         struct CharacterSpace {
                 QChar character = ' ';
+
+                struct CharacterFormat {
+                        bool operator==(const CharacterSpace::CharacterFormat&) const = default;
+                        bool operator!=(const CharacterSpace::CharacterFormat&) const = default;
+                        bool blink = false;
+                } format;
         };
+
+        static QChar emptyChar();
 
         int cols();
         void setCols(int cols);
@@ -39,7 +47,11 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
         int caretRow();
         void setCaretRow(int row);
 
+        void setCurrentCharacterFormat(CharacterSpace::CharacterFormat format);
+        CharacterSpace::CharacterFormat currentCharacterFormat();
+
         void setCharacter(int col, int row, CharacterSpace character);
+        void setCharacter(int col, int row, QChar character);
         CharacterSpace character(int col, int row);
         void pushToHistory();
 

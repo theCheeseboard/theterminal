@@ -8,5 +8,9 @@ cntp_add_qml_module(qml-impl libtheterminal-qmlmodule-qml
         qmlterminalscreencontroller.h qmlterminalscreencontroller.cpp
 )
 
+set_target_properties(libtheterminal-qmlmodule-qml-qmlmodule-qml-impl PROPERTIES
+    CXX_STANDARD 20
+)
+
 target_link_libraries(libtheterminal-qmlmodule-qml-qmlmodule-qml-impl PRIVATE libtheterminal-common)
 target_include_directories(libtheterminal-qmlmodule-qml-qmlmodule-qml-impl PRIVATE ../../../../../common)

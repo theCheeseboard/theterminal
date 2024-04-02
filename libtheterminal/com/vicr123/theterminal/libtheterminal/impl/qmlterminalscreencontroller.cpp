@@ -104,20 +104,25 @@ QVariantList QmlTerminalScreenController::runs(int row) {
     if (d->cachedRuns.contains(row)) return d->cachedRuns.value(row);
 
     QVariantList runs;
-    QVariantMap currentMap;
+    QVariantMap currentMap = initFormat({});
     QString currentText;
-
-    currentMap.insert("color", QColor(Qt::white));
-    currentMap.insert("backgroundColor", QColor(Qt::black));
-
-    TerminalScreen::CharacterSpace previous;
+    TerminalScreen::CharacterSpace::CharacterFormat previousFormat;
     for (auto i = 0; i < d->terminalScreen->cols(); i++) {
         auto character = d->terminalScreen->character(i, row);
-        // TODO: Compare attributes with previous
+
+        if (previousFormat != character.format) {
+            if (!currentText.isEmpty()) {
+                currentMap.insert("text", currentText);
+                runs.append(currentMap);
+                currentText.clear();
+            }
+
+            currentMap = initFormat(character.format);
+        }
 
         currentText.append(character.character);
 
-        previous = character;
+        previousFormat = character.format;
     }
 
     currentMap.insert("text", currentText);
@@ -137,4 +142,12 @@ TerminalScreen::RowScaleMode QmlTerminalScreenController::rowScaleMode(int row) 
     }
 
     return d->terminalScreen->rowScaleMode(row);
+}
+
+QVariantMap QmlTerminalScreenController::initFormat(TerminalScreen::CharacterSpace::CharacterFormat format) {
+    QVariantMap map;
+    map.insert("color", QColor(Qt::white));
+    map.insert("backgroundColor", QColor(Qt::black));
+    map.insert("blink", format.blink);
+    return map;
 }

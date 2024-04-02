@@ -8,6 +8,7 @@ Item {
     property string text
     property color backgroundColor: "#000000"
     property color color: "#FFFFFF"
+    property bool blink: false
 
     Rectangle {
         anchors.fill: parent
@@ -20,5 +21,28 @@ Item {
         text: root.text
         font.family: "JetBrains Mono"
         color: root.color
+        visible: true
+
+        SequentialAnimation {
+            running: root.blink
+            loops: Animation.Infinite
+
+            PropertyAction {
+                target: textRun
+                property: "visible"
+                value: true
+            }
+            PauseAnimation {
+                duration: 500
+            }
+            PropertyAction {
+                target: textRun
+                property: "visible"
+                value: false
+            }
+            PauseAnimation {
+                duration: 500
+            }
+        }
     }
 }

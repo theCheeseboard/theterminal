@@ -44,6 +44,8 @@ class QmlTerminalScreenController : public QObject {
 
     private:
         QmlTerminalScreenControllerPrivate* d;
+
+        QVariantMap initFormat(TerminalScreen::CharacterSpace::CharacterFormat format);
 };
 
 #endif // QMLTERMINALSCREENCONTROLLER_H

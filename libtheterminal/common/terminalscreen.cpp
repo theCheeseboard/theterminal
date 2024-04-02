@@ -11,6 +11,8 @@ struct TerminalScreenPrivate {
         int caretCol = 0;
         int caretRow = 0;
 
+        TerminalScreen::CharacterSpace::CharacterFormat currentFormat;
+
         QList<CharacterLine> characters;
         QList<TerminalScreen::RowScaleMode> rowScaleModes;
 };
@@ -19,12 +21,14 @@ TerminalScreen::TerminalScreen(QObject* parent) :
     QObject{parent}, d{new TerminalScreenPrivate()} {
     setCols(80);
     setRows(24);
-
-    setCharacter(3, 0, {'x'});
 }
 
 TerminalScreen::~TerminalScreen() {
     delete d;
+}
+
+QChar TerminalScreen::emptyChar() {
+    return ' ';
 }
 
 int TerminalScreen::cols() {
@@ -95,12 +99,24 @@ void TerminalScreen::setCaretRow(int row) {
     emit caretRowChanged();
 }
 
+void TerminalScreen::setCurrentCharacterFormat(CharacterSpace::CharacterFormat format) {
+    d->currentFormat = format;
+}
+
+TerminalScreen::CharacterSpace::CharacterFormat TerminalScreen::currentCharacterFormat() {
+    return d->currentFormat;
+}
+
 void TerminalScreen::setCharacter(int col, int row, CharacterSpace character) {
     if (d->cols <= col) return;
     if (d->rows <= row) return;
 
     d->characters.at(row)->replace(col, character);
     emit rowContentChanged(row);
+}
+
+void TerminalScreen::setCharacter(int col, int row, QChar character) {
+    setCharacter(col, row, {character, d->currentFormat});
 }
 
 TerminalScreen::CharacterSpace TerminalScreen::character(int col, int row) {

@@ -44,6 +44,8 @@ set_target_properties(libtheterminal-common PROPERTIES
 )
 target_compile_definitions(libtheterminal-common PRIVATE LIBTHETERMINAL_COMMON_LIBRARY)
 
+cntp_init(libtheterminal-common 20)
+
 install(EXPORT libtheterminalCommonTargets
         FILE libtheterminalCommonTargets.cmake
         DESTINATION ${CMAKECONFIG_INSTALL_DIR})

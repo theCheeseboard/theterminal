@@ -93,6 +93,7 @@ Item {
                                     text: modelData.text
                                     backgroundColor: modelData.backgroundColor
                                     color: modelData.color
+                                    blink: modelData.blink
 
                                     transform: Translate {
                                         y: screenRow.rowScaleMode === 3 ? -screenRow.height / 2 : 0

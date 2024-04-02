@@ -139,7 +139,7 @@ void VT100Emulation::setupStateMachine() {
         // Fill the screen with Es
         for (auto i = 0; i < d->screen->rows(); i++) {
             for (auto j = 0; j < d->screen->cols(); j++) {
-                d->screen->setCharacter(j, i, {'E'});
+                d->screen->setCharacter(j, i, 'E');
             }
         }
     });
@@ -289,7 +289,7 @@ void VT100Emulation::echo(QChar c) {
         // TODO
     } else if (c == '\t') {
         do {
-            d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), {' '});
+            d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), TerminalScreen::emptyChar());
             d->screen->setCaretCol(d->screen->caretCol() + 1);
         } while (d->screen->caretCol() % 8 != 0 && d->screen->caretCol() != d->screen->cols() - 1);
     } else {
@@ -307,7 +307,7 @@ void VT100Emulation::invokeCsi(QString csi) {
     }
 
     // Push a final character to trigger the final result
-    switch (d->csiStateMachine.pushCharacter(' ')) {
+    switch (d->csiStateMachine.pushCharacter(TerminalScreen::emptyChar())) {
         case TerminalStateMachine::Result::Accepted:
             break;
         case TerminalStateMachine::Result::Pending:
@@ -376,20 +376,20 @@ void VT100Emulation::csiEraseInLine(QString escapeSequence) {
             {
                 // Clear from caret to end of line
                 for (auto i = d->screen->caretCol(); i < d->screen->cols(); i++) {
-                    d->screen->setCharacter(i, d->screen->caretRow(), {' '});
+                    d->screen->setCharacter(i, d->screen->caretRow(), TerminalScreen::emptyChar());
                 }
                 break;
             }
         case '1':
             // Clear from beginning of screen to caret
             for (auto i = 0; i <= d->screen->caretCol(); i++) {
-                d->screen->setCharacter(i, d->screen->caretRow(), {' '});
+                d->screen->setCharacter(i, d->screen->caretRow(), TerminalScreen::emptyChar());
             }
             break;
         case '2':
             // Clear entire line
             for (auto i = 0; i < d->screen->cols(); i++) {
-                d->screen->setCharacter(i, d->screen->caretRow(), {' '});
+                d->screen->setCharacter(i, d->screen->caretRow(), TerminalScreen::emptyChar());
             }
             break;
         default:
@@ -406,7 +406,7 @@ void VT100Emulation::csiEraseInDisplay(QString escapeSequence) {
                 // Clear from caret to end of screen
                 for (auto i = d->screen->caretRow(); i < d->screen->rows(); i++) {
                     for (auto j = (i == d->screen->caretRow() ? d->screen->caretCol() : 0); j < d->screen->cols(); j++) {
-                        d->screen->setCharacter(j, i, {' '});
+                        d->screen->setCharacter(j, i, TerminalScreen::emptyChar());
                     }
                 }
                 break;
@@ -415,7 +415,7 @@ void VT100Emulation::csiEraseInDisplay(QString escapeSequence) {
             // Clear from beginning of screen to caret
             for (auto i = 0; i < d->screen->rows(); i++) {
                 for (auto j = 0; j < d->screen->cols(); j++) {
-                    d->screen->setCharacter(j, i, {' '});
+                    d->screen->setCharacter(j, i, TerminalScreen::emptyChar());
                     if (j == d->screen->caretCol() && i == d->screen->caretRow()) return;
                 }
             }
@@ -428,7 +428,7 @@ void VT100Emulation::csiEraseInDisplay(QString escapeSequence) {
             for (auto i = 0; i < d->screen->rows(); i++) {
                 d->screen->setRowScaleMode(i, TerminalScreen::RowScaleMode::Normal);
                 for (auto j = 0; j < d->screen->cols(); j++) {
-                    d->screen->setCharacter(j, i, {' '});
+                    d->screen->setCharacter(j, i, TerminalScreen::emptyChar());
                 }
             }
             break;
@@ -451,8 +451,30 @@ void VT100Emulation::csiCursorPosition(QString escapeSequence) {
 }
 
 void VT100Emulation::csiSgr(QString escapeSequence) {
+    QStringList sgrCommands = escapeSequence.mid(1, escapeSequence.length() - 2).split(";");
+    if (sgrCommands.isEmpty()) {
+        // SGR 0 (reset)
+        d->screen->setCurrentCharacterFormat({});
+        return;
+    }
+
+    do {
+        auto command = sgrCommands.takeFirst().toInt();
+        auto format = d->screen->currentCharacterFormat();
+        switch (command) {
+            case 0: // reset
+                format = {};
+                break;
+            case 5: // blink
+                format.blink = true;
+                break;
+            default:
+                tWarn("VT100Emulation") << "Unknown SGR command: " << command;
+        }
+        d->screen->setCurrentCharacterFormat(format);
+    } while (!sgrCommands.isEmpty());
 }
 
 void VT100Emulation::invokeOsc(QString osc) {
-    tWarn("VT100Emulation") << "Unknown OSC sequence: " << osc; // d->csiStateMachine.replayBuffer();
+    tWarn("VT100Emulation") << "Unknown OSC sequence: " << osc;
 }
