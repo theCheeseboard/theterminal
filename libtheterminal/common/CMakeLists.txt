@@ -1,10 +1,48 @@
-qt_add_library(libtheterminal-common SHARED
-    PtyImpl/unixpty.h PtyImpl/unixpty.cpp
-    ipty.h ipty.cpp
-    terminalscreen.h terminalscreen.cpp
-    Emulation/vt100emulation.h Emulation/vt100emulation.cpp
-    StateMachine/terminalstatemachine.h StateMachine/terminalstatemachine.cpp
+set(SOURCES)
+
+cntp_sourcelist(
+    OUTPUT SOURCES
+    OUTPUT_ALL ALL_SOURCES
+    FILES
+        ipty.h ipty.cpp
+        terminalscreen.h terminalscreen.cpp
+        Emulation/vt100emulation.h Emulation/vt100emulation.cpp
+        StateMachine/terminalstatemachine.h StateMachine/terminalstatemachine.cpp
 )
+
+cntp_sourcelist(
+    OUTPUT SOURCES
+    OUTPUT_ALL ALL_SOURCES
+    TARGET_SYSTEM_NAME "Windows"
+    FILES
+        PtyImpl/winpty.h PtyImpl/winpty.cpp
+)
+
+cntp_sourcelist(
+    OUTPUT SOURCES
+    OUTPUT_ALL ALL_SOURCES
+    TARGET_SYSTEM_NAME "Darwin"
+    FILES
+        PtyImpl/unixpty.h PtyImpl/unixpty.cpp
+)
+
+cntp_sourcelist(
+    OUTPUT SOURCES
+    OUTPUT_ALL ALL_SOURCES
+    TARGET_SYSTEM_NAME "Linux"
+    FILES
+        PtyImpl/unixpty.h PtyImpl/unixpty.cpp
+)
+
+qt_add_library(libtheterminal-common SHARED
+    ${SOURCES}
+    libtheterminal-common-exports.h
+)
+
+set_target_properties(libtheterminal-common PROPERTIES
+    WINDOWS_EXPORT_ALL_SYMBOLS ON
+)
+target_compile_definitions(libtheterminal-common PRIVATE LIBTHETERMINAL_COMMON_LIBRARY)
 
 install(EXPORT libtheterminalCommonTargets
         FILE libtheterminalCommonTargets.cmake

@@ -6,6 +6,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(libcontemporary REQUIRED)
 
 set(SOURCES
+    qmlinit.cpp
 )
 
 set(HEADERS
@@ -25,7 +26,7 @@ set_target_properties(libtheterminal PROPERTIES
         VERSION 1.0.0
         PUBLIC_HEADER "${HEADERS}")
 
-target_link_libraries(libtheterminal PRIVATE Qt::Widgets)
+target_link_libraries(libtheterminal PRIVATE Qt::Widgets Qt::Quick)
 target_compile_definitions(libtheterminal PRIVATE LIBTHETERMINAL_LIBRARY)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")

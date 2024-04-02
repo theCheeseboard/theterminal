@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
 #endif
 
     tSettings settings;
-    QObject::connect(&settings, &tSettings::settingChanged, [=](QString key, QVariant value) {
+    QObject::connect(&settings, &tSettings::settingChanged, [ = ](QString key, QVariant value) {
         if (key == "theme/mode") {
             tStyleManager::setOverrideStyleForApplication(value.toString() == "light" ? tStyleManager::ContemporaryLight : tStyleManager::ContemporaryDark);
         }
@@ -41,11 +41,11 @@ int main(int argc, char* argv[]) {
     QQmlApplicationEngine engine;
     const QUrl url(u"qrc:/qt/qml/com/vicr123/theterminal/Main.qml"_qs);
     QObject::connect(
-        &engine, &QQmlApplicationEngine::objectCreationFailed, &a, [](QUrl url) {
+    &engine, &QQmlApplicationEngine::objectCreationFailed, &a, [](QUrl url) {
         QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     QObject::connect(
-        &engine, &QQmlApplicationEngine::warnings, &a, [](const QList<QQmlError>& warnings) {
+    &engine, &QQmlApplicationEngine::warnings, &a, [](const QList<QQmlError>& warnings) {
 
     }, Qt::QueuedConnection);
     engine.load(url);

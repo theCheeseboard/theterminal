@@ -1,0 +1,2 @@
+#include <QQmlExtensionPlugin>
+Q_IMPORT_QML_PLUGIN(com_vicr123_theterminal_libtheterminalPlugin)

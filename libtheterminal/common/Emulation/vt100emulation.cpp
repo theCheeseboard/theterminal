@@ -50,16 +50,16 @@ void VT100Emulation::pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QStr
         this->write("\n");
         return;
     } else if (key == Qt::Key_Left) {
-        this->write("\e[D");
+        this->write("\x1B[D");
         return;
     } else if (key == Qt::Key_Right) {
-        this->write("\e[C");
+        this->write("\x1B[C");
         return;
     } else if (key == Qt::Key_Down) {
-        this->write("\e[B");
+        this->write("\x1B[B");
         return;
     } else if (key == Qt::Key_Up) {
-        this->write("\e[A");
+        this->write("\x1B[A");
         return;
     }
 
@@ -83,11 +83,11 @@ void VT100Emulation::setupStateMachine() {
     auto osc = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(initialState, ']', osc);
     d->escapeStateMachine.addTransition(osc, [](QChar c) {
-        return c.toLatin1() != '\e' && c.toLatin1() != '\x07';
+        return c.toLatin1() != '\x1B' && c.toLatin1() != '\x07';
     }, osc);
 
     auto oscEscEnd = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(osc, '\e', oscEscEnd);
+    d->escapeStateMachine.addTransition(osc, '\x1B', oscEscEnd);
     d->escapeStateMachine.addTransition(oscEscEnd, [](QChar c) {
         return c.toLatin1() != '\\';
     }, osc);
@@ -219,7 +219,7 @@ void VT100Emulation::setupCsiStateMachine() {
 void VT100Emulation::processCharacter(QChar c) {
     // Ensure that we are not currently reading escape characters
     if (!d->escapeMode) {
-        if (c == '\e') {
+        if (c == '\x1B') {
             // This is the ESC character. Enter escape mode!
             d->escapeMode = true;
             d->escapeStateMachine.reset();

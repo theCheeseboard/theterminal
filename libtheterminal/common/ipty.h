@@ -3,8 +3,9 @@
 
 #include <QObject>
 #include <QProcessEnvironment>
+#include "libtheterminal-common-exports.h"
 
-class IPty {
+class LIBTHETERMINAL_COMMON_EXPORT IPty {
     public:
         static IPty* createPty(QObject* parent = nullptr);
 

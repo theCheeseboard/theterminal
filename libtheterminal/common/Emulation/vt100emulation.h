@@ -2,10 +2,11 @@
 #define VT100EMULATION_H
 
 #include <QObject>
+#include "../libtheterminal-common-exports.h"
 
 class TerminalScreen;
 struct VT100EmulationPrivate;
-class VT100Emulation : public QObject {
+class LIBTHETERMINAL_COMMON_EXPORT VT100Emulation : public QObject {
         Q_OBJECT
     public:
         explicit VT100Emulation(QIODevice* device, TerminalScreen* screen, QObject* parent = nullptr);

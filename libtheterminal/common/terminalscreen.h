@@ -2,9 +2,10 @@
 #define TERMINALSCREEN_H
 
 #include <QObject>
+#include "libtheterminal-common-exports.h"
 
 struct TerminalScreenPrivate;
-class TerminalScreen : public QObject {
+class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
         Q_OBJECT
         Q_PROPERTY(int cols READ cols WRITE setCols NOTIFY colsChanged FINAL)
         Q_PROPERTY(int rows READ rows WRITE setRows NOTIFY rowsChanged FINAL)
@@ -15,7 +16,7 @@ class TerminalScreen : public QObject {
         ~TerminalScreen();
 
         struct CharacterSpace {
-                QChar character = ' ';
+            QChar character = ' ';
         };
 
         int cols();
