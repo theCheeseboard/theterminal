@@ -18,7 +18,13 @@ struct VT100EmulationPrivate {
         int savedCaretRow = 0;
         int savedCaretCol = 0;
         TerminalScreen::CharacterSpace::CharacterFormat savedCaretFormat;
+
+        QString* characterSetG0 = nullptr;
+        QString* characterSetG1 = nullptr;
+        QString** currentCharacterSet = &characterSetG0;
+        static QString decSpecialCharacterSet;
 };
+QString VT100EmulationPrivate::decSpecialCharacterSet = u" ◆▒␉␌␍␊°±␤␋┘┐┌└┼⎺⎻─⎼⎽├┤┴┬│≤≥π≠£·"_qs;
 
 #include <QTimer>
 
@@ -165,12 +171,14 @@ void VT100Emulation::setupStateMachine() {
     d->escapeStateMachine.addTransition(initialState, ')', charsetChange);
 
     auto decCharset = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
-
+        QString** characterBank = escapeSequence.at(0) == '(' ? &d->characterSetG0 : &d->characterSetG1;
+        *characterBank = &VT100EmulationPrivate::decSpecialCharacterSet;
     });
     d->escapeStateMachine.addTransition(charsetChange, '0', decCharset);
 
     auto asciiCharset = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
-
+        QString** characterBank = escapeSequence.at(0) == '(' ? &d->characterSetG0 : &d->characterSetG1;
+        *characterBank = nullptr;
     });
     d->escapeStateMachine.addTransition(charsetChange, 'B', asciiCharset);
 }
@@ -240,6 +248,17 @@ void VT100Emulation::setupCsiStateMachine() {
 }
 
 void VT100Emulation::processCharacter(QChar c) {
+    // Process any immediate control characters
+    if (c.unicode() == 0xE) {
+        // Switch into G1 mode
+        d->currentCharacterSet = &d->characterSetG1;
+        return;
+    } else if (c.unicode() == 0xF) {
+        // Switch into G0 mode
+        d->currentCharacterSet = &d->characterSetG0;
+        return;
+    }
+
     // Ensure that we are not currently reading escape characters
     if (!d->escapeMode) {
         if (c == '\x1B') {
@@ -296,7 +315,14 @@ void VT100Emulation::echo(QChar c) {
             d->screen->setCaretCol(d->screen->caretCol() + 1);
         } while (d->screen->caretCol() % 8 != 0 && d->screen->caretCol() != d->screen->cols() - 1);
     } else {
-        d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), {c});
+        QChar echoedCharacter = c;
+        if (*d->currentCharacterSet) {
+            if (c.unicode() >= 0x5F && c.unicode() <= 0x7E) {
+                echoedCharacter = (*d->currentCharacterSet)->at(c.unicode() - 0x5F);
+            }
+        }
+
+        d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), echoedCharacter);
         d->screen->setCaretCol(d->screen->caretCol() + 1);
     }
 }
