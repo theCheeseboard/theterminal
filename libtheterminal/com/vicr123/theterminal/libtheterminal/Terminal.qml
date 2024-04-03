@@ -95,6 +95,7 @@ Item {
                                     color: modelData.color
                                     blink: modelData.blink
                                     underline: modelData.underline
+                                    bold: modelData.bold
 
                                     transform: Translate {
                                         y: screenRow.rowScaleMode === 3 ? -screenRow.height / 2 : 0

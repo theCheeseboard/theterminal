@@ -519,6 +519,9 @@ void VT100Emulation::csiSgr(QString escapeSequence) {
             case 0: // reset
                 format = {};
                 break;
+            case 1: // bold
+                format.bold = true;
+                break;
             case 4: // underline
                 format.underline = true;
                 break;
@@ -527,6 +530,9 @@ void VT100Emulation::csiSgr(QString escapeSequence) {
                 break;
             case 7: // invert
                 format.invert = true;
+                break;
+            case 22: // bold off
+                format.bold = false;
                 break;
             case 24: // underline off
                 format.underline = true;

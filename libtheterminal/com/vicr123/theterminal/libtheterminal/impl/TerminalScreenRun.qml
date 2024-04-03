@@ -10,6 +10,7 @@ Item {
     property color color: "#FFFFFF"
     property bool blink: false
     property bool underline: false
+    property bool bold: false
 
     Rectangle {
         anchors.fill: parent
@@ -26,6 +27,7 @@ Item {
             id: textRun
             padding: 0
             text: root.text
+            font.bold: root.bold
             font.family: "JetBrains Mono"
             color: root.color
         }

@@ -173,6 +173,7 @@ QVariantMap QmlTerminalScreenController::initFormat(TerminalScreen::CharacterSpa
     }
     map.insert("underline", format.underline);
     map.insert("blink", format.blink);
+    map.insert("bold", format.bold);
     return map;
 }
 
