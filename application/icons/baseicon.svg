@@ -5,7 +5,7 @@
    viewBox="0 0 8.4666665 8.4666669"
    version="1.1"
    id="svg20249"
-   inkscape:version="1.1.2 (b8e25be8, 2022-02-05)"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    sodipodi:docname="baseicon.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -24,19 +24,21 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="15.839192"
-     inkscape:cx="16.099306"
-     inkscape:cy="15.24699"
+     inkscape:cx="-3.4723993"
+     inkscape:cy="22.475894"
      inkscape:document-units="mm"
      inkscape:current-layer="iconlayer"
      showgrid="true"
      units="px"
-     inkscape:window-width="1312"
-     inkscape:window-height="907"
+     inkscape:window-width="3840"
+     inkscape:window-height="2101"
      inkscape:window-x="0"
-     inkscape:window-y="25"
-     inkscape:window-maximized="0"
+     inkscape:window-y="23"
+     inkscape:window-maximized="1"
      inkscape:document-rotation="0"
-     inkscape:pagecheckerboard="0">
+     inkscape:pagecheckerboard="0"
+     inkscape:showpageshadow="0"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
        id="grid20794"
@@ -83,5 +85,24 @@
   <g
      inkscape:groupmode="layer"
      id="iconlayer"
-     inkscape:label="Icon" />
+     inkscape:label="Icon">
+    <g
+       id="g10824"
+       transform="rotate(15,3.4930613,5.502772)">
+      <path
+         style="opacity:0.5;fill:none;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="M 4.3656249,7.0114582 5.6885416,5.6885415 4.3656249,4.3656249"
+         id="path10815" />
+      <path
+         style="opacity:0.5;fill:none;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="M 4.3656249,7.0114582 5.6885416,5.6885415 4.8947917,4.8947914"
+         id="path10817"
+         sodipodi:nodetypes="ccc" />
+      <path
+         style="opacity:1;fill:none;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="M 4.3656249,7.0114582 5.6885416,5.6885415 5.4239583,5.4239581"
+         id="path10819"
+         sodipodi:nodetypes="ccc" />
+    </g>
+  </g>
 </svg>

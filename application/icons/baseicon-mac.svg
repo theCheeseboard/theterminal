@@ -5,7 +5,7 @@
    viewBox="0 0 8.4666665 8.4666669"
    version="1.1"
    id="svg20249"
-   inkscape:version="1.1.2 (b8e25be8, 2022-02-05)"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    sodipodi:docname="baseicon-mac.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -54,6 +54,68 @@
        y1="29"
        x2="30.5"
        y2="1.5" />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath976-8">
+      <path
+         id="path978-4"
+         style="fill:url(#linearGradient980);fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
+         d="m 16.03125,2.9980724 a 13.000112,13.000112 0 0 0 -0.152345,0.00197 H 9.0000005 C 5.6759725,3.0000378 3,5.676019 3,9.0000379 v 6.9687311 7.031244 c 0,3.324018 2.6759725,6 6.0000005,6 H 23 c 3.324028,0 6.000001,-2.675982 6.000001,-6 V 16.029317 9.0000379 C 29.000001,5.676019 26.324028,3.0000378 23,3.0000378 h -6.867188 a 13.000112,13.000112 0 0 0 -0.101562,-0.00197 z" />
+    </clipPath>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter1094-4"
+       x="-inf"
+       width="inf"
+       y="-inf"
+       height="inf">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.4440341"
+         id="feGaussianBlur1096-6" />
+    </filter>
+    <inkscape:path-effect
+       effect="clone_original"
+       linkeditem=""
+       method="bsplinespiro"
+       allow_transforms="false"
+       id="path-effect29-1"
+       lpeversion="1"
+       is_visible="true"
+       attributes=""
+       css_properties="" />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath976-9">
+      <path
+         id="path978-7"
+         style="fill:url(#linearGradient980);fill-opacity:1;fill-rule:evenodd;stroke-width:0.999999"
+         d="m 16.03125,2.9980724 a 13.000112,13.000112 0 0 0 -0.152345,0.00197 H 9.0000005 C 5.6759725,3.0000378 3,5.676019 3,9.0000379 v 6.9687311 7.031244 c 0,3.324018 2.6759725,6 6.0000005,6 H 23 c 3.324028,0 6.000001,-2.675982 6.000001,-6 V 16.029317 9.0000379 C 29.000001,5.676019 26.324028,3.0000378 23,3.0000378 h -6.867188 a 13.000112,13.000112 0 0 0 -0.101562,-0.00197 z" />
+    </clipPath>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter1094"
+       x="-inf"
+       width="inf"
+       y="-inf"
+       height="inf">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.4440341"
+         id="feGaussianBlur1096" />
+    </filter>
+    <inkscape:path-effect
+       effect="clone_original"
+       linkeditem=""
+       method="bsplinespiro"
+       allow_transforms="false"
+       id="path-effect29-0"
+       lpeversion="1"
+       is_visible="true"
+       attributes=""
+       css_properties="" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -63,19 +125,21 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="19.126673"
-     inkscape:cx="11.397696"
-     inkscape:cy="17.279534"
+     inkscape:cx="17.567091"
+     inkscape:cy="14.874516"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="iconlayer"
      showgrid="true"
      units="px"
-     inkscape:window-width="1680"
-     inkscape:window-height="907"
-     inkscape:window-x="0"
-     inkscape:window-y="25"
-     inkscape:window-maximized="0"
+     inkscape:window-width="2560"
+     inkscape:window-height="1404"
+     inkscape:window-x="3840"
+     inkscape:window-y="725"
+     inkscape:window-maximized="1"
      inkscape:document-rotation="0"
-     inkscape:pagecheckerboard="0">
+     inkscape:pagecheckerboard="0"
+     inkscape:showpageshadow="0"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
        id="grid20794"
@@ -125,5 +189,42 @@
   <g
      inkscape:groupmode="layer"
      id="iconlayer"
-     inkscape:label="Icon" />
+     inkscape:label="Icon">
+    <path
+       d="M 0,0"
+       id="path31"
+       transform="scale(0.26458333)"
+       inkscape:original-d="M 0,0"
+       inkscape:path-effect="#path-effect29-0"
+       clip-path="url(#clipPath976-9)"
+       style="filter:url(#filter1094)"
+       class="UnoptimicedTransforms" />
+    <path
+       d="M 0,0"
+       id="path31-4"
+       inkscape:original-d="M 0,0"
+       inkscape:path-effect="#path-effect29-1"
+       clip-path="url(#clipPath976-8)"
+       style="filter:url(#filter1094-4)"
+       transform="translate(0,-288.53332)"
+       class="UnoptimicedTransforms" />
+    <g
+       id="g10824"
+       transform="matrix(0.77025716,0.20638978,-0.20638978,0.77025716,2.0362832,0.23424247)">
+      <path
+         style="opacity:0.5;fill:none;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="M 4.3656249,7.0114582 5.6885416,5.6885415 4.3656249,4.3656249"
+         id="path10815" />
+      <path
+         style="opacity:0.5;fill:none;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="M 4.3656249,7.0114582 5.6885416,5.6885415 4.8947917,4.8947914"
+         id="path10817"
+         sodipodi:nodetypes="ccc" />
+      <path
+         style="opacity:1;fill:none;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         d="M 4.3656249,7.0114582 5.6885416,5.6885415 5.4239583,5.4239581"
+         id="path10819"
+         sodipodi:nodetypes="ccc" />
+    </g>
+  </g>
 </svg>

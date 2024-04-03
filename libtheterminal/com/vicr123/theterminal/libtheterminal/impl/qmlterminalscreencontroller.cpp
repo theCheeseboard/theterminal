@@ -120,14 +120,14 @@ QVariantList QmlTerminalScreenController::runs(int row) {
 
     QVariantList runs;
     QVariantMap currentMap = initFormat({});
-    QString currentText;
+    QByteArray currentText;
     TerminalScreen::CharacterSpace::CharacterFormat previousFormat;
     for (auto i = 0; i < d->terminalScreen->cols(); i++) {
         auto character = d->terminalScreen->character(i, row);
 
         if (previousFormat != character.format) {
             if (!currentText.isEmpty()) {
-                currentMap.insert("text", currentText);
+                currentMap.insert("text", QString(currentText));
                 runs.append(currentMap);
                 currentText.clear();
             }
@@ -135,12 +135,12 @@ QVariantList QmlTerminalScreenController::runs(int row) {
             currentMap = initFormat(character.format);
         }
 
-        currentText.append(character.character);
+        currentText.append(character.character.unicode());
 
         previousFormat = character.format;
     }
 
-    currentMap.insert("text", currentText);
+    currentMap.insert("text", QString(currentText));
     runs.append(currentMap);
 
     d->cachedRuns.insert(row, runs);
