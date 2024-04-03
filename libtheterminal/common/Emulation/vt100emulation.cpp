@@ -15,7 +15,7 @@ struct VT100EmulationPrivate {
         TerminalStateMachine escapeStateMachine;
         TerminalStateMachine csiStateMachine;
 
-        bool autowrap = true;
+        bool autowrap = false;
         bool crlfMode = false;
 
         int savedCaretRow = 0;
@@ -265,6 +265,38 @@ void VT100Emulation::setupCsiStateMachine() {
 
     auto mode = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(csi, '?', mode);
+
+    auto cursorKeyApplicationMode = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(mode, '1', cursorKeyApplicationMode);
+
+    auto blinkMode = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(cursorKeyApplicationMode, '2', blinkMode);
+
+    auto blinkModeOn = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        // TODO
+    });
+    d->escapeStateMachine.addTransition(blinkMode, 'h', blinkModeOn);
+
+    auto blinkModeOff = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        // TODO
+    });
+    d->escapeStateMachine.addTransition(blinkMode, 'l', blinkModeOff);
+
+    auto cursorMode = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(mode, '2', cursorMode);
+
+    auto cursorMode2 = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(cursorMode, '5', cursorMode2);
+
+    auto cursorModeOn = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        // TODO
+    });
+    d->escapeStateMachine.addTransition(cursorMode2, 'h', cursorModeOn);
+
+    auto cursorModeOff = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        // TODO
+    });
+    d->escapeStateMachine.addTransition(cursorMode2, 'l', cursorModeOff);
 
     auto columnMode = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(mode, '3', columnMode);
