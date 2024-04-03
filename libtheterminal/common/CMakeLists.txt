@@ -51,6 +51,7 @@ qt_add_resources(libtheterminal-common libtheterminal_colorschemes
     PREFIX /com/vicr123/theterminal/libtheterminal/colorschemes
     BASE colorschemes
     FILES
+        colorschemes/256
         colorschemes/Campbell.colorscheme
         colorschemes/GreenOnBlack.colorscheme
         colorschemes/Linux.colorscheme

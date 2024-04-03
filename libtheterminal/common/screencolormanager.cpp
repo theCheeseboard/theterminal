@@ -10,7 +10,18 @@ struct ScreenColorManagerPrivate {
 
 ScreenColorManager::ScreenColorManager(QObject* parent) :
     QObject{parent}, d{new ScreenColorManagerPrivate()} {
+    // Leave space for the 16 colours available from the colorschemes files
+    d->colors.resize(16 * 4);
+
+    // Append the standard 256 colours to the colours array
+    QFile file256Colors(":/com/vicr123/theterminal/libtheterminal/colorschemes/256");
+    file256Colors.open(QFile::ReadOnly);
+    d->colors.append(file256Colors.readAll());
+    file256Colors.close();
+
+    // Resize the colours array to the correct size
     d->colors.resize((256 + 4) * 4);
+
     this->loadColorDefinition("Linux");
 }
 
@@ -80,7 +91,7 @@ void ScreenColorManager::loadColorDefinition(QString colorDefinition) {
         colorDefinition = QStringLiteral(":/com/vicr123/theterminal/libtheterminal/colorschemes/%1.colorscheme").arg(colorDefinition);
     }
 
-    // Colors are packed into d->colors as 0xAARRGGBB
+    // Colors are packed into d->colors as 0xAABBGGRR
 
     QSettings settings(colorDefinition, QSettings::IniFormat);
     char buf[4];

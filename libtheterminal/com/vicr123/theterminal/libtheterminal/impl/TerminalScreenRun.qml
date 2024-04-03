@@ -27,7 +27,7 @@ Item {
             id: textRun
             padding: 0
             text: root.text
-            font.bold: root.bold
+            font.weight: root.bold ? 900 : 400
             font.family: "JetBrains Mono"
             color: root.color
         }
