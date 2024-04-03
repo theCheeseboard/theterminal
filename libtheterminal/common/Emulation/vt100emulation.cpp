@@ -15,8 +15,11 @@ struct VT100EmulationPrivate {
         TerminalStateMachine escapeStateMachine;
         TerminalStateMachine csiStateMachine;
 
+        bool autowrap = true;
+
         int savedCaretRow = 0;
         int savedCaretCol = 0;
+        bool savedCaretAutowrap = false;
         TerminalScreen::CharacterSpace::CharacterFormat savedCaretFormat;
 
         QString* characterSetG0 = nullptr;
@@ -190,61 +193,71 @@ void VT100Emulation::setupCsiStateMachine() {
 
     auto initialState = d->csiStateMachine.addState();
 
-    auto csr = d->csiStateMachine.addState();
-    d->csiStateMachine.addTransition(initialState, '[', csr);
+    auto csi = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(initialState, '[', csi);
 
     auto csrN = d->csiStateMachine.addState();
-    d->csiStateMachine.addTransition({csr, csrN}, transitionDigits, csrN);
+    d->csiStateMachine.addTransition({csi, csrN}, transitionDigits, csrN);
 
     auto moveCursorRelative = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiMoveCursorRelative, this, std::placeholders::_1));
-    d->csiStateMachine.addTransition({csr, csrN}, 'A', moveCursorRelative);
-    d->csiStateMachine.addTransition({csr, csrN}, 'B', moveCursorRelative);
-    d->csiStateMachine.addTransition({csr, csrN}, 'C', moveCursorRelative);
-    d->csiStateMachine.addTransition({csr, csrN}, 'D', moveCursorRelative);
+    d->csiStateMachine.addTransition({csi, csrN}, 'A', moveCursorRelative);
+    d->csiStateMachine.addTransition({csi, csrN}, 'B', moveCursorRelative);
+    d->csiStateMachine.addTransition({csi, csrN}, 'C', moveCursorRelative);
+    d->csiStateMachine.addTransition({csi, csrN}, 'D', moveCursorRelative);
 
     auto moveLineRelative = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiMoveLineRelative, this, std::placeholders::_1));
-    d->csiStateMachine.addTransition({csr, csrN}, 'E', moveLineRelative);
-    d->csiStateMachine.addTransition({csr, csrN}, 'F', moveLineRelative);
+    d->csiStateMachine.addTransition({csi, csrN}, 'E', moveLineRelative);
+    d->csiStateMachine.addTransition({csi, csrN}, 'F', moveLineRelative);
 
     auto moveColumnRelative = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiMoveColumnRelative, this, std::placeholders::_1));
-    d->csiStateMachine.addTransition({csr, csrN}, 'G', moveColumnRelative);
+    d->csiStateMachine.addTransition({csi, csrN}, 'G', moveColumnRelative);
 
     auto eraseInDisplay = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiEraseInDisplay, this, std::placeholders::_1));
-    d->csiStateMachine.addTransition({csr, csrN}, 'J', eraseInDisplay);
+    d->csiStateMachine.addTransition({csi, csrN}, 'J', eraseInDisplay);
 
     auto eraseInLine = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiEraseInLine, this, std::placeholders::_1));
-    d->csiStateMachine.addTransition({csr, csrN}, 'K', eraseInLine);
+    d->csiStateMachine.addTransition({csi, csrN}, 'K', eraseInLine);
 
     auto csrBeforeM = d->csiStateMachine.addState();
-    d->csiStateMachine.addTransition({csr, csrN}, ';', csrBeforeM);
+    d->csiStateMachine.addTransition({csi, csrN}, ';', csrBeforeM);
 
     auto csrM = d->csiStateMachine.addState();
     d->csiStateMachine.addTransition(csrBeforeM, transitionDigits, csrM);
     d->csiStateMachine.addTransition(csrM, transitionDigits, csrM);
 
     auto cursorPosition = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiCursorPosition, this, std::placeholders::_1));
-    d->csiStateMachine.addTransition({csr, csrN, csrM}, 'H', cursorPosition);
-    d->csiStateMachine.addTransition({csr, csrN, csrM}, 'f', cursorPosition);
+    d->csiStateMachine.addTransition({csi, csrN, csrM}, 'H', cursorPosition);
+    d->csiStateMachine.addTransition({csi, csrN, csrM}, 'f', cursorPosition);
 
     auto sgrData = d->csiStateMachine.addState();
-    d->csiStateMachine.addTransition({csr, sgrData}, [](QChar c) {
+    d->csiStateMachine.addTransition({csi, sgrData}, [](QChar c) {
         return (c >= '0' && c <= '9') || c == ';';
     }, sgrData);
 
     auto sgr = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiSgr, this, std::placeholders::_1));
-    d->csiStateMachine.addTransition({csr, sgrData}, 'm', sgr);
+    d->csiStateMachine.addTransition({csi, sgrData}, 'm', sgr);
 
-    auto pushCaret = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
-        d->savedCaretCol = d->screen->caretCol();
-        d->savedCaretRow = d->screen->caretRow();
-    });
-    d->escapeStateMachine.addTransition(csr, 's', pushCaret);
+    auto pushCaret = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::pushCaret, this));
+    d->escapeStateMachine.addTransition(csi, 's', pushCaret);
 
-    auto popCaret = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
-        d->screen->setCaretCol(d->savedCaretCol);
-        d->screen->setCaretRow(d->savedCaretRow);
+    auto popCaret = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::popCaret, this));
+    d->escapeStateMachine.addTransition(csi, 'u', popCaret);
+
+    auto mode = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(csi, '?', mode);
+
+    auto autowrapMode = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(csi, '7', autowrapMode);
+
+    auto autowrapModeOn = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->autowrap = true;
     });
-    d->escapeStateMachine.addTransition(csr, 'u', popCaret);
+    d->escapeStateMachine.addTransition(autowrapMode, 'h', autowrapModeOn);
+
+    auto autowrapModeOff = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->autowrap = false;
+    });
+    d->escapeStateMachine.addTransition(autowrapMode, 'l', autowrapModeOff);
 }
 
 void VT100Emulation::processCharacter(QChar c) {
@@ -343,6 +356,17 @@ void VT100Emulation::echo(QChar c) {
             if (c.unicode() >= 0x5F && c.unicode() <= 0x7E) {
                 echoedCharacter = (*d->currentCharacterSet)->at(c.unicode() - 0x5F);
             }
+        }
+
+        if (d->screen->caretCol() == d->screen->cols()) {
+            if (!d->autowrap) {
+                d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), echoedCharacter);
+                return;
+            }
+
+            // Wrap to the next line first
+            echo('\n');
+            echo('\r');
         }
 
         d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), echoedCharacter);
@@ -502,6 +526,9 @@ void VT100Emulation::csiCursorPosition(QString escapeSequence) {
     d->screen->setCaretRow(rowStr.toInt() - 1);
 }
 
+void VT100Emulation::csiAutoWrap(QString escapeSequence) {
+}
+
 void VT100Emulation::csiSgr(QString escapeSequence) {
     QStringList sgrCommands = escapeSequence.mid(1, escapeSequence.length() - 2).split(";");
     if (sgrCommands.isEmpty()) {
@@ -617,4 +644,16 @@ void VT100Emulation::csiSgr(QString escapeSequence) {
 
 void VT100Emulation::invokeOsc(QString osc) {
     tWarn("VT100Emulation") << "Unknown OSC sequence: " << osc;
+}
+
+void VT100Emulation::pushCaret() {
+    d->savedCaretCol = d->screen->caretCol();
+    d->savedCaretRow = d->screen->caretRow();
+    d->savedCaretAutowrap = d->autowrap;
+}
+
+void VT100Emulation::popCaret() {
+    d->screen->setCaretCol(d->savedCaretCol);
+    d->screen->setCaretRow(d->savedCaretRow);
+    d->autowrap = d->savedCaretAutowrap;
 }

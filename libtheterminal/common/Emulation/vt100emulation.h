@@ -1,8 +1,8 @@
 #ifndef VT100EMULATION_H
 #define VT100EMULATION_H
 
-#include <QObject>
 #include "../libtheterminal-common-exports.h"
+#include <QObject>
 
 class TerminalScreen;
 struct VT100EmulationPrivate;
@@ -33,9 +33,13 @@ class LIBTHETERMINAL_COMMON_EXPORT VT100Emulation : public QObject {
         void csiEraseInLine(QString escapeSequence);
         void csiEraseInDisplay(QString escapeSequence);
         void csiCursorPosition(QString escapeSequence);
+        void csiAutoWrap(QString escapeSequence);
         void csiSgr(QString escapeSequence);
 
         void invokeOsc(QString osc);
+
+        void pushCaret();
+        void popCaret();
 };
 
 #endif // VT100EMULATION_H

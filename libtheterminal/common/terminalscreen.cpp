@@ -81,7 +81,7 @@ int TerminalScreen::caretCol() {
 
 void TerminalScreen::setCaretCol(int col) {
     if (col <= 0) col = 0;
-    if (col >= d->cols) col = d->cols - 1;
+    if (col > d->cols) col = d->cols - 1;
 
     d->caretCol = col;
     emit caretColChanged();
