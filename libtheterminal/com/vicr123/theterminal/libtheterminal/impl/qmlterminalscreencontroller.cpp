@@ -17,6 +17,8 @@ struct QmlTerminalScreenControllerPrivate {
 
         QTimer* rowUpdateTimer;
         QSet<int> rowsToUpdate;
+
+        ScreenColorManager screenColorManager;
 };
 
 QmlTerminalScreenController::QmlTerminalScreenController(QObject* parent) :
@@ -158,9 +160,12 @@ TerminalScreen::RowScaleMode QmlTerminalScreenController::rowScaleMode(int row) 
 }
 
 QVariantMap QmlTerminalScreenController::initFormat(TerminalScreen::CharacterSpace::CharacterFormat format) {
+    auto color = d->screenColorManager.decodeColor(format.color);
+    auto backgroundColor = d->screenColorManager.decodeColor(format.backgroundColor);
+
     QVariantMap map;
-    map.insert("color", QColor(Qt::white));
-    map.insert("backgroundColor", QColor(Qt::black));
+    map.insert("color", color);
+    map.insert("backgroundColor", backgroundColor);
     map.insert("underline", format.underline);
     map.insert("blink", format.blink);
     return map;

@@ -37,6 +37,7 @@ cntp_sourcelist(
 qt_add_library(libtheterminal-common SHARED
     ${SOURCES}
     libtheterminal-common-exports.h
+    screencolormanager.h screencolormanager.cpp
 )
 
 set_target_properties(libtheterminal-common PROPERTIES
@@ -45,6 +46,17 @@ set_target_properties(libtheterminal-common PROPERTIES
 target_compile_definitions(libtheterminal-common PRIVATE LIBTHETERMINAL_COMMON_LIBRARY)
 
 cntp_init(libtheterminal-common 20)
+
+qt_add_resources(libtheterminal-common libtheterminal_colorschemes
+    PREFIX /com/vicr123/theterminal/libtheterminal/colorschemes
+    BASE colorschemes
+    FILES
+        colorschemes/GreenOnBlack.colorscheme
+        colorschemes/Linux.colorscheme
+        colorschemes/Solarized.colorscheme
+        colorschemes/SolarizedLight.colorscheme
+        colorschemes/Ubuntu.colorscheme
+)
 
 install(EXPORT libtheterminalCommonTargets
         FILE libtheterminalCommonTargets.cmake

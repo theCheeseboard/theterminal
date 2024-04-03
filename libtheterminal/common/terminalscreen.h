@@ -2,6 +2,7 @@
 #define TERMINALSCREEN_H
 
 #include "libtheterminal-common-exports.h"
+#include "screencolormanager.h"
 #include <QObject>
 
 struct TerminalScreenPrivate;
@@ -32,6 +33,8 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
 
                         bool underline = false;
                         bool blink = false;
+                        ScreenColorManager::Color color = 0x00000102;
+                        ScreenColorManager::Color backgroundColor = 0x00000002;
                 } format;
         };
 

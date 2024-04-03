@@ -513,6 +513,8 @@ void VT100Emulation::csiSgr(QString escapeSequence) {
     auto format = d->screen->currentCharacterFormat();
     do {
         auto command = sgrCommands.takeFirst().toInt();
+        bool setBackground = true;
+        quint32* colorToSet = &format.backgroundColor;
         switch (command) {
             case 0: // reset
                 format = {};
@@ -528,6 +530,71 @@ void VT100Emulation::csiSgr(QString escapeSequence) {
                 break;
             case 25: // blink off
                 format.blink = false;
+                break;
+            case 30:
+            case 31:
+            case 32:
+            case 33:
+            case 34:
+            case 35:
+            case 36:
+            case 37: // Set foreground
+                format.color = ScreenColorManager::color8bit(command - 30);
+                break;
+            case 40:
+            case 41:
+            case 42:
+            case 43:
+            case 44:
+            case 45:
+            case 46:
+            case 47: // Set background
+                format.backgroundColor = ScreenColorManager::color8bit(command - 40);
+                break;
+            case 90:
+            case 91:
+            case 92:
+            case 93:
+            case 94:
+            case 95:
+            case 96:
+            case 97: // Set foreground intense
+                format.color = ScreenColorManager::color8bit(command - 82);
+                break;
+            case 100:
+            case 101:
+            case 102:
+            case 103:
+            case 104:
+            case 105:
+            case 106:
+            case 107: // Set background intense
+                format.backgroundColor = ScreenColorManager::color8bit(command - 92);
+                break;
+            case 38: // Set foreground extended
+                colorToSet = &format.color;
+                // fall through
+            case 48: // Set background extended
+                {
+                    auto mode = sgrCommands.takeFirst().toInt();
+                    if (mode == 5) {
+                        // 8 bit mode
+                        auto colorIndex = sgrCommands.takeFirst().toInt();
+                        *colorToSet = ScreenColorManager::color8bit(colorIndex);
+                    } else if (mode == 2) {
+                        // 24 bit mode
+                        auto r = sgrCommands.takeFirst().toInt();
+                        auto g = sgrCommands.takeFirst().toInt();
+                        auto b = sgrCommands.takeFirst().toInt();
+                        *colorToSet = ScreenColorManager::color24bit(r, g, b);
+                    }
+                    break;
+                }
+            case 39: // Set default foreground
+                format.color = ScreenColorManager::colorDefault(false);
+                break;
+            case 49: // Set default background
+                format.backgroundColor = ScreenColorManager::colorDefault(true);
                 break;
             default:
                 tWarn("VT100Emulation") << "Unknown SGR command: " << command;
