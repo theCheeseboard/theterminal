@@ -89,31 +89,27 @@ void VT100Emulation::setupStateMachine() {
     d->escapeStateMachine.addTransition(
         csi, [](QChar c) {
         return !(c.toLatin1() >= 0x40 && c.toLatin1() <= 0x7E);
-    },
-        csi);
+    }, csi);
 
     auto csiEnd = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::invokeCsi, this, std::placeholders::_1));
     d->escapeStateMachine.addTransition(
         csi, [](QChar c) {
         return c.toLatin1() >= 0x40 && c.toLatin1() <= 0x7E;
-    },
-        csiEnd);
+    }, csiEnd);
 
     auto osc = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(initialState, ']', osc);
     d->escapeStateMachine.addTransition(
         osc, [](QChar c) {
         return c.toLatin1() != '\x1B' && c.toLatin1() != '\x07';
-    },
-        osc);
+    }, osc);
 
     auto oscEscEnd = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(osc, '\x1B', oscEscEnd);
     d->escapeStateMachine.addTransition(
         oscEscEnd, [](QChar c) {
         return c.toLatin1() != '\\';
-    },
-        osc);
+    }, osc);
 
     auto oscEnd = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::invokeOsc, this, std::placeholders::_1));
     d->escapeStateMachine.addTransition(oscEscEnd, '\\', oscEnd);
@@ -246,8 +242,7 @@ void VT100Emulation::setupCsiStateMachine() {
     d->csiStateMachine.addTransition(
         {csi, sgrData}, [](QChar c) {
         return (c >= '0' && c <= '9') || c == ';';
-    },
-        sgrData);
+    }, sgrData);
 
     auto sgr = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiSgr, this, std::placeholders::_1));
     d->csiStateMachine.addTransition({csi, sgrData}, 'm', sgr);
@@ -257,6 +252,16 @@ void VT100Emulation::setupCsiStateMachine() {
 
     auto popCaret = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::popCaret, this));
     d->escapeStateMachine.addTransition(csi, 'u', popCaret);
+
+    auto deviceStatusReport = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(csi, '6', deviceStatusReport);
+
+    auto deviceStatusReportComplete = d->escapeStateMachine.addFinalState([this](QString escapeCode) {
+        // Respond to the Device Status Report
+        // Row and column are 1-indexed
+        write(QStringLiteral("\x1B[%1;%2R").arg(d->screen->caretRow() + 1, d->screen->caretCol() + 1));
+    });
+    d->escapeStateMachine.addTransition(deviceStatusReport, 'n', deviceStatusReportComplete);
 
     auto mode = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(csi, '?', mode);
