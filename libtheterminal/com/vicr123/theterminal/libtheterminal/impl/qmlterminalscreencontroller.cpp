@@ -11,9 +11,12 @@
 struct QmlTerminalScreenControllerPrivate {
         IPty* pty = nullptr;
         TerminalScreen* terminalScreen = nullptr;
-        QMap<int, QVariantList> cachedRuns;
+        QHash<int, QVariantList> cachedRuns;
 
         VT100Emulation* emulation = nullptr;
+
+        QTimer* rowUpdateTimer;
+        QSet<int> rowsToUpdate;
 };
 
 QmlTerminalScreenController::QmlTerminalScreenController(QObject* parent) :
@@ -33,17 +36,27 @@ QmlTerminalScreenController::QmlTerminalScreenController(QObject* parent) :
     connect(d->terminalScreen, &TerminalScreen::caretRowChanged, this, &QmlTerminalScreenController::caretRowChanged);
     connect(d->terminalScreen, &TerminalScreen::rowContentChanged, this, [this](int row) {
         d->cachedRuns.remove(row);
-        emit rowContentChanged(row);
+        queueRowUpdate(row);
     });
     connect(d->terminalScreen, &TerminalScreen::historyRolled, this, [this] {
         for (auto i = 0; i < d->terminalScreen->rows(); i++) {
             if (d->cachedRuns.contains(i + 1)) {
                 d->cachedRuns.insert(i, d->cachedRuns.value(i + 1));
             }
-            emit rowContentChanged(i);
+            queueRowUpdate(i);
         }
         d->cachedRuns.remove(d->terminalScreen->rows() - 1);
-        emit rowContentChanged(d->terminalScreen->rows() - 1);
+        queueRowUpdate(d->terminalScreen->rows() - 1);
+    });
+
+    d->rowUpdateTimer = new QTimer(this);
+    d->rowUpdateTimer->setInterval(0);
+    d->rowUpdateTimer->setSingleShot(true);
+    connect(d->rowUpdateTimer, &QTimer::timeout, this, [this] {
+        for (auto row : std::as_const(d->rowsToUpdate)) {
+            emit rowContentChanged(row);
+        }
+        d->rowsToUpdate.clear();
     });
 }
 
@@ -151,4 +164,9 @@ QVariantMap QmlTerminalScreenController::initFormat(TerminalScreen::CharacterSpa
     map.insert("underline", format.underline);
     map.insert("blink", format.blink);
     return map;
+}
+
+void QmlTerminalScreenController::queueRowUpdate(int row) {
+    d->rowsToUpdate.insert(row);
+    d->rowUpdateTimer->start();
 }

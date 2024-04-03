@@ -46,6 +46,7 @@ class QmlTerminalScreenController : public QObject {
         QmlTerminalScreenControllerPrivate* d;
 
         QVariantMap initFormat(TerminalScreen::CharacterSpace::CharacterFormat format);
+        void queueRowUpdate(int row);
 };
 
 #endif // QMLTERMINALSCREENCONTROLLER_H
