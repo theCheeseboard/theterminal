@@ -16,6 +16,7 @@ struct VT100EmulationPrivate {
         TerminalStateMachine csiStateMachine;
 
         bool autowrap = true;
+        bool crlfMode = false;
 
         int savedCaretRow = 0;
         int savedCaretCol = 0;
@@ -57,7 +58,11 @@ void VT100Emulation::pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QStr
 #endif
 
     if (key == Qt::Key_Return) {
-        this->write("\n");
+        if (d->crlfMode) {
+            this->write("\r\n");
+        } else {
+            this->write("\n");
+        }
         return;
     } else if (key == Qt::Key_Left) {
         this->write("\x1B[D");
@@ -81,26 +86,34 @@ void VT100Emulation::setupStateMachine() {
 
     auto csi = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(initialState, '[', csi);
-    d->escapeStateMachine.addTransition(csi, [](QChar c) {
+    d->escapeStateMachine.addTransition(
+        csi, [](QChar c) {
         return !(c.toLatin1() >= 0x40 && c.toLatin1() <= 0x7E);
-    }, csi);
+    },
+        csi);
 
     auto csiEnd = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::invokeCsi, this, std::placeholders::_1));
-    d->escapeStateMachine.addTransition(csi, [](QChar c) {
+    d->escapeStateMachine.addTransition(
+        csi, [](QChar c) {
         return c.toLatin1() >= 0x40 && c.toLatin1() <= 0x7E;
-    }, csiEnd);
+    },
+        csiEnd);
 
     auto osc = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(initialState, ']', osc);
-    d->escapeStateMachine.addTransition(osc, [](QChar c) {
+    d->escapeStateMachine.addTransition(
+        osc, [](QChar c) {
         return c.toLatin1() != '\x1B' && c.toLatin1() != '\x07';
-    }, osc);
+    },
+        osc);
 
     auto oscEscEnd = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(osc, '\x1B', oscEscEnd);
-    d->escapeStateMachine.addTransition(oscEscEnd, [](QChar c) {
+    d->escapeStateMachine.addTransition(
+        oscEscEnd, [](QChar c) {
         return c.toLatin1() != '\\';
-    }, osc);
+    },
+        osc);
 
     auto oscEnd = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::invokeOsc, this, std::placeholders::_1));
     d->escapeStateMachine.addTransition(oscEscEnd, '\\', oscEnd);
@@ -230,9 +243,11 @@ void VT100Emulation::setupCsiStateMachine() {
     d->csiStateMachine.addTransition({csi, csrN, csrM}, 'f', cursorPosition);
 
     auto sgrData = d->csiStateMachine.addState();
-    d->csiStateMachine.addTransition({csi, sgrData}, [](QChar c) {
+    d->csiStateMachine.addTransition(
+        {csi, sgrData}, [](QChar c) {
         return (c >= '0' && c <= '9') || c == ';';
-    }, sgrData);
+    },
+        sgrData);
 
     auto sgr = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiSgr, this, std::placeholders::_1));
     d->csiStateMachine.addTransition({csi, sgrData}, 'm', sgr);
@@ -246,18 +261,33 @@ void VT100Emulation::setupCsiStateMachine() {
     auto mode = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(csi, '?', mode);
 
-    auto autowrapMode = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(mode, '7', autowrapMode);
+    auto columnMode = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(mode, '3', columnMode);
 
-    auto autowrapModeOn = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
-        d->autowrap = true;
+    auto setColumnMode = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        // We don't support this escape code but we do need to erase the screen
+        csiEraseInDisplay("[3J");
+        d->screen->setCaretCol(0);
+        d->screen->setCaretRow(0);
     });
-    d->escapeStateMachine.addTransition(autowrapMode, 'h', autowrapModeOn);
+    d->escapeStateMachine.addTransition(columnMode, 'h', setColumnMode);
+    d->escapeStateMachine.addTransition(columnMode, 'l', setColumnMode);
 
-    auto autowrapModeOff = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
-        d->autowrap = false;
+    auto textCursorMode = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(mode, '2', textCursorMode);
+
+    auto crlfMode = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(textCursorMode, '0', crlfMode);
+
+    auto crlfModeOn = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->crlfMode = true;
     });
-    d->escapeStateMachine.addTransition(autowrapMode, 'l', autowrapModeOff);
+    d->escapeStateMachine.addTransition(crlfMode, 'h', crlfModeOn);
+
+    auto crlfModeOnOff = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->crlfMode = false;
+    });
+    d->escapeStateMachine.addTransition(crlfMode, 'l', crlfModeOnOff);
 
     auto screenInversionMode = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(mode, '5', screenInversionMode);
@@ -271,6 +301,19 @@ void VT100Emulation::setupCsiStateMachine() {
         d->screen->setInvertScreen(false);
     });
     d->escapeStateMachine.addTransition(screenInversionMode, 'l', screenInversionModeOff);
+
+    auto autowrapMode = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(mode, '7', autowrapMode);
+
+    auto autowrapModeOn = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->autowrap = true;
+    });
+    d->escapeStateMachine.addTransition(autowrapMode, 'h', autowrapModeOn);
+
+    auto autowrapModeOff = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->autowrap = false;
+    });
+    d->escapeStateMachine.addTransition(autowrapMode, 'l', autowrapModeOff);
 }
 
 void VT100Emulation::processCharacter(QChar c) {
@@ -351,6 +394,10 @@ void VT100Emulation::echo(QChar c) {
             d->screen->setCaretRow(d->screen->rows() - 1);
         } else {
             d->screen->setCaretRow(d->screen->caretRow() + 1);
+        }
+
+        if (d->crlfMode) {
+            d->screen->setCaretCol(0);
         }
     } else if (c == '\b') {
         d->screen->setCaretCol(d->screen->caretCol() - 1);
