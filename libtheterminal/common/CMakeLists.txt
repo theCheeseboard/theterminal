@@ -51,8 +51,10 @@ qt_add_resources(libtheterminal-common libtheterminal_colorschemes
     PREFIX /com/vicr123/theterminal/libtheterminal/colorschemes
     BASE colorschemes
     FILES
+        colorschemes/Campbell.colorscheme
         colorschemes/GreenOnBlack.colorscheme
         colorschemes/Linux.colorscheme
+        colorschemes/PowerShell.colorscheme
         colorschemes/Solarized.colorscheme
         colorschemes/SolarizedLight.colorscheme
         colorschemes/Ubuntu.colorscheme

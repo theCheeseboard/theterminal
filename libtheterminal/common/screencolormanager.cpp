@@ -101,14 +101,14 @@ void ScreenColorManager::loadColorDefinition(QString colorDefinition) {
         }
 
         auto color = settings.value(QStringLiteral("%1/Color").arg(baseName)).toStringList();
-        buf[0] = color.at(0).toInt();
+        buf[2] = color.at(0).toInt();
         buf[1] = color.at(1).toInt();
-        buf[2] = color.at(2).toInt();
+        buf[0] = color.at(2).toInt();
         memcpy(d->colors.data() + index * 4, buf, 4);
         auto colorIntense = settings.value(QStringLiteral("%1Intense/Color").arg(baseName)).toStringList();
-        buf[0] = colorIntense.at(0).toInt();
+        buf[2] = colorIntense.at(0).toInt();
         buf[1] = colorIntense.at(1).toInt();
-        buf[2] = colorIntense.at(2).toInt();
+        buf[0] = colorIntense.at(2).toInt();
         memcpy(d->colors.data() + intenseIndex * 4, buf, 4);
     }
 

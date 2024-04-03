@@ -252,9 +252,9 @@ void VT100Emulation::processCharacter(QChar c) {
     switch (c.unicode()) {
             //     case 0x0: // Null
             //         return;
-        case 0x7: // Bell
-            echo('\x7');
-            return;
+        // case 0x7: // Bell
+        //     echo('\x7');
+        //     return;
         case 0x8: // Backspace
             echo('\b');
             return;
