@@ -33,6 +33,7 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
 
                         bool underline = false;
                         bool blink = false;
+                        bool invert = false;
                         ScreenColorManager::Color color = 0x00000102;
                         ScreenColorManager::Color backgroundColor = 0x00000002;
                 } format;

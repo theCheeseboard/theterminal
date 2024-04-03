@@ -525,11 +525,17 @@ void VT100Emulation::csiSgr(QString escapeSequence) {
             case 5: // blink
                 format.blink = true;
                 break;
+            case 7: // invert
+                format.invert = true;
+                break;
             case 24: // underline off
                 format.underline = true;
                 break;
             case 25: // blink off
                 format.blink = false;
+                break;
+            case 27: // invert off
+                format.invert = false;
                 break;
             case 30:
             case 31:
