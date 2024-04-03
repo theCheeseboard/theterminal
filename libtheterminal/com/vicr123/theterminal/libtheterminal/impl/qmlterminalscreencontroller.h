@@ -13,6 +13,7 @@ class QmlTerminalScreenController : public QObject {
         Q_PROPERTY(int caretCol READ caretCol NOTIFY caretColChanged FINAL)
         Q_PROPERTY(int caretRow READ caretRow NOTIFY caretRowChanged FINAL)
         Q_PROPERTY(quint64 scrollbackLines READ scrollbackLines NOTIFY scrollbackLinesChanged FINAL)
+        Q_PROPERTY(bool invertScreen READ invertScreen NOTIFY invertScreenChanged FINAL)
         QML_ELEMENT
     public:
         explicit QmlTerminalScreenController(QObject* parent = nullptr);
@@ -26,6 +27,8 @@ class QmlTerminalScreenController : public QObject {
 
         int caretCol();
         int caretRow();
+
+        bool invertScreen();
 
         quint64 scrollbackLines();
 
@@ -41,6 +44,7 @@ class QmlTerminalScreenController : public QObject {
         void caretRowChanged();
         void scrollbackLinesChanged();
         Q_SCRIPTABLE void rowContentChanged(int row);
+        void invertScreenChanged();
 
     private:
         QmlTerminalScreenControllerPrivate* d;

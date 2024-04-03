@@ -50,6 +50,13 @@ QmlTerminalScreenController::QmlTerminalScreenController(QObject* parent) :
         d->cachedRuns.remove(d->terminalScreen->rows() - 1);
         queueRowUpdate(d->terminalScreen->rows() - 1);
     });
+    connect(d->terminalScreen, &TerminalScreen::invertScreenChanged, this, [this] {
+        d->cachedRuns.clear();
+        for (auto i = 0; i < d->terminalScreen->rows(); i++) {
+            queueRowUpdate(i);
+        }
+        emit invertScreenChanged();
+    });
 
     d->rowUpdateTimer = new QTimer(this);
     d->rowUpdateTimer->setInterval(0);
@@ -88,6 +95,10 @@ int QmlTerminalScreenController::caretCol() {
 
 int QmlTerminalScreenController::caretRow() {
     return d->terminalScreen->caretRow();
+}
+
+bool QmlTerminalScreenController::invertScreen() {
+    return d->terminalScreen->invertScreen();
 }
 
 quint64 QmlTerminalScreenController::scrollbackLines() {
@@ -164,7 +175,7 @@ QVariantMap QmlTerminalScreenController::initFormat(TerminalScreen::CharacterSpa
     auto backgroundColor = d->screenColorManager.decodeColor(format.backgroundColor);
 
     QVariantMap map;
-    if (format.invert) {
+    if (format.invert ^ d->terminalScreen->invertScreen()) {
         map.insert("color", backgroundColor);
         map.insert("backgroundColor", color);
     } else {

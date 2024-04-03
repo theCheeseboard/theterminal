@@ -11,6 +11,8 @@ struct TerminalScreenPrivate {
         int caretCol = 0;
         int caretRow = 0;
 
+        bool invertScreen = false;
+
         TerminalScreen::CharacterSpace::CharacterFormat currentFormat;
 
         QList<CharacterLine> characters;
@@ -105,6 +107,15 @@ void TerminalScreen::setCurrentCharacterFormat(CharacterSpace::CharacterFormat f
 
 TerminalScreen::CharacterSpace::CharacterFormat TerminalScreen::currentCharacterFormat() {
     return d->currentFormat;
+}
+
+bool TerminalScreen::invertScreen() {
+    return d->invertScreen;
+}
+
+void TerminalScreen::setInvertScreen(bool invertScreen) {
+    d->invertScreen = invertScreen;
+    emit invertScreenChanged();
 }
 
 void TerminalScreen::setCharacter(int col, int row, CharacterSpace character) {

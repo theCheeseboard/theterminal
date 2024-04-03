@@ -247,7 +247,7 @@ void VT100Emulation::setupCsiStateMachine() {
     d->escapeStateMachine.addTransition(csi, '?', mode);
 
     auto autowrapMode = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(csi, '7', autowrapMode);
+    d->escapeStateMachine.addTransition(mode, '7', autowrapMode);
 
     auto autowrapModeOn = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
         d->autowrap = true;
@@ -258,6 +258,19 @@ void VT100Emulation::setupCsiStateMachine() {
         d->autowrap = false;
     });
     d->escapeStateMachine.addTransition(autowrapMode, 'l', autowrapModeOff);
+
+    auto screenInversionMode = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(mode, '5', screenInversionMode);
+
+    auto screenInversionModeOn = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->screen->setInvertScreen(true);
+    });
+    d->escapeStateMachine.addTransition(screenInversionMode, 'h', screenInversionModeOn);
+
+    auto screenInversionModeOff = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->screen->setInvertScreen(false);
+    });
+    d->escapeStateMachine.addTransition(screenInversionMode, 'l', screenInversionModeOff);
 }
 
 void VT100Emulation::processCharacter(QChar c) {
