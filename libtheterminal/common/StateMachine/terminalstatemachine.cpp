@@ -137,3 +137,16 @@ void TerminalStateMachine::addTransition(QList<quint64> state1s, StateTransition
         addTransition(state, function, state2);
     }
 }
+
+void TerminalStateMachine::addTransition(quint64 state1, QString transitions, quint64 state2) {
+    QList<quint64> states;
+    states.append(state1);
+    for (auto i = 0; i < transitions.length() - 1; i++) {
+        states.append(this->addState());
+    }
+    states.append(state2);
+
+    for (auto c : transitions) {
+        addTransition(states.takeFirst(), c, states.first());
+    }
+}

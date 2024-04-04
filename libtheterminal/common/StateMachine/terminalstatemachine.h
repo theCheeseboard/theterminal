@@ -30,6 +30,7 @@ class TerminalStateMachine : public QObject {
         void addTransition(QList<quint64> state1s, QChar c, quint64 state2);
         void addTransition(quint64 state1, StateTransitionFunction function, quint64 state2);
         void addTransition(QList<quint64> state1s, StateTransitionFunction function, quint64 state2);
+        void addTransition(quint64 state1, QString transitions, quint64 state2);
 
     signals:
 

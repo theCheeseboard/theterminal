@@ -61,9 +61,8 @@ void VT100Emulation::pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QStr
 #endif
 
     if (key == Qt::Key_Return) {
+        this->write("\r");
         if (d->crlfMode) {
-            this->write("\r\n");
-        } else {
             this->write("\n");
         }
         return;
@@ -261,15 +260,18 @@ void VT100Emulation::setupCsiStateMachine() {
     auto popCaret = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::popCaret, this));
     d->escapeStateMachine.addTransition(csi, 'u', popCaret);
 
-    auto deviceStatusReport = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(csi, '6', deviceStatusReport);
+    auto deviceStatusReportStatus = d->escapeStateMachine.addFinalState([this](QString escapeCode) {
+        // Respond with OK
+        write(QStringLiteral("\x1B[0n"));
+    });
+    d->escapeStateMachine.addTransition(csi, "5n", deviceStatusReportStatus);
 
-    auto deviceStatusReportComplete = d->escapeStateMachine.addFinalState([this](QString escapeCode) {
+    auto deviceStatusReportCursorPos = d->escapeStateMachine.addFinalState([this](QString escapeCode) {
         // Respond to the Device Status Report
         // Row and column are 1-indexed
-        write(QStringLiteral("\x1B[%1;%2R").arg(d->screen->caretRow() + 1, d->screen->caretCol() + 1));
+        write(QStringLiteral("\x1B[%1;%2R").arg(d->screen->caretRow() + 1).arg(d->screen->caretCol() + 1));
     });
-    d->escapeStateMachine.addTransition(deviceStatusReport, 'n', deviceStatusReportComplete);
+    d->escapeStateMachine.addTransition(csi, "6n", deviceStatusReportCursorPos);
 
     auto mode = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(csi, '?', mode);
@@ -319,7 +321,7 @@ void VT100Emulation::setupCsiStateMachine() {
     d->escapeStateMachine.addTransition(columnMode, 'l', setColumnMode);
 
     auto textCursorMode = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(mode, '2', textCursorMode);
+    d->escapeStateMachine.addTransition(csi, '2', textCursorMode);
 
     auto crlfMode = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(textCursorMode, '0', crlfMode);
