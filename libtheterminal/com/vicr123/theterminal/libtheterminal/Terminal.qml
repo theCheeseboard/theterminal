@@ -70,6 +70,7 @@ Item {
                         }
                     }
                     Repeater {
+                        id: screenRowsRepeater
                         model: screen.rows
                         Row {
                             id: screenRow
@@ -119,8 +120,8 @@ Item {
                     id: caret
                     visible: screen.activeFocus
                     x: fontMetrics.averageCharacterWidth * controller.caretCol
-                    y: (fontMetrics.height + 1) * controller.caretRow
-                    height: fontMetrics.height
+                    y: screenRowsRepeater.itemAt(controller.caretRow).mapToItem(screen, 0, 0).y
+                    height: screenRowsRepeater.itemAt(controller.caretRow).childrenRect.height
                     width: fontMetrics.averageCharacterWidth
                     color: "white"
 

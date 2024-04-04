@@ -260,6 +260,13 @@ void VT100Emulation::setupCsiStateMachine() {
     auto popCaret = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::popCaret, this));
     d->escapeStateMachine.addTransition(csi, 'u', popCaret);
 
+    auto whatAreYou = d->csiStateMachine.addFinalState([this](QString escapeCode) {
+        // Respond with 2 (AVO)
+        write(QStringLiteral("\x1B[?1;2c"));
+    });
+    d->escapeStateMachine.addTransition(csi, 'c', whatAreYou);
+    d->escapeStateMachine.addTransition(csi, "0c", whatAreYou);
+
     auto deviceStatusReportStatus = d->escapeStateMachine.addFinalState([this](QString escapeCode) {
         // Respond with OK
         write(QStringLiteral("\x1B[0n"));
@@ -361,6 +368,11 @@ void VT100Emulation::setupCsiStateMachine() {
         d->autowrap = false;
     });
     d->escapeStateMachine.addTransition(autowrapMode, 'l', autowrapModeOff);
+
+    auto tab8Mode = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->tabStops.clear();
+    });
+    d->escapeStateMachine.addTransition(mode, "5W", tab8Mode);
 
     auto clearTab = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(csi, '0', clearTab);

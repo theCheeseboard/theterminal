@@ -38,7 +38,7 @@ int TerminalScreen::cols() {
 }
 
 void TerminalScreen::setCols(int cols) {
-    if (cols < 0) cols = 0;
+    if (cols < 1) return;
 
     d->cols = cols;
     for (const auto& row : d->characters) {
@@ -56,7 +56,7 @@ int TerminalScreen::rows() {
 }
 
 void TerminalScreen::setRows(int rows) {
-    if (rows < 1) rows = 1;
+    if (rows < 1) return;
 
     if (rows < d->rows) {
         // TODO: Move everything

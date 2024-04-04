@@ -16,32 +16,38 @@ ContemporaryWindow {
     title: qsTr("theTerminal")
     visible: true
 
+    function hk_(shortcut) {
+        if (Qt.platform.os === "osx") {
+            return shortcut[0];
+        } else {
+            return `Shift+${shortcut[0]}`;
+        }
+    }
+
     NativeMenuBar {
         Labs.Menu {
             title: qsTr("&File")
 
             Labs.MenuItem {
+                text: qsTr("&New Tab")
+                shortcut: hk_`Ctrl+T`
+                onTriggered: () => {
+                    surface.newTab()
+                    stack.currentIndex = stack.pages.length - 1
+                }
+            }
+            Labs.MenuItem {
+                text: qsTr("&Close Tab")
+                shortcut: hk_`Ctrl+W`
+                onTriggered: () => {
+                    surface.closeTab(stack.currentIndex)
+                }
+            }
+
+            Labs.MenuItem {
+                shortcut: hk_`Ctrl+Q`
                 text: qsTr("&Quit")
-
                 onTriggered: Qt.quit()
-            }
-        }
-        Labs.Menu {
-            title: qsTr("&Theme")
-
-            Labs.MenuItem {
-                id: lightAction
-                text: qsTr("Light")
-                checked: Contemporary.colorTheme == Contemporary.Light
-                checkable: true
-                onCheckedChanged: lightAction.checked && Contemporary.setColorTheme(Contemporary.Light)
-            }
-            Labs.MenuItem {
-                id: darkAction
-                text: qsTr("Dark")
-                checked: Contemporary.colorTheme == Contemporary.Dark
-                checkable: true
-                onCheckedChanged: darkAction.checked && Contemporary.setColorTheme(Contemporary.Dark)
             }
         }
         Labs.Menu {
@@ -61,8 +67,46 @@ ContemporaryWindow {
         currentAnimation: ContemporaryStackView.Animation.Lift
 
         initialItem: ContemporaryWindowSurface {
+            id: surface
+            ListModel {
+                id: terminals
+            }
+
+            function newTab() {
+                stack.pages.push(terminalComponent.createObject(stack))
+                terminals.append({
+                    title: qsTr("Terminal")
+                });
+            }
+
+            function closeTab(index) {
+                const page = stack.pages.shift(index);
+                terminals.remove(index);
+                page.destroy();
+            }
+
             actionBar: ActionBar {
                 menuItems: [
+                    Action {
+                        shortcut: hk_`Ctrl+T`
+                        text: qsTr("New Tab")
+                        icon.name: "tab-new"
+
+                        onTriggered: () => {
+                                         surface.newTab()
+                                         stack.currentIndex = stack.pages.length - 1
+                                     }
+                    },
+                    MenuSeparator {},
+                    Action {
+                        shortcut: hk_`Ctrl+W`
+                        text: qsTr("Close Tab")
+                        icon.name: "tab-close"
+
+                        onTriggered: () => {
+                                         surface.closeTab()
+                                     }
+                    },
                     Menu {
                         title: qsTr("Help")
 
@@ -72,7 +116,7 @@ ContemporaryWindow {
                         }
                     },
                     Action {
-                        shortcut: "Ctrl+Q"
+                        shortcut: hk_`Ctrl+Q`
                         text: qsTr("Exit")
 
                         onTriggered: window.close()
@@ -80,16 +124,28 @@ ContemporaryWindow {
                 ]
 
                 ActionBarTabber {
-                    ActionBarTabber.Button {
-                        text: qsTr("Components")
-                        checked: stack.currentIndex === 0
-                        onActivated: stack.currentIndex = 0
+                    Repeater {
+                        model: terminals
+
+                        ActionBarTabber.Button {
+                            required property int index
+                            required property string title
+                            text: title
+                            checked: stack.currentIndex === index
+                            onActivated: stack.currentIndex = index
+                        }
                     }
-                    ActionBarTabber.Button {
-                        text: qsTr("Patterns")
-                        checked: stack.currentIndex === 1
-                        onActivated: stack.currentIndex = 1
-                    }
+                }
+
+                Button {
+                    id: newTabButton
+                    flat: true
+                    icon.name: "tab-new"
+                    implicitWidth: newTabButton.height
+                    onClicked: () => {
+                                   surface.newTab()
+                                   stack.currentIndex = stack.pages.length - 1
+                               }
                 }
             }
             overlayActionBar: true
@@ -97,8 +153,16 @@ ContemporaryWindow {
             Pager {
                 id: stack
                 anchors.fill: parent
+                pages: []
+            }
 
+            Component {
+                id: terminalComponent
                 Terminal {}
+            }
+
+            Component.onCompleted: () => {
+                newTab();
             }
         }
 

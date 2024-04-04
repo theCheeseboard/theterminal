@@ -9,63 +9,63 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Main.qml" line="21"/>
+        <location filename="../Main.qml" line="29"/>
         <source>&amp;File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Main.qml" line="24"/>
+        <location filename="../Main.qml" line="32"/>
+        <source>&amp;New Tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Main.qml" line="40"/>
+        <source>&amp;Close Tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Main.qml" line="49"/>
         <source>&amp;Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Main.qml" line="30"/>
-        <source>&amp;Theme</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Main.qml" line="34"/>
-        <source>Light</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Main.qml" line="41"/>
-        <source>Dark</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Main.qml" line="48"/>
+        <location filename="../Main.qml" line="54"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Main.qml" line="51"/>
+        <location filename="../Main.qml" line="57"/>
         <source>&amp;About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Main.qml" line="67"/>
+        <location filename="../Main.qml" line="92"/>
+        <source>New Tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Main.qml" line="103"/>
+        <source>Close Tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Main.qml" line="111"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Main.qml" line="70"/>
+        <location filename="../Main.qml" line="114"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Main.qml" line="76"/>
+        <location filename="../Main.qml" line="120"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Main.qml" line="84"/>
-        <source>Components</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Main.qml" line="89"/>
-        <source>Patterns</source>
+        <location filename="../Main.qml" line="78"/>
+        <source>Terminal</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
