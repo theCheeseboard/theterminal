@@ -22,6 +22,7 @@ struct VT100EmulationPrivate {
         int savedCaretCol = 0;
         bool savedCaretAutowrap = false;
         TerminalScreen::CharacterSpace::CharacterFormat savedCaretFormat;
+        QString** savedCharacterSet = &characterSetG0;
 
         QSet<int> tabStops;
 
@@ -465,7 +466,7 @@ void VT100Emulation::echo(QChar c) {
         do {
             d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), TerminalScreen::emptyChar());
             d->screen->setCaretCol(d->screen->caretCol() + 1);
-        } while (!d->tabStops.contains(d->screen->caretCol()) && d->screen->caretCol() != d->screen->cols() - 1);
+        } while ((d->tabStops.isEmpty() ? d->screen->caretCol() % 8 == 0 : !d->tabStops.contains(d->screen->caretCol())) && d->screen->caretCol() != d->screen->cols() - 1);
     } else {
         QChar echoedCharacter = c;
         if (*d->currentCharacterSet) {
@@ -773,11 +774,15 @@ void VT100Emulation::invokeOsc(QString osc) {
 void VT100Emulation::pushCaret() {
     d->savedCaretCol = d->screen->caretCol();
     d->savedCaretRow = d->screen->caretRow();
+    d->savedCaretFormat = d->screen->currentCharacterFormat();
     d->savedCaretAutowrap = d->autowrap;
+    d->savedCharacterSet = d->currentCharacterSet;
 }
 
 void VT100Emulation::popCaret() {
     d->screen->setCaretCol(d->savedCaretCol);
     d->screen->setCaretRow(d->savedCaretRow);
+    d->screen->setCurrentCharacterFormat(d->savedCaretFormat);
     d->autowrap = d->savedCaretAutowrap;
+    d->currentCharacterSet = d->savedCharacterSet;
 }
