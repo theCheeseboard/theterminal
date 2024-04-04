@@ -117,9 +117,11 @@ quint64 TerminalStateMachine::addFinalState(AcceptFunction function) {
 }
 
 void TerminalStateMachine::addTransition(quint64 state1, QChar c, quint64 state2) {
-    addTransition(state1, [c](QChar nextChar) {
+    addTransition(
+        state1, [c](QChar nextChar) {
         return nextChar == c;
-    }, state2);
+    },
+        state2);
 }
 
 void TerminalStateMachine::addTransition(QList<quint64> state1s, QChar c, quint64 state2) {
@@ -147,6 +149,8 @@ void TerminalStateMachine::addTransition(quint64 state1, QString transitions, qu
     states.append(state2);
 
     for (auto c : transitions) {
-        addTransition(states.takeFirst(), c, states.first());
+        auto firstState = states.takeFirst();
+        auto secondState = states.first();
+        addTransition(firstState, c, secondState);
     }
 }

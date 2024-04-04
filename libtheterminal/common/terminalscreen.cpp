@@ -60,6 +60,9 @@ void TerminalScreen::setRows(int rows) {
 
     if (rows < d->rows) {
         // TODO: Move everything
+        for (auto i = rows; i < d->rows; i++) {
+            pushToHistory();
+        }
     }
     d->characters.resize(rows);
     d->rowScaleModes.resize(rows);

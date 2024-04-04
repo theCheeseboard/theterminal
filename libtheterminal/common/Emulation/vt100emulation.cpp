@@ -91,27 +91,31 @@ void VT100Emulation::setupStateMachine() {
     d->escapeStateMachine.addTransition(
         csi, [](QChar c) {
         return !(c.toLatin1() >= 0x40 && c.toLatin1() <= 0x7E);
-    }, csi);
+    },
+        csi);
 
     auto csiEnd = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::invokeCsi, this, std::placeholders::_1));
     d->escapeStateMachine.addTransition(
         csi, [](QChar c) {
         return c.toLatin1() >= 0x40 && c.toLatin1() <= 0x7E;
-    }, csiEnd);
+    },
+        csiEnd);
 
     auto osc = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(initialState, ']', osc);
     d->escapeStateMachine.addTransition(
         osc, [](QChar c) {
         return c.toLatin1() != '\x1B' && c.toLatin1() != '\x07';
-    }, osc);
+    },
+        osc);
 
     auto oscEscEnd = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(osc, '\x1B', oscEscEnd);
     d->escapeStateMachine.addTransition(
         oscEscEnd, [](QChar c) {
         return c.toLatin1() != '\\';
-    }, osc);
+    },
+        osc);
 
     auto oscEnd = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::invokeOsc, this, std::placeholders::_1));
     d->escapeStateMachine.addTransition(oscEscEnd, '\\', oscEnd);
@@ -249,142 +253,143 @@ void VT100Emulation::setupCsiStateMachine() {
     d->csiStateMachine.addTransition(
         {csi, sgrData}, [](QChar c) {
         return (c >= '0' && c <= '9') || c == ';';
-    }, sgrData);
+    },
+        sgrData);
 
     auto sgr = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiSgr, this, std::placeholders::_1));
     d->csiStateMachine.addTransition({csi, sgrData}, 'm', sgr);
 
-    auto pushCaret = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::pushCaret, this));
-    d->escapeStateMachine.addTransition(csi, 's', pushCaret);
+    auto pushCaret = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::pushCaret, this));
+    d->csiStateMachine.addTransition(csi, 's', pushCaret);
 
-    auto popCaret = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::popCaret, this));
-    d->escapeStateMachine.addTransition(csi, 'u', popCaret);
+    auto popCaret = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::popCaret, this));
+    d->csiStateMachine.addTransition(csi, 'u', popCaret);
 
     auto whatAreYou = d->csiStateMachine.addFinalState([this](QString escapeCode) {
         // Respond with 2 (AVO)
         write(QStringLiteral("\x1B[?1;2c"));
     });
-    d->escapeStateMachine.addTransition(csi, 'c', whatAreYou);
-    d->escapeStateMachine.addTransition(csi, "0c", whatAreYou);
+    d->csiStateMachine.addTransition(csi, 'c', whatAreYou);
+    d->csiStateMachine.addTransition(csi, "0c", whatAreYou);
 
-    auto deviceStatusReportStatus = d->escapeStateMachine.addFinalState([this](QString escapeCode) {
+    auto deviceStatusReportStatus = d->csiStateMachine.addFinalState([this](QString escapeCode) {
         // Respond with OK
         write(QStringLiteral("\x1B[0n"));
     });
-    d->escapeStateMachine.addTransition(csi, "5n", deviceStatusReportStatus);
+    d->csiStateMachine.addTransition(csi, "5n", deviceStatusReportStatus);
 
-    auto deviceStatusReportCursorPos = d->escapeStateMachine.addFinalState([this](QString escapeCode) {
+    auto deviceStatusReportCursorPos = d->csiStateMachine.addFinalState([this](QString escapeCode) {
         // Respond to the Device Status Report
         // Row and column are 1-indexed
         write(QStringLiteral("\x1B[%1;%2R").arg(d->screen->caretRow() + 1).arg(d->screen->caretCol() + 1));
     });
-    d->escapeStateMachine.addTransition(csi, "6n", deviceStatusReportCursorPos);
+    d->csiStateMachine.addTransition(csi, "6n", deviceStatusReportCursorPos);
 
-    auto mode = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(csi, '?', mode);
+    auto mode = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(csi, '?', mode);
 
-    auto cursorKeyApplicationMode = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(mode, '1', cursorKeyApplicationMode);
+    auto cursorKeyApplicationMode = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(mode, '1', cursorKeyApplicationMode);
 
-    auto blinkMode = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(cursorKeyApplicationMode, '2', blinkMode);
+    auto blinkMode = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(cursorKeyApplicationMode, '2', blinkMode);
 
-    auto blinkModeOn = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+    auto blinkModeOn = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
         // TODO
     });
-    d->escapeStateMachine.addTransition(blinkMode, 'h', blinkModeOn);
+    d->csiStateMachine.addTransition(blinkMode, 'h', blinkModeOn);
 
-    auto blinkModeOff = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+    auto blinkModeOff = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
         // TODO
     });
-    d->escapeStateMachine.addTransition(blinkMode, 'l', blinkModeOff);
+    d->csiStateMachine.addTransition(blinkMode, 'l', blinkModeOff);
 
-    auto cursorMode = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(mode, '2', cursorMode);
+    auto cursorMode = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(mode, '2', cursorMode);
 
-    auto cursorMode2 = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(cursorMode, '5', cursorMode2);
+    auto cursorMode2 = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(cursorMode, '5', cursorMode2);
 
-    auto cursorModeOn = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+    auto cursorModeOn = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
         // TODO
     });
-    d->escapeStateMachine.addTransition(cursorMode2, 'h', cursorModeOn);
+    d->csiStateMachine.addTransition(cursorMode2, 'h', cursorModeOn);
 
-    auto cursorModeOff = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+    auto cursorModeOff = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
         // TODO
     });
-    d->escapeStateMachine.addTransition(cursorMode2, 'l', cursorModeOff);
+    d->csiStateMachine.addTransition(cursorMode2, 'l', cursorModeOff);
 
-    auto columnMode = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(mode, '3', columnMode);
+    auto columnMode = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(mode, '3', columnMode);
 
-    auto setColumnMode = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+    auto setColumnMode = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
         // We don't support this escape code but we do need to erase the screen
         csiEraseInDisplay("[3J");
         d->screen->setCaretCol(0);
         d->screen->setCaretRow(0);
     });
-    d->escapeStateMachine.addTransition(columnMode, 'h', setColumnMode);
-    d->escapeStateMachine.addTransition(columnMode, 'l', setColumnMode);
+    d->csiStateMachine.addTransition(columnMode, 'h', setColumnMode);
+    d->csiStateMachine.addTransition(columnMode, 'l', setColumnMode);
 
-    auto textCursorMode = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(csi, '2', textCursorMode);
+    auto textCursorMode = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(csi, '2', textCursorMode);
 
-    auto crlfMode = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(textCursorMode, '0', crlfMode);
+    auto crlfMode = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(textCursorMode, '0', crlfMode);
 
-    auto crlfModeOn = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+    auto crlfModeOn = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
         d->crlfMode = true;
     });
-    d->escapeStateMachine.addTransition(crlfMode, 'h', crlfModeOn);
+    d->csiStateMachine.addTransition(crlfMode, 'h', crlfModeOn);
 
-    auto crlfModeOnOff = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+    auto crlfModeOnOff = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
         d->crlfMode = false;
     });
-    d->escapeStateMachine.addTransition(crlfMode, 'l', crlfModeOnOff);
+    d->csiStateMachine.addTransition(crlfMode, 'l', crlfModeOnOff);
 
-    auto screenInversionMode = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(mode, '5', screenInversionMode);
+    auto screenInversionMode = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(mode, '5', screenInversionMode);
 
-    auto screenInversionModeOn = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+    auto screenInversionModeOn = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
         d->screen->setInvertScreen(true);
     });
-    d->escapeStateMachine.addTransition(screenInversionMode, 'h', screenInversionModeOn);
+    d->csiStateMachine.addTransition(screenInversionMode, 'h', screenInversionModeOn);
 
-    auto screenInversionModeOff = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+    auto screenInversionModeOff = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
         d->screen->setInvertScreen(false);
     });
-    d->escapeStateMachine.addTransition(screenInversionMode, 'l', screenInversionModeOff);
+    d->csiStateMachine.addTransition(screenInversionMode, 'l', screenInversionModeOff);
 
-    auto autowrapMode = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(mode, '7', autowrapMode);
+    auto autowrapMode = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(mode, '7', autowrapMode);
 
-    auto autowrapModeOn = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+    auto autowrapModeOn = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
         d->autowrap = true;
     });
-    d->escapeStateMachine.addTransition(autowrapMode, 'h', autowrapModeOn);
+    d->csiStateMachine.addTransition(autowrapMode, 'h', autowrapModeOn);
 
-    auto autowrapModeOff = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+    auto autowrapModeOff = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
         d->autowrap = false;
     });
-    d->escapeStateMachine.addTransition(autowrapMode, 'l', autowrapModeOff);
+    d->csiStateMachine.addTransition(autowrapMode, 'l', autowrapModeOff);
 
-    auto tab8Mode = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+    auto tab8Mode = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
         d->tabStops.clear();
     });
-    d->escapeStateMachine.addTransition(mode, "5W", tab8Mode);
+    d->csiStateMachine.addTransition(mode, "5W", tab8Mode);
 
-    auto clearTab = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(csi, '0', clearTab);
+    auto clearTab = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(csi, '0', clearTab);
 
-    auto clearTabDone = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::csiClearTab, this, std::placeholders::_1));
-    d->escapeStateMachine.addTransition({csi, clearTab}, 'g', clearTabDone);
+    auto clearTabDone = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiClearTab, this, std::placeholders::_1));
+    d->csiStateMachine.addTransition({csi, clearTab}, 'g', clearTabDone);
 
-    auto resetTab = d->escapeStateMachine.addState();
-    d->escapeStateMachine.addTransition(csi, '3', resetTab);
+    auto resetTab = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(csi, '3', resetTab);
 
-    auto resetTabDone = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::csiResetTab, this, std::placeholders::_1));
-    d->escapeStateMachine.addTransition(resetTab, 'g', resetTabDone);
+    auto resetTabDone = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiResetTab, this, std::placeholders::_1));
+    d->csiStateMachine.addTransition(resetTab, 'g', resetTabDone);
 }
 
 void VT100Emulation::processCharacter(QChar c) {
