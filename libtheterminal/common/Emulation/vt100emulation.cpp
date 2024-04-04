@@ -23,6 +23,8 @@ struct VT100EmulationPrivate {
         bool savedCaretAutowrap = false;
         TerminalScreen::CharacterSpace::CharacterFormat savedCaretFormat;
 
+        QSet<int> tabStops;
+
         QString* characterSetG0 = nullptr;
         QString* characterSetG1 = nullptr;
         QString** currentCharacterSet = &characterSetG0;
@@ -125,6 +127,11 @@ void VT100Emulation::setupStateMachine() {
         echo('\n');
     });
     d->escapeStateMachine.addTransition(initialState, 'E', nextLineCarriageReturn);
+
+    auto setTab = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
+        d->tabStops.insert(d->screen->caretCol());
+    });
+    d->escapeStateMachine.addTransition(initialState, 'H', setTab);
 
     auto previousLine = d->escapeStateMachine.addFinalState([this](QString escapeSequence) {
         d->screen->setCaretRow(d->screen->caretRow() - 1);
@@ -351,6 +358,18 @@ void VT100Emulation::setupCsiStateMachine() {
         d->autowrap = false;
     });
     d->escapeStateMachine.addTransition(autowrapMode, 'l', autowrapModeOff);
+
+    auto clearTab = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(csi, '0', clearTab);
+
+    auto clearTabDone = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::csiClearTab, this, std::placeholders::_1));
+    d->escapeStateMachine.addTransition({csi, clearTab}, 'g', clearTabDone);
+
+    auto resetTab = d->escapeStateMachine.addState();
+    d->escapeStateMachine.addTransition(csi, '3', resetTab);
+
+    auto resetTabDone = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::csiResetTab, this, std::placeholders::_1));
+    d->escapeStateMachine.addTransition(resetTab, 'g', resetTabDone);
 }
 
 void VT100Emulation::processCharacter(QChar c) {
@@ -446,7 +465,7 @@ void VT100Emulation::echo(QChar c) {
         do {
             d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), TerminalScreen::emptyChar());
             d->screen->setCaretCol(d->screen->caretCol() + 1);
-        } while (d->screen->caretCol() % 8 != 0 && d->screen->caretCol() != d->screen->cols() - 1);
+        } while (!d->tabStops.contains(d->screen->caretCol()) && d->screen->caretCol() != d->screen->cols() - 1);
     } else {
         QChar echoedCharacter = c;
         if (*d->currentCharacterSet) {
@@ -624,6 +643,14 @@ void VT100Emulation::csiCursorPosition(QString escapeSequence) {
 }
 
 void VT100Emulation::csiAutoWrap(QString escapeSequence) {
+}
+
+void VT100Emulation::csiClearTab(QString escapeSequence) {
+    d->tabStops.remove(d->screen->caretCol());
+}
+
+void VT100Emulation::csiResetTab(QString escapeSequence) {
+    d->tabStops.clear();
 }
 
 void VT100Emulation::csiSgr(QString escapeSequence) {
