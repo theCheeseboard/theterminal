@@ -4,13 +4,19 @@
 #include "../ipty.h"
 #include <QIODevice>
 
+struct WinPtyPrivate;
+
 class WinPty : public QIODevice,
     public IPty {
         Q_OBJECT
     public:
         explicit WinPty(QObject* parent = nullptr);
+        ~WinPty();
 
     signals:
+
+    private:
+        QScopedPointer<WinPtyPrivate> d;
 
         // IPty interface
     public:

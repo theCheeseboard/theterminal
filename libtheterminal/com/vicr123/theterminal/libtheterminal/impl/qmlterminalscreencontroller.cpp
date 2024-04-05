@@ -107,7 +107,7 @@ quint64 QmlTerminalScreenController::scrollbackLines() {
 
 void QmlTerminalScreenController::start(QString process) {
     d->pty = IPty::createPty(this);
-    d->pty->start("sh", QProcessEnvironment::systemEnvironment(), QCoreApplication::applicationDirPath(), d->terminalScreen->cols(), d->terminalScreen->rows());
+    d->pty->start(process, QProcessEnvironment::systemEnvironment(), QCoreApplication::applicationDirPath(), d->terminalScreen->cols(), d->terminalScreen->rows());
 
     d->emulation = new VT100Emulation(d->pty->device(), d->terminalScreen, this);
 }
