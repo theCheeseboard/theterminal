@@ -442,7 +442,7 @@ void VT100Emulation::processCharacter(QChar c) {
 
     switch (d->escapeStateMachine.pushCharacter(c)) {
         case TerminalStateMachine::Result::Rejected:
-            tWarn("VT100Emulation") << "Unknown escape sequence: " << QString(d->csiStateMachine.replayBuffer().toUtf8().toHex()) << " | " << d->csiStateMachine.replayBuffer();
+            tWarn("VT100Emulation") << "Unknown escape sequence: " << QString(d->escapeStateMachine.replayBuffer().toUtf8().toHex()) << " | " << d->escapeStateMachine.replayBuffer();
             // Fall through
         case TerminalStateMachine::Result::Accepted:
             d->escapeMode = false;

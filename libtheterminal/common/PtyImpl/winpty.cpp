@@ -22,13 +22,14 @@ public:
             }
 
             emit dataRead(QByteArrayView(buf, readBytes));
+            emit dataRead(QByteArray(buf, readBytes));
         }
     }
 
     HANDLE hnd;
 
 signals:
-    void dataRead(QByteArrayView data);
+    void dataRead(const QByteArray& data);
 };
 
 struct WriteFileWorker : public QObject
@@ -71,6 +72,7 @@ WinPty::~WinPty() {
     ClosePseudoConsole(d->hPC);
     d->readThread->wait();
     d->writeThread->exit();
+    d->writeThread->wait();
 }
 
 bool WinPty::start(QString process, QProcessEnvironment environment, QString workingDirectory, qint16 cols, qint16 rows) {
@@ -93,7 +95,7 @@ bool WinPty::start(QString process, QProcessEnvironment environment, QString wor
     d->hPC = hPC;
 
     auto readThread = new ReadFileWorker(d->outputReadSide.Get(), this);
-    connect(readThread, &ReadFileWorker::dataRead, this, [=](QByteArrayView data) {
+    connect(readThread, &ReadFileWorker::dataRead, this, [this](const QByteArray& data) {
         d->readBuffer.append(data);
         emit readyRead();
     });

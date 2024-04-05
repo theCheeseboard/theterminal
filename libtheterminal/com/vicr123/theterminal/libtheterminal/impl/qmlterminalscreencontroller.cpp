@@ -131,7 +131,7 @@ QVariantList QmlTerminalScreenController::runs(int row) {
 
     QVariantList runs;
     QVariantMap currentMap = initFormat({});
-    QString currentText;
+    QByteArray currentText;
     TerminalScreen::CharacterSpace::CharacterFormat previousFormat;
     for (auto i = 0; i < d->terminalScreen->cols(); i++) {
         auto character = d->terminalScreen->character(i, row);
