@@ -31,6 +31,7 @@ TerminalStateMachine::~TerminalStateMachine() {
 TerminalStateMachine::Result TerminalStateMachine::pushCharacter(QChar c) {
     d->processBuffer.append(c);
 
+    bool noOutgoingTransitions = false;
     // Create a list of new states. Traverse all current states at the same time.
     // At the end of this block, the newCurrentState variable will contain all
     // valid transitions from all current states
@@ -52,13 +53,19 @@ TerminalStateMachine::Result TerminalStateMachine::pushCharacter(QChar c) {
                     d->currentFinalStates.append(newState);
                 }
                 newCurrentState.append(newState);
+
+                // If there are outgoing transitions from the new state, we must wait for another character
+                // before we accept or reject
+                if (d->transitions.values(newState.stateNumber).isEmpty()) {
+                    noOutgoingTransitions = true;
+                }
             }
         }
     }
 
     // At this point, all state transitions should be contained in newCurrentState.
     // If there are no items in there, that means that there were no valid transitions.
-    if (newCurrentState.empty()) {
+    if (noOutgoingTransitions) {
         if (d->currentFinalStates.isEmpty()) {
             // We crossed no final states and there are no more valid transitions, so reject.
             d->replayBuffer = d->processBuffer;

@@ -12,6 +12,7 @@ struct TerminalScreenPrivate {
         int caretRow = 0;
 
         bool invertScreen = false;
+        bool caretVisible = true;
 
         TerminalScreen::CharacterSpace::CharacterFormat currentFormat;
 
@@ -119,6 +120,15 @@ bool TerminalScreen::invertScreen() {
 void TerminalScreen::setInvertScreen(bool invertScreen) {
     d->invertScreen = invertScreen;
     emit invertScreenChanged();
+}
+
+bool TerminalScreen::caretVisible() {
+    return d->caretVisible;
+}
+
+void TerminalScreen::setCaretVisible(bool visible) {
+    d->caretVisible = visible;
+    emit caretVisibleChanged();
 }
 
 void TerminalScreen::setCharacter(int col, int row, CharacterSpace character) {

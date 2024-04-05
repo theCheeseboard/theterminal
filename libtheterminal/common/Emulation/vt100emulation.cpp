@@ -305,20 +305,19 @@ void VT100Emulation::setupCsiStateMachine() {
     d->csiStateMachine.addTransition(blinkMode, 'l', blinkModeOff);
 
     auto cursorMode = d->csiStateMachine.addState();
-    d->csiStateMachine.addTransition(mode, '2', cursorMode);
-
-    auto cursorMode2 = d->csiStateMachine.addState();
-    d->csiStateMachine.addTransition(cursorMode, '5', cursorMode2);
+    d->csiStateMachine.addTransition(mode, "25", cursorMode);
 
     auto cursorModeOn = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
-        // TODO
+        d->screen->setCaretVisible(true);
+        tDebug("VT100Emulation") << "cursor on";
     });
-    d->csiStateMachine.addTransition(cursorMode2, 'h', cursorModeOn);
+    d->csiStateMachine.addTransition(cursorMode, 'h', cursorModeOn);
 
     auto cursorModeOff = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
-        // TODO
+        d->screen->setCaretVisible(false);
+        tDebug("VT100Emulation") << "cursor off";
     });
-    d->csiStateMachine.addTransition(cursorMode2, 'l', cursorModeOff);
+    d->csiStateMachine.addTransition(cursorMode, 'l', cursorModeOff);
 
     auto columnMode = d->csiStateMachine.addState();
     d->csiStateMachine.addTransition(mode, '3', columnMode);

@@ -118,7 +118,7 @@ Item {
 
                 Rectangle {
                     id: caret
-                    visible: screen.activeFocus
+                    visible: screen.activeFocus && controller.caretVisible
                     x: fontMetrics.averageCharacterWidth * controller.caretCol
                     y: screenRowsRepeater.itemAt(controller.caretRow).mapToItem(screen, 0, 0).y
                     height: screenRowsRepeater.itemAt(controller.caretRow).childrenRect.height

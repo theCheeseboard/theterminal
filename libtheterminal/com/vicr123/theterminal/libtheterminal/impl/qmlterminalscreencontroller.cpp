@@ -58,6 +58,8 @@ QmlTerminalScreenController::QmlTerminalScreenController(QObject* parent) :
         emit invertScreenChanged();
     });
 
+    connect(d->terminalScreen, &TerminalScreen::caretVisibleChanged, this, &QmlTerminalScreenController::caretVisibleChanged);
+
     d->rowUpdateTimer = new QTimer(this);
     d->rowUpdateTimer->setInterval(0);
     d->rowUpdateTimer->setSingleShot(true);
@@ -101,6 +103,10 @@ bool QmlTerminalScreenController::invertScreen() {
     return d->terminalScreen->invertScreen();
 }
 
+bool QmlTerminalScreenController::caretVisible() {
+    return d->terminalScreen->caretVisible();
+}
+
 quint64 QmlTerminalScreenController::scrollbackLines() {
     return 0;
 }
@@ -127,7 +133,7 @@ QVariantList QmlTerminalScreenController::runs(int row) {
         return {};
     }
 
-    if (d->cachedRuns.contains(row)) return d->cachedRuns.value(row);
+    // if (d->cachedRuns.contains(row)) return d->cachedRuns.value(row);
 
     QVariantList runs;
     QVariantMap currentMap = initFormat({});
@@ -190,5 +196,7 @@ QVariantMap QmlTerminalScreenController::initFormat(TerminalScreen::CharacterSpa
 
 void QmlTerminalScreenController::queueRowUpdate(int row) {
     d->rowsToUpdate.insert(row);
-    d->rowUpdateTimer->start();
+    if (!d->rowUpdateTimer->isActive()) {
+        d->rowUpdateTimer->start();
+    }
 }
