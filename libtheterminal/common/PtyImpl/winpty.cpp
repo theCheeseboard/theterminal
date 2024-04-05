@@ -84,7 +84,7 @@ bool WinPty::start(QString process, QProcessEnvironment environment, QString wor
     }
 
     HPCON hPC;
-    HRESULT hr = CreatePseudoConsole({ 80, 44 }, inputReadSide.Get(), outputWriteSide.Get(), 0, &hPC);
+    HRESULT hr = CreatePseudoConsole({ cols, rows }, inputReadSide.Get(), outputWriteSide.Get(), 0, &hPC);
     if (FAILED(hr))
     {
         tWarn("WinPty") << "Failed to create pseudoconsole with error" << (int)GetLastError();
@@ -109,7 +109,7 @@ bool WinPty::start(QString process, QProcessEnvironment environment, QString wor
     auto runningProcess = new QProcess(this);
     runningProcess->setWorkingDirectory(workingDirectory);
     runningProcess->setProcessEnvironment(environment);
-    runningProcess->setCreateProcessArgumentsModifier([=] (QProcess::CreateProcessArguments* args) {
+    runningProcess->setCreateProcessArgumentsModifier([=](QProcess::CreateProcessArguments* args) {
         // CreateProcessArguments.startupInfo holds a STARTUPINFO, but we need to pass STARTUPINFOEX
         // so we'll sneakily overwrite the pointer. since it needs to be valid after we return
         // from this function, we stick it into d
@@ -166,8 +166,9 @@ QIODevice* WinPty::device() {
 }
 
 bool WinPty::setWindowSize(qint16 cols, qint16 rows) {
-     if (d->hPC == nullptr) {
-        return SUCCEEDED(ResizePseudoConsole(d->hPC, { rows, cols }));
+    if (d->hPC != nullptr) {
+        auto hr = ResizePseudoConsole(d->hPC, { cols, rows });
+        return SUCCEEDED(hr);
      }
     return false;
 }
