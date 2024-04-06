@@ -530,6 +530,10 @@ void VT100Emulation::invokeCsi(QString csi) {
         lastResult = d->csiStateMachine.pushCharacter(character);
     }
 
+    if (lastResult != TerminalStateMachine::Result::Pending) {
+        return;
+    }
+
     // Push a final character to trigger the final result
     switch (d->csiStateMachine.pushCharacter(TerminalScreen::emptyChar())) {
         case TerminalStateMachine::Result::Accepted:

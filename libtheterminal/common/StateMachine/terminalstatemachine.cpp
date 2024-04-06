@@ -14,10 +14,11 @@ struct TerminalStateMachinePrivate {
 
         QList<CurrentState> currentState;
         QList<CurrentState> currentFinalStates;
-        // quint64 lastFinalState = 0;
         QString replayBuffer;
         QString escapeBuffer;
         QString processBuffer;
+
+        bool resetRequred = true;
 };
 
 TerminalStateMachine::TerminalStateMachine(QObject* parent) :
@@ -29,6 +30,10 @@ TerminalStateMachine::~TerminalStateMachine() {
 }
 
 TerminalStateMachine::Result TerminalStateMachine::pushCharacter(QChar c) {
+    if (d->resetRequred) {
+        this->reset();
+    }
+
     d->processBuffer.append(c);
 
     bool noOutgoingTransitions = false;
@@ -65,10 +70,11 @@ TerminalStateMachine::Result TerminalStateMachine::pushCharacter(QChar c) {
 
     // At this point, all state transitions should be contained in newCurrentState.
     // If there are no items in there, that means that there were no valid transitions.
-    if (noOutgoingTransitions) {
+    if (noOutgoingTransitions || newCurrentState.isEmpty()) {
         if (d->currentFinalStates.isEmpty()) {
             // We crossed no final states and there are no more valid transitions, so reject.
             d->replayBuffer = d->processBuffer;
+            d->resetRequred = true;
             return Result::Rejected;
         }
 
@@ -86,6 +92,7 @@ TerminalStateMachine::Result TerminalStateMachine::pushCharacter(QChar c) {
         d->escapeBuffer = finalState.escapeBuffer;
         d->replayBuffer = d->processBuffer.mid(finalState.escapeBuffer.length());
         d->finalStates.value(finalState.stateNumber)(d->escapeBuffer);
+        d->resetRequred = true;
         return Result::Accepted;
     }
 
@@ -103,7 +110,6 @@ QString TerminalStateMachine::escapeBuffer() {
 }
 
 void TerminalStateMachine::reset() {
-    // d->currentState = 0;
     d->currentState = {
         {0, 0}
     };
@@ -111,6 +117,7 @@ void TerminalStateMachine::reset() {
     d->escapeBuffer.clear();
     d->processBuffer.clear();
     d->currentFinalStates.clear();
+    d->resetRequred = false;
 }
 
 quint64 TerminalStateMachine::addState() {
