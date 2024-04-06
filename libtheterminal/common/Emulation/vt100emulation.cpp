@@ -533,8 +533,8 @@ void VT100Emulation::invokeCsi(QString csi) {
     // Push a final character to trigger the final result
     switch (d->csiStateMachine.pushCharacter(TerminalScreen::emptyChar())) {
         case TerminalStateMachine::Result::Accepted:
-            break;
         case TerminalStateMachine::Result::Pending:
+            break;
         case TerminalStateMachine::Result::Rejected:
             tWarn("VT100Emulation") << "Unknown CSI sequence: " << d->csiStateMachine.replayBuffer();
             break;
