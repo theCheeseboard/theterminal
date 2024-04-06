@@ -36,6 +36,7 @@ class LIBTHETERMINAL_COMMON_EXPORT VT100Emulation : public QObject {
         void csiAutoWrap(QString escapeSequence);
         void csiClearTab(QString escapeSequence);
         void csiResetTab(QString escapeSequence);
+        void csiVerticalScrollingMargins(QString escapeSequence);
         void csiSgr(QString escapeSequence);
 
         void invokeOsc(QString osc);

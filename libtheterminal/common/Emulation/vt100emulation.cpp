@@ -210,6 +210,9 @@ void VT100Emulation::setupCsiStateMachine() {
     auto transitionDigits = [](QChar c) {
         return c >= '0' && c <= '9';
     };
+    auto transitionDigitsSemicolon = [](QChar c) {
+        return (c >= '0' && c <= '9') || c == ';';
+    };
 
     auto initialState = d->csiStateMachine.addState();
 
@@ -249,15 +252,14 @@ void VT100Emulation::setupCsiStateMachine() {
     d->csiStateMachine.addTransition({csi, csrN, csrM}, 'H', cursorPosition);
     d->csiStateMachine.addTransition({csi, csrN, csrM}, 'f', cursorPosition);
 
-    auto sgrData = d->csiStateMachine.addState();
-    d->csiStateMachine.addTransition(
-        {csi, sgrData}, [](QChar c) {
-        return (c >= '0' && c <= '9') || c == ';';
-    },
-        sgrData);
+    auto multiValueData = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition({csi, multiValueData}, transitionDigitsSemicolon, multiValueData);
 
     auto sgr = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiSgr, this, std::placeholders::_1));
-    d->csiStateMachine.addTransition({csi, sgrData}, 'm', sgr);
+    d->csiStateMachine.addTransition({csi, multiValueData}, 'm', sgr);
+
+    auto verticalScrollingMargins = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiVerticalScrollingMargins, this, std::placeholders::_1));
+    d->csiStateMachine.addTransition({csi, multiValueData}, 'r', verticalScrollingMargins);
 
     auto pushCaret = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::pushCaret, this));
     d->csiStateMachine.addTransition(csi, 's', pushCaret);
@@ -281,7 +283,9 @@ void VT100Emulation::setupCsiStateMachine() {
     auto deviceStatusReportCursorPos = d->csiStateMachine.addFinalState([this](QString escapeCode) {
         // Respond to the Device Status Report
         // Row and column are 1-indexed
-        write(QStringLiteral("\x1B[%1;%2R").arg(d->screen->caretRow() + 1).arg(d->screen->caretCol() + 1));
+        auto row = d->screen->caretRow() + 1;
+        if (d->screen->marginsBound()) row -= d->screen->firstRow();
+        write(QStringLiteral("\x1B[%1;%2R").arg(row).arg(d->screen->caretCol() + 1));
     });
     d->csiStateMachine.addTransition(csi, "6n", deviceStatusReportCursorPos);
 
@@ -304,18 +308,29 @@ void VT100Emulation::setupCsiStateMachine() {
     });
     d->csiStateMachine.addTransition(blinkMode, 'l', blinkModeOff);
 
+    auto originMode = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(mode, "6", originMode);
+
+    auto originModeOn = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
+        d->screen->setMarginsBound(true);
+    });
+    d->csiStateMachine.addTransition(originMode, 'h', originModeOn);
+
+    auto originModeOff = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
+        d->screen->setMarginsBound(false);
+    });
+    d->csiStateMachine.addTransition(originMode, 'l', originModeOff);
+
     auto cursorMode = d->csiStateMachine.addState();
     d->csiStateMachine.addTransition(mode, "25", cursorMode);
 
     auto cursorModeOn = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
         d->screen->setCaretVisible(true);
-        tDebug("VT100Emulation") << "cursor on";
     });
     d->csiStateMachine.addTransition(cursorMode, 'h', cursorModeOn);
 
     auto cursorModeOff = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
         d->screen->setCaretVisible(false);
-        tDebug("VT100Emulation") << "cursor off";
     });
     d->csiStateMachine.addTransition(cursorMode, 'l', cursorModeOff);
 
@@ -687,6 +702,18 @@ void VT100Emulation::csiClearTab(QString escapeSequence) {
 
 void VT100Emulation::csiResetTab(QString escapeSequence) {
     d->tabStops.clear();
+}
+
+void VT100Emulation::csiVerticalScrollingMargins(QString escapeSequence) {
+    static QRegularExpression verticalScrollingMarginsRegex("\\[(?<top>\\d+)?(?:;(?<bottom>\\d+))?(?:r)");
+    auto matches = verticalScrollingMarginsRegex.match(escapeSequence);
+    auto topStr = matches.captured("top");
+    auto bottomStr = matches.captured("bottom");
+
+    if (topStr.isEmpty()) topStr = "0";
+    if (bottomStr.isEmpty()) bottomStr = "0";
+
+    d->screen->setVerticalMargins(topStr.toInt() - 1, bottomStr.toInt() - 1);
 }
 
 void VT100Emulation::csiSgr(QString escapeSequence) {

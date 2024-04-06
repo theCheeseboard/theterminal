@@ -19,6 +19,10 @@ struct TerminalScreenPrivate {
         struct Screen {
                 QList<CharacterLine> characters;
                 QList<TerminalScreen::RowScaleMode> rowScaleModes;
+
+                int marginBottom = -1;
+                int marginTop = -1;
+                bool marginsBound = false;
         };
 
         Screen* screen = &screens[0];
@@ -105,7 +109,7 @@ void TerminalScreen::setCaretCol(int col) {
 }
 
 int TerminalScreen::caretRow() {
-    return d->caretRow;
+    return d->caretRow + this->firstRow();
 }
 
 void TerminalScreen::setCaretRow(int row) {
@@ -149,9 +153,32 @@ TerminalScreen::ScreenBuffer TerminalScreen::screenBuffer() {
 void TerminalScreen::setScreenBuffer(ScreenBuffer screenBuffer) {
     d->screen = &d->screens[static_cast<int>(screenBuffer)];
     emit screenBufferChanged();
+    emit caretRowChanged();
+    emit marginsBoundChanged();
     for (auto i = 0; i < d->rows; i++) {
         emit rowContentChanged(i);
     }
+}
+
+void TerminalScreen::setVerticalMargins(int top, int bottom) {
+    d->screen->marginTop = top;
+    d->screen->marginBottom = bottom;
+    emit caretRowChanged();
+}
+
+void TerminalScreen::setMarginsBound(bool marginsBound) {
+    d->screen->marginsBound = marginsBound;
+    emit marginsBoundChanged();
+    emit caretRowChanged();
+}
+
+bool TerminalScreen::marginsBound() {
+    return d->screen->marginsBound;
+}
+
+int TerminalScreen::firstRow() {
+    if (!d->screen->marginsBound) return 0;
+    return d->screen->marginTop == -1 ? 0 : d->screen->marginTop;
 }
 
 void TerminalScreen::setCharacter(int col, int row, CharacterSpace character) {
@@ -171,11 +198,17 @@ TerminalScreen::CharacterSpace TerminalScreen::character(int col, int row) {
 }
 
 void TerminalScreen::pushToHistory() {
+    int topRow = d->screen->marginTop;
+    if (topRow == -1) topRow = 0;
+
+    int bottomRow = d->screen->marginBottom;
+    if (bottomRow == -1) bottomRow = d->rows - 1;
+
     // TODO: Push the top row to history
-    d->screen->characters.removeFirst();
-    d->screen->characters.append(CharacterLine(new QList<TerminalScreen::CharacterSpace>(d->cols)));
-    d->screen->rowScaleModes.removeFirst();
-    d->screen->rowScaleModes.append(RowScaleMode::Normal);
+    d->screen->characters.removeAt(topRow);
+    d->screen->characters.insert(bottomRow, CharacterLine(new QList<TerminalScreen::CharacterSpace>(d->cols)));
+    d->screen->rowScaleModes.removeAt(topRow);
+    d->screen->rowScaleModes.insert(bottomRow, RowScaleMode::Normal);
     emit historyRolled();
 }
 

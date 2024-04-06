@@ -15,6 +15,7 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
         Q_PROPERTY(bool invertScreen READ invertScreen WRITE setInvertScreen NOTIFY invertScreenChanged FINAL)
         Q_PROPERTY(bool caretVisible READ caretVisible WRITE setCaretVisible NOTIFY caretVisibleChanged FINAL)
         Q_PROPERTY(ScreenBuffer screenBuffer READ screenBuffer WRITE setScreenBuffer NOTIFY screenBufferChanged FINAL)
+        Q_PROPERTY(bool marginsBound READ marginsBound WRITE setMarginsBound NOTIFY marginsBoundChanged FINAL)
     public:
         explicit TerminalScreen(QObject* parent = nullptr);
         ~TerminalScreen();
@@ -75,6 +76,11 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
         ScreenBuffer screenBuffer();
         void setScreenBuffer(ScreenBuffer screenBuffer);
 
+        void setVerticalMargins(int top, int bottom);
+        void setMarginsBound(bool marginsBound);
+        bool marginsBound();
+        int firstRow();
+
         void setCharacter(int col, int row, CharacterSpace character);
         void setCharacter(int col, int row, QChar character);
         CharacterSpace character(int col, int row);
@@ -93,6 +99,7 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
         void invertScreenChanged();
         void caretVisibleChanged();
         void screenBufferChanged();
+        void marginsBoundChanged();
 
     private:
         TerminalScreenPrivate* d;
