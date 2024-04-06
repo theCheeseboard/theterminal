@@ -331,6 +331,19 @@ void VT100Emulation::setupCsiStateMachine() {
     d->csiStateMachine.addTransition(columnMode, 'h', setColumnMode);
     d->csiStateMachine.addTransition(columnMode, 'l', setColumnMode);
 
+    auto altScreen = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(mode, "1049", altScreen);
+
+    auto altScreenOn = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
+        d->screen->setScreenBuffer(TerminalScreen::ScreenBuffer::AlternateScreen);
+    });
+    d->csiStateMachine.addTransition(altScreen, 'h', altScreenOn);
+
+    auto altScreenOff = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
+        d->screen->setScreenBuffer(TerminalScreen::ScreenBuffer::StandardScreen);
+    });
+    d->csiStateMachine.addTransition(altScreen, 'l', altScreenOff);
+
     auto textCursorMode = d->csiStateMachine.addState();
     d->csiStateMachine.addTransition(csi, '2', textCursorMode);
 

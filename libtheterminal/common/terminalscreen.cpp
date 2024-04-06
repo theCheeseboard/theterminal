@@ -16,8 +16,14 @@ struct TerminalScreenPrivate {
 
         TerminalScreen::CharacterSpace::CharacterFormat currentFormat;
 
-        QList<CharacterLine> characters;
-        QList<TerminalScreen::RowScaleMode> rowScaleModes;
+        struct Screen {
+                QList<CharacterLine> characters;
+                QList<TerminalScreen::RowScaleMode> rowScaleModes;
+        };
+
+        Screen* screen = &screens[0];
+        Screen screens[2]{
+            {}, {}};
 };
 
 TerminalScreen::TerminalScreen(QObject* parent) :
@@ -42,10 +48,12 @@ void TerminalScreen::setCols(int cols) {
     if (cols < 1) return;
 
     d->cols = cols;
-    for (const auto& row : d->characters) {
-        // Don't delete anything off the end
-        if (row->length() < cols) {
-            row->resize(cols);
+    for (auto& screen : d->screens) {
+        for (const auto& row : screen.characters) {
+            // Don't delete anything off the end
+            if (row->length() < cols) {
+                row->resize(cols);
+            }
         }
     }
     emit colsChanged();
@@ -65,11 +73,14 @@ void TerminalScreen::setRows(int rows) {
             pushToHistory();
         }
     }
-    d->characters.resize(rows);
-    d->rowScaleModes.resize(rows);
-    for (auto i = 0; i < rows; i++) {
-        if (d->characters.value(i) == nullptr) {
-            d->characters.replace(i, CharacterLine(new QList<TerminalScreen::CharacterSpace>(d->cols)));
+
+    for (auto& screen : d->screens) {
+        screen.characters.resize(rows);
+        screen.rowScaleModes.resize(rows);
+        for (auto i = 0; i < rows; i++) {
+            if (screen.characters.value(i) == nullptr) {
+                screen.characters.replace(i, CharacterLine(new QList<TerminalScreen::CharacterSpace>(d->cols)));
+            }
         }
     }
 
@@ -131,11 +142,23 @@ void TerminalScreen::setCaretVisible(bool visible) {
     emit caretVisibleChanged();
 }
 
+TerminalScreen::ScreenBuffer TerminalScreen::screenBuffer() {
+    return static_cast<ScreenBuffer>(d->screen - &d->screens[0]);
+}
+
+void TerminalScreen::setScreenBuffer(ScreenBuffer screenBuffer) {
+    d->screen = &d->screens[static_cast<int>(screenBuffer)];
+    emit screenBufferChanged();
+    for (auto i = 0; i < d->rows; i++) {
+        emit rowContentChanged(i);
+    }
+}
+
 void TerminalScreen::setCharacter(int col, int row, CharacterSpace character) {
     if (d->cols <= col) return;
     if (d->rows <= row) return;
 
-    d->characters.at(row)->replace(col, character);
+    d->screen->characters.at(row)->replace(col, character);
     emit rowContentChanged(row);
 }
 
@@ -144,23 +167,23 @@ void TerminalScreen::setCharacter(int col, int row, QChar character) {
 }
 
 TerminalScreen::CharacterSpace TerminalScreen::character(int col, int row) {
-    return d->characters.at(row)->at(col);
+    return d->screen->characters.at(row)->at(col);
 }
 
 void TerminalScreen::pushToHistory() {
     // TODO: Push the top row to history
-    d->characters.removeFirst();
-    d->characters.append(CharacterLine(new QList<TerminalScreen::CharacterSpace>(d->cols)));
-    d->rowScaleModes.removeFirst();
-    d->rowScaleModes.append(RowScaleMode::Normal);
+    d->screen->characters.removeFirst();
+    d->screen->characters.append(CharacterLine(new QList<TerminalScreen::CharacterSpace>(d->cols)));
+    d->screen->rowScaleModes.removeFirst();
+    d->screen->rowScaleModes.append(RowScaleMode::Normal);
     emit historyRolled();
 }
 
 void TerminalScreen::setRowScaleMode(int row, RowScaleMode mode) {
-    d->rowScaleModes.insert(row, mode);
+    d->screen->rowScaleModes.insert(row, mode);
     emit rowContentChanged(row);
 }
 
 TerminalScreen::RowScaleMode TerminalScreen::rowScaleMode(int row) {
-    return d->rowScaleModes.at(row);
+    return d->screen->rowScaleModes.at(row);
 }

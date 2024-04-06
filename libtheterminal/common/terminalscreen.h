@@ -14,6 +14,7 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
         Q_PROPERTY(int caretRow READ caretRow WRITE setCaretRow NOTIFY caretRowChanged FINAL)
         Q_PROPERTY(bool invertScreen READ invertScreen WRITE setInvertScreen NOTIFY invertScreenChanged FINAL)
         Q_PROPERTY(bool caretVisible READ caretVisible WRITE setCaretVisible NOTIFY caretVisibleChanged FINAL)
+        Q_PROPERTY(ScreenBuffer screenBuffer READ screenBuffer WRITE setScreenBuffer NOTIFY screenBufferChanged FINAL)
     public:
         explicit TerminalScreen(QObject* parent = nullptr);
         ~TerminalScreen();
@@ -25,6 +26,12 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
             DoubleHeightLower = 3
         };
         Q_ENUM(RowScaleMode)
+
+        enum class ScreenBuffer {
+            StandardScreen = 0,
+            AlternateScreen
+        };
+        Q_ENUM(ScreenBuffer)
 
         struct CharacterSpace {
                 QChar character = ' ';
@@ -65,6 +72,9 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
         bool caretVisible();
         void setCaretVisible(bool visible);
 
+        ScreenBuffer screenBuffer();
+        void setScreenBuffer(ScreenBuffer screenBuffer);
+
         void setCharacter(int col, int row, CharacterSpace character);
         void setCharacter(int col, int row, QChar character);
         CharacterSpace character(int col, int row);
@@ -82,6 +92,7 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
         void historyRolled();
         void invertScreenChanged();
         void caretVisibleChanged();
+        void screenBufferChanged();
 
     private:
         TerminalScreenPrivate* d;
