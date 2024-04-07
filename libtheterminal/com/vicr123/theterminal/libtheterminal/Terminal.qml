@@ -41,7 +41,7 @@ Item {
                                    }
 
             function cellAt(x, y) {
-                const item = rowList.itemAt(x, y);
+                const item = rowList.itemAt(x, y + rowList.contentY);
                 const xCell = Math.floor(x / item.width * screen.cols);
                 return Qt.point(xCell, item.index);
             }
