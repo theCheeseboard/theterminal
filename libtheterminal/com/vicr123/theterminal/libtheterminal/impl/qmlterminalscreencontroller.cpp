@@ -18,6 +18,9 @@ struct QmlTerminalScreenControllerPrivate {
         QTimer* rowUpdateTimer;
         QSet<int> rowsToUpdate;
 
+        QPoint selectionStart;
+        QPoint selectionEnd;
+
         ScreenColorManager screenColorManager;
 };
 
@@ -99,12 +102,36 @@ int QmlTerminalScreenController::caretRow() {
     return d->terminalScreen->caretRow();
 }
 
+QPoint QmlTerminalScreenController::selectionStart() {
+    return d->selectionStart;
+}
+
+void QmlTerminalScreenController::setSelectionStart(QPoint selectionStart) {
+    d->selectionStart = selectionStart;
+    emit selectionStartChanged();
+    emit normalisedSelectionChanged();
+}
+
+QPoint QmlTerminalScreenController::selectionEnd() {
+    return d->selectionEnd;
+}
+
+void QmlTerminalScreenController::setSelectionEnd(QPoint selectionEnd) {
+    d->selectionEnd = selectionEnd;
+    emit selectionEndChanged();
+    emit normalisedSelectionChanged();
+}
+
 bool QmlTerminalScreenController::invertScreen() {
     return d->terminalScreen->invertScreen();
 }
 
 bool QmlTerminalScreenController::caretVisible() {
     return d->terminalScreen->caretVisible();
+}
+
+bool QmlTerminalScreenController::reportMouseEvents() {
+    return false;
 }
 
 quint64 QmlTerminalScreenController::scrollbackLines() {
@@ -218,5 +245,45 @@ void QmlTerminalScreenController::queueRowUpdate(int row) {
     d->rowsToUpdate.insert(row);
     if (!d->rowUpdateTimer->isActive()) {
         d->rowUpdateTimer->start();
+    }
+}
+
+QPoint QmlTerminalScreenController::normalisedSelectionStart() const {
+    auto yDiff = d->selectionStart.y() <=> d->selectionEnd.y();
+    auto xDiff = d->selectionStart.x() <=> d->selectionEnd.x();
+
+    // Compare Y first
+    // If Y is equal, comapre X
+    // Pick the earliest
+    if (yDiff < 0) {
+        return d->selectionStart;
+    } else if (yDiff > 0) {
+        return d->selectionEnd;
+    } else if (xDiff < 0) {
+        return d->selectionStart;
+    } else if (xDiff > 0) {
+        return d->selectionEnd;
+    } else {
+        return d->selectionStart;
+    }
+}
+
+QPoint QmlTerminalScreenController::normalisedSelectionEnd() const {
+    auto yDiff = d->selectionEnd.y() <=> d->selectionStart.y();
+    auto xDiff = d->selectionEnd.x() <=> d->selectionStart.x();
+
+    // Compare Y first
+    // If Y is equal, comapre X
+    // Pick the earliest
+    if (yDiff < 0) {
+        return d->selectionStart;
+    } else if (yDiff > 0) {
+        return d->selectionEnd;
+    } else if (xDiff < 0) {
+        return d->selectionStart;
+    } else if (xDiff > 0) {
+        return d->selectionEnd;
+    } else {
+        return d->selectionStart;
     }
 }

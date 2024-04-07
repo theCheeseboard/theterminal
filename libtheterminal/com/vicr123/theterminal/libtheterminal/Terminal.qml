@@ -5,6 +5,13 @@ import com.vicr123.Contemporary
 import "impl" as Impl
 
 Item {
+    id: root
+
+    property font font: {
+        family: "JetBrains Mono"
+    }
+    property string shell: "/bin/bash";
+
     function paste() {
         controller.paste()
     }
@@ -26,24 +33,40 @@ Item {
                 rows: screen.rows
             }
 
-            property string shell: "/bin/bash";
-
             readonly property int rows: Math.floor(screen.height / (fontMetrics.height + 1))
             readonly property int cols: Math.floor(screen.width / (fontMetrics.averageCharacterWidth))
 
             Component.onCompleted: () => {
-                                       controller.start(screen.shell);
+                                       controller.start(root.shell);
                                    }
 
+            function cellAt(x, y) {
+                const item = rowList.itemAt(x, y);
+                const xCell = Math.floor(x / item.width * screen.cols);
+                return Qt.point(xCell, item.index);
+            }
 
             MouseArea {
                 anchors.fill: parent
-                cursorShape: Qt.IBeamCursor
+                cursorShape: controller.reportMouseEvents ? Qt.ArrowCursor : Qt.IBeamCursor
                 hoverEnabled: true
                 z: 10
 
-                onPressed: () => {
+                onPressed: event => {
                     screen.forceActiveFocus(Qt.MouseFocusReason)
+
+                    if (event.buttons & Qt.LeftButton) {
+                        controller.selectionStart = screen.cellAt(event.x, event.y);
+                        controller.selectionEnd = screen.cellAt(event.x, event.y);
+                    }
+                }
+                onPositionChanged: event => {
+                    if (event.buttons & Qt.LeftButton) {
+                        controller.selectionEnd = screen.cellAt(event.x, event.y);
+                    }
+                }
+                onReleased: event => {
+
                 }
             }
 
@@ -60,7 +83,7 @@ Item {
 
                 FontMetrics {
                     id: fontMetrics
-                    font.family: "JetBrains Mono"
+                    font: root.font
                 }
 
                 ScrollBar.vertical: ScrollBar {
@@ -74,46 +97,66 @@ Item {
                                     rowList.positionViewAtEnd();
                                 }
 
-                delegate: Row {
-                    id: screenRow
-
+                delegate: Item {
+                    id: screenItem
                     required property int index
-                    property var rowScaleMode: controller.rowScaleMode(index)
+                    readonly property int selStart: controller.normalisedSelectionStart.y === screenItem.index ? controller.normalisedSelectionStart.x : -1
+                    readonly property int selEnd: controller.normalisedSelectionEnd.y === screenItem.index ? controller.normalisedSelectionEnd.x : (controller.normalisedSelectionStart.y <= screenItem.index && screenItem.index < controller.normalisedSelectionEnd.y ? -2 : -1)
 
-                    clip: true
-                    transform: Scale {
-                        xScale: screenRow.rowScaleMode !== 0 ? 2 : 1
-                        yScale: screenRow.rowScaleMode >= 2 ? 2 : 1
-                    }
+                    implicitWidth: root.width
+                    implicitHeight: screenRow.height
 
-                    Repeater {
-                        id: screenRowRepeater
-                        model: screenRow.index >= controller.scrollbackLines ? controller.runs(screenRow.index - controller.scrollbackLines) : controller.scrollbackRuns(screenRow.index)
+                    Row {
+                        id: screenRow
 
-                        Impl.TerminalScreenRun {
-                            required property var modelData
+                        property var rowScaleMode: controller.rowScaleMode(screenItem.index)
 
-                            text: modelData.text
-                            backgroundColor: modelData.backgroundColor
-                            color: modelData.color
-                            blink: modelData.blink
-                            underline: modelData.underline
-                            bold: modelData.bold
+                        clip: true
+                        transform: Scale {
+                            xScale: screenRow.rowScaleMode !== 0 ? 2 : 1
+                            yScale: screenRow.rowScaleMode >= 2 ? 2 : 1
+                        }
 
-                            transform: Translate {
-                                y: screenRow.rowScaleMode === 3 ? -screenRow.height / 2 : 0
+                        Repeater {
+                            id: screenRowRepeater
+                            model: screenRow.index >= controller.scrollbackLines ? controller.runs(screenItem.index - controller.scrollbackLines) : controller.scrollbackRuns(screenItem.index)
+
+                            Impl.TerminalScreenRun {
+                                required property var modelData
+
+                                text: modelData.text
+                                font: root.font
+                                backgroundColor: modelData.backgroundColor
+                                color: modelData.color
+                                blink: modelData.blink
+                                underline: modelData.underline
+                                bold: modelData.bold
+
+                                transform: Translate {
+                                    y: screenRow.rowScaleMode === 3 ? -screenRow.height / 2 : 0
+                                }
+                            }
+                        }
+
+                        Connections {
+                            target: controller
+                            function onRowContentChanged(index) {
+                                const translatedIndex = index + controller.scrollbackLines;
+                                if (screenItem.index !== translatedIndex) return;
+                                screenRow.rowScaleMode = controller.rowScaleMode(index)
+                                screenRowRepeater.model = controller.runs(index);
                             }
                         }
                     }
 
-                    Connections {
-                        target: controller
-                        function onRowContentChanged(index) {
-                            const translatedIndex = index + controller.scrollbackLines;
-                            if (screenRow.index !== translatedIndex) return;
-                            screenRow.rowScaleMode = controller.rowScaleMode(index)
-                            screenRowRepeater.model = controller.runs(index);
-                        }
+                    Rectangle {
+                        id: selection
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        visible: controller.normalisedSelectionStart !== controller.normalisedSelectionEnd
+                        x: fontMetrics.averageCharacterWidth * screenItem.selStart
+                        width: screenItem.selEnd == -2 ? root.width : fontMetrics.averageCharacterWidth * (screenItem.selEnd - screenItem.selStart + 1)
+                        color: "#70FFFFFF";
                     }
                 }
 

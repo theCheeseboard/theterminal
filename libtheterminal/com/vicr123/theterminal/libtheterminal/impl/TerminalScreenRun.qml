@@ -11,6 +11,15 @@ Item {
     property bool blink: false
     property bool underline: false
     property bool bold: false
+    property font font;
+
+    property int selStart: -1
+    property int selEnd: -1
+
+    FontMetrics {
+        id: fontMetrics
+        font: root.font
+    }
 
     Rectangle {
         anchors.fill: parent
@@ -27,8 +36,8 @@ Item {
             id: textRun
             padding: 0
             text: root.text
-            font.weight: root.bold ? 900 : 400
-            font.family: "JetBrains Mono"
+            font: root.font
+            // font.weight: root.bold ? 900 : 400
             color: root.color
         }
 

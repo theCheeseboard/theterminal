@@ -2,6 +2,7 @@
 #define QMLTERMINALSCREENCONTROLLER_H
 
 #include <QObject>
+#include <QPoint>
 #include <QQmlEngine>
 #include <terminalscreen.h>
 
@@ -15,6 +16,12 @@ class QmlTerminalScreenController : public QObject {
         Q_PROPERTY(quint64 scrollbackLines READ scrollbackLines NOTIFY scrollbackLinesChanged FINAL)
         Q_PROPERTY(bool invertScreen READ invertScreen NOTIFY invertScreenChanged FINAL)
         Q_PROPERTY(bool caretVisible READ caretVisible NOTIFY caretVisibleChanged FINAL)
+        Q_PROPERTY(bool reportMouseEvents READ reportMouseEvents NOTIFY reportMouseEventsChanged FINAL)
+        Q_PROPERTY(QPoint selectionStart READ selectionStart WRITE setSelectionStart NOTIFY selectionStartChanged FINAL)
+        Q_PROPERTY(QPoint selectionEnd READ selectionEnd WRITE setSelectionEnd NOTIFY selectionEndChanged FINAL)
+
+        Q_PROPERTY(QPoint normalisedSelectionStart READ normalisedSelectionStart NOTIFY normalisedSelectionChanged FINAL)
+        Q_PROPERTY(QPoint normalisedSelectionEnd READ normalisedSelectionEnd NOTIFY normalisedSelectionChanged FINAL)
         QML_ELEMENT
     public:
         explicit QmlTerminalScreenController(QObject* parent = nullptr);
@@ -29,10 +36,18 @@ class QmlTerminalScreenController : public QObject {
         int caretCol();
         int caretRow();
 
+        QPoint selectionStart();
+        void setSelectionStart(QPoint selectionStart);
+
+        QPoint selectionEnd();
+        void setSelectionEnd(QPoint selectionEnd);
+
+        QPoint normalisedSelectionStart() const;
+        QPoint normalisedSelectionEnd() const;
+
         bool invertScreen();
-
         bool caretVisible();
-
+        bool reportMouseEvents();
         quint64 scrollbackLines();
 
         Q_SCRIPTABLE void start(QString process);
@@ -49,9 +64,14 @@ class QmlTerminalScreenController : public QObject {
         void caretColChanged();
         void caretRowChanged();
         void scrollbackLinesChanged();
-        Q_SCRIPTABLE void rowContentChanged(int row);
         void invertScreenChanged();
         void caretVisibleChanged();
+        void reportMouseEventsChanged();
+        void selectionStartChanged();
+        void selectionEndChanged();
+        void normalisedSelectionChanged();
+
+        Q_SCRIPTABLE void rowContentChanged(int row);
 
     private:
         QmlTerminalScreenControllerPrivate* d;
