@@ -119,7 +119,7 @@ Item {
 
                         Repeater {
                             id: screenRowRepeater
-                            model: screenRow.index >= controller.scrollbackLines ? controller.runs(screenItem.index - controller.scrollbackLines) : controller.scrollbackRuns(screenItem.index)
+                            model: screenItem.index >= controller.scrollbackLines ? controller.runs(screenItem.index - controller.scrollbackLines) : controller.scrollbackRuns(screenItem.index)
 
                             Impl.TerminalScreenRun {
                                 required property var modelData
