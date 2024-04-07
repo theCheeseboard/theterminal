@@ -38,6 +38,7 @@ class QmlTerminalScreenController : public QObject {
         Q_SCRIPTABLE void start(QString process);
         Q_SCRIPTABLE void pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QString keyChar);
         Q_SCRIPTABLE QVariantList runs(int row);
+        Q_SCRIPTABLE QVariantList scrollbackRuns(quint64 line);
         Q_SCRIPTABLE TerminalScreen::RowScaleMode rowScaleMode(int row);
 
     signals:
@@ -53,6 +54,7 @@ class QmlTerminalScreenController : public QObject {
     private:
         QmlTerminalScreenControllerPrivate* d;
 
+        QVariantList calculateRuns(int cols, std::function<TerminalScreen::CharacterSpace(int)> getCharacter);
         QVariantMap initFormat(TerminalScreen::CharacterSpace::CharacterFormat format);
         void queueRowUpdate(int row);
 };

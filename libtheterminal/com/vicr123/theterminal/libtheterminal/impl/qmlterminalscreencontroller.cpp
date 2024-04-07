@@ -11,7 +11,6 @@
 struct QmlTerminalScreenControllerPrivate {
         IPty* pty = nullptr;
         TerminalScreen* terminalScreen = nullptr;
-        QHash<int, QVariantList> cachedRuns;
 
         VT100Emulation* emulation = nullptr;
 
@@ -37,27 +36,27 @@ QmlTerminalScreenController::QmlTerminalScreenController(QObject* parent) :
     connect(d->terminalScreen, &TerminalScreen::caretColChanged, this, &QmlTerminalScreenController::caretColChanged);
     connect(d->terminalScreen, &TerminalScreen::caretRowChanged, this, &QmlTerminalScreenController::caretRowChanged);
     connect(d->terminalScreen, &TerminalScreen::rowContentChanged, this, [this](int row) {
-        d->cachedRuns.remove(row);
+        // d->cachedRuns.remove(row);
         queueRowUpdate(row);
     });
     connect(d->terminalScreen, &TerminalScreen::historyRolled, this, [this] {
         for (auto i = 0; i < d->terminalScreen->rows(); i++) {
-            if (d->cachedRuns.contains(i + 1)) {
-                d->cachedRuns.insert(i, d->cachedRuns.value(i + 1));
-            }
+            // if (d->cachedRuns.contains(i + 1)) {
+            // d->cachedRuns.insert(i, d->cachedRuns.value(i + 1));
+            // }
             queueRowUpdate(i);
         }
-        d->cachedRuns.remove(d->terminalScreen->rows() - 1);
+        // d->cachedRuns.remove(d->terminalScreen->rows() - 1);
         queueRowUpdate(d->terminalScreen->rows() - 1);
     });
     connect(d->terminalScreen, &TerminalScreen::invertScreenChanged, this, [this] {
-        d->cachedRuns.clear();
+        // d->cachedRuns.clear();
         for (auto i = 0; i < d->terminalScreen->rows(); i++) {
             queueRowUpdate(i);
         }
         emit invertScreenChanged();
     });
-
+    connect(d->terminalScreen, &TerminalScreen::scrollbackLinesChanged, this, &QmlTerminalScreenController::scrollbackLinesChanged);
     connect(d->terminalScreen, &TerminalScreen::caretVisibleChanged, this, &QmlTerminalScreenController::caretVisibleChanged);
 
     d->rowUpdateTimer = new QTimer(this);
@@ -108,7 +107,7 @@ bool QmlTerminalScreenController::caretVisible() {
 }
 
 quint64 QmlTerminalScreenController::scrollbackLines() {
-    return 0;
+    return d->terminalScreen->scrollbackLines();
 }
 
 void QmlTerminalScreenController::start(QString process) {
@@ -133,14 +132,42 @@ QVariantList QmlTerminalScreenController::runs(int row) {
         return {};
     }
 
-    // if (d->cachedRuns.contains(row)) return d->cachedRuns.value(row);
+    return this->calculateRuns(d->terminalScreen->cols(), [&row, this](int i) {
+        return d->terminalScreen->character(i, row);
+    });
+}
 
+QVariantList QmlTerminalScreenController::scrollbackRuns(quint64 line) {
+    if (line >= d->terminalScreen->scrollbackLines()) {
+        tWarn("QmlTerminalScreenController") << "Attempted to calculate runs for scrollback line " << line << " which is more than the number of scrollback lines, " << d->terminalScreen->scrollbackLines();
+        return {};
+    }
+
+    auto scrollbackLine = d->terminalScreen->scrollbackLine(line);
+    return this->calculateRuns(scrollbackLine->length(), [this, &scrollbackLine](int i) {
+        return scrollbackLine->at(i);
+    });
+}
+
+TerminalScreen::RowScaleMode QmlTerminalScreenController::rowScaleMode(int row) {
+    if (row < 0) {
+        return {};
+    }
+
+    if (row >= d->terminalScreen->rows()) {
+        return {};
+    }
+
+    return d->terminalScreen->rowScaleMode(row);
+}
+
+QVariantList QmlTerminalScreenController::calculateRuns(int cols, std::function<TerminalScreen::CharacterSpace(int)> getCharacter) {
     QVariantList runs;
     QVariantMap currentMap = initFormat({});
     QByteArray currentText;
     TerminalScreen::CharacterSpace::CharacterFormat previousFormat;
-    for (auto i = 0; i < d->terminalScreen->cols(); i++) {
-        auto character = d->terminalScreen->character(i, row);
+    for (auto i = 0; i < cols; i++) {
+        auto character = getCharacter(i);
 
         if (previousFormat != character.format) {
             if (!currentText.isEmpty()) {
@@ -159,21 +186,7 @@ QVariantList QmlTerminalScreenController::runs(int row) {
 
     currentMap.insert("text", QString(currentText));
     runs.append(currentMap);
-
-    d->cachedRuns.insert(row, runs);
     return runs;
-}
-
-TerminalScreen::RowScaleMode QmlTerminalScreenController::rowScaleMode(int row) {
-    if (row < 0) {
-        return {};
-    }
-
-    if (row >= d->terminalScreen->rows()) {
-        return {};
-    }
-
-    return d->terminalScreen->rowScaleMode(row);
 }
 
 QVariantMap QmlTerminalScreenController::initFormat(TerminalScreen::CharacterSpace::CharacterFormat format) {

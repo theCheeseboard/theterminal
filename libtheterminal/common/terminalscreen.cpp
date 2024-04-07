@@ -15,6 +15,7 @@ struct TerminalScreenPrivate {
         bool caretVisible = true;
 
         TerminalScreen::CharacterSpace::CharacterFormat currentFormat;
+        QList<CharacterLine> scrollback;
 
         struct Screen {
                 QList<CharacterLine> characters;
@@ -155,6 +156,7 @@ void TerminalScreen::setScreenBuffer(ScreenBuffer screenBuffer) {
     emit screenBufferChanged();
     emit caretRowChanged();
     emit marginsBoundChanged();
+    emit scrollbackLinesChanged();
     for (auto i = 0; i < d->rows; i++) {
         emit rowContentChanged(i);
     }
@@ -204,12 +206,23 @@ void TerminalScreen::pushToHistory() {
     int bottomRow = d->screen->marginBottom;
     if (bottomRow == -1) bottomRow = d->rows - 1;
 
-    // TODO: Push the top row to history
-    d->screen->characters.removeAt(topRow);
+    // TODO: truncate scrollback
+    if (this->screenBuffer() == ScreenBuffer::StandardScreen) {
+        d->scrollback.append(d->screen->characters.takeAt(topRow));
+    } else {
+        d->screen->characters.removeAt(topRow);
+    }
+
     d->screen->characters.insert(bottomRow, CharacterLine(new QList<TerminalScreen::CharacterSpace>(d->cols)));
     d->screen->rowScaleModes.removeAt(topRow);
     d->screen->rowScaleModes.insert(bottomRow, RowScaleMode::Normal);
     emit historyRolled();
+    emit scrollbackLinesChanged();
+}
+
+void TerminalScreen::clearScrollback() {
+    d->scrollback.clear();
+    emit scrollbackLinesChanged();
 }
 
 void TerminalScreen::setRowScaleMode(int row, RowScaleMode mode) {
@@ -219,4 +232,12 @@ void TerminalScreen::setRowScaleMode(int row, RowScaleMode mode) {
 
 TerminalScreen::RowScaleMode TerminalScreen::rowScaleMode(int row) {
     return d->screen->rowScaleModes.at(row);
+}
+
+quint64 TerminalScreen::scrollbackLines() {
+    return this->screenBuffer() == ScreenBuffer::StandardScreen ? d->scrollback.count() : 0;
+}
+
+QSharedPointer<QList<TerminalScreen::CharacterSpace>> TerminalScreen::scrollbackLine(quint64 line) {
+    return d->scrollback.at(line);
 }

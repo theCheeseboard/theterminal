@@ -16,6 +16,7 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
         Q_PROPERTY(bool caretVisible READ caretVisible WRITE setCaretVisible NOTIFY caretVisibleChanged FINAL)
         Q_PROPERTY(ScreenBuffer screenBuffer READ screenBuffer WRITE setScreenBuffer NOTIFY screenBufferChanged FINAL)
         Q_PROPERTY(bool marginsBound READ marginsBound WRITE setMarginsBound NOTIFY marginsBoundChanged FINAL)
+        Q_PROPERTY(quint64 scrollbackLines READ scrollbackLines NOTIFY scrollbackLinesChanged FINAL)
     public:
         explicit TerminalScreen(QObject* parent = nullptr);
         ~TerminalScreen();
@@ -85,9 +86,13 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
         void setCharacter(int col, int row, QChar character);
         CharacterSpace character(int col, int row);
         void pushToHistory();
+        void clearScrollback();
 
         void setRowScaleMode(int row, RowScaleMode mode);
         RowScaleMode rowScaleMode(int row);
+
+        quint64 scrollbackLines();
+        QSharedPointer<QList<CharacterSpace>> scrollbackLine(quint64 line);
 
     signals:
         void colsChanged();
@@ -100,6 +105,7 @@ class LIBTHETERMINAL_COMMON_EXPORT TerminalScreen : public QObject {
         void caretVisibleChanged();
         void screenBufferChanged();
         void marginsBoundChanged();
+        void scrollbackLinesChanged();
 
     private:
         TerminalScreenPrivate* d;
