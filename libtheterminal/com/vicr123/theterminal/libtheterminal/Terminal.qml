@@ -5,6 +5,10 @@ import com.vicr123.Contemporary
 import "impl" as Impl
 
 Item {
+    function paste() {
+        controller.paste()
+    }
+
     FocusScope {
         anchors.fill: parent
 

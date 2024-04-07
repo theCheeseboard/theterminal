@@ -10,61 +10,66 @@
     </message>
     <message>
         <location filename="../Main.qml" line="29"/>
-        <source>&amp;File</source>
+        <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../Main.qml" line="32"/>
-        <source>&amp;New Tab</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Main.qml" line="40"/>
-        <source>&amp;Close Tab</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Main.qml" line="49"/>
-        <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Main.qml" line="54"/>
-        <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Main.qml" line="57"/>
-        <source>&amp;About</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../Main.qml" line="92"/>
+        <location filename="../Main.qml" line="105"/>
         <source>New Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Main.qml" line="103"/>
+        <location filename="../Main.qml" line="40"/>
+        <location filename="../Main.qml" line="135"/>
         <source>Close Tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Main.qml" line="111"/>
+        <location filename="../Main.qml" line="49"/>
+        <source>Quit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Main.qml" line="54"/>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Main.qml" line="57"/>
+        <location filename="../Main.qml" line="116"/>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Main.qml" line="61"/>
+        <location filename="../Main.qml" line="125"/>
+        <source>Paste</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Main.qml" line="67"/>
+        <location filename="../Main.qml" line="143"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Main.qml" line="114"/>
+        <location filename="../Main.qml" line="70"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Main.qml" line="120"/>
+        <location filename="../Main.qml" line="147"/>
+        <source>About theTerminal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../Main.qml" line="153"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Main.qml" line="78"/>
+        <location filename="../Main.qml" line="91"/>
         <source>Terminal</source>
         <translation type="unfinished"></translation>
     </message>

@@ -13,6 +13,7 @@ class LIBTHETERMINAL_COMMON_EXPORT VT100Emulation : public QObject {
         ~VT100Emulation();
 
         void pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QString keyChar);
+        void paste(QString text);
 
     signals:
 

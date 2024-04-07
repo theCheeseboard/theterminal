@@ -17,6 +17,7 @@ struct VT100EmulationPrivate {
 
         bool autowrap = false;
         bool crlfMode = false;
+        bool bracketedPaste = false;
 
         int savedCaretRow = 0;
         int savedCaretCol = 0;
@@ -81,6 +82,13 @@ void VT100Emulation::pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QStr
     }
 
     this->write(keyChar);
+}
+
+void VT100Emulation::paste(QString text) {
+    if (d->bracketedPaste) {
+        text = text.prepend("\x1B[200~").append("\x1B[201~");
+    }
+    this->write(text);
 }
 
 void VT100Emulation::setupStateMachine() {
@@ -354,6 +362,19 @@ void VT100Emulation::setupCsiStateMachine() {
         d->screen->setScreenBuffer(TerminalScreen::ScreenBuffer::StandardScreen);
     });
     d->csiStateMachine.addTransition(altScreen, 'l', altScreenOff);
+
+    auto bracketedPaste = d->csiStateMachine.addState();
+    d->csiStateMachine.addTransition(mode, "2004", bracketedPaste);
+
+    auto bracketedPasteOn = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
+        d->bracketedPaste = true;
+    });
+    d->csiStateMachine.addTransition(bracketedPaste, 'h', bracketedPasteOn);
+
+    auto bracketedPasteOff = d->csiStateMachine.addFinalState([this](QString escapeSequence) {
+        d->bracketedPaste = false;
+    });
+    d->csiStateMachine.addTransition(bracketedPaste, 'l', bracketedPasteOff);
 
     auto textCursorMode = d->csiStateMachine.addState();
     d->csiStateMachine.addTransition(csi, '2', textCursorMode);

@@ -26,10 +26,10 @@ ContemporaryWindow {
 
     NativeMenuBar {
         Labs.Menu {
-            title: qsTr("&File")
+            title: qsTr("File")
 
             Labs.MenuItem {
-                text: qsTr("&New Tab")
+                text: qsTr("New Tab")
                 shortcut: hk_`Ctrl+T`
                 onTriggered: () => {
                     surface.newTab()
@@ -37,7 +37,7 @@ ContemporaryWindow {
                 }
             }
             Labs.MenuItem {
-                text: qsTr("&Close Tab")
+                text: qsTr("Close Tab")
                 shortcut: hk_`Ctrl+W`
                 onTriggered: () => {
                     surface.closeTab(stack.currentIndex)
@@ -46,15 +46,28 @@ ContemporaryWindow {
 
             Labs.MenuItem {
                 shortcut: hk_`Ctrl+Q`
-                text: qsTr("&Quit")
+                text: qsTr("Quit")
                 onTriggered: Qt.quit()
             }
         }
         Labs.Menu {
-            title: qsTr("&Help")
+            title: qsTr("Edit");
 
             Labs.MenuItem {
-                text: qsTr("&About")
+                text: qsTr("Copy")
+                shortcut: hk_`Ctrl+C`
+            }
+            Labs.MenuItem {
+                text: qsTr("Paste")
+                shortcut: hk_`Ctrl+V`
+                onTriggered: stack.pages[stack.currentIndex].paste()
+            }
+        }
+        Labs.Menu {
+            title: qsTr("Help")
+
+            Labs.MenuItem {
+                text: qsTr("About")
                 onTriggered: outerStack.push(aboutSurface)
             }
         }
@@ -99,6 +112,25 @@ ContemporaryWindow {
                     },
                     MenuSeparator {},
                     Action {
+                        shortcut: hk_`Ctrl+C`
+                        text: qsTr("Copy")
+                        icon.name: "edit-copy"
+
+                        onTriggered: () => {
+
+                                     }
+                    },
+                    Action {
+                        shortcut: hk_`Ctrl+V`
+                        text: qsTr("Paste")
+                        icon.name: "edit-paste"
+
+                        onTriggered: () => {
+                                        stack.pages[stack.currentIndex].paste()
+                                     }
+                    },
+                    MenuSeparator {},
+                    Action {
                         shortcut: hk_`Ctrl+W`
                         text: qsTr("Close Tab")
                         icon.name: "tab-close"
@@ -109,17 +141,19 @@ ContemporaryWindow {
                     },
                     Menu {
                         title: qsTr("Help")
+                        icon.name: "help-about"
 
                         Action {
-                            text: qsTr("About")
+                            text: qsTr("About theTerminal")
                             onTriggered: outerStack.push(aboutSurface)
                         }
                     },
                     Action {
                         shortcut: hk_`Ctrl+Q`
                         text: qsTr("Exit")
+                        icon.name: "application-exit"
 
-                        onTriggered: window.close()
+                        onTriggered: Qt.quit()
                     }
                 ]
 

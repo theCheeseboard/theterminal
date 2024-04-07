@@ -41,6 +41,8 @@ class QmlTerminalScreenController : public QObject {
         Q_SCRIPTABLE QVariantList scrollbackRuns(quint64 line);
         Q_SCRIPTABLE TerminalScreen::RowScaleMode rowScaleMode(int row);
 
+        Q_SCRIPTABLE void paste();
+
     signals:
         void colsChanged();
         void rowsChanged();

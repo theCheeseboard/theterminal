@@ -2,6 +2,7 @@
 
 #include <Emulation/vt100emulation.h>
 #include <QCache>
+#include <QClipboard>
 #include <QCoreApplication>
 #include <QTimer>
 #include <ipty.h>
@@ -159,6 +160,12 @@ TerminalScreen::RowScaleMode QmlTerminalScreenController::rowScaleMode(int row) 
     }
 
     return d->terminalScreen->rowScaleMode(row);
+}
+
+void QmlTerminalScreenController::paste() {
+    auto clipboardContents = qApp->clipboard()->text();
+    // TODO: Check if clipboard contents are dangerous
+    d->emulation->paste(clipboardContents);
 }
 
 QVariantList QmlTerminalScreenController::calculateRuns(int cols, std::function<TerminalScreen::CharacterSpace(int)> getCharacter) {
