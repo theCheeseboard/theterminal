@@ -19,6 +19,7 @@ class QmlTerminalScreenController : public QObject {
         Q_PROPERTY(bool reportMouseEvents READ reportMouseEvents NOTIFY reportMouseEventsChanged FINAL)
         Q_PROPERTY(QPoint selectionStart READ selectionStart WRITE setSelectionStart NOTIFY selectionStartChanged FINAL)
         Q_PROPERTY(QPoint selectionEnd READ selectionEnd WRITE setSelectionEnd NOTIFY selectionEndChanged FINAL)
+        Q_PROPERTY(bool haveSelection READ haveSelection NOTIFY haveSelectionChanged FINAL)
 
         Q_PROPERTY(QPoint normalisedSelectionStart READ normalisedSelectionStart NOTIFY normalisedSelectionChanged FINAL)
         Q_PROPERTY(QPoint normalisedSelectionEnd READ normalisedSelectionEnd NOTIFY normalisedSelectionChanged FINAL)
@@ -44,6 +45,7 @@ class QmlTerminalScreenController : public QObject {
 
         QPoint normalisedSelectionStart() const;
         QPoint normalisedSelectionEnd() const;
+        bool haveSelection() const;
 
         bool invertScreen();
         bool caretVisible();
@@ -52,10 +54,11 @@ class QmlTerminalScreenController : public QObject {
 
         Q_SCRIPTABLE void start(QString process);
         Q_SCRIPTABLE void pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QString keyChar);
-        Q_SCRIPTABLE QVariantList runs(int row);
-        Q_SCRIPTABLE QVariantList scrollbackRuns(quint64 line);
+        Q_SCRIPTABLE QVariantList runs(int row, int start = 0);
+        Q_SCRIPTABLE QVariantList scrollbackRuns(quint64 line, int start = 0);
         Q_SCRIPTABLE TerminalScreen::RowScaleMode rowScaleMode(int row);
 
+        Q_SCRIPTABLE void copy();
         Q_SCRIPTABLE void paste();
 
     signals:
@@ -70,15 +73,17 @@ class QmlTerminalScreenController : public QObject {
         void selectionStartChanged();
         void selectionEndChanged();
         void normalisedSelectionChanged();
+        void haveSelectionChanged();
 
         Q_SCRIPTABLE void rowContentChanged(int row);
 
     private:
         QmlTerminalScreenControllerPrivate* d;
 
-        QVariantList calculateRuns(int cols, std::function<TerminalScreen::CharacterSpace(int)> getCharacter);
+        QVariantList calculateRuns(int start, int cols, std::function<TerminalScreen::CharacterSpace(int)> getCharacter);
         QVariantMap initFormat(TerminalScreen::CharacterSpace::CharacterFormat format);
         void queueRowUpdate(int row);
+        QString selectedText();
 };
 
 #endif // QMLTERMINALSCREENCONTROLLER_H

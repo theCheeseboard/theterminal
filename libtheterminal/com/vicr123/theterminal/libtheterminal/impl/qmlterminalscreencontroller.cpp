@@ -110,6 +110,7 @@ void QmlTerminalScreenController::setSelectionStart(QPoint selectionStart) {
     d->selectionStart = selectionStart;
     emit selectionStartChanged();
     emit normalisedSelectionChanged();
+    emit haveSelectionChanged();
 }
 
 QPoint QmlTerminalScreenController::selectionEnd() {
@@ -120,6 +121,7 @@ void QmlTerminalScreenController::setSelectionEnd(QPoint selectionEnd) {
     d->selectionEnd = selectionEnd;
     emit selectionEndChanged();
     emit normalisedSelectionChanged();
+    emit haveSelectionChanged();
 }
 
 bool QmlTerminalScreenController::invertScreen() {
@@ -149,7 +151,7 @@ void QmlTerminalScreenController::pressKey(Qt::KeyboardModifiers modifiers, Qt::
     d->emulation->pressKey(modifiers, key, keyChar);
 }
 
-QVariantList QmlTerminalScreenController::runs(int row) {
+QVariantList QmlTerminalScreenController::runs(int row, int start) {
     if (row < 0) {
         tWarn("QmlTerminalScreenController") << "Attempted to calculate runs for row " << row << " which is less than 0";
         return {};
@@ -160,19 +162,19 @@ QVariantList QmlTerminalScreenController::runs(int row) {
         return {};
     }
 
-    return this->calculateRuns(d->terminalScreen->cols(), [&row, this](int i) {
+    return this->calculateRuns(start, d->terminalScreen->cols(), [&row, this](int i) {
         return d->terminalScreen->character(i, row);
     });
 }
 
-QVariantList QmlTerminalScreenController::scrollbackRuns(quint64 line) {
+QVariantList QmlTerminalScreenController::scrollbackRuns(quint64 line, int start) {
     if (line >= d->terminalScreen->scrollbackLines()) {
         tWarn("QmlTerminalScreenController") << "Attempted to calculate runs for scrollback line " << line << " which is more than the number of scrollback lines, " << d->terminalScreen->scrollbackLines();
         return {};
     }
 
     auto scrollbackLine = d->terminalScreen->scrollbackLine(line);
-    return this->calculateRuns(scrollbackLine->length(), [this, &scrollbackLine](int i) {
+    return this->calculateRuns(start, scrollbackLine->length(), [this, &scrollbackLine](int i) {
         return scrollbackLine->at(i);
     });
 }
@@ -189,18 +191,23 @@ TerminalScreen::RowScaleMode QmlTerminalScreenController::rowScaleMode(int row) 
     return d->terminalScreen->rowScaleMode(row);
 }
 
+void QmlTerminalScreenController::copy() {
+    if (this->selectionStart() == this->selectionEnd()) return;
+    qApp->clipboard()->setText(this->selectedText());
+}
+
 void QmlTerminalScreenController::paste() {
     auto clipboardContents = qApp->clipboard()->text();
     // TODO: Check if clipboard contents are dangerous
     d->emulation->paste(clipboardContents);
 }
 
-QVariantList QmlTerminalScreenController::calculateRuns(int cols, std::function<TerminalScreen::CharacterSpace(int)> getCharacter) {
+QVariantList QmlTerminalScreenController::calculateRuns(int start, int cols, std::function<TerminalScreen::CharacterSpace(int)> getCharacter) {
     QVariantList runs;
     QVariantMap currentMap = initFormat({});
     QByteArray currentText;
     TerminalScreen::CharacterSpace::CharacterFormat previousFormat;
-    for (auto i = 0; i < cols; i++) {
+    for (auto i = start; i < cols; i++) {
         auto character = getCharacter(i);
 
         if (previousFormat != character.format) {
@@ -248,6 +255,35 @@ void QmlTerminalScreenController::queueRowUpdate(int row) {
     }
 }
 
+QString QmlTerminalScreenController::selectedText() {
+    if (this->normalisedSelectionStart() == this->normalisedSelectionEnd()) return {};
+
+    QStringList text;
+    for (auto i = this->normalisedSelectionStart().y(); i <= this->normalisedSelectionEnd().y(); i++) {
+        auto runStart = i == this->normalisedSelectionStart().y() ? this->normalisedSelectionStart().x() : 0;
+        auto runs = i < this->scrollbackLines() ? this->scrollbackRuns(i, runStart) : this->runs(i - this->scrollbackLines(), runStart);
+
+        QString line;
+        for (const auto& run : runs) {
+            line.append(run.toMap().value("text").toString());
+        }
+        if (i == this->normalisedSelectionEnd().y()) {
+            auto length = this->normalisedSelectionEnd().x() - (i == normalisedSelectionStart().y() ? normalisedSelectionStart().x() : 0) + 1;
+            line = line.left(length);
+        }
+
+        // Trim the end of the line
+        for (auto n = line.size() - 1; n >= 0; --n) {
+            if (!line.at(n).isSpace()) {
+                line = line.left(n + 1);
+                break;
+            }
+        }
+        text.append(line);
+    }
+    return text.join("\n");
+}
+
 QPoint QmlTerminalScreenController::normalisedSelectionStart() const {
     auto yDiff = d->selectionStart.y() <=> d->selectionEnd.y();
     auto xDiff = d->selectionStart.x() <=> d->selectionEnd.x();
@@ -286,4 +322,8 @@ QPoint QmlTerminalScreenController::normalisedSelectionEnd() const {
     } else {
         return d->selectionStart;
     }
+}
+
+bool QmlTerminalScreenController::haveSelection() const {
+    return d->selectionStart != d->selectionEnd;
 }

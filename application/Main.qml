@@ -56,6 +56,7 @@ ContemporaryWindow {
             Labs.MenuItem {
                 text: qsTr("Copy")
                 shortcut: hk_`Ctrl+C`
+                onTriggered: stack.pages[stack.currentIndex].copy()
             }
             Labs.MenuItem {
                 text: qsTr("Paste")
@@ -115,29 +116,20 @@ ContemporaryWindow {
                         shortcut: hk_`Ctrl+C`
                         text: qsTr("Copy")
                         icon.name: "edit-copy"
-
-                        onTriggered: () => {
-
-                                     }
+                        onTriggered: stack.pages[stack.currentIndex].copy()
                     },
                     Action {
                         shortcut: hk_`Ctrl+V`
                         text: qsTr("Paste")
                         icon.name: "edit-paste"
-
-                        onTriggered: () => {
-                                        stack.pages[stack.currentIndex].paste()
-                                     }
+                        onTriggered: stack.pages[stack.currentIndex].paste()
                     },
                     MenuSeparator {},
                     Action {
                         shortcut: hk_`Ctrl+W`
                         text: qsTr("Close Tab")
                         icon.name: "tab-close"
-
-                        onTriggered: () => {
-                                         surface.closeTab()
-                                     }
+                        onTriggered: surface.closeTab()
                     },
                     Menu {
                         title: qsTr("Help")

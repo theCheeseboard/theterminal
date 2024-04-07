@@ -11,9 +11,13 @@ Item {
         family: "JetBrains Mono"
     }
     property string shell: "/bin/bash";
+    readonly property bool haveSelection: controller.haveSelection
 
     function paste() {
         controller.paste()
+    }
+    function copy() {
+        controller.copy()
     }
 
     FocusScope {
