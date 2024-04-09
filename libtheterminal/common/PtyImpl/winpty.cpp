@@ -64,7 +64,7 @@ struct WinPtyPrivate
 };
 
 WinPty::WinPty(QObject* parent)
-    : QIODevice{parent},
+    : AbstractPty{parent},
     d(new WinPtyPrivate)
 {}
 
@@ -163,10 +163,6 @@ bool WinPty::ready() {
     return false;
 }
 
-QIODevice* WinPty::device() {
-    return this;
-}
-
 bool WinPty::setWindowSize(qint16 cols, qint16 rows) {
     if (d->hPC != nullptr) {
         auto hr = ResizePseudoConsole(d->hPC, { cols, rows });
@@ -185,6 +181,10 @@ qint64 WinPty::readData(char* data, qint64 maxlen) {
 qint64 WinPty::writeData(const char* data, qint64 len) {
     QMetaObject::invokeMethod(d->writeWorker, &WriteFileWorker::writeData, QByteArray(data, len));
     return len;
+}
+
+QStringList WinPty::runningProcesses() {
+    return {};
 }
 
 #include "winpty.moc"

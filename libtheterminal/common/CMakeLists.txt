@@ -4,7 +4,7 @@ cntp_sourcelist(
     OUTPUT SOURCES
     OUTPUT_ALL ALL_SOURCES
     FILES
-        ipty.h ipty.cpp
+        abstractpty.h abstractpty.cpp
         terminalscreen.h terminalscreen.cpp
         Emulation/vt100emulation.h Emulation/vt100emulation.cpp
         StateMachine/terminalstatemachine.h StateMachine/terminalstatemachine.cpp

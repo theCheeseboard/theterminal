@@ -22,7 +22,7 @@ struct UnixPtyPrivate {
 };
 
 UnixPty::UnixPty(QObject* parent) :
-    QIODevice{parent}, d{new UnixPtyPrivate} {
+    AbstractPty{parent}, d{new UnixPtyPrivate} {
     tDebug("UnixPty") << "Creating UNIX Pty";
 }
 
@@ -220,6 +220,10 @@ bool UnixPty::start(QString process, QProcessEnvironment environment, QString wo
     d->runningProcess->start(process, QStringList());
     d->runningProcess->waitForStarted();
 
+    connect(d->runningProcess, &QProcess::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
+        emit processQuit(exitCode);
+    });
+
     setWindowSize(cols, rows);
 
     // m_pid = m_shellProcess.processId();
@@ -231,10 +235,6 @@ bool UnixPty::start(QString process, QProcessEnvironment environment, QString wo
 
 bool UnixPty::ready() {
     return d->ptyReady;
-}
-
-QIODevice* UnixPty::device() {
-    return this;
 }
 
 bool UnixPty::setWindowSize(qint16 cols, qint16 rows) {
@@ -253,6 +253,10 @@ bool UnixPty::setWindowSize(qint16 cols, qint16 rows) {
     }
 
     return ok;
+}
+
+QStringList UnixPty::runningProcesses() {
+    return {};
 }
 
 qint64 UnixPty::readData(char* data, qint64 maxlen) {

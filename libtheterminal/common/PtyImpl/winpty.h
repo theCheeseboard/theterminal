@@ -1,13 +1,12 @@
 #ifndef WINPTY_H
 #define WINPTY_H
 
-#include "../ipty.h"
+#include "../abstractpty.h"
 #include <QIODevice>
 
 struct WinPtyPrivate;
 
-class WinPty : public QIODevice,
-    public IPty {
+class WinPty : public AbstractPty {
         Q_OBJECT
     public:
         explicit WinPty(QObject* parent = nullptr);
@@ -18,12 +17,12 @@ class WinPty : public QIODevice,
     private:
         QScopedPointer<WinPtyPrivate> d;
 
-        // IPty interface
+        // AbstractPty interface
     public:
         bool start(QString process, QProcessEnvironment environment, QString workingDirectory, qint16 cols, qint16 rows);
         bool ready();
-        QIODevice *device();
         bool setWindowSize(qint16 cols, qint16 rows);
+        QStringList runningProcesses();
 
         // QIODevice interface
     protected:

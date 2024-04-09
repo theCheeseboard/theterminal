@@ -5,12 +5,12 @@
 #include <QClipboard>
 #include <QCoreApplication>
 #include <QTimer>
-#include <ipty.h>
+#include <abstractpty.h>
 #include <terminalscreen.h>
 #include <tlogger.h>
 
 struct QmlTerminalScreenControllerPrivate {
-        IPty* pty = nullptr;
+        AbstractPty* pty = nullptr;
         TerminalScreen* terminalScreen = nullptr;
 
         VT100Emulation* emulation = nullptr;
@@ -141,10 +141,15 @@ quint64 QmlTerminalScreenController::scrollbackLines() {
 }
 
 void QmlTerminalScreenController::start(QString process) {
-    d->pty = IPty::createPty(this);
+    d->pty = AbstractPty::createPty(this);
     d->pty->start(process, QProcessEnvironment::systemEnvironment(), QCoreApplication::applicationDirPath(), d->terminalScreen->cols(), d->terminalScreen->rows());
 
-    d->emulation = new VT100Emulation(d->pty->device(), d->terminalScreen, this);
+    connect(d->pty, &AbstractPty::processQuit, this, [this](int exitCode) {
+        d->emulation->writeToScreen("\r\n\r\n");
+        d->emulation->writeToScreen(QStringLiteral("[%1]").arg(tr("Process terminated with exit code %1").arg(exitCode)));
+    });
+
+    d->emulation = new VT100Emulation(d->pty, d->terminalScreen, this);
 }
 
 void QmlTerminalScreenController::pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QString keyChar) {

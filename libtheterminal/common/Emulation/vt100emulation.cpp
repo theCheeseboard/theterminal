@@ -91,6 +91,12 @@ void VT100Emulation::paste(QString text) {
     this->write(text);
 }
 
+void VT100Emulation::writeToScreen(QString text) {
+    for (auto c : text) {
+        echo(c);
+    }
+}
+
 void VT100Emulation::setupStateMachine() {
     auto initialState = d->escapeStateMachine.addState();
 

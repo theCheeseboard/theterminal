@@ -3,7 +3,7 @@
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
 #include <QUrl>
-#include <ipty.h>
+#include <abstractpty.h>
 #include <tapplication.h>
 #include <tlogger.h>
 #include <tsettings.h>
