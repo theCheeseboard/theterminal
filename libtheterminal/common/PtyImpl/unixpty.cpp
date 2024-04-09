@@ -317,7 +317,7 @@ QStringList UnixPty::runningProcesses() {
         processes.append(QString(procInfo.pbi_name));
 
         auto numberOfProcesses = proc_listallpids(nullptr, 0);
-        auto arrayOfPids[numberOfProcesses];
+        int arrayOfPids[numberOfProcesses];
         numberOfProcesses = proc_listallpids(arrayOfPids, sizeof(arrayOfPids));
 
         for (auto i = 0; i < numberOfProcesses; i++) {
