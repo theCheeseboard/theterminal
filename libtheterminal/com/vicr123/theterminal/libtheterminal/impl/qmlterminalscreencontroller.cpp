@@ -196,6 +196,10 @@ TerminalScreen::RowScaleMode QmlTerminalScreenController::rowScaleMode(int row) 
     return d->terminalScreen->rowScaleMode(row);
 }
 
+QStringList QmlTerminalScreenController::runningProcesses() {
+    return d->pty->runningProcesses();
+}
+
 void QmlTerminalScreenController::copy() {
     if (this->selectionStart() == this->selectionEnd()) return;
     qApp->clipboard()->setText(this->selectedText());

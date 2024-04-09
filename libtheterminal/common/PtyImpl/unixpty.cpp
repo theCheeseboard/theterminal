@@ -1,4 +1,5 @@
 #include "unixpty.h"
+#include <QQueue>
 #include <QSocketNotifier>
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -7,6 +8,10 @@
 #include <unistd.h>
 #if !defined(Q_OS_ANDROID) && !defined(Q_OS_FREEBSD)
     #include <utmpx.h>
+#endif
+
+#ifdef Q_OS_MAC
+    #include <libproc.h>
 #endif
 
 struct UnixPtyPrivate {
@@ -221,6 +226,7 @@ bool UnixPty::start(QString process, QProcessEnvironment environment, QString wo
     d->runningProcess->waitForStarted();
 
     connect(d->runningProcess, &QProcess::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
+        d->ptyReady = false;
         emit processQuit(exitCode);
     });
 
@@ -229,6 +235,7 @@ bool UnixPty::start(QString process, QProcessEnvironment environment, QString wo
     // m_pid = m_shellProcess.processId();
 
     this->setOpenMode(QIODevice::ReadWrite);
+    d->ptyReady = true;
 
     return true;
 }
@@ -256,6 +263,39 @@ bool UnixPty::setWindowSize(qint16 cols, qint16 rows) {
 }
 
 QStringList UnixPty::runningProcesses() {
+    if (!d->ptyReady) return {};
+
+#ifdef Q_OS_MAC
+    QQueue<int> pids;
+    pids.enqueue(d->runningProcess->processId());
+
+    QStringList processes;
+
+    while (!pids.isEmpty()) {
+        auto pid = pids.dequeue();
+        proc_bsdinfo procInfo;
+        if (proc_pidinfo(pid, PROC_PIDTBSDINFO, 0, &procInfo, sizeof(procInfo)) <= 0) {
+            continue;
+        }
+
+        processes.append(QString(procInfo.pbi_name));
+
+        int numberOfProcesses = proc_listallpids(nullptr, 0);
+        int arrayOfPids[numberOfProcesses];
+        numberOfProcesses = proc_listallpids(arrayOfPids, sizeof(arrayOfPids));
+
+        for (int i = 0; i < numberOfProcesses; i++) {
+            proc_bsdinfo childProcInfo;
+            if (proc_pidinfo(arrayOfPids[i], PROC_PIDTBSDINFO, 0, &childProcInfo, sizeof(childProcInfo)) > 0) {
+                if (childProcInfo.pbi_ppid == pid) {
+                    pids.enqueue(arrayOfPids[i]);
+                }
+            }
+        }
+    }
+
+    return processes;
+#endif
     return {};
 }
 

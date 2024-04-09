@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import Contemporary
 import com.vicr123.Contemporary
+import QtQuick.Dialogs
 import "impl" as Impl
 
 Item {
@@ -19,6 +20,18 @@ Item {
     function copy() {
         controller.copy()
     }
+    function tryClose() {
+        const processes = controller.runningProcesses();
+        if (processes.length > 0) {
+            quitWithRunningProcessesDialog.informativeText = qsTr("Closing this terminal will also close %n processes: %1", "", processes.length).arg(processes.join(", "));
+            quitWithRunningProcessesDialog.visible = true
+            return;
+        }
+
+        root.close();
+    }
+
+    signal close()
 
     FocusScope {
         anchors.fill: parent
@@ -188,6 +201,18 @@ Item {
                     }
                 }
             }
+        }
+    }
+
+    MessageDialog {
+        id: quitWithRunningProcessesDialog
+        text: "Close terminal with running processes?"
+        buttons: MessageDialog.Ok | MessageDialog.Cancel
+        onAccepted: () => {
+            root.close();
+        }
+        Component.onCompleted: {
+            quitWithRunningProcessesDialog.button(MessageDialog.Ok).text = qsTr("Close Terminal");
         }
     }
 }

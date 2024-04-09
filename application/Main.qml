@@ -94,9 +94,8 @@ ContemporaryWindow {
             }
 
             function closeTab(index) {
-                const page = stack.pages.shift(index);
-                terminals.remove(index);
-                page.destroy();
+                const page = stack.pages[index];
+                page.tryClose();
             }
 
             actionBar: ActionBar {
@@ -184,7 +183,16 @@ ContemporaryWindow {
 
             Component {
                 id: terminalComponent
-                Terminal {}
+                Terminal {
+                    id: terminal
+
+                    onClose: () => {
+                        const index = stack.pages.indexOf(terminal);
+                        stack.pages.splice(index, 1);
+                        terminals.remove(index);
+                        terminal.destroy();
+                    }
+                }
             }
 
             Component.onCompleted: () => {
