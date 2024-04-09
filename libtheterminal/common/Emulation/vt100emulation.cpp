@@ -249,6 +249,21 @@ void VT100Emulation::setupCsiStateMachine() {
     auto moveColumnRelative = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiMoveColumnRelative, this, std::placeholders::_1));
     d->csiStateMachine.addTransition({csi, csrN}, 'G', moveColumnRelative);
 
+    auto insertCharacter = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiInsertCharacter, this, std::placeholders::_1));
+    d->csiStateMachine.addTransition({ csi, csrN }, '@', insertCharacter);
+
+    auto deleteCharacter = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiDeleteCharacter, this, std::placeholders::_1));
+    d->csiStateMachine.addTransition({ csi, csrN }, 'P', deleteCharacter);
+
+    auto eraseCharacter = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiEraseCharacter, this, std::placeholders::_1));
+    d->csiStateMachine.addTransition({ csi, csrN }, 'X', eraseCharacter);
+
+    auto insertLine = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiInsertLine, this, std::placeholders::_1));
+    d->csiStateMachine.addTransition({ csi, csrN }, 'L', insertLine);
+
+    auto deleteLine = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiDeleteLine, this, std::placeholders::_1));
+    d->csiStateMachine.addTransition({ csi, csrN }, 'M', deleteLine);
+
     auto eraseInDisplay = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiEraseInDisplay, this, std::placeholders::_1));
     d->csiStateMachine.addTransition({csi, csrN}, 'J', eraseInDisplay);
 
@@ -572,9 +587,15 @@ void VT100Emulation::invokeCsi(QString csi) {
         lastResult = d->csiStateMachine.pushCharacter(character);
     }
 
-    if (lastResult != TerminalStateMachine::Result::Pending) {
+    switch (lastResult) {
+        case TerminalStateMachine::Result::Accepted:
         return;
-    }
+        case TerminalStateMachine::Result::Pending:
+            break;
+        case TerminalStateMachine::Result::Rejected:
+            tWarn("VT100Emulation") << "Unknown CSI sequence: " << d->csiStateMachine.replayBuffer();
+            return;
+    };
 
     // Push a final character to trigger the final result
     switch (d->csiStateMachine.pushCharacter(TerminalScreen::emptyChar())) {
@@ -636,6 +657,56 @@ void VT100Emulation::csiMoveColumnRelative(QString escapeSequence) {
     if (numStr.isEmpty()) numStr = "1";
     auto num = numStr.toInt();
     d->screen->setCaretCol(num - 1);
+}
+
+static int extractCount(QString escapeSequence) {
+    static QRegularExpression cursorPositionRelativeRegex("\\[(?<num>\\d+)?");
+    auto matches = cursorPositionRelativeRegex.match(escapeSequence);
+    auto numStr = matches.captured("num");
+    
+    return numStr.isEmpty() ? 0 : numStr.toInt();
+}
+
+void VT100Emulation::csiInsertCharacter(QString escapeSequence) {
+    int spaces = extractCount(escapeSequence);
+    // Copy characters n chars to the right
+    for (auto i = d->screen->cols() - 1; i >= d->screen->caretCol(); i--) {
+        d->screen->setCharacter(i, d->screen->caretRow(), d->screen->character(i - spaces, d->screen->caretRow()));
+    }
+
+    // Then fill in n chars
+    for (auto i = 0; i < spaces; i++) {
+        d->screen->setCharacter(d->screen->caretCol() + i, d->screen->caretRow(), ' ');
+    }
+}
+
+void VT100Emulation::csiDeleteCharacter(QString escapeSequence) {
+    int chars = extractCount(escapeSequence);
+    // Copy characters n chars to the right
+    for (auto i = d->screen->caretCol(); i < d->screen->cols() - chars - 1; i++) {
+        d->screen->setCharacter(i, d->screen->caretRow(), d->screen->character(i + chars, d->screen->caretRow()));
+    }
+
+    // Then fill in n spaces at the end
+    for (auto i = 0; i < chars; i++) {
+        d->screen->setCharacter(d->screen->cols() - 1 - i, d->screen->caretRow(), ' ');
+    }
+}
+
+void VT100Emulation::csiEraseCharacter(QString escapeSequence) {
+    // Overwrite the next n characters with spaces
+    int spaces = extractCount(escapeSequence);
+    for (auto i = 0; i < spaces; i++) {
+        d->screen->setCharacter(d->screen->caretCol() + i, d->screen->caretRow(), ' ');
+    }
+}
+
+void VT100Emulation::csiInsertLine(QString escapeSequence) {
+    // TODO
+}
+
+void VT100Emulation::csiDeleteLine(QString escapeSequence) {
+    // TODO
 }
 
 void VT100Emulation::csiEraseInLine(QString escapeSequence) {

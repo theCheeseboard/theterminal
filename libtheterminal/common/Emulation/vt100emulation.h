@@ -32,6 +32,11 @@ class LIBTHETERMINAL_COMMON_EXPORT VT100Emulation : public QObject {
         void csiMoveCursorRelative(QString escapeSequence);
         void csiMoveLineRelative(QString escapeSequence);
         void csiMoveColumnRelative(QString escapeSequence);
+        void csiInsertCharacter(QString escapeSequence);
+        void csiDeleteCharacter(QString escapeSequence);
+        void csiEraseCharacter(QString escapeSequence);
+        void csiInsertLine(QString escapeSequence);
+        void csiDeleteLine(QString escapeSequence);
         void csiEraseInLine(QString escapeSequence);
         void csiEraseInDisplay(QString escapeSequence);
         void csiCursorPosition(QString escapeSequence);
