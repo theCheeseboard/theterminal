@@ -27,9 +27,9 @@ class UnixPty : public AbstractPty {
 
         // QIODevice interface
     protected:
-        qint64 readData(char* data, qint64 maxlen);
-        qint64 writeData(const char* data, qint64 len);
-        qint64 bytesAvailable() const;
+        qint64 readData(char* data, qint64 maxlen) override;
+        qint64 writeData(const char* data, qint64 len) override;
+        qint64 bytesAvailable() const override;
 };
 
 #endif // UNIXPTY_H

@@ -60,7 +60,7 @@ struct WinPtyPrivate
     HPCON hPC{};
 
     HandleT<HandleTraits::HANDLETraits> outputReadSide, inputWriteSide;
-
+    bool ready = false;
 };
 
 WinPty::WinPty(QObject* parent)
@@ -148,6 +148,11 @@ bool WinPty::start(QString process, QProcessEnvironment environment, QString wor
         args->flags = CREATE_UNICODE_ENVIRONMENT | EXTENDED_STARTUPINFO_PRESENT;
     });
 
+    connect(runningProcess, &QProcess::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
+        d->ready = false;
+        emit processQuit(exitCode);
+    });
+
     d->runningProcess = runningProcess;
     runningProcess->start(process, {});
     runningProcess->waitForStarted();
@@ -156,11 +161,12 @@ bool WinPty::start(QString process, QProcessEnvironment environment, QString wor
     writeThread->start();
 
     this->setOpenMode(QIODevice::ReadWrite);
+    d->ready = true;
     return true;
 }
 
 bool WinPty::ready() {
-    return false;
+    return d->ready;
 }
 
 bool WinPty::setWindowSize(qint16 cols, qint16 rows) {
