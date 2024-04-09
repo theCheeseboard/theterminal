@@ -128,7 +128,7 @@ ContemporaryWindow {
                         shortcut: hk_`Ctrl+W`
                         text: qsTr("Close Tab")
                         icon.name: "tab-close"
-                        onTriggered: surface.closeTab()
+                        onTriggered: surface.closeTab(stack.currentIndex)
                     },
                     Menu {
                         title: qsTr("Help")

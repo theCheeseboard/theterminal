@@ -105,27 +105,31 @@ void VT100Emulation::setupStateMachine() {
     d->escapeStateMachine.addTransition(
         csi, [](QChar c) {
         return !(c.toLatin1() >= 0x40 && c.toLatin1() <= 0x7E);
-    }, csi);
+    },
+        csi);
 
     auto csiEnd = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::invokeCsi, this, std::placeholders::_1));
     d->escapeStateMachine.addTransition(
         csi, [](QChar c) {
         return c.toLatin1() >= 0x40 && c.toLatin1() <= 0x7E;
-    }, csiEnd);
+    },
+        csiEnd);
 
     auto osc = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(initialState, ']', osc);
     d->escapeStateMachine.addTransition(
         osc, [](QChar c) {
         return c.toLatin1() != '\x1B' && c.toLatin1() != '\x07';
-    }, osc);
+    },
+        osc);
 
     auto oscEscEnd = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(osc, '\x1B', oscEscEnd);
     d->escapeStateMachine.addTransition(
         oscEscEnd, [](QChar c) {
         return c.toLatin1() != '\\';
-    }, osc);
+    },
+        osc);
 
     auto oscEnd = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::invokeOsc, this, std::placeholders::_1));
     d->escapeStateMachine.addTransition(oscEscEnd, '\\', oscEnd);

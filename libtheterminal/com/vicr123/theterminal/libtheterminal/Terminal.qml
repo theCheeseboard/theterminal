@@ -59,6 +59,7 @@ Item {
 
             function cellAt(x, y) {
                 const item = rowList.itemAt(x, y + rowList.contentY);
+                if (!item) return null;
                 const xCell = Math.floor(x / item.width * screen.cols);
                 return Qt.point(xCell, item.index);
             }
@@ -73,13 +74,13 @@ Item {
                     screen.forceActiveFocus(Qt.MouseFocusReason)
 
                     if (event.buttons & Qt.LeftButton) {
-                        controller.selectionStart = screen.cellAt(event.x, event.y);
-                        controller.selectionEnd = screen.cellAt(event.x, event.y);
+                        controller.selectionStart = screen.cellAt(event.x, event.y) ?? controller.selectionStart;
+                        controller.selectionEnd = screen.cellAt(event.x, event.y) ?? controller.selectionEnd;
                     }
                 }
                 onPositionChanged: event => {
                     if (event.buttons & Qt.LeftButton) {
-                        controller.selectionEnd = screen.cellAt(event.x, event.y);
+                        controller.selectionEnd = screen.cellAt(event.x, event.y) ?? controller.selectionEnd;
                     }
                 }
                 onReleased: event => {
@@ -208,11 +209,12 @@ Item {
         id: quitWithRunningProcessesDialog
         text: "Close terminal with running processes?"
         buttons: MessageDialog.Ok | MessageDialog.Cancel
-        onAccepted: () => {
-            root.close();
-        }
-        Component.onCompleted: {
-            quitWithRunningProcessesDialog.button(MessageDialog.Ok).text = qsTr("Close Terminal");
+        onButtonClicked: (button, role) => {
+            switch (button) {
+                case MessageDialog.Ok:
+                    root.close();
+                    break;
+            }
         }
     }
 }

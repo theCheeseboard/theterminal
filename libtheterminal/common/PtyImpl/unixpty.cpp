@@ -1,4 +1,5 @@
 #include "unixpty.h"
+#include <QDir>
 #include <QQueue>
 #include <QSocketNotifier>
 #include <fcntl.h>
@@ -173,6 +174,7 @@ bool UnixPty::start(QString process, QProcessEnvironment environment, QString wo
 
     QProcessEnvironment finalEnv;
     finalEnv.insert("TERM", "xterm-256color");
+    finalEnv.insert("COLORTER", "truecolor");
     finalEnv.insert(environment);
 
     d->runningProcess->setWorkingDirectory(workingDirectory);
@@ -265,14 +267,48 @@ bool UnixPty::setWindowSize(qint16 cols, qint16 rows) {
 QStringList UnixPty::runningProcesses() {
     if (!d->ptyReady) return {};
 
-#ifdef Q_OS_MAC
-    QQueue<int> pids;
+    QQueue<quint64> pids;
     pids.enqueue(d->runningProcess->processId());
 
     QStringList processes;
 
+#ifdef Q_OS_LINUX
+    QMap<quint64, QVariantMap> procList;
+    QDir procDir("/proc");
+    for (const auto& dir : procDir.entryList(QDir::Dirs)) {
+        bool ok;
+        auto pid = dir.toInt(&ok);
+        if (!ok) continue;
+
+        QFile proc(QStringLiteral("/proc/%1/status").arg(pid));
+        if (!proc.open(QFile::ReadOnly)) continue;
+
+        auto lines = proc.readAll().split('\n');
+
+        QVariantMap data;
+        for (auto line : lines) {
+            if (line.startsWith("PPid:")) {
+                data.insert("parent", line.split('\t')[1].toULongLong());
+            } else if (line.startsWith("Name")) {
+                data.insert("name", QString(line.split('\t')[1]));
+            }
+        }
+        proc.close();
+        procList.insert(pid, data);
+    }
+#endif
+
     while (!pids.isEmpty()) {
         auto pid = pids.dequeue();
+#if defined(Q_OS_LINUX)
+        processes.append(procList.value(pid).value("name").toString());
+
+        for (auto [childPid, data] : procList.asKeyValueRange()) {
+            if (data.value("parent").toULongLong() == pid) {
+                pids.enqueue(childPid);
+            }
+        }
+#elif defined(Q_OS_MAC)
         proc_bsdinfo procInfo;
         if (proc_pidinfo(pid, PROC_PIDTBSDINFO, 0, &procInfo, sizeof(procInfo)) <= 0) {
             continue;
@@ -280,11 +316,11 @@ QStringList UnixPty::runningProcesses() {
 
         processes.append(QString(procInfo.pbi_name));
 
-        int numberOfProcesses = proc_listallpids(nullptr, 0);
-        int arrayOfPids[numberOfProcesses];
+        auto numberOfProcesses = proc_listallpids(nullptr, 0);
+        auto arrayOfPids[numberOfProcesses];
         numberOfProcesses = proc_listallpids(arrayOfPids, sizeof(arrayOfPids));
 
-        for (int i = 0; i < numberOfProcesses; i++) {
+        for (auto i = 0; i < numberOfProcesses; i++) {
             proc_bsdinfo childProcInfo;
             if (proc_pidinfo(arrayOfPids[i], PROC_PIDTBSDINFO, 0, &childProcInfo, sizeof(childProcInfo)) > 0) {
                 if (childProcInfo.pbi_ppid == pid) {
@@ -292,11 +328,9 @@ QStringList UnixPty::runningProcesses() {
                 }
             }
         }
-    }
-
-    return processes;
 #endif
-    return {};
+    }
+    return processes;
 }
 
 qint64 UnixPty::readData(char* data, qint64 maxlen) {
