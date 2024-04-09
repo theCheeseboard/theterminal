@@ -214,7 +214,7 @@ void QmlTerminalScreenController::paste() {
 QVariantList QmlTerminalScreenController::calculateRuns(int start, int cols, std::function<TerminalScreen::CharacterSpace(int)> getCharacter) {
     QVariantList runs;
     QVariantMap currentMap = initFormat({});
-    QByteArray currentText;
+    QString currentText;
     TerminalScreen::CharacterSpace::CharacterFormat previousFormat;
     for (auto i = start; i < cols; i++) {
         auto character = getCharacter(i);
@@ -229,7 +229,7 @@ QVariantList QmlTerminalScreenController::calculateRuns(int start, int cols, std
             currentMap = initFormat(character.format);
         }
 
-        currentText.append(character.character.unicode());
+        currentText.append(character.character);
 
         previousFormat = character.format;
     }

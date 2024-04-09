@@ -13,7 +13,7 @@ public:
     ReadFileWorker(HANDLE hnd, QObject* parent) : QThread(parent), hnd(hnd) {}
 
     void run() override {
-        std::byte buf[1024];
+        char buf[1024];
         while (true) {
             DWORD readBytes;
             if (!ReadFile(hnd, buf, sizeof(buf), &readBytes, nullptr)) {
@@ -21,7 +21,6 @@ public:
                 return;
             }
 
-            emit dataRead(QByteArrayView(buf, readBytes));
             emit dataRead(QByteArray(buf, readBytes));
         }
     }
@@ -173,7 +172,7 @@ bool WinPty::setWindowSize(qint16 cols, qint16 rows) {
     if (d->hPC != nullptr) {
         auto hr = ResizePseudoConsole(d->hPC, { cols, rows });
         return SUCCEEDED(hr);
-     }
+    }
     return false;
 }
 
@@ -187,6 +186,10 @@ qint64 WinPty::readData(char* data, qint64 maxlen) {
 qint64 WinPty::writeData(const char* data, qint64 len) {
     QMetaObject::invokeMethod(d->writeWorker, &WriteFileWorker::writeData, QByteArray(data, len));
     return len;
+}
+
+qint64 WinPty::bytesAvailable() const {
+    return d->readBuffer.length();
 }
 
 QStringList WinPty::runningProcesses() {

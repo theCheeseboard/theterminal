@@ -8,6 +8,7 @@
 
 struct VT100EmulationPrivate {
         QIODevice* device;
+        QTextStream reader;
         TerminalScreen* screen;
 
         bool echo = false;
@@ -44,10 +45,14 @@ VT100Emulation::VT100Emulation(QIODevice* device, TerminalScreen* screen, QObjec
     setupStateMachine();
     setupCsiStateMachine();
 
+    d->reader.setAutoDetectUnicode(false);
+    d->reader.setDevice(device);
+
     connect(device, &QIODevice::readyRead, this, [this] {
-        auto buf = d->device->readAll();
-        for (auto character : buf) {
-            processCharacter(character);
+        while (!d->reader.atEnd()) {
+            QChar ch;
+            d->reader >> ch;
+            processCharacter(ch);
         }
     });
 }
@@ -77,7 +82,7 @@ void VT100Emulation::pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QStr
         this->write("\x1B[B");
         return;
     } else if (key == Qt::Key_Up) {
-        this->write("\x1B[A");
+        this->write("\x1B[A");  
         return;
     }
 
@@ -589,7 +594,7 @@ void VT100Emulation::invokeCsi(QString csi) {
 
     switch (lastResult) {
         case TerminalStateMachine::Result::Accepted:
-        return;
+            return;
         case TerminalStateMachine::Result::Pending:
             break;
         case TerminalStateMachine::Result::Rejected:
