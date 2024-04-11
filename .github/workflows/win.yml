@@ -1,0 +1,62 @@
+name: "Windows CI"
+on:
+  push:
+    branches:
+      - '**'
+  release:
+    types: [published]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
+      - uses: TheMrMilchmann/setup-msvc-dev@v3
+        with:
+          arch: x64
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          aqtversion: '==3.1.*'
+          version: '6.7.0'
+          target: 'desktop'
+          cache: true
+          modules: 'qt3d qtcharts qtconnectivity qtdatavis3d qtgraphs qtgrpc qthttpserver qtimageformats qtlanguageserver qtlocation qtlottie qtmultimedia qtnetworkauth qtpdf qtpositioning qtquick3dphysics qtquickeffectmaker qtremoteobjects qtscxml qtsensors qtserialbus qtserialport qtspeech qtvirtualkeyboard qtwebchannel qtwebengine qtwebsockets qtwebview qt5compat qtquick3d qtquicktimeline qtshadertools'
+      - name: Install QCoro
+        uses: theCheeseboard/actions/build-cmake-project@actions
+        with:
+          project: danvratil/qcoro
+          commitish: v0.10.0
+      - name: Install libcontemporary
+        uses: theCheeseboard/actions/build-cmake-project@actions
+        with:
+          project: theCheeseboard/libcontemporary
+          commitish: features/qml
+      - name: Install contemporary-qml
+        uses: theCheeseboard/actions/build-cmake-project@actions
+        with:
+          project: theCheeseboard/contemporary-qml
+          commitish: main
+      - name: Install theterminal
+        id: theterminal
+        uses: theCheeseboard/actions/build-cmake-project@actions
+        with:
+          project: .
+          commitish: .
+      - name: Deploy theterminal
+        env:
+          SOURCE_DIRECTORY: ${{ steps.theterminal.outputs.source-directory }}
+          BUILD_DIRECTORY: ${{ steps.theterminal.outputs.build-directory }}
+          INSTALL_DIRECTORY: ${{ steps.theterminal.outputs.install-directory }}
+        run: |
+          mkdir output
+          mv "$BUILD_DIRECTORY/application/"theTerminal*.exe output
+          windeployqt output/theTerminal*.exe --qmlimport="$INSTALL_DIRECTORY/qml" --qmldir="$SOURCE_DIRECTORY" --libdir="$INSTALL_DIRECTORY/bin"
+      - name: Upload theterminal artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: theterminal-win
+          path: output

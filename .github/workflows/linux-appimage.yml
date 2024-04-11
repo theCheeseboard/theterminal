@@ -1,0 +1,51 @@
+name: "Linux (AppImage) CI"
+on:
+  push:
+    branches:
+      - '**'
+  release:
+    types: [published]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@master
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          aqtversion: '==3.1.*'
+          version: '6.6.3'
+          target: 'desktop'
+          arch: 'gcc_64'
+          cache: true
+          modules: 'qt3d qtcharts qtconnectivity qtdatavis3d qtgraphs qtgrpc qthttpserver qtimageformats qtlanguageserver qtlocation qtlottie qtmultimedia qtnetworkauth qtpdf qtpositioning qtquick3dphysics qtquickeffectmaker qtremoteobjects qtscxml qtsensors qtserialbus qtserialport qtspeech qtvirtualkeyboard qtwebchannel qtwebengine qtwebsockets qtwebview qt5compat qtquick3d qtquicktimeline qtshadertools'
+      - name: Install QCoro
+        uses: theCheeseboard/actions/build-cmake-project@actions
+        with:
+          project: danvratil/qcoro
+          commitish: v0.10.0
+      - name: Install libcontemporary
+        uses: theCheeseboard/actions/build-cmake-project@actions
+        with:
+          project: theCheeseboard/libcontemporary
+          commitish: features/qml
+      - name: Install contemporary-qml
+        uses: theCheeseboard/actions/build-cmake-project@actions
+        with:
+          project: theCheeseboard/contemporary-qml
+          commitish: main
+      - name: Install theterminal
+        id: theterminal
+        uses: theCheeseboard/actions/build-cmake-project@actions
+        with:
+          project: .
+          commitish: .
+      - name: Deploy theterminal
+        uses: theCheeseboard/actions/deploy-project@actions
+        with:
+          sourceDirectory: ${{ steps.theterminal.outputs.source-directory }}
+          buildDirectory: ${{ steps.theterminal.outputs.build-directory }}
