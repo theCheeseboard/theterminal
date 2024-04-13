@@ -7,10 +7,12 @@ find_package(libcontemporary REQUIRED)
 
 set(SOURCES
     qmlinit.cpp
+    theterminal-init.cpp
 )
 
 set(HEADERS
     libtheterminal_global.h
+    theterminal-init.h
 )
 
 set(PRIVATE_HEADERS

@@ -57,7 +57,7 @@ cntp_defaults_file(theterminal
     DEFAULTS_FILE theterminal.conf)
 
 target_link_libraries(theterminal PUBLIC Qt::Widgets Qt::Quick Qt::QuickControls2 libcontemporary libtheterminal)
-target_include_directories(theterminal PUBLIC ../libtheterminal/common/)
+target_include_directories(theterminal PUBLIC ../libtheterminal/common/ ../libtheterminal)
 
 install(TARGETS theterminal
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
