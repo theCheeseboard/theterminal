@@ -7,3 +7,4 @@ GenericName[]=Terminal
 Exec=theterminal %U
 Icon=com.vicr123.theterminal
 StartupWMClass=theTerminal
+Categories=System;TerminalEmulator;
