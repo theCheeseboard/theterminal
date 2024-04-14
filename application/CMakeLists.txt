@@ -55,6 +55,7 @@ cntp_target_desktop_file(theterminal
     BLUEPRINT_DESKTOP_FILE com.vicr123.theterminal_blueprint.desktop)
 cntp_defaults_file(theterminal
     DEFAULTS_FILE theterminal.conf)
+cntp_dmg(theterminal app-dmg-background.svg)
 
 target_link_libraries(theterminal PUBLIC Qt::Widgets Qt::Quick Qt::QuickControls2 libcontemporary libtheterminal)
 target_include_directories(theterminal PUBLIC ../libtheterminal/common/ ../libtheterminal)
