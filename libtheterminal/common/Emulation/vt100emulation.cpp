@@ -82,7 +82,7 @@ void VT100Emulation::pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QStr
         this->write("\x1B[B");
         return;
     } else if (key == Qt::Key_Up) {
-        this->write("\x1B[A");  
+        this->write("\x1B[A");
         return;
     }
 
@@ -110,31 +110,27 @@ void VT100Emulation::setupStateMachine() {
     d->escapeStateMachine.addTransition(
         csi, [](QChar c) {
         return !(c.toLatin1() >= 0x40 && c.toLatin1() <= 0x7E);
-    },
-        csi);
+    }, csi);
 
     auto csiEnd = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::invokeCsi, this, std::placeholders::_1));
     d->escapeStateMachine.addTransition(
         csi, [](QChar c) {
         return c.toLatin1() >= 0x40 && c.toLatin1() <= 0x7E;
-    },
-        csiEnd);
+    }, csiEnd);
 
     auto osc = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(initialState, ']', osc);
     d->escapeStateMachine.addTransition(
         osc, [](QChar c) {
         return c.toLatin1() != '\x1B' && c.toLatin1() != '\x07';
-    },
-        osc);
+    }, osc);
 
     auto oscEscEnd = d->escapeStateMachine.addState();
     d->escapeStateMachine.addTransition(osc, '\x1B', oscEscEnd);
     d->escapeStateMachine.addTransition(
         oscEscEnd, [](QChar c) {
         return c.toLatin1() != '\\';
-    },
-        osc);
+    }, osc);
 
     auto oscEnd = d->escapeStateMachine.addFinalState(std::bind(&VT100Emulation::invokeOsc, this, std::placeholders::_1));
     d->escapeStateMachine.addTransition(oscEscEnd, '\\', oscEnd);
@@ -255,19 +251,19 @@ void VT100Emulation::setupCsiStateMachine() {
     d->csiStateMachine.addTransition({csi, csrN}, 'G', moveColumnRelative);
 
     auto insertCharacter = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiInsertCharacter, this, std::placeholders::_1));
-    d->csiStateMachine.addTransition({ csi, csrN }, '@', insertCharacter);
+    d->csiStateMachine.addTransition({csi, csrN}, '@', insertCharacter);
 
     auto deleteCharacter = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiDeleteCharacter, this, std::placeholders::_1));
-    d->csiStateMachine.addTransition({ csi, csrN }, 'P', deleteCharacter);
+    d->csiStateMachine.addTransition({csi, csrN}, 'P', deleteCharacter);
 
     auto eraseCharacter = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiEraseCharacter, this, std::placeholders::_1));
-    d->csiStateMachine.addTransition({ csi, csrN }, 'X', eraseCharacter);
+    d->csiStateMachine.addTransition({csi, csrN}, 'X', eraseCharacter);
 
     auto insertLine = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiInsertLine, this, std::placeholders::_1));
-    d->csiStateMachine.addTransition({ csi, csrN }, 'L', insertLine);
+    d->csiStateMachine.addTransition({csi, csrN}, 'L', insertLine);
 
     auto deleteLine = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiDeleteLine, this, std::placeholders::_1));
-    d->csiStateMachine.addTransition({ csi, csrN }, 'M', deleteLine);
+    d->csiStateMachine.addTransition({csi, csrN}, 'M', deleteLine);
 
     auto eraseInDisplay = d->csiStateMachine.addFinalState(std::bind(&VT100Emulation::csiEraseInDisplay, this, std::placeholders::_1));
     d->csiStateMachine.addTransition({csi, csrN}, 'J', eraseInDisplay);
@@ -668,7 +664,7 @@ static int extractCount(QString escapeSequence) {
     static QRegularExpression cursorPositionRelativeRegex("\\[(?<num>\\d+)?");
     auto matches = cursorPositionRelativeRegex.match(escapeSequence);
     auto numStr = matches.captured("num");
-    
+
     return numStr.isEmpty() ? 0 : numStr.toInt();
 }
 
@@ -853,7 +849,7 @@ void VT100Emulation::csiSgr(QString escapeSequence) {
                 format.bold = false;
                 break;
             case 24: // underline off
-                format.underline = true;
+                format.underline = false;
                 break;
             case 25: // blink off
                 format.blink = false;
