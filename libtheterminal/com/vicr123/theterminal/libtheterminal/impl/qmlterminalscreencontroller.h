@@ -20,6 +20,7 @@ class QmlTerminalScreenController : public QObject {
         Q_PROPERTY(QPoint selectionStart READ selectionStart WRITE setSelectionStart NOTIFY selectionStartChanged FINAL)
         Q_PROPERTY(QPoint selectionEnd READ selectionEnd WRITE setSelectionEnd NOTIFY selectionEndChanged FINAL)
         Q_PROPERTY(bool haveSelection READ haveSelection NOTIFY haveSelectionChanged FINAL)
+        Q_PROPERTY(QString colorName READ colorName WRITE setColorName NOTIFY colorNameChanged FINAL)
 
         Q_PROPERTY(QPoint normalisedSelectionStart READ normalisedSelectionStart NOTIFY normalisedSelectionChanged FINAL)
         Q_PROPERTY(QPoint normalisedSelectionEnd READ normalisedSelectionEnd NOTIFY normalisedSelectionChanged FINAL)
@@ -46,6 +47,9 @@ class QmlTerminalScreenController : public QObject {
         QPoint normalisedSelectionStart() const;
         QPoint normalisedSelectionEnd() const;
         bool haveSelection() const;
+
+        QString colorName();
+        void setColorName(QString colorName);
 
         bool invertScreen();
         bool caretVisible();
@@ -75,6 +79,7 @@ class QmlTerminalScreenController : public QObject {
         void selectionEndChanged();
         void normalisedSelectionChanged();
         void haveSelectionChanged();
+        void colorNameChanged();
 
         Q_SCRIPTABLE void rowContentChanged(int row);
 

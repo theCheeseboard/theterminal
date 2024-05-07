@@ -13,6 +13,7 @@ Item {
     }
     property string shell: "/bin/bash";
     readonly property bool haveSelection: controller.haveSelection
+    property string colorName: "Linux";
 
     function paste() {
         controller.paste()
@@ -48,6 +49,7 @@ Item {
                 id: controller
                 cols: screen.cols
                 rows: screen.rows
+                colorName: root.colorName
             }
 
             readonly property int rows: Math.floor(screen.height / (fontMetrics.height + 1))

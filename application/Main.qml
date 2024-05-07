@@ -243,6 +243,8 @@ ContemporaryWindow {
                     }
 
                     font: profile.font
+                    colorName: profile.colorName
+                    shell: profile.shell
 
                     onClose: () => {
                         const index = stack.pages.indexOf(terminal);

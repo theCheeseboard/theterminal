@@ -61,6 +61,14 @@ qt_add_resources(libtheterminal-common libtheterminal_colorschemes
         colorschemes/Ubuntu.colorscheme
 )
 
+qt_add_resources(libtheterminal-common libtheterminal_profiles
+    PREFIX /com/vicr123/theterminal/libtheterminal/profiles
+    BASE profiles
+    FILES
+        profiles/default.json
+)
+
+
 install(EXPORT libtheterminalCommonTargets
         FILE libtheterminalCommonTargets.cmake
         DESTINATION ${CMAKECONFIG_INSTALL_DIR})

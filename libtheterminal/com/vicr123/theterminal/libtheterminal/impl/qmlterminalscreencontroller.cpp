@@ -22,6 +22,7 @@ struct QmlTerminalScreenControllerPrivate {
         QPoint selectionEnd;
 
         ScreenColorManager screenColorManager;
+        QString colorName = "Linux";
 };
 
 QmlTerminalScreenController::QmlTerminalScreenController(QObject* parent) :
@@ -335,4 +336,14 @@ QPoint QmlTerminalScreenController::normalisedSelectionEnd() const {
 
 bool QmlTerminalScreenController::haveSelection() const {
     return d->selectionStart != d->selectionEnd;
+}
+
+QString QmlTerminalScreenController::colorName() {
+    return d->colorName;
+}
+
+void QmlTerminalScreenController::setColorName(QString colorName) {
+    d->colorName = colorName;
+    d->screenColorManager.loadColorDefinition(colorName);
+    emit colorNameChanged();
 }
