@@ -65,6 +65,25 @@ ContemporaryWindow {
             }
         }
         Labs.Menu {
+            title: qsTr("View");
+
+            Labs.MenuItem {
+                text: qsTr("Zoom In")
+                shortcut: hk_`Ctrl++`
+                onTriggered: stack.pages[stack.currentIndex].zoomIn()
+            }
+            Labs.MenuItem {
+                text: qsTr("Zoom Out")
+                shortcut: hk_`Ctrl+-`
+                onTriggered: stack.pages[stack.currentIndex].zoomOut()
+            }
+            Labs.MenuItem {
+                text: qsTr("Default Zoom")
+                shortcut: hk_`Ctrl+0`
+                onTriggered: stack.pages[stack.currentIndex].zoomDefault()
+            }
+        }
+        Labs.Menu {
             title: qsTr("Help")
 
             Labs.MenuItem {
@@ -122,6 +141,25 @@ ContemporaryWindow {
                         text: qsTr("Paste")
                         icon.name: "edit-paste"
                         onTriggered: stack.pages[stack.currentIndex].paste()
+                    },
+                    MenuSeparator {},
+                    Action {
+                        shortcut: hk_`Ctrl++`
+                        text: qsTr("Zoom In")
+                        icon.name: "zoom-in"
+                        onTriggered: stack.pages[stack.currentIndex].zoomIn()
+                    },
+                    Action {
+                        shortcut: hk_`Ctrl+-`
+                        text: qsTr("Zoom Out")
+                        icon.name: "zoom-out"
+                        onTriggered: stack.pages[stack.currentIndex].zoomOut()
+                    },
+                    Action {
+                        shortcut: hk_`Ctrl+0`
+                        text: qsTr("Default Zoom")
+                        icon.name: "zoom-original"
+                        onTriggered: stack.pages[stack.currentIndex].zoomDefault()
                     },
                     MenuSeparator {},
                     Action {
@@ -183,8 +221,28 @@ ContemporaryWindow {
 
             Component {
                 id: terminalComponent
+
                 Terminal {
                     id: terminal
+
+                    TerminalProfile {
+                        id: profile
+                        zoom: 1
+                    }
+
+                    function zoomIn() {
+                        profile.zoom += 0.1;
+                    }
+
+                    function zoomOut() {
+                        profile.zoom -= 0.1;
+                    }
+
+                    function zoomDefault() {
+                        profile.zoom = 1;
+                    }
+
+                    font: profile.font
 
                     onClose: () => {
                         const index = stack.pages.indexOf(terminal);
