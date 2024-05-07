@@ -3,6 +3,11 @@
 #include <QFontDatabase>
 #include <QJsonObject>
 
+#ifdef Q_OS_UNIX
+    #include <pwd.h>
+    #include <unistd.h>
+#endif
+
 struct TerminalProfilePrivate {
         QString profileName = "default";
         QFont font;
@@ -100,7 +105,8 @@ QString TerminalProfile::defaultShell() {
     #ifdef Q_OS_WIN
     return QStringLiteral("C:/Windows/System32/powershell.exe");
     #else
-    return "/bin/bash";
+    auto passwd = getpwuid(getegid());
+    return QString(passwd->pw_shell);
     #endif
 }
 #endif
