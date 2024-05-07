@@ -16,6 +16,10 @@ ContemporaryWindow {
     title: qsTr("theTerminal")
     visible: true
 
+    MainWindowController {
+        id: controller
+    }
+
     function hk_(shortcut) {
         if (Qt.platform.os === "osx") {
             return shortcut[0];
@@ -252,6 +256,8 @@ ContemporaryWindow {
                         terminals.remove(index);
                         terminal.destroy();
                     }
+
+                    onBellSounded: () => controller.bell()
                 }
             }
 

@@ -82,6 +82,7 @@ class QmlTerminalScreenController : public QObject {
         void colorNameChanged();
 
         Q_SCRIPTABLE void rowContentChanged(int row);
+        Q_SCRIPTABLE void bellSounded();
 
     private:
         QmlTerminalScreenControllerPrivate* d;

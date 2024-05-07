@@ -40,6 +40,7 @@ Item {
     }
 
     signal close()
+    signal bellSounded()
 
     FocusScope {
         anchors.fill: parent
@@ -57,6 +58,8 @@ Item {
                 cols: screen.cols
                 rows: screen.rows
                 colorName: root.colorName
+
+                onBellSounded: root.bellSounded()
             }
 
             readonly property int rows: Math.floor(screen.height / (fontMetrics.height + 1))

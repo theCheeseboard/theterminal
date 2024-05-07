@@ -550,7 +550,7 @@ void VT100Emulation::echo(QChar c) {
     } else if (c == '\r') {
         d->screen->setCaretCol(0);
     } else if (c == '\x07') { // BEL
-        // TODO
+        emit bell();
     } else if (c == '\t') {
         do {
             d->screen->setCharacter(d->screen->caretCol(), d->screen->caretRow(), TerminalScreen::emptyChar());

@@ -35,6 +35,8 @@ qt_add_qml_module(theterminal
     VERSION 1.0
     QML_FILES
         Main.qml
+    SOURCES
+        mainwindowcontroller.h mainwindowcontroller.cpp
 )
 
 set_target_properties(theterminal PROPERTIES

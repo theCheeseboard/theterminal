@@ -17,6 +17,7 @@ class LIBTHETERMINAL_COMMON_EXPORT VT100Emulation : public QObject {
         void writeToScreen(QString text);
 
     signals:
+        void bell();
 
     private:
         VT100EmulationPrivate* d;

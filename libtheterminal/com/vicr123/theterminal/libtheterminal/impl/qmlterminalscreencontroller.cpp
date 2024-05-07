@@ -151,6 +151,7 @@ void QmlTerminalScreenController::start(QString process) {
     });
 
     d->emulation = new VT100Emulation(d->pty, d->terminalScreen, this);
+    connect(d->emulation, &VT100Emulation::bell, this, &QmlTerminalScreenController::bellSounded);
 }
 
 void QmlTerminalScreenController::pressKey(Qt::KeyboardModifiers modifiers, Qt::Key key, QString keyChar) {
