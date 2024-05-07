@@ -13,6 +13,8 @@ Item {
     property bool bold: false
     property font font;
 
+    font.weight: root.bold ? 900 : 400
+
     property int selStart: -1
     property int selEnd: -1
 
@@ -37,8 +39,8 @@ Item {
             padding: 0
             text: root.text
             font: root.font
-            // font.weight: root.bold ? 900 : 400
             color: root.color
+            textFormat: Text.PlainText
         }
 
         Rectangle {

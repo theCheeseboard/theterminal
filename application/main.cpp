@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
 
     theTerminal::init();
 
-    a.setApplicationVersion("1.0");
+    a.setApplicationVersion("5.0");
     a.setGenericName(QApplication::translate("main", "Terminal"));
     a.setApplicationLicense(tApplication::Gpl3OrLater);
     a.setCopyrightHolder("Victor Tran");
@@ -46,11 +46,13 @@ int main(int argc, char* argv[]) {
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreationFailed, &a, [](QUrl url) {
         QCoreApplication::exit(-1);
-    }, Qt::QueuedConnection);
+    },
+        Qt::QueuedConnection);
     QObject::connect(
         &engine, &QQmlApplicationEngine::warnings, &a, [](const QList<QQmlError>& warnings) {
 
-    }, Qt::QueuedConnection);
+    },
+        Qt::QueuedConnection);
     engine.load(url);
 
     return a.exec();

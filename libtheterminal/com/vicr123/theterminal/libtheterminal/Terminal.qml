@@ -8,12 +8,12 @@ import "impl" as Impl
 Item {
     id: root
 
-    property font font: {
-        family: "JetBrains Mono"
-    }
+    property font font
     property string shell: "/bin/bash";
     readonly property bool haveSelection: controller.haveSelection
     property string colorName: "Linux";
+
+    font.family: "JetBrains Mono"
 
     function paste() {
         controller.paste()
@@ -30,6 +30,13 @@ Item {
         }
 
         root.close();
+    }
+    function canClose() {
+        const processes = controller.runningProcesses();
+        if (processes.length > 0) {
+            return false;
+        }
+        return true;
     }
 
     signal close()
@@ -100,6 +107,7 @@ Item {
                 id: rowList
                 anchors.fill: parent
                 clip: true
+                reuseItems: true
 
                 FontMetrics {
                     id: fontMetrics
