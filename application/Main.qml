@@ -97,6 +97,13 @@ ContemporaryWindow {
         }
     }
 
+    onClosing: event => {
+        const pagesToClose = stack.pages.filter(page => !page.canClose()).length
+        if (pagesToClose > 0) {
+            event.accepted = false;
+        }
+    }
+
     ContemporaryStackView {
         id: outerStack
         anchors.fill: parent
@@ -122,7 +129,7 @@ ContemporaryWindow {
             }
 
             actionBar: ActionBar {
-                menuItems: [
+                menu: Menu {
                     Action {
                         shortcut: hk_`Ctrl+T`
                         text: qsTr("New Tab")
@@ -132,63 +139,47 @@ ContemporaryWindow {
                                          surface.newTab()
                                          stack.currentIndex = stack.pages.length - 1
                                      }
-                    },
-                    MenuSeparator {},
+                    }
+                    MenuSeparator {}
                     Action {
                         shortcut: hk_`Ctrl+C`
                         text: qsTr("Copy")
                         icon.name: "edit-copy"
                         onTriggered: stack.pages[stack.currentIndex].copy()
-                    },
+                    }
                     Action {
                         shortcut: hk_`Ctrl+V`
                         text: qsTr("Paste")
                         icon.name: "edit-paste"
                         onTriggered: stack.pages[stack.currentIndex].paste()
-                    },
-                    MenuSeparator {},
+                    }
+                    MenuSeparator {}
                     Action {
-                        shortcut: hk_`Ctrl++`
+                        shortcut: hk_`Ctrl+=`
                         text: qsTr("Zoom In")
                         icon.name: "zoom-in"
                         onTriggered: stack.pages[stack.currentIndex].zoomIn()
-                    },
+                    }
                     Action {
                         shortcut: hk_`Ctrl+-`
                         text: qsTr("Zoom Out")
                         icon.name: "zoom-out"
                         onTriggered: stack.pages[stack.currentIndex].zoomOut()
-                    },
+                    }
                     Action {
                         shortcut: hk_`Ctrl+0`
                         text: qsTr("Default Zoom")
                         icon.name: "zoom-original"
                         onTriggered: stack.pages[stack.currentIndex].zoomDefault()
-                    },
-                    MenuSeparator {},
+                    }
+                    MenuSeparator {}
                     Action {
                         shortcut: hk_`Ctrl+W`
                         text: qsTr("Close Tab")
                         icon.name: "tab-close"
                         onTriggered: surface.closeTab(stack.currentIndex)
-                    },
-                    Menu {
-                        title: qsTr("Help")
-                        icon.name: "help-about"
-
-                        Action {
-                            text: qsTr("About theTerminal")
-                            onTriggered: outerStack.push(aboutSurface)
-                        }
-                    },
-                    Action {
-                        shortcut: hk_`Ctrl+Q`
-                        text: qsTr("Exit")
-                        icon.name: "application-exit"
-
-                        onTriggered: Qt.quit()
                     }
-                ]
+                }
 
                 ActionBarTabber {
                     Repeater {
@@ -214,6 +205,8 @@ ContemporaryWindow {
                                    stack.currentIndex = stack.pages.length - 1
                                }
                 }
+
+                onAboutClicked: () => outerStack.push(aboutSurface)
             }
             overlayActionBar: true
 
@@ -266,8 +259,11 @@ ContemporaryWindow {
             }
         }
 
-        AboutSurface {
+        Component {
             id: aboutSurface
+            AboutSurface {
+            }
         }
+
     }
 }

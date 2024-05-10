@@ -37,6 +37,7 @@ qt_add_qml_module(theterminal
         Main.qml
     SOURCES
         mainwindowcontroller.h mainwindowcontroller.cpp
+    NO_CACHEGEN
 )
 
 set_target_properties(theterminal PROPERTIES
