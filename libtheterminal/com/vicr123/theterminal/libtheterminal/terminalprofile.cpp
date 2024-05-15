@@ -1,7 +1,12 @@
 #include "terminalprofile.h"
 
+#include <QDir>
+#include <QFile>
+#include <QFileSystemWatcher>
 #include <QFontDatabase>
+#include <QJsonDocument>
 #include <QJsonObject>
+#include <QStandardPaths>
 
 #ifdef Q_OS_UNIX
     #include <pwd.h>
@@ -9,20 +14,50 @@
 #endif
 
 struct TerminalProfilePrivate {
-        QString profileName = "default";
+        QFileSystemWatcher profileWatcher;
+        QString profileUuid = "EB31ADE1-9342-43E9-9E9C-811CCB978F64";
+        QString profileName = "Default";
         QFont font;
         qreal zoom = 1;
         QString colorName = "Linux";
         QString shell;
+
+        bool inSetup = false;
 };
 
 TerminalProfile::TerminalProfile(QObject* parent) :
     QObject{parent}, d{new TerminalProfilePrivate()} {
     d->font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+
+    connect(&d->profileWatcher, &QFileSystemWatcher::fileChanged, this, [this] {
+        // Load changes to the profile
+        this->loadProfile();
+    });
+    setProfileUuid(d->profileUuid);
 }
 
 TerminalProfile::~TerminalProfile() {
     delete d;
+}
+
+QString TerminalProfile::profileUuid() {
+    return d->profileUuid;
+}
+
+void TerminalProfile::setProfileUuid(QString profileUuid) {
+    d->profileUuid = profileUuid;
+
+    if (!QFile::exists(this->profilePath())) {
+        // Create the profile file
+        QFile file(this->profilePath());
+        file.open(QFile::WriteOnly);
+        file.close();
+    }
+
+    d->profileWatcher.removePaths(d->profileWatcher.files());
+    d->profileWatcher.addPath(this->profilePath());
+
+    this->loadProfile();
 }
 
 QString TerminalProfile::profileName() {
@@ -30,9 +65,18 @@ QString TerminalProfile::profileName() {
 }
 
 void TerminalProfile::setProfileName(QString profileName) {
-    // TODO: Load profile information
     d->profileName = profileName;
     emit profileNameChanged();
+}
+
+QString TerminalProfile::profilePath() {
+    auto profiles = QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)).absoluteFilePath("profiles");
+
+    if (!QDir(profiles).exists()) {
+        QDir::root().mkpath(profiles);
+    }
+
+    return QDir(profiles).absoluteFilePath(QStringLiteral("%1.json").arg(d->profileUuid));
 }
 
 QFont TerminalProfile::font() {
@@ -77,6 +121,7 @@ void TerminalProfile::setShell(QString shell) {
 
 QJsonObject TerminalProfile::save() {
     return {
+        {"name",  d->profileName                                     },
         {"font",  QJsonObject({{"family", d->font.family()},
                      {"size", d->font.pointSizeF()}})},
         {"color", d->colorName                                       },
@@ -85,7 +130,9 @@ QJsonObject TerminalProfile::save() {
 }
 
 void TerminalProfile::load(QJsonObject object) {
+    d->inSetup = true;
     auto fontObject = object.value("font").toObject();
+    setProfileName(d->profileName);
 
     QFont font;
     if (fontObject.contains("family")) {
@@ -97,6 +144,29 @@ void TerminalProfile::load(QJsonObject object) {
     setFont(font);
     setColorName(object.value("color").toString());
     setShell(object.value("shell").toString());
+    d->inSetup = false;
+}
+
+void TerminalProfile::saveProfile() {
+    if (d->inSetup) return;
+
+    QFile file(this->profilePath());
+    file.open(QFile::WriteOnly);
+    file.write(QJsonDocument(this->save()).toJson());
+    file.close();
+}
+
+void TerminalProfile::loadProfile() {
+    QFile file(this->profilePath());
+    if (!file.exists()) return;
+
+    QJsonParseError error;
+    file.open(QFile::ReadOnly);
+    auto doc = QJsonDocument::fromJson(file.readAll(), &error);
+    file.close();
+
+    if (error.error != QJsonParseError::NoError) return;
+    load(doc.object());
 }
 
 // macOS implementation lives in terminalprofile-objc.mm

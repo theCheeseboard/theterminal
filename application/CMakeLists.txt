@@ -38,6 +38,11 @@ qt_add_qml_module(theterminal
     SOURCES
         mainwindowcontroller.h mainwindowcontroller.cpp
     NO_CACHEGEN
+    QML_FILES settings/Settings.qml
+    QML_FILES settings/GeneralSettings.qml
+    QML_FILES settings/ProfileSettings.qml
+    QML_FILES settings/RootProfileSettings.qml
+    QML_FILES settings/SingleProfileSettings.qml
 )
 
 set_target_properties(theterminal PROPERTIES

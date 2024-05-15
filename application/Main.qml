@@ -5,6 +5,7 @@ import com.vicr123.Contemporary
 import Contemporary
 import Qt.labs.platform as Labs
 import com.vicr123.theterminal.libtheterminal
+import "settings" as Settings
 
 import com.vicr123.Contemporary.CoreStyles
 
@@ -45,6 +46,14 @@ ContemporaryWindow {
                 shortcut: hk_`Ctrl+W`
                 onTriggered: () => {
                     surface.closeTab(stack.currentIndex)
+                }
+            }
+
+            Labs.MenuItem {
+                text: qsTr("Settings")
+                shortcut: hk_`Ctrl+,`
+                onTriggered: () => {
+                    outerStack.push(settingsSurface)
                 }
             }
 
@@ -174,6 +183,12 @@ ContemporaryWindow {
                     }
                     MenuSeparator {}
                     Action {
+                        shortcut: hk_`Ctrl+,`
+                        text: qsTr("Settings")
+                        icon.name: "configure"
+                        onTriggered: outerStack.push(settingsSurface)
+                    }
+                    Action {
                         shortcut: hk_`Ctrl+W`
                         text: qsTr("Close Tab")
                         icon.name: "tab-close"
@@ -265,5 +280,10 @@ ContemporaryWindow {
             }
         }
 
+        Component {
+            id: settingsSurface
+            Settings.Settings {
+            }
+        }
     }
 }
