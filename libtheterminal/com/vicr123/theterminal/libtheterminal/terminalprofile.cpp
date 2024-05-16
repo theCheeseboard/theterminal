@@ -90,6 +90,16 @@ void TerminalProfile::setFont(QFont font) {
     emit fontChanged();
 }
 
+void TerminalProfile::setFontFamily(QString fontFamily) {
+    d->font.setFamily(fontFamily);
+    emit fontChanged();
+}
+
+void TerminalProfile::setFontPointSize(qreal pointSize) {
+    d->font.setPointSizeF(pointSize);
+    emit fontChanged();
+}
+
 qreal TerminalProfile::zoom() {
     return d->zoom;
 }

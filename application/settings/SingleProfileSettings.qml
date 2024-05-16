@@ -3,6 +3,7 @@ import com.vicr123.Contemporary
 import QtQuick.Layouts
 import QtQuick.Controls
 import com.vicr123.theterminal.libtheterminal
+import ".."
 import Contemporary
 
 Item {
@@ -15,6 +16,10 @@ Item {
         id: profile
         zoom: 1
         profileUuid: root.profileUuid
+    }
+
+    FontModel {
+        id: fontModel
     }
 
     Grandstand {
@@ -85,13 +90,33 @@ Item {
                     }
 
                     ComboBox {
-                        model: 5
+                        id: fontBox
+                        Layout.fillWidth: true
+
+                        model: fontModel
+                        textRole: "family"
+                        valueRole: "family"
+
+                        onActivated: () => {
+                            profile.fontFamily = fontBox.currentValue;
+                            profile.saveProfile();
+                        }
+
+                        Component.onCompleted: () => {
+                            fontBox.currentIndex = fontBox.indexOfValue(profile.font.family)
+                        }
                     }
 
                     SpinBox {
+                        id: fontSizeBox
                         from: 1
                         to: 100
-                        value: 12
+                        value: profile.font.pointSize
+
+                        onValueChanged: () => {
+                            profile.fontPointSize = fontSizeBox.value;
+                            profile.saveProfile();
+                        }
                     }
                 }
             }

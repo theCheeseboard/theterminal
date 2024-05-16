@@ -43,6 +43,7 @@ qt_add_qml_module(theterminal
     QML_FILES settings/ProfileSettings.qml
     QML_FILES settings/RootProfileSettings.qml
     QML_FILES settings/SingleProfileSettings.qml
+    SOURCES settings/fontmodel.h settings/fontmodel.cpp
 )
 
 set_target_properties(theterminal PROPERTIES
@@ -66,7 +67,7 @@ cntp_defaults_file(theterminal
 cntp_dmg(theterminal app-dmg-background.svg)
 
 target_link_libraries(theterminal PUBLIC Qt::Widgets Qt::Quick Qt::QuickControls2 libcontemporary libtheterminal)
-target_include_directories(theterminal PUBLIC ../libtheterminal/common/ ../libtheterminal)
+target_include_directories(theterminal PUBLIC ../libtheterminal/common/ ../libtheterminal settings)
 
 install(TARGETS theterminal
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

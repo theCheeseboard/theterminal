@@ -11,6 +11,8 @@ class TerminalProfile : public QObject {
         Q_PROPERTY(QString profileName READ profileName WRITE setProfileName NOTIFY profileNameChanged FINAL)
         Q_PROPERTY(QString profileUuid READ profileUuid WRITE setProfileUuid NOTIFY profileUuidChanged FINAL)
         Q_PROPERTY(QFont font READ font WRITE setFont NOTIFY fontChanged FINAL)
+        Q_PROPERTY(QString fontFamily WRITE setFontFamily)
+        Q_PROPERTY(qreal fontPointSize WRITE setFontPointSize)
         Q_PROPERTY(qreal zoom READ zoom WRITE setZoom NOTIFY zoomChanged FINAL)
         Q_PROPERTY(QString colorName READ colorName WRITE setColorName NOTIFY colorNameChanged FINAL)
         Q_PROPERTY(QString shell READ shell WRITE setShell NOTIFY shellChanged FINAL)
@@ -30,6 +32,8 @@ class TerminalProfile : public QObject {
 
         QFont font();
         void setFont(QFont font);
+        void setFontFamily(QString fontFamily);
+        void setFontPointSize(qreal pointSize);
 
         qreal zoom();
         void setZoom(qreal zoom);
