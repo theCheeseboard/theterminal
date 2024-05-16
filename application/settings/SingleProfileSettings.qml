@@ -64,6 +64,9 @@ Item {
                 title: qsTr("Shell")
 
                 ColumnLayout {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+
                     Label {
                         text: qsTr("Set the shell that is used when you start a terminal with this profile")
                     }
@@ -87,19 +90,23 @@ Item {
                 title: qsTr("Text")
 
                 GridLayout {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
                     columns: 3
 
                     Label {
+                        Layout.fillWidth: true
                         text: qsTr("Font")
                     }
 
                     ComboBox {
                         id: fontBox
-                        Layout.fillWidth: true
 
                         model: fontModel
                         textRole: "family"
                         valueRole: "family"
+
+                        implicitWidth: 300
 
                         onActivated: () => {
                             profile.fontFamily = fontBox.currentValue;
@@ -131,19 +138,23 @@ Item {
                 title: qsTr("Colours")
 
                 GridLayout {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
                     columns: 2
 
                     Label {
+                        Layout.fillWidth: true
                         text: qsTr("Theme")
                     }
 
                     ComboBox {
                         id: colorsBox
-                        Layout.fillWidth: true
 
                         model: colorModel
                         textRole: "description"
                         valueRole: "identifier"
+
+                        implicitWidth: 250
 
                         onActivated: () => {
                             profile.colorName = colorsBox.currentValue;
