@@ -29,6 +29,31 @@ ScreenColorManager::~ScreenColorManager() {
     delete d;
 }
 
+QStringList ScreenColorManager::definitions() {
+    return {
+        "Campbell",
+        "GreenOnBlack",
+        "Linux",
+        "PowerShell",
+        "Solarized",
+        "SolarizedLight",
+        "Ubuntu"};
+}
+
+QString ScreenColorManager::name(QString definition) {
+    auto file = definition;
+    if (!definition.startsWith("/")) {
+        // Interpret as an internal resource
+        file = QStringLiteral(":/com/vicr123/theterminal/libtheterminal/colorschemes/%1.colorscheme").arg(definition);
+    }
+
+    // Colors are packed into d->colors as 0xAABBGGRR
+
+    QSettings settings(file, QSettings::IniFormat);
+    auto k = settings.allKeys();
+    return settings.value("Description", definition).toString();
+}
+
 QColor ScreenColorManager::decodeColor(quint32 color) {
     switch (decodeColorMode(color)) {
         case 0: // 24 bit color

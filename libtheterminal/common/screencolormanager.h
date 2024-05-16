@@ -11,6 +11,9 @@ class LIBTHETERMINAL_COMMON_EXPORT ScreenColorManager : public QObject {
         explicit ScreenColorManager(QObject* parent = nullptr);
         ~ScreenColorManager();
 
+        static QStringList definitions();
+        static QString name(QString definition);
+
         using Color = quint32;
         using ColorSection = quint8;
 

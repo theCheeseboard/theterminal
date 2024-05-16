@@ -44,6 +44,7 @@ qt_add_qml_module(theterminal
     QML_FILES settings/RootProfileSettings.qml
     QML_FILES settings/SingleProfileSettings.qml
     SOURCES settings/fontmodel.h settings/fontmodel.cpp
+    SOURCES settings/colormodel.h settings/colormodel.cpp
 )
 
 set_target_properties(theterminal PROPERTIES

@@ -22,6 +22,10 @@ Item {
         id: fontModel
     }
 
+    ColorModel {
+        id: colorModel
+    }
+
     Grandstand {
         id: grandstand
         anchors.top: parent.top
@@ -116,6 +120,38 @@ Item {
                         onValueChanged: () => {
                             profile.fontPointSize = fontSizeBox.value;
                             profile.saveProfile();
+                        }
+                    }
+                }
+            }
+
+            GroupBox {
+                Layout.alignment: Qt.AlignHCenter
+                implicitWidth: 600
+                title: qsTr("Colours")
+
+                GridLayout {
+                    columns: 2
+
+                    Label {
+                        text: qsTr("Theme")
+                    }
+
+                    ComboBox {
+                        id: colorsBox
+                        Layout.fillWidth: true
+
+                        model: colorModel
+                        textRole: "description"
+                        valueRole: "identifier"
+
+                        onActivated: () => {
+                            profile.colorName = colorsBox.currentValue;
+                            profile.saveProfile();
+                        }
+
+                        Component.onCompleted: () => {
+                            colorsBox.currentIndex = colorsBox.indexOfValue(profile.colorName)
                         }
                     }
                 }

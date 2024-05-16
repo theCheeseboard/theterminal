@@ -46,12 +46,8 @@ QmlTerminalScreenController::QmlTerminalScreenController(QObject* parent) :
     });
     connect(d->terminalScreen, &TerminalScreen::historyRolled, this, [this] {
         for (auto i = 0; i < d->terminalScreen->rows(); i++) {
-            // if (d->cachedRuns.contains(i + 1)) {
-            // d->cachedRuns.insert(i, d->cachedRuns.value(i + 1));
-            // }
             queueRowUpdate(i);
         }
-        // d->cachedRuns.remove(d->terminalScreen->rows() - 1);
         queueRowUpdate(d->terminalScreen->rows() - 1);
     });
     connect(d->terminalScreen, &TerminalScreen::invertScreenChanged, this, [this] {
@@ -347,4 +343,10 @@ void QmlTerminalScreenController::setColorName(QString colorName) {
     d->colorName = colorName;
     d->screenColorManager.loadColorDefinition(colorName);
     emit colorNameChanged();
+
+    // Update all rows
+    for (auto i = 0; i < d->terminalScreen->rows(); i++) {
+        queueRowUpdate(i);
+    }
+    emit scrollbackLinesChanged();
 }
