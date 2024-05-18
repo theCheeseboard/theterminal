@@ -54,7 +54,7 @@ jobs:
         shell: bash
         run: |
           mkdir output
-          mv "$BUILD_DIRECTORY/application/"theTerminal*.exe output
+          mv "$BUILD_DIRECTORY/application/"theterminal*.exe output
           windeployqt output/theterminal*.exe --qmlimport="$INSTALL_DIRECTORY/qml" --qmldir="$SOURCE_DIRECTORY" --libdir="$INSTALL_DIRECTORY/bin"
       - name: Upload theterminal artifact
         uses: actions/upload-artifact@v4
