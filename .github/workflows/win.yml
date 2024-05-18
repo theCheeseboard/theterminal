@@ -51,11 +51,10 @@ jobs:
           SOURCE_DIRECTORY: ${{ steps.theterminal.outputs.source-directory }}
           BUILD_DIRECTORY: ${{ steps.theterminal.outputs.build-directory }}
           INSTALL_DIRECTORY: ${{ steps.theterminal.outputs.install-directory }}
-        shell: bash
         run: |
-          mkdir output
-          mv "$BUILD_DIRECTORY/application/"theterminal*.exe output
-          windeployqt output/theterminal*.exe --qmlimport="$INSTALL_DIRECTORY/qml" --qmldir="$SOURCE_DIRECTORY" --libdir="$INSTALL_DIRECTORY/bin"
+          New-Item -ItemType Directory -Force -Path output
+          Move-Item -Path "$env:BUILD_DIRECTORY/application/theterminal*.exe" -Destination output -Force
+          windeployqt "output/theterminal*.exe" --qmlimport="$env:INSTALL_DIRECTORY/qml" --qmldir="$env:SOURCE_DIRECTORY" --libdir="$env:INSTALL_DIRECTORY/bin"
       - name: Upload theterminal artifact
         uses: actions/upload-artifact@v4
         with:
