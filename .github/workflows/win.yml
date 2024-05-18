@@ -54,8 +54,8 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path output
           $file = Get-Item "$env:BUILD_DIRECTORY/application/theterminal*.exe"
-          Move-Item -Path "$file.FullName" -Destination output -Force
-          windeployqt "$file.FullName" --qmlimport="$env:INSTALL_DIRECTORY/qml" --qmldir="$env:SOURCE_DIRECTORY" --libdir="$env:INSTALL_DIRECTORY/bin"
+          Move-Item -Path $file.FullName -Destination output -Force
+          windeployqt $file.FullName --qmlimport="$env:INSTALL_DIRECTORY/qml" --qmldir="$env:SOURCE_DIRECTORY" --libdir="$env:INSTALL_DIRECTORY/bin"
       - name: Upload theterminal artifact
         uses: actions/upload-artifact@v4
         with:
