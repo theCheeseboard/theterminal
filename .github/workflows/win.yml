@@ -51,6 +51,7 @@ jobs:
           SOURCE_DIRECTORY: ${{ steps.theterminal.outputs.source-directory }}
           BUILD_DIRECTORY: ${{ steps.theterminal.outputs.build-directory }}
           INSTALL_DIRECTORY: ${{ steps.theterminal.outputs.install-directory }}
+        shell: bash
         run: |
           mkdir output
           mv "$BUILD_DIRECTORY/application/"theTerminal*.exe output
