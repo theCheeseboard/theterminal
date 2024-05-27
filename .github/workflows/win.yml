@@ -54,8 +54,8 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path output
           $executable = Move-Item -Path "$env:BUILD_DIRECTORY/theterminal*.exe" -Destination output -Force -PassThru
-          $env:Path = "$env:INSTALL_DIRECTORY\bin;" + $env:Path
           windeployqt output --qmldir="$env:SOURCE_DIRECTORY"
+          copy $env:INSTALL_DIRECTORY/bin/*.dll output
       - name: Upload theterminal artifact
         uses: actions/upload-artifact@v4
         with:
