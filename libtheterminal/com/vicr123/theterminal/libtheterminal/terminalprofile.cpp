@@ -183,7 +183,7 @@ void TerminalProfile::loadProfile() {
 #ifndef Q_OS_MAC
 QString TerminalProfile::defaultShell() {
     #ifdef Q_OS_WIN
-    return QStringLiteral("C:/Windows/System32/powershell.exe");
+    return QStringLiteral("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe");
     #else
     auto passwd = getpwuid(getegid());
     return QString(passwd->pw_shell);
