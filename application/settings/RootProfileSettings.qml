@@ -9,6 +9,16 @@ Item {
 
     signal openProfileSettings(string profile);
 
+    LayerCalculator {
+        id: layer1
+        layer: 1
+    }
+
+    LayerCalculator {
+        id: layer2
+        layer: 2
+    }
+
     Grandstand {
         id: grandstand
         anchors.top: parent.top
@@ -18,7 +28,7 @@ Item {
         innerTopMargin: SafeZone.top
 
         text: qsTr("Profiles")
-        color: Contemporary.calculateLayer(2).value
+        color: layer2.color
         z: 10
     }
 
@@ -54,7 +64,7 @@ Item {
                 implicitWidth: 600
                 implicitHeight: childrenRect.height + 9 + 9
 
-                color: Contemporary.calculateLayer(1).value
+                color: layer1.color
 
                 ColumnLayout {
                     anchors.top: parent.top

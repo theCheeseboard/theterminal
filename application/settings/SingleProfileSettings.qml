@@ -12,6 +12,11 @@ Item {
     required property string profileUuid;
     readonly property var stackView: StackView.view
 
+    LayerCalculator {
+        id: layer2
+        layer: 2
+    }
+
     TerminalProfile {
         id: profile
         zoom: 1
@@ -35,7 +40,7 @@ Item {
         innerTopMargin: SafeZone.top
 
         text: profile.profileName
-        color: Contemporary.calculateLayer(2).value
+        color: layer2.color
         backButtonVisible: true
 
         onBackButtonClicked: root.stackView.pop()

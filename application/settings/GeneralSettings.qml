@@ -5,6 +5,11 @@ import com.vicr123.Contemporary
 import Contemporary
 
 Item {
+    LayerCalculator {
+        id: layer2
+        layer: 2
+    }
+
     Grandstand {
         id: grandstand
         anchors.top: parent.top
@@ -14,7 +19,7 @@ Item {
         innerTopMargin: SafeZone.top
 
         text: qsTr("General")
-        color: Contemporary.calculateLayer(2).value
+        color: layer2.color
     }
 
 
