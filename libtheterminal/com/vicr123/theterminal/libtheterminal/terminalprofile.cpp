@@ -40,6 +40,10 @@ TerminalProfile::~TerminalProfile() {
     delete d;
 }
 
+QString TerminalProfile::profilesLocation() {
+    return QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)).absoluteFilePath("profiles");
+}
+
 QString TerminalProfile::profileUuid() {
     return d->profileUuid;
 }
@@ -70,7 +74,7 @@ void TerminalProfile::setProfileName(QString profileName) {
 }
 
 QString TerminalProfile::profilePath() {
-    auto profiles = QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)).absoluteFilePath("profiles");
+    auto profiles = this->profilesLocation();
 
     if (!QDir(profiles).exists()) {
         QDir::root().mkpath(profiles);
@@ -142,7 +146,7 @@ QJsonObject TerminalProfile::save() {
 void TerminalProfile::load(QJsonObject object) {
     d->inSetup = true;
     auto fontObject = object.value("font").toObject();
-    setProfileName(d->profileName);
+    setProfileName(object.value("name").toString());
 
     QFont font;
     if (fontObject.contains("family")) {

@@ -22,6 +22,8 @@ class TerminalProfile : public QObject {
         explicit TerminalProfile(QObject* parent = nullptr);
         ~TerminalProfile();
 
+        static QString profilesLocation();
+
         QString profileUuid();
         void setProfileUuid(QString profileUuid);
 

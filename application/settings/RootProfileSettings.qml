@@ -1,13 +1,16 @@
 import QtQuick 2.15
 import QtQuick.Layouts
 import QtQuick.Controls
+import com.vicr123.theterminal.libtheterminal
 import com.vicr123.Contemporary
 import Contemporary
+import ".."
 
 Item {
     id: root
 
     signal openProfileSettings(string profile);
+    signal createNewProfile
 
     LayerCalculator {
         id: layer1
@@ -42,16 +45,12 @@ Item {
 
         spacing: 10
 
-        model: ListModel {
-            ListElement {
-                name: "Default"
-                uuid: "EB31ADE1-9342-43E9-9E9C-811CCB978F64"
-            }
+        model: ProfilesModel {
+
         }
 
         delegate: Item {
             id: item
-            required property var name;
             required property var uuid;
 
             implicitWidth: profileList.width
@@ -66,6 +65,12 @@ Item {
 
                 color: layer1.color
 
+                TerminalProfile {
+                    id: profile
+                    zoom: 1
+                    profileUuid: item.uuid
+                }
+
                 ColumnLayout {
                     anchors.top: parent.top
                     anchors.left: parent.left
@@ -74,7 +79,7 @@ Item {
                     spacing: 10
 
                     Label {
-                        text: item.name
+                        text: profile.profileName
                         font.pointSize: 20
                     }
 
@@ -89,6 +94,23 @@ Item {
                         }
                     }
                 }
+            }
+        }
+
+        footer: Item {
+            implicitHeight: childrenRect.height + 6
+            implicitWidth: profileList.width
+            z: 20
+
+            Button {
+                id: addProfileButton
+                anchors.centerIn: parent
+                anchors.bottom: parent.top
+                implicitWidth: 600
+                text: qsTr("New Profile")
+                icon.name: "list-add"
+
+                onClicked: () => root.createNewProfile()
             }
         }
     }

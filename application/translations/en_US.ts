@@ -4,20 +4,20 @@
 <context>
     <name>GeneralSettings</name>
     <message>
-        <location filename="../settings/GeneralSettings.qml" line="21"/>
-        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/GeneralSettings.qml" line="21"/>
+        <location filename="../settings/GeneralSettings.qml" line="23"/>
+        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/GeneralSettings.qml" line="23"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/GeneralSettings.qml" line="46"/>
-        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/GeneralSettings.qml" line="46"/>
+        <location filename="../settings/GeneralSettings.qml" line="48"/>
+        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/GeneralSettings.qml" line="48"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/GeneralSettings.qml" line="56"/>
-        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/GeneralSettings.qml" line="56"/>
+        <location filename="../settings/GeneralSettings.qml" line="58"/>
+        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/GeneralSettings.qml" line="58"/>
         <source>Default Profile</source>
         <translation type="unfinished"></translation>
     </message>
@@ -140,15 +140,21 @@
 <context>
     <name>RootProfileSettings</name>
     <message>
-        <location filename="../settings/RootProfileSettings.qml" line="30"/>
-        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/RootProfileSettings.qml" line="30"/>
+        <location filename="../settings/RootProfileSettings.qml" line="33"/>
+        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/RootProfileSettings.qml" line="33"/>
         <source>Profiles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/RootProfileSettings.qml" line="87"/>
-        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/RootProfileSettings.qml" line="87"/>
+        <location filename="../settings/RootProfileSettings.qml" line="92"/>
+        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/RootProfileSettings.qml" line="92"/>
         <source>Edit Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/RootProfileSettings.qml" line="110"/>
+        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/RootProfileSettings.qml" line="110"/>
+        <source>New Profile</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -178,36 +184,48 @@
     <message>
         <location filename="../settings/SingleProfileSettings.qml" line="69"/>
         <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/SingleProfileSettings.qml" line="69"/>
-        <source>Shell</source>
+        <source>Profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/SingleProfileSettings.qml" line="76"/>
-        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/SingleProfileSettings.qml" line="76"/>
-        <source>Set the shell that is used when you start a terminal with this profile</source>
+        <location filename="../settings/SingleProfileSettings.qml" line="77"/>
+        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/SingleProfileSettings.qml" line="77"/>
+        <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings/SingleProfileSettings.qml" line="95"/>
         <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/SingleProfileSettings.qml" line="95"/>
+        <source>Shell</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/SingleProfileSettings.qml" line="102"/>
+        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/SingleProfileSettings.qml" line="102"/>
+        <source>Set the shell that is used when you start a terminal with this profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/SingleProfileSettings.qml" line="121"/>
+        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/SingleProfileSettings.qml" line="121"/>
         <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/SingleProfileSettings.qml" line="104"/>
-        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/SingleProfileSettings.qml" line="104"/>
+        <location filename="../settings/SingleProfileSettings.qml" line="130"/>
+        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/SingleProfileSettings.qml" line="130"/>
         <source>Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/SingleProfileSettings.qml" line="143"/>
-        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/SingleProfileSettings.qml" line="143"/>
+        <location filename="../settings/SingleProfileSettings.qml" line="169"/>
+        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/SingleProfileSettings.qml" line="169"/>
         <source>Colours</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/SingleProfileSettings.qml" line="152"/>
-        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/SingleProfileSettings.qml" line="152"/>
+        <location filename="../settings/SingleProfileSettings.qml" line="178"/>
+        <location filename="../../../build-theterminal-Desktop_ARM-Debug/application/com/vicr123/theterminal/settings/SingleProfileSettings.qml" line="178"/>
         <source>Theme</source>
         <translation type="unfinished"></translation>
     </message>

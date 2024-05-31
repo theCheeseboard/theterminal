@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import com.vicr123.Contemporary
+import ".."
 
 Item {
     Component {
@@ -8,6 +9,10 @@ Item {
         SingleProfileSettings {
 
         }
+    }
+
+    ProfileHelper {
+        id: profileHelper
     }
 
     Pager {
@@ -19,6 +24,12 @@ Item {
             onOpenProfileSettings: profile => {
                 stack.push(singleProfileComponent, {
                     "profileUuid": profile
+                })
+            }
+
+            onCreateNewProfile: () => {
+                stack.push(singleProfileComponent, {
+                    "profileUuid": profileHelper.newProfileUuid()
                 })
             }
         }

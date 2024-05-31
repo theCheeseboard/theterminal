@@ -2,7 +2,9 @@ import QtQuick 2.15
 import QtQuick.Layouts
 import QtQuick.Controls
 import com.vicr123.Contemporary
+import com.vicr123.theterminal.libtheterminal
 import Contemporary
+import ".."
 
 Item {
     LayerCalculator {
@@ -57,7 +59,31 @@ Item {
                     }
 
                     ComboBox {
-                        model: 5
+                        id: defaultProfileSelection
+                        model: ProfilesModel {
+
+                        }
+                        valueRole: "uuid"
+                        displayText: selectedProfile.profileName
+
+                        TerminalProfile {
+                            id: selectedProfile
+                            zoom: 1
+                            profileUuid: defaultProfileSelection.currentValue
+                        }
+
+                        delegate: ItemDelegate {
+                            required property var modelData
+                            id: item
+                            text: profile.profileName
+                            width: parent.width
+
+                            TerminalProfile {
+                                id: profile
+                                zoom: 1
+                                profileUuid: item.modelData
+                            }
+                        }
                     }
                 }
             }

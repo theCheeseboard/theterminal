@@ -20,13 +20,15 @@ set(PRIVATE_HEADERS
 )
 
 add_library(libtheterminal SHARED ${SOURCES} ${HEADERS} ${PRIVATE_HEADERS})
-cntp_init(libtheterminal 20)
 set_target_properties(libtheterminal PROPERTIES
         OUTPUT_NAME theterminal
         FRAMEWORK TRUE
         MACOSX_FRAMEWORK_IDENTIFIER com.vicr123.theterminal
         VERSION 1.0.0
-        PUBLIC_HEADER "${HEADERS}")
+        PUBLIC_HEADER "${HEADERS}"
+        CNTP_DATA_SUBDIR "theterminal/libtheterminal"
+    )
+cntp_init(libtheterminal 20)
 
 target_link_libraries(libtheterminal PRIVATE Qt::Widgets Qt::Quick)
 target_compile_definitions(libtheterminal PRIVATE LIBTHETERMINAL_LIBRARY)
@@ -64,3 +66,5 @@ cntp_mark_support_library_directory()
 
 add_subdirectory(common)
 add_subdirectory(com/vicr123/theterminal/libtheterminal)
+
+cntp_translate(libtheterminal)

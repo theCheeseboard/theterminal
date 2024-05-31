@@ -66,6 +66,32 @@ Item {
             GroupBox {
                 Layout.alignment: Qt.AlignHCenter
                 implicitWidth: 600
+                title: qsTr("Profile")
+
+                GridLayout {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    columns: 2
+
+                    Label {
+                        text: qsTr("Name")
+                    }
+
+                    TextField {
+                        id: profileNameField
+                        text: profile.profileName
+                        Layout.fillWidth: true
+                        onEditingFinished: () => {
+                            profile.profileName = profileNameField.text;
+                            profile.saveProfile()
+                        }
+                    }
+                }
+            }
+
+            GroupBox {
+                Layout.alignment: Qt.AlignHCenter
+                implicitWidth: 600
                 title: qsTr("Shell")
 
                 ColumnLayout {
