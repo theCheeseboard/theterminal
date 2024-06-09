@@ -19,5 +19,11 @@
             <numerusform></numerusform>
         </translation>
     </message>
+    <message>
+        <location filename="../com/vicr123/theterminal/libtheterminal/Terminal.qml" line="239"/>
+        <location filename="../../../build-theterminal-Desktop_ARM-Debug/libtheterminal/com/vicr123/theterminal/libtheterminal/Terminal.qml" line="239"/>
+        <source>Close Anyway</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

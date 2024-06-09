@@ -25,7 +25,7 @@ Item {
         const processes = controller.runningProcesses();
         if (processes.length > 0) {
             quitWithRunningProcessesDialog.informativeText = qsTr("Closing this terminal will also close %n processes: %1", "", processes.length).arg(processes.join(", "));
-            quitWithRunningProcessesDialog.visible = true
+            quitWithRunningProcessesDialog.open()
             return;
         }
 
@@ -218,16 +218,33 @@ Item {
         }
     }
 
-    MessageDialog {
+    DialogBox {
         id: quitWithRunningProcessesDialog
-        text: "Close terminal with running processes?"
-        buttons: MessageDialog.Ok | MessageDialog.Cancel
-        onButtonClicked: (button, role) => {
-            switch (button) {
-                case MessageDialog.Ok:
+        messageText: "Close terminal with running processes?"
+        // buttons: MessageDialog.Ok | MessageDialog.Cancel
+        // onButtonClicked: (button, role) => {
+            // switch (button) {
+                // case MessageDialog.Ok:
+                    // root.close();
+                    // break;
+            // }
+        // }
+
+        buttons: [
+            DialogBox.CancelButton {
+                onClicked: quitWithRunningProcessesDialog.close();
+                icon.name: "go-previous"
+            },
+            DialogBox.Button {
+                text: qsTr("Close Anyway")
+                destructive: true
+                icon.name: "window-close"
+                onClicked: () => {
+                    quitWithRunningProcessesDialog.close();
                     root.close();
-                    break;
+                }
             }
-        }
+
+        ]
     }
 }
