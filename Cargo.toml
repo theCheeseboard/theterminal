@@ -19,3 +19,9 @@ vt100 = { git = "https://github.com/vicr123/vt100-rust.git", branch = "more-esca
 ini = "1"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+objc2-open-directory = "0.3"
+objc2-foundation = { version = "0.3", features = [
+    "NSDictionary",
+    "NSValue",
+    "NSData",
+] }

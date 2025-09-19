@@ -107,7 +107,7 @@ impl TerminalScreen {
                     }
                 };
 
-                let mut cmd = CommandBuilder::new("bash");
+                let mut cmd = CommandBuilder::new(default_shell());
                 cmd.env("TERM", "xterm-256color");
                 if let Err(error) = pty_pair.slave.spawn_command(cmd) {
                     warn!("Unable to spawn process: {error}");
@@ -579,5 +579,46 @@ impl Callbacks for TerminalScreenCallbacks {
 
     fn write_to_pty(&mut self, _: &mut Screen, bytes: &[u8]) {
         smol::block_on(self.tx_write.send(bytes.to_vec())).unwrap();
+    }
+}
+
+fn default_shell() -> String {
+    if cfg!(target_os = "windows") {
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe".to_string()
+    } else if cfg!(target_os = "macos") {
+        #[cfg(target_os = "macos")]
+        unsafe {
+            use objc2_foundation::{NSString, NSUserName};
+            use objc2_open_directory::{
+                ODNode, ODSession, kODAttributeTypeUserShell, kODRecordTypeUsers,
+            };
+
+            let default_session = ODSession::defaultSession().unwrap();
+            let node = ODNode::nodeWithSession_name_error(
+                Some(default_session.as_ref()),
+                Some(&NSString::from_str("/Local/Default")),
+                None,
+            )
+            .unwrap();
+            let record = node
+                .recordWithRecordType_name_attributes_error(
+                    kODRecordTypeUsers,
+                    Some(&*NSUserName()),
+                    None,
+                    None,
+                )
+                .unwrap();
+            let values = record
+                .valuesForAttribute_error(kODAttributeTypeUserShell, None)
+                .unwrap();
+            let string = values
+                .firstObject()
+                .unwrap()
+                .downcast::<NSString>()
+                .unwrap();
+            string.to_string()
+        }
+    } else {
+        "bash".to_string()
     }
 }

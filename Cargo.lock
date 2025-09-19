@@ -3973,6 +3973,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "objc2-open-directory"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2a8b677a7397eaeeab55f0959808247a5f2f5424d317a93b0521ffea7395a569"
+dependencies = [
+ "dispatch2",
+ "objc2",
+ "objc2-core-foundation",
+ "objc2-foundation",
+]
+
+[[package]]
 name = "objc2-quartz-core"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6006,6 +6018,8 @@ dependencies = [
  "contemporary",
  "gpui",
  "ini",
+ "objc2-foundation",
+ "objc2-open-directory",
  "portable-pty",
  "serde",
  "serde_json",
