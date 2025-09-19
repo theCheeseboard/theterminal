@@ -15,7 +15,9 @@ use gpui::{App, Bounds, Menu, MenuItem, WindowBounds, WindowOptions, px, size};
 use smol_macros::main;
 use std::any::TypeId;
 use std::rc::Rc;
-use theterminal::actions::{CopyAction, CutAction, NewTabAction, PasteAction, register_actions};
+use theterminal::actions::{
+    CloseTabAction, CopyAction, CutAction, NewTabAction, PasteAction, register_actions,
+};
 use theterminal::terminal_screen::bind_terminal_screen_keys;
 
 fn mane() {
@@ -64,10 +66,16 @@ fn mane() {
                             menus: vec![
                                 Menu {
                                     name: tr!("MENU_FILE", "File").into(),
-                                    items: vec![MenuItem::action(
-                                        tr!("FILE_NEW_TAB", "New Tab"),
-                                        NewTabAction,
-                                    )],
+                                    items: vec![
+                                        MenuItem::action(
+                                            tr!("FILE_NEW_TAB", "New Tab"),
+                                            NewTabAction,
+                                        ),
+                                        MenuItem::action(
+                                            tr!("FILE_CLOSE_TAB", "Close Tab"),
+                                            CloseTabAction,
+                                        ),
+                                    ],
                                 },
                                 Menu {
                                     name: tr!("MENU_EDIT", "Edit").into(),

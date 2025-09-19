@@ -1,9 +1,11 @@
 mod color_scheme;
+pub mod events;
 mod keyboard;
 mod run_calculator;
 
 use crate::actions::PasteAction;
 use crate::terminal_screen::color_scheme::ColorScheme;
+use crate::terminal_screen::events::{TerminalScreenCloseEvent, TerminalScreenEvents};
 use crate::terminal_screen::keyboard::Keyboard;
 use crate::terminal_screen::run_calculator::RunCalculator;
 use async_channel::Sender;
@@ -46,6 +48,8 @@ pub struct TerminalScreen {
     focus_handle: FocusHandle,
     color_scheme: ColorScheme,
     keyboard: Keyboard,
+    title: String,
+    events: TerminalScreenEvents,
 }
 
 pub struct TerminalScreenPrepaint {
@@ -65,7 +69,7 @@ pub struct ScreenSize {
 }
 
 impl TerminalScreen {
-    pub fn new(cx: &mut App) -> Entity<TerminalScreen> {
+    pub fn new(cx: &mut App, events: TerminalScreenEvents) -> Entity<TerminalScreen> {
         let screen_size_entity = cx.new(|_| ScreenSize {
             columns: 40,
             lines: 20,
@@ -185,6 +189,8 @@ impl TerminalScreen {
                 focus_handle: cx.focus_handle(),
                 color_scheme: ColorScheme::default(),
                 keyboard: Keyboard::default(),
+                title: tr!("TERMINAL_DEFAULT_TITLE", "Terminal").to_string(),
+                events,
             }
         })
     }
@@ -257,6 +263,17 @@ impl TerminalScreen {
         } {
             self.write_to_pty(bytes.as_slice());
         }
+    }
+
+    pub fn title(&self) -> String {
+        self.title.clone()
+    }
+
+    pub fn request_close(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        let event = TerminalScreenCloseEvent {
+            terminal: cx.entity(),
+        };
+        (self.events.close_requested)(&event, window, cx);
     }
 }
 
@@ -425,8 +442,8 @@ fn prepaint_terminal_screen(
                 let screen_size = screen_size.clone();
                 cx.spawn(async move |cx: &mut AsyncApp| {
                     cx.update_entity(&screen_size, |screen_size, cx| {
-                        screen_size.columns = new_screen_size.columns;
-                        screen_size.lines = new_screen_size.lines;
+                        screen_size.columns = new_screen_size.columns.max(1);
+                        screen_size.lines = new_screen_size.lines.max(1);
                         cx.notify();
                     })
                     .unwrap();

@@ -2,7 +2,7 @@ use gpui::{App, KeyBinding, actions};
 
 actions!(
     theterminal,
-    [NewTabAction, CopyAction, CutAction, PasteAction]
+    [NewTabAction, CloseTabAction, CopyAction, CutAction, PasteAction]
 );
 
 fn theterminal_keybindings(keystrokes: &str) -> String {
@@ -16,11 +16,15 @@ fn theterminal_keybindings(keystrokes: &str) -> String {
 }
 
 pub fn register_actions(cx: &mut App) {
-    cx.on_action(new_tab);
     cx.bind_keys([
         KeyBinding::new(
             theterminal_keybindings("secondary-t").as_str(),
             NewTabAction,
+            None,
+        ),
+        KeyBinding::new(
+            theterminal_keybindings("secondary-w").as_str(),
+            CloseTabAction,
             None,
         ),
         KeyBinding::new(
@@ -40,5 +44,3 @@ pub fn register_actions(cx: &mut App) {
         ),
     ])
 }
-
-fn new_tab(_: &NewTabAction, cx: &mut App) {}

@@ -1,49 +1,61 @@
 {
   "EDIT_COPY": {
     "context": "main.rs",
-    "definedIn": "src/main.rs:75",
+    "definedIn": "src/main.rs:83",
     "plural": false,
     "description": null
   },
   "EDIT_CUT": {
     "context": "main.rs",
-    "definedIn": "src/main.rs:76",
+    "definedIn": "src/main.rs:84",
     "plural": false,
     "description": null
   },
   "EDIT_PASTE": {
     "context": "main.rs",
-    "definedIn": "src/main.rs:77",
+    "definedIn": "src/main.rs:85",
+    "plural": false,
+    "description": null
+  },
+  "FILE_CLOSE_TAB": {
+    "context": "main.rs",
+    "definedIn": "src/main.rs:75",
     "plural": false,
     "description": null
   },
   "FILE_NEW_TAB": {
     "context": "main.rs",
-    "definedIn": "src/main.rs:68",
+    "definedIn": "src/main.rs:71",
     "plural": false,
     "description": null
   },
   "MENU_EDIT": {
     "context": "main.rs",
-    "definedIn": "src/main.rs:73",
+    "definedIn": "src/main.rs:81",
     "plural": false,
     "description": null
   },
   "MENU_FILE": {
     "context": "main.rs",
-    "definedIn": "src/main.rs:66",
+    "definedIn": "src/main.rs:68",
     "plural": false,
     "description": null
   },
   "PTY_OPEN_ERROR": {
     "context": "terminal_screen.rs",
-    "definedIn": "src/terminal_screen.rs:102",
+    "definedIn": "src/terminal_screen.rs:106",
     "plural": false,
     "description": null
   },
   "PTY_SPAWN_ERROR": {
     "context": "terminal_screen.rs",
-    "definedIn": "src/terminal_screen.rs:115",
+    "definedIn": "src/terminal_screen.rs:119",
+    "plural": false,
+    "description": null
+  },
+  "TERMINAL_DEFAULT_TITLE": {
+    "context": "terminal_screen.rs",
+    "definedIn": "src/terminal_screen.rs:192",
     "plural": false,
     "description": null
   }
