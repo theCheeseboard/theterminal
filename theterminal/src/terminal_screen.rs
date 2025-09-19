@@ -583,43 +583,47 @@ impl Callbacks for TerminalScreenCallbacks {
     }
 }
 
+#[cfg(target_os = "windows")]
 fn default_shell() -> String {
-    if cfg!(target_os = "windows") {
-        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe".to_string()
-    } else if cfg!(target_os = "macos") {
-        #[cfg(target_os = "macos")]
-        unsafe {
-            use objc2_foundation::{NSString, NSUserName};
-            use objc2_open_directory::{
-                ODNode, ODSession, kODAttributeTypeUserShell, kODRecordTypeUsers,
-            };
+    "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe".to_string()
+}
 
-            let default_session = ODSession::defaultSession().unwrap();
-            let node = ODNode::nodeWithSession_name_error(
-                Some(default_session.as_ref()),
-                Some(&NSString::from_str("/Local/Default")),
+#[cfg(target_os = "macos")]
+fn default_shell() -> String {
+    unsafe {
+        use objc2_foundation::{NSString, NSUserName};
+        use objc2_open_directory::{
+            ODNode, ODSession, kODAttributeTypeUserShell, kODRecordTypeUsers,
+        };
+
+        let default_session = ODSession::defaultSession().unwrap();
+        let node = ODNode::nodeWithSession_name_error(
+            Some(default_session.as_ref()),
+            Some(&NSString::from_str("/Local/Default")),
+            None,
+        )
+        .unwrap();
+        let record = node
+            .recordWithRecordType_name_attributes_error(
+                kODRecordTypeUsers,
+                Some(&*NSUserName()),
+                None,
                 None,
             )
             .unwrap();
-            let record = node
-                .recordWithRecordType_name_attributes_error(
-                    kODRecordTypeUsers,
-                    Some(&*NSUserName()),
-                    None,
-                    None,
-                )
-                .unwrap();
-            let values = record
-                .valuesForAttribute_error(kODAttributeTypeUserShell, None)
-                .unwrap();
-            let string = values
-                .firstObject()
-                .unwrap()
-                .downcast::<NSString>()
-                .unwrap();
-            string.to_string()
-        }
-    } else {
-        "bash".to_string()
+        let values = record
+            .valuesForAttribute_error(kODAttributeTypeUserShell, None)
+            .unwrap();
+        let string = values
+            .firstObject()
+            .unwrap()
+            .downcast::<NSString>()
+            .unwrap();
+        string.to_string()
     }
+}
+
+#[cfg(target_os = "linux")]
+fn default_shell() -> String {
+    "bash".to_string()
 }
