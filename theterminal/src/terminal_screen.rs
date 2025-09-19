@@ -66,12 +66,12 @@ pub struct ScreenSize {
 
 impl TerminalScreen {
     pub fn new(cx: &mut App) -> Entity<TerminalScreen> {
-        cx.new(|cx| {
-            let screen_size_entity = cx.new(|_| ScreenSize {
-                columns: 40,
-                lines: 20,
-            });
+        let screen_size_entity = cx.new(|_| ScreenSize {
+            columns: 40,
+            lines: 20,
+        });
 
+        cx.new(|cx| {
             let mut writer = None;
 
             let (tx_read, rx_read) = async_channel::unbounded();
@@ -141,10 +141,6 @@ impl TerminalScreen {
 
                 cx.observe(&screen_size_entity, move |parser, screen_size, cx| {
                     let screen_size = screen_size.read(cx);
-                    info!(
-                        "Resizing terminal to {}x{}",
-                        screen_size.columns, screen_size.lines
-                    );
                     pty_pair
                         .master
                         .resize(PtySize {
@@ -426,11 +422,16 @@ fn prepaint_terminal_screen(
             };
 
             if *screen_size.read(cx) != new_screen_size {
-                screen_size.update(cx, |screen_size, cx| {
-                    screen_size.columns = new_screen_size.columns;
-                    screen_size.lines = new_screen_size.lines;
-                    cx.notify();
-                });
+                let screen_size = screen_size.clone();
+                cx.spawn(async move |cx: &mut AsyncApp| {
+                    cx.update_entity(&screen_size, |screen_size, cx| {
+                        screen_size.columns = new_screen_size.columns;
+                        screen_size.lines = new_screen_size.lines;
+                        cx.notify();
+                    })
+                    .unwrap();
+                })
+                .detach();
             }
 
             let mut screen_lines = Vec::new();
