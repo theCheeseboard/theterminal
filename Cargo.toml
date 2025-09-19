@@ -12,9 +12,7 @@ cntp_icon_tool_macros = { git = "https://github.com/vicr123/contemporary-rs" }
 cntp_i18n_gen = { git = "https://github.com/vicr123/contemporary-rs" }
 portable-pty = "0.9"
 tracing = "0.1"
-tracing-subscriber = "0.3"
 async-channel = "2"
-alacritty_terminal = "0.25"
 vt100 = { git = "https://github.com/vicr123/vt100-rust.git", branch = "more-escape-codes" }
 ini = "1"
 serde = { version = "1", features = ["derive"] }
