@@ -1,0 +1,83 @@
+{
+  "escape": "\u001B",
+  "backspace": [
+    {
+      "control": true,
+      "seq": "\u0008"
+    },
+    {
+      "seq": "\u007F"
+    }
+  ],
+  "tab": "\t",
+  "delete": "\u001B[3~",
+  "home": "\u001B[H",
+  "end": "\u001B[F",
+  "pageup": "\u001B[5~",
+  "pagedown": "\u001B[6~",
+  "insert": "\u001B[2~",
+  "f1": "\u001B[^OP",
+  "f2": "\u001B[^OQ",
+  "f3": "\u001B[^OR",
+  "f4": "\u001B[^OS",
+  "f5": "\u001B[15~",
+  "f6": "\u001B[17~",
+  "f7": "\u001B[18~",
+  "f8": "\u001B[19~",
+  "f9": "\u001B[20~",
+  "f10": "\u001B[21~",
+  "f11": "\u001B[23~",
+  "f12": "\u001B[24~",
+  "up": [
+    {
+      "control": true,
+      "seq": "\u001B[1;5A"
+    },
+    {
+      "shift": true,
+      "seq": "\u001B[1;2A"
+    },
+    {
+      "seq": "\u001B[A"
+    }
+  ],
+  "down": [
+    {
+      "control": true,
+      "seq": "\u001B[1;5B"
+    },
+    {
+      "shift": true,
+      "seq": "\u001B[1;2B"
+    },
+    {
+      "seq": "\u001B[B"
+    }
+  ],
+  "right": [
+    {
+      "control": true,
+      "seq": "\u001B[1;5C"
+    },
+    {
+      "shift": true,
+      "seq": "\u001B[1;2C"
+    },
+    {
+      "seq": "\u001B[C"
+    }
+  ],
+  "left": [
+    {
+      "control": true,
+      "seq": "\u001B[1;5D"
+    },
+    {
+      "shift": true,
+      "seq": "\u001B[1;2D"
+    },
+    {
+      "seq": "\u001B[D"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "EDIT_COPY": "Copy",
+  "EDIT_CUT": "Cut",
+  "EDIT_PASTE": "Paste",
+  "FILE_NEW_TAB": "New Tab",
+  "MENU_EDIT": "Edit",
+  "MENU_FILE": "File",
+  "PTY_OPEN_ERROR": "Unable to open pty",
+  "PTY_SPAWN_ERROR": "Unable to spawn process"
+}

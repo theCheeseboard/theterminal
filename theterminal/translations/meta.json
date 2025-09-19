@@ -1,0 +1,50 @@
+{
+  "EDIT_COPY": {
+    "context": "main.rs",
+    "definedIn": "src/main.rs:75",
+    "plural": false,
+    "description": null
+  },
+  "EDIT_CUT": {
+    "context": "main.rs",
+    "definedIn": "src/main.rs:76",
+    "plural": false,
+    "description": null
+  },
+  "EDIT_PASTE": {
+    "context": "main.rs",
+    "definedIn": "src/main.rs:77",
+    "plural": false,
+    "description": null
+  },
+  "FILE_NEW_TAB": {
+    "context": "main.rs",
+    "definedIn": "src/main.rs:68",
+    "plural": false,
+    "description": null
+  },
+  "MENU_EDIT": {
+    "context": "main.rs",
+    "definedIn": "src/main.rs:73",
+    "plural": false,
+    "description": null
+  },
+  "MENU_FILE": {
+    "context": "main.rs",
+    "definedIn": "src/main.rs:66",
+    "plural": false,
+    "description": null
+  },
+  "PTY_OPEN_ERROR": {
+    "context": "terminal_screen.rs",
+    "definedIn": "src/terminal_screen.rs:102",
+    "plural": false,
+    "description": null
+  },
+  "PTY_SPAWN_ERROR": {
+    "context": "terminal_screen.rs",
+    "definedIn": "src/terminal_screen.rs:115",
+    "plural": false,
+    "description": null
+  }
+}
