@@ -12,7 +12,7 @@ organization_name = "theCheeseboard"
 desktop_entry = "com.vicr123.theterminal"
 contemporary_base_icon = "dist/baseicon.svg"
 disk_image_background = "dist/app-dmg-background.svg"
-desktop_entry_categories = ["Audio", "Music", "Player", "AudioVideo", "X-Multimedia"]
+desktop_entry_categories = ["Utility", "System", "TerminalEmulator"]
 
 [deployment."aarch64-apple-darwin"]
 contemporary_base_icon = "dist/baseicon-mac.svg"
