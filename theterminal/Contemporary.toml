@@ -2,7 +2,7 @@
 i18n_dir = "dist/contemporary_toml_translations"
 
 [application]
-theme_colors = ["#ff6400", "#ffc800"]
+theme_colors = ["#646400", "#c8c864"]
 
 [deployment]
 application_name = "t:APPLICATION_NAME"
