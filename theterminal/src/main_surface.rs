@@ -11,7 +11,7 @@ use gpui::{
     ParentElement, Render, Styled, Window, div, px,
 };
 use std::rc::Rc;
-use theterminal::actions::{CloseTabAction, NewTabAction};
+use theterminal::actions::{CloseTabAction, CopyAction, NewTabAction, PasteAction};
 use theterminal::terminal_screen::TerminalScreen;
 use theterminal::terminal_screen::events::{TerminalScreenCloseEvent, TerminalScreenEvents};
 
@@ -37,6 +37,9 @@ impl MainSurface {
                         items: vec![
                             MenuItem::action(tr!("FILE_NEW_TAB"), NewTabAction),
                             MenuItem::action(tr!("FILE_CLOSE_TAB"), CloseTabAction),
+                            MenuItem::separator(),
+                            MenuItem::action(tr!("EDIT_COPY"), CopyAction),
+                            MenuItem::action(tr!("EDIT_PASTE"), PasteAction),
                         ],
                     },
                 ),

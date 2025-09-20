@@ -80,8 +80,8 @@ fn mane() {
                                 Menu {
                                     name: tr!("MENU_EDIT", "Edit").into(),
                                     items: vec![
-                                        MenuItem::action(tr!("EDIT_COPY", "Copy"), CopyAction),
                                         MenuItem::action(tr!("EDIT_CUT", "Cut"), CutAction),
+                                        MenuItem::action(tr!("EDIT_COPY", "Copy"), CopyAction),
                                         MenuItem::action(tr!("EDIT_PASTE", "Paste"), PasteAction),
                                     ],
                                 },
