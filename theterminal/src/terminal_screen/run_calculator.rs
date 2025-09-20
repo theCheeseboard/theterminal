@@ -96,12 +96,21 @@ struct CellAttributes {
     dim: bool,
     underline: bool,
     inverse: bool,
+    blink: bool,
 }
 
 impl CellAttributes {
     pub fn text_style_refinement(&self, color_scheme: ColorScheme) -> TextStyleRefinement {
-        let mut foreground = Some(color_scheme.parse_color(self.fg, color_scheme.foreground));
-        let mut background = Some(color_scheme.parse_color(self.bg, color_scheme.background));
+        let mut foreground = Some(color_scheme.parse_color(
+            self.fg,
+            color_scheme.foreground,
+            self.blink && !self.inverse,
+        ));
+        let mut background = Some(color_scheme.parse_color(
+            self.bg,
+            color_scheme.background,
+            self.blink && self.inverse,
+        ));
         if self.inverse {
             mem::swap(&mut foreground, &mut background);
         }
@@ -137,6 +146,7 @@ impl From<Cell> for CellAttributes {
             dim: value.dim(),
             underline: value.underline(),
             inverse: value.inverse(),
+            blink: value.blink(),
         }
     }
 }

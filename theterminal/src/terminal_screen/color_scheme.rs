@@ -1,9 +1,11 @@
+use contemporary::easing::{ease_in_cubic, ease_out_cubic};
 use gpui::http_client::anyhow;
 use gpui::private::anyhow;
 use gpui::{Hsla, Rgba};
 use ini::inistr;
 use std::collections::HashMap;
 use std::mem;
+use std::time::Instant;
 use vt100::Color;
 
 #[derive(Copy, Clone)]
@@ -11,6 +13,7 @@ pub struct ColorScheme {
     pub background: Hsla,
     pub foreground: Hsla,
     pub indexed: [Hsla; 16],
+    pub timer: Option<u128>,
 }
 
 impl ColorScheme {
@@ -45,7 +48,13 @@ impl ColorScheme {
                 reader.read("color6intense")?,
                 reader.read("color7intense")?,
             ],
+            timer: None,
         })
+    }
+
+    pub fn with_timer(mut self, timer: Instant) -> ColorScheme {
+        self.timer = Some(timer.elapsed().as_millis());
+        self
     }
 
     pub fn reverse_when(mut self, reverse: bool) -> ColorScheme {
@@ -55,12 +64,24 @@ impl ColorScheme {
         self
     }
 
-    pub fn parse_color(&self, color: Color, default_color: Hsla) -> Hsla {
+    pub fn parse_color(&self, color: Color, default_color: Hsla, follow_opacity: bool) -> Hsla {
+        let opacity = if follow_opacity {
+            self.timer
+                .map(|t| ease_out_cubic(((t % 1000) as f32 - 500.).abs() / 500.))
+                .unwrap_or(1.)
+        } else {
+            1.
+        };
+
         match color {
-            Color::Default => default_color,
-            Color::Idx(idx) if idx < 16 => {
-                *self.indexed.get(idx as usize).unwrap_or(&default_color)
-            }
+            Color::Default => Hsla {
+                a: opacity,
+                ..default_color
+            },
+            Color::Idx(idx) if idx < 16 => Hsla {
+                a: opacity,
+                ..*self.indexed.get(idx as usize).unwrap_or(&default_color)
+            },
             Color::Idx(idx) if idx < 232 => {
                 let color = idx - 16;
                 let b = color % 6;
@@ -83,7 +104,7 @@ impl ColorScheme {
                     } else {
                         (b * 40 + 55) as f32 / 255.
                     },
-                    a: 1.,
+                    a: opacity,
                 }
                 .into()
             }
@@ -94,7 +115,7 @@ impl ColorScheme {
                     r: intensity,
                     g: intensity,
                     b: intensity,
-                    a: 1.,
+                    a: opacity,
                 }
                 .into()
             }
@@ -102,7 +123,7 @@ impl ColorScheme {
                 r: r as f32 / 255.,
                 g: g as f32 / 255.,
                 b: b as f32 / 255.,
-                a: 1.,
+                a: opacity,
             }
             .into(),
         }

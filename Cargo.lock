@@ -6759,7 +6759,7 @@ dependencies = [
 [[package]]
 name = "vt100"
 version = "0.16.2"
-source = "git+https://github.com/vicr123/vt100-rust.git?branch=more-escape-codes#0b1dc12b9626c602ce7a4d6a5bf2f3ac145e3d32"
+source = "git+https://github.com/vicr123/vt100-rust.git?branch=more-escape-codes#416fea7162b67633fd88fafb5fd09161d9f9aa29"
 dependencies = [
  "itoa",
  "unicode-width 0.2.1",

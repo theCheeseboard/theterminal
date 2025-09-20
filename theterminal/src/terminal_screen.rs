@@ -27,6 +27,7 @@ use std::io::{Read, Write};
 use std::ops::{Range, Rem};
 use std::rc::Rc;
 use std::thread;
+use std::time::Instant;
 use sysinfo::{ProcessRefreshKind, RefreshKind, System};
 use tracing::{info, warn};
 use vt100::{Callbacks, Cell, Parser, Screen};
@@ -53,6 +54,7 @@ pub struct TerminalScreen {
     title: String,
     events: TerminalScreenEvents,
     shell_pid: Option<u32>,
+    timer: Instant,
     close_warning_dialog: Option<Vec<String>>,
     partial_scroll: f32,
 }
@@ -203,6 +205,7 @@ impl TerminalScreen {
                 title: tr!("TERMINAL_DEFAULT_TITLE", "Terminal").to_string(),
                 events,
                 shell_pid,
+                timer: Instant::now(),
                 close_warning_dialog: None,
                 partial_scroll: 0.,
             }
@@ -367,6 +370,7 @@ impl Render for TerminalScreen {
         let screen_size = self.screen_size.clone();
         let style = self.style.clone();
         let color_scheme = self.color_scheme;
+        let timer = self.timer;
 
         div()
             .h_full()
@@ -389,6 +393,7 @@ impl Render for TerminalScreen {
                             screen_size,
                             style,
                             color_scheme,
+                            timer,
                             bounds,
                             window,
                             cx,
@@ -535,6 +540,7 @@ fn prepaint_terminal_screen(
     screen_size: Entity<ScreenSize>,
     style_refinement: StyleRefinement,
     color_scheme: ColorScheme,
+    timer: Instant,
     bounds: Bounds<Pixels>,
     window: &mut Window,
     cx: &mut App,
@@ -544,7 +550,9 @@ fn prepaint_terminal_screen(
     let style = Style::default().refined(style_refinement);
 
     let screen = parser_entity.read(cx).screen().clone();
-    let color_scheme = color_scheme.reverse_when(screen.reverse_video());
+    let color_scheme = color_scheme
+        .with_timer(timer)
+        .reverse_when(screen.reverse_video());
 
     let (screen_lines, caret_rect) =
         window.with_text_style(style.text_style().cloned(), |window| {
@@ -610,7 +618,10 @@ fn prepaint_terminal_screen(
             (screen_lines, caret_rect)
         });
 
-    let caret_color = color_scheme.parse_color(screen.fgcolor(), color_scheme.foreground);
+    let caret_color = color_scheme.parse_color(screen.fgcolor(), color_scheme.foreground, true);
+
+    // Request an animation frame for blinking text and the blinking caret
+    window.request_animation_frame();
 
     TerminalScreenPrepaint {
         screen,
