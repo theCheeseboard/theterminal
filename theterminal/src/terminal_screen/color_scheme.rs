@@ -124,6 +124,9 @@ pub enum InbuiltColorScheme {
     PowerShell,
     Ubuntu,
     Campbell,
+    Solarized,
+    SolarizedLight,
+    GreenOnBlack,
 }
 
 impl InbuiltColorScheme {
@@ -138,6 +141,15 @@ impl InbuiltColorScheme {
             }
             InbuiltColorScheme::Campbell => {
                 include_str!("../../dist/color_schemes/Campbell.colorscheme")
+            }
+            InbuiltColorScheme::Solarized => {
+                include_str!("../../dist/color_schemes/Solarized.colorscheme")
+            }
+            InbuiltColorScheme::SolarizedLight => {
+                include_str!("../../dist/color_schemes/SolarizedLight.colorscheme")
+            }
+            InbuiltColorScheme::GreenOnBlack => {
+                include_str!("../../dist/color_schemes/GreenOnBlack.colorscheme")
             }
         }
     }

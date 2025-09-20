@@ -16,19 +16,19 @@ use gpui::prelude::FluentBuilder;
 use gpui::{
     App, AppContext, AsyncApp, BorderStyle, Bounds, Context, Corners, CursorStyle, Entity,
     EntityInputHandler, FocusHandle, Focusable, Hitbox, HitboxBehavior, Hsla, InteractiveElement,
-    IntoElement, KeyBinding, KeyDownEvent, ParentElement, Pixels, Point, Refineable, Render, Style,
-    StyleRefinement, Styled, TextAlign, UTF16Selection, Window, WrappedLine, actions, canvas, div,
-    point, px, quad, rgb, size, transparent_black,
+    IntoElement, KeyBinding, KeyDownEvent, ParentElement, Pixels, Point, Refineable, Render,
+    ScrollDelta, ScrollWheelEvent, Style, StyleRefinement, Styled, TextAlign, UTF16Selection,
+    Window, WrappedLine, actions, canvas, div, point, px, quad, rgb, size, transparent_black,
 };
 use portable_pty::{CommandBuilder, PtySize, native_pty_system};
 use std::cell::RefCell;
 use std::io::{Read, Write};
-use std::ops::Range;
+use std::ops::{Range, Rem};
 use std::rc::Rc;
 use std::thread;
 use sysinfo::{ProcessRefreshKind, RefreshKind, System};
 use tracing::{info, warn};
-use vt100::{Callbacks, Parser, Screen};
+use vt100::{Callbacks, Cell, Parser, Screen};
 
 actions!(terminal_screen, [Backspace, Delete, Left, Right]);
 
@@ -53,6 +53,7 @@ pub struct TerminalScreen {
     events: TerminalScreenEvents,
     shell_pid: Option<u32>,
     close_warning_dialog: Option<Vec<String>>,
+    partial_scroll: f32,
 }
 
 pub struct TerminalScreenPrepaint {
@@ -201,6 +202,7 @@ impl TerminalScreen {
                 events,
                 shell_pid,
                 close_warning_dialog: None,
+                partial_scroll: 0.,
             }
         })
     }
@@ -275,6 +277,34 @@ impl TerminalScreen {
         }
     }
 
+    fn process_scroll(&mut self, event: &ScrollWheelEvent, _: &mut Window, cx: &mut Context<Self>) {
+        let scroll_delta = match event.delta {
+            ScrollDelta::Pixels(pixels) => {
+                let mut lines_to_scroll = 0.;
+                self.partial_scroll += pixels.y.0;
+                while self.partial_scroll > 10. {
+                    lines_to_scroll += 1.;
+                    self.partial_scroll -= 20.;
+                }
+                while self.partial_scroll < -10. {
+                    lines_to_scroll -= 1.;
+                    self.partial_scroll += 20.;
+                }
+                lines_to_scroll
+            }
+            ScrollDelta::Lines(lines) => lines.y,
+        };
+
+        self.screen.update(cx, |screen, _| {
+            let current_scrollback = screen.screen().scrollback() as isize;
+            let new_scrollback = current_scrollback + scroll_delta as isize;
+            screen
+                .screen_mut()
+                .set_scrollback(new_scrollback.max(0) as usize);
+        });
+        cx.notify()
+    }
+
     pub fn title(&self) -> String {
         self.title.clone()
     }
@@ -345,6 +375,9 @@ impl Render for TerminalScreen {
             .on_action(cx.listener(Self::paste))
             .on_key_down(cx.listener(|this, event: &KeyDownEvent, window, cx| {
                 this.process_key_press(event, window, cx)
+            }))
+            .on_scroll_wheel(cx.listener(|this, event: &ScrollWheelEvent, window, cx| {
+                this.process_scroll(event, window, cx)
             }))
             .child(
                 canvas(
@@ -556,8 +589,8 @@ fn prepaint_terminal_screen(
                 );
 
                 for column in 0..screen.size().1 {
-                    let cell = screen.cell(line, column).unwrap();
-                    run_calculator.push_cell(cell.clone());
+                    let cell = screen.cell(line, column).cloned();
+                    run_calculator.push_cell(cell);
                 }
 
                 screen_lines.push(run_calculator.runs());
@@ -566,7 +599,7 @@ fn prepaint_terminal_screen(
             let caret_rect = Bounds {
                 origin: point(
                     screen.cursor_position().1 as f32 * character_size.width,
-                    screen.cursor_position().0 as f32 * character_size.height,
+                    (screen.cursor_position().0 as f32 + screen.scrollback() as f32) * character_size.height,
                 ) + bounds.origin,
                 size: size(px(1.), character_size.height),
             };
@@ -696,7 +729,8 @@ impl Callbacks for TerminalScreenCallbacks {
         let bytes = bytes.to_vec();
         smol::spawn(async move {
             sender.send(bytes).await.unwrap();
-        }).detach();
+        })
+        .detach();
     }
 }
 

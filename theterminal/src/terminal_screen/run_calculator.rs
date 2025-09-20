@@ -36,18 +36,22 @@ impl RunCalculator {
         }
     }
 
-    pub fn push_cell(&mut self, cell: Cell) {
-        let attributes = cell.clone().into();
-        if self.current_cell_attributes != attributes {
-            self.finalise_run();
-            self.current_string = String::new();
-            self.current_cell_attributes = attributes;
-        }
+    pub fn push_cell(&mut self, cell: Option<Cell>) {
+        if let Some(cell) = cell {
+            let attributes = cell.clone().into();
+            if self.current_cell_attributes != attributes {
+                self.finalise_run();
+                self.current_string = String::new();
+                self.current_cell_attributes = attributes;
+            }
 
-        self.current_string += if cell.has_contents() {
-            cell.contents()
+            self.current_string += if cell.has_contents() {
+                cell.contents()
+            } else {
+                " "
+            }
         } else {
-            " "
+            self.current_string += " ";
         }
     }
 
