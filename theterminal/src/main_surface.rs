@@ -126,18 +126,36 @@ impl Render for MainSurface {
                                     .content_stretch(),
                                 |david, (i, terminal_screen)| {
                                     let terminal_screen = terminal_screen.read(cx);
+
+                                    let tab_subtext = terminal_screen
+                                        .working_directory()
+                                        .and_then(|path| {
+                                            path.iter()
+                                                .next_back()
+                                                .map(|str| str.to_string_lossy().to_string())
+                                        })
+                                        .unwrap_or_else(|| "".to_string());
+
                                     david.child(
                                         button(i)
                                             .child(
                                                 div()
                                                     .flex()
                                                     .flex_col()
-                                                    .child(terminal_screen.title())
-                                                    .child(
-                                                        div()
-                                                            .text_size(theme.system_font_size * 0.6)
-                                                            .child("Bottom Text"),
-                                                    ),
+                                                    .child(if terminal_screen.title().is_empty() {
+                                                        tr!("TERMINAL_DEFAULT_TITLE").to_string()
+                                                    } else {
+                                                        terminal_screen.title()
+                                                    }) 
+                                                    .when(!tab_subtext.is_empty(), |david| {
+                                                        david.child(
+                                                            div()
+                                                                .text_size(
+                                                                    theme.system_font_size * 0.6,
+                                                                )
+                                                                .child(tab_subtext),
+                                                        )
+                                                    }),
                                             )
                                             .on_click(cx.listener(move |this, _, _, cx| {
                                                 this.current_terminal_screen = i;

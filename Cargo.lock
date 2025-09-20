@@ -6058,6 +6058,7 @@ dependencies = [
  "smol-macros",
  "sysinfo 0.37.0",
  "tracing",
+ "url",
  "vt100",
 ]
 
@@ -6759,7 +6760,7 @@ dependencies = [
 [[package]]
 name = "vt100"
 version = "0.16.2"
-source = "git+https://github.com/vicr123/vt100-rust.git?branch=more-escape-codes#416fea7162b67633fd88fafb5fd09161d9f9aa29"
+source = "git+https://github.com/vicr123/vt100-rust.git?branch=more-escape-codes#0c072a5901607930ce19c9b5ee7af1988660889f"
 dependencies = [
  "itoa",
  "unicode-width 0.2.1",

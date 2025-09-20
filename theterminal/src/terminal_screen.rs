@@ -21,19 +21,21 @@ use gpui::{
     DispatchPhase, Entity, EntityInputHandler, FocusHandle, Focusable, Hitbox, HitboxBehavior,
     Hsla, InteractiveElement, IntoElement, KeyBinding, KeyDownEvent, MouseDownEvent,
     MouseMoveEvent, MouseUpEvent, ParentElement, Pixels, Point, Refineable, Render, ScrollDelta,
-    ScrollWheelEvent, Style, StyleRefinement, Styled, TextAlign, UTF16Selection, Window,
-    WrappedLine, actions, canvas, div, point, px, quad, rgb, size, transparent_black,
+    ScrollWheelEvent, Style, StyleRefinement, Styled, TextAlign, UTF16Selection, WeakEntity,
+    Window, WrappedLine, actions, canvas, div, point, px, quad, rgb, size, transparent_black,
 };
 use portable_pty::{CommandBuilder, PtySize, native_pty_system};
 use std::cell::RefCell;
 use std::cmp::Ordering;
 use std::io::{Read, Write};
 use std::ops::{Range, Rem};
+use std::path::PathBuf;
 use std::rc::Rc;
 use std::thread;
 use std::time::Instant;
 use sysinfo::{ProcessRefreshKind, RefreshKind, System};
 use tracing::{info, warn};
+use url::Url;
 use vt100::{Callbacks, Cell, Parser, Screen};
 
 actions!(terminal_screen, [Backspace, Delete, Left, Right]);
@@ -56,6 +58,7 @@ pub struct TerminalScreen {
     color_scheme: ColorScheme,
     keyboard: Keyboard,
     title: String,
+    working_directory: Option<PathBuf>,
     events: TerminalScreenEvents,
     shell_pid: Option<u32>,
     timer: Instant,
@@ -96,6 +99,8 @@ impl TerminalScreen {
             let (tx_read, rx_read) = async_channel::bounded(1);
             let (tx_write, rx_write) = async_channel::bounded(1);
 
+            let terminal_screen = cx.entity();
+
             let parser = cx.new(|cx| {
                 let screen_size = screen_size_entity.read(cx);
                 let mut parser = Parser::new_with_callbacks(
@@ -103,6 +108,7 @@ impl TerminalScreen {
                     screen_size.columns,
                     1000,
                     TerminalScreenCallbacks {
+                        terminal_screen,
                         tx_write,
                         events: events.clone(),
                         cx: cx.to_async(),
@@ -119,10 +125,9 @@ impl TerminalScreen {
                     Ok(pty_pair) => pty_pair,
                     Err(error) => {
                         warn!("Unable to open pty: {error}");
-                        parser.process(
-                            tr!("PTY_OPEN_ERROR", "Unable to open pty")
-                                .to_string()
-                                .as_bytes(),
+                        print_system_message(
+                            &mut parser,
+                            tr!("PTY_OPEN_ERROR", "Unable to open pty").to_string(),
                         );
                         return parser;
                     }
@@ -133,14 +138,44 @@ impl TerminalScreen {
                 match pty_pair.slave.spawn_command(cmd) {
                     Err(error) => {
                         warn!("Unable to spawn process: {error}");
-                        parser.process(
-                            tr!("PTY_SPAWN_ERROR", "Unable to spawn process")
-                                .to_string()
-                                .as_bytes(),
+                        print_system_message(
+                            &mut parser,
+                            tr!("PTY_SPAWN_ERROR", "Unable to spawn process").to_string(),
                         );
                         return parser;
                     }
-                    Ok(child) => shell_pid = child.process_id(),
+                    Ok(mut child) => {
+                        shell_pid = child.process_id();
+
+                        let (tx_dead, rx_dead) = async_channel::bounded(1);
+
+                        thread::spawn(move || {
+                            let exit_status = child.wait().unwrap();
+                            smol::block_on(tx_dead.send(exit_status)).unwrap();
+                        });
+                        cx.spawn(
+                            async move |weak_parser: WeakEntity<
+                                Parser<TerminalScreenCallbacks>,
+                            >,
+                                        cx: &mut AsyncApp| {
+                                let exit_status = rx_dead.recv().await.unwrap();
+                                weak_parser
+                                    .update(cx, |parser, cx| {
+                                        print_system_message(
+                                            parser,
+                                            tr!(
+                                                "PTY_EXITED",
+                                                "Command exited with exit code {{exit_code}}",
+                                                exit_code = exit_status.exit_code()
+                                            )
+                                            .to_string(),
+                                        );
+                                    })
+                                    .unwrap();
+                            },
+                        )
+                        .detach();
+                    }
                 }
 
                 let mut reader = pty_pair.master.try_clone_reader().unwrap();
@@ -210,6 +245,7 @@ impl TerminalScreen {
                 color_scheme: ColorScheme::default(),
                 keyboard: Keyboard::default(),
                 title: tr!("TERMINAL_DEFAULT_TITLE", "Terminal").to_string(),
+                working_directory: None,
                 events,
                 shell_pid,
                 timer: Instant::now(),
@@ -354,6 +390,10 @@ impl TerminalScreen {
 
     pub fn title(&self) -> String {
         self.title.clone()
+    }
+
+    pub fn working_directory(&self) -> Option<PathBuf> {
+        self.working_directory.clone()
     }
 
     pub fn request_close(&mut self, window: &mut Window, cx: &mut Context<Self>) {
@@ -820,6 +860,7 @@ fn paint_terminal_screen(
 }
 
 struct TerminalScreenCallbacks {
+    terminal_screen: Entity<TerminalScreen>,
     tx_write: Sender<Vec<u8>>,
     events: TerminalScreenEvents,
     cx: AsyncApp,
@@ -831,6 +872,50 @@ impl Callbacks for TerminalScreenCallbacks {
         self.cx
             .spawn(async move |cx: &mut AsyncApp| {
                 cx.update(|cx| cx.beep()).unwrap();
+            })
+            .detach()
+    }
+
+    fn set_window_title(&mut self, _: &mut Screen, title: &[u8]) {
+        let title = String::from_utf8_lossy(title).to_string();
+
+        let terminal_screen = self.terminal_screen.clone();
+
+        // Spawn in a background task to avoid a double borrow
+        self.cx
+            .spawn(async move |cx: &mut AsyncApp| {
+                cx.update_entity(&terminal_screen, |terminal_screen, cx| {
+                    terminal_screen.title = title;
+                    cx.notify();
+                })
+                .unwrap();
+            })
+            .detach()
+    }
+
+    fn set_working_directory(&mut self, _: &mut Screen, working_directory: &[u8]) {
+        let working_directory_string = String::from_utf8_lossy(working_directory).to_string();
+        let Ok(mut url) = Url::parse(working_directory_string.as_str()) else {
+            return;
+        };
+        let _ = url.set_host(None);
+
+        // Re-parse the URL because removing the host in a file: URL doesn't work correctly
+        let url = Url::parse(url.as_str()).unwrap();
+        let Ok(path) = url.to_file_path() else {
+            return;
+        };
+
+        let terminal_screen = self.terminal_screen.clone();
+
+        // Spawn in a background task to avoid a double borrow
+        self.cx
+            .spawn(async move |cx: &mut AsyncApp| {
+                cx.update_entity(&terminal_screen, |terminal_screen, cx| {
+                    terminal_screen.working_directory = Some(path);
+                    cx.notify();
+                })
+                .unwrap();
             })
             .detach()
     }
@@ -870,6 +955,12 @@ impl Callbacks for TerminalScreenCallbacks {
         })
         .detach();
     }
+}
+
+fn print_system_message<T: Callbacks>(parser: &mut Parser<T>, message: String) {
+    parser.process(b"\n\x1B[7m[");
+    parser.process(message.as_bytes());
+    parser.process(b"]");
 }
 
 #[cfg(target_os = "windows")]

@@ -6,6 +6,7 @@
   "FILE_NEW_TAB": "New Tab",
   "MENU_EDIT": "Edit",
   "MENU_FILE": "File",
+  "PTY_EXITED": "Command exited with exit code {{exit_code}}",
   "PTY_OPEN_ERROR": "Unable to open pty",
   "PTY_SPAWN_ERROR": "Unable to spawn process",
   "TERMINAL_CLOSE_WARNING_CLOSE": "Close and Terminate Processes",
