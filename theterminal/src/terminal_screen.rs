@@ -12,6 +12,7 @@ use async_channel::Sender;
 use cntp_i18n::{tr, trn};
 use contemporary::components::button::button;
 use contemporary::components::dialog_box::{StandardButton, dialog_box};
+use contemporary::platform_support::cx_platform_extensions::CxPlatformExtensions;
 use gpui::prelude::FluentBuilder;
 use gpui::{
     App, AppContext, AsyncApp, BorderStyle, Bounds, Context, Corners, CursorStyle, Entity,
@@ -95,6 +96,7 @@ impl TerminalScreen {
                     TerminalScreenCallbacks {
                         tx_write,
                         events: events.clone(),
+                        cx: cx.to_async(),
                     },
                 );
 
@@ -599,7 +601,8 @@ fn prepaint_terminal_screen(
             let caret_rect = Bounds {
                 origin: point(
                     screen.cursor_position().1 as f32 * character_size.width,
-                    (screen.cursor_position().0 as f32 + screen.scrollback() as f32) * character_size.height,
+                    (screen.cursor_position().0 as f32 + screen.scrollback() as f32)
+                        * character_size.height,
                 ) + bounds.origin,
                 size: size(px(1.), character_size.height),
             };
@@ -694,9 +697,19 @@ fn paint_terminal_screen(
 struct TerminalScreenCallbacks {
     tx_write: Sender<Vec<u8>>,
     events: TerminalScreenEvents,
+    cx: AsyncApp,
 }
 
 impl Callbacks for TerminalScreenCallbacks {
+    fn audible_bell(&mut self, _: &mut Screen) {
+        // Spawn in a background task to avoid a double borrow
+        self.cx
+            .spawn(async move |cx: &mut AsyncApp| {
+                cx.update(|cx| cx.beep()).unwrap();
+            })
+            .detach()
+    }
+
     fn unhandled_control(&mut self, _: &mut Screen, b: u8) {
         warn!("Unhandled control: {b:?}");
     }
