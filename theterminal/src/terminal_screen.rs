@@ -1,9 +1,11 @@
+mod cell_coordinates;
 mod color_scheme;
 pub mod events;
 mod keyboard;
 mod run_calculator;
 
-use crate::actions::PasteAction;
+use crate::actions::{CopyAction, PasteAction};
+use crate::terminal_screen::cell_coordinates::CellCoordinates;
 use crate::terminal_screen::color_scheme::ColorScheme;
 use crate::terminal_screen::events::{TerminalScreenCloseEvent, TerminalScreenEvents};
 use crate::terminal_screen::keyboard::Keyboard;
@@ -15,14 +17,16 @@ use contemporary::components::dialog_box::{StandardButton, dialog_box};
 use contemporary::platform_support::cx_platform_extensions::CxPlatformExtensions;
 use gpui::prelude::FluentBuilder;
 use gpui::{
-    App, AppContext, AsyncApp, BorderStyle, Bounds, Context, Corners, CursorStyle, Entity,
-    EntityInputHandler, FocusHandle, Focusable, Hitbox, HitboxBehavior, Hsla, InteractiveElement,
-    IntoElement, KeyBinding, KeyDownEvent, ParentElement, Pixels, Point, Refineable, Render,
-    ScrollDelta, ScrollWheelEvent, Style, StyleRefinement, Styled, TextAlign, UTF16Selection,
-    Window, WrappedLine, actions, canvas, div, point, px, quad, rgb, size, transparent_black,
+    App, AppContext, AsyncApp, BorderStyle, Bounds, ClipboardItem, Context, Corners, CursorStyle,
+    DispatchPhase, Entity, EntityInputHandler, FocusHandle, Focusable, Hitbox, HitboxBehavior,
+    Hsla, InteractiveElement, IntoElement, KeyBinding, KeyDownEvent, MouseDownEvent,
+    MouseMoveEvent, MouseUpEvent, ParentElement, Pixels, Point, Refineable, Render, ScrollDelta,
+    ScrollWheelEvent, Style, StyleRefinement, Styled, TextAlign, UTF16Selection, Window,
+    WrappedLine, actions, canvas, div, point, px, quad, rgb, size, transparent_black,
 };
 use portable_pty::{CommandBuilder, PtySize, native_pty_system};
 use std::cell::RefCell;
+use std::cmp::Ordering;
 use std::io::{Read, Write};
 use std::ops::{Range, Rem};
 use std::rc::Rc;
@@ -57,12 +61,15 @@ pub struct TerminalScreen {
     timer: Instant,
     close_warning_dialog: Option<Vec<String>>,
     partial_scroll: f32,
+    clicked_cell_coordinates: Option<CellCoordinates>,
+    selected_cell_coordinates: Option<Range<CellCoordinates>>,
 }
 
 pub struct TerminalScreenPrepaint {
     screen: Screen,
     screen_hitbox: Hitbox,
     screen_lines: Vec<Vec<WrappedLine>>,
+    cell_hitboxes: Vec<(CellCoordinates, Hitbox)>,
     style: Style,
     background: Hsla,
     caret_rect: Bounds<Pixels>,
@@ -208,6 +215,8 @@ impl TerminalScreen {
                 timer: Instant::now(),
                 close_warning_dialog: None,
                 partial_scroll: 0.,
+                clicked_cell_coordinates: None,
+                selected_cell_coordinates: None,
             }
         })
     }
@@ -217,6 +226,39 @@ impl TerminalScreen {
     }
 
     pub fn delete(&mut self, _: &Delete, window: &mut Window, cx: &mut Context<Self>) {}
+
+    pub fn copy(&mut self, _: &CopyAction, window: &mut Window, cx: &mut Context<Self>) {
+        let Some(selected_cell_coordinates) = self.selected_cell_coordinates.as_ref() else {
+            return;
+        };
+
+        let screen = self.screen.read(cx);
+        let screen = screen.screen();
+        let mut copied_string = String::new();
+        for line in 0..screen.size().0 {
+            for column in 0..screen.size().1 {
+                let cell = screen.cell(line, column);
+                let coordinates = CellCoordinates(line, column);
+                if selected_cell_coordinates.contains(&coordinates) {
+                    if column == 0 {
+                        copied_string += "\n";
+                    }
+
+                    copied_string += cell
+                        .map(|cell| {
+                            if cell.has_contents() {
+                                cell.contents()
+                            } else {
+                                " "
+                            }
+                        })
+                        .unwrap_or_default()
+                }
+            }
+        }
+
+        cx.write_to_clipboard(ClipboardItem::new_string(copied_string.trim().to_string()));
+    }
 
     pub fn paste(&mut self, _: &PasteAction, window: &mut Window, cx: &mut Context<Self>) {
         if let Some(clipboard_contents) = cx
@@ -366,18 +408,15 @@ impl TerminalScreen {
 
 impl Render for TerminalScreen {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let screen = self.screen.clone();
-        let screen_size = self.screen_size.clone();
-        let style = self.style.clone();
-        let color_scheme = self.color_scheme;
-        let timer = self.timer;
-
         div()
             .h_full()
             .w_full()
             .key_context("TerminalScreen")
             .track_focus(&self.focus_handle(cx))
             .on_action(cx.listener(Self::delete))
+            .when(self.selected_cell_coordinates.is_some(), |div| {
+                div.on_action(cx.listener(Self::copy))
+            })
             .on_action(cx.listener(Self::paste))
             .on_key_down(cx.listener(|this, event: &KeyDownEvent, window, cx| {
                 this.process_key_press(event, window, cx)
@@ -386,21 +425,14 @@ impl Render for TerminalScreen {
                 this.process_scroll(event, window, cx)
             }))
             .child(
-                canvas(
-                    move |bounds, window, cx| {
-                        prepaint_terminal_screen(
-                            screen,
-                            screen_size,
-                            style,
-                            color_scheme,
-                            timer,
-                            bounds,
-                            window,
-                            cx,
-                        )
-                    },
-                    paint_terminal_screen,
-                )
+                canvas(cx.processor(prepaint_terminal_screen), {
+                    let entity = cx.entity();
+                    move |bounds, prepaint_state, window, cx| {
+                        entity.update(cx, |_, cx| {
+                            paint_terminal_screen(bounds, prepaint_state, window, cx)
+                        })
+                    }
+                })
                 .w_full()
                 .h_full(),
             )
@@ -536,15 +568,18 @@ impl Styled for TerminalScreen {
 }
 
 fn prepaint_terminal_screen(
-    parser_entity: Entity<Parser<TerminalScreenCallbacks>>,
-    screen_size: Entity<ScreenSize>,
-    style_refinement: StyleRefinement,
-    color_scheme: ColorScheme,
-    timer: Instant,
+    terminal_screen: &mut TerminalScreen,
     bounds: Bounds<Pixels>,
     window: &mut Window,
-    cx: &mut App,
+    cx: &mut Context<TerminalScreen>,
 ) -> TerminalScreenPrepaint {
+    let parser_entity = terminal_screen.screen.clone();
+    let screen_size = terminal_screen.screen_size.clone();
+    let style_refinement = terminal_screen.style.clone();
+    let color_scheme = terminal_screen.color_scheme;
+    let timer = terminal_screen.timer;
+    let selected_cell_coordinates = &terminal_screen.selected_cell_coordinates;
+
     let screen_hitbox = window.insert_hitbox(bounds, HitboxBehavior::Normal);
 
     let style = Style::default().refined(style_refinement);
@@ -554,7 +589,7 @@ fn prepaint_terminal_screen(
         .with_timer(timer)
         .reverse_when(screen.reverse_video());
 
-    let (screen_lines, caret_rect) =
+    let (screen_lines, caret_rect, cell_hitboxes) =
         window.with_text_style(style.text_style().cloned(), |window| {
             let text_style = window.text_style();
             let line_height = text_style.line_height_in_pixels(window.rem_size());
@@ -578,7 +613,7 @@ fn prepaint_terminal_screen(
 
             if *screen_size.read(cx) != new_screen_size {
                 let screen_size = screen_size.clone();
-                cx.spawn(async move |cx: &mut AsyncApp| {
+                cx.spawn(async move |_, cx: &mut AsyncApp| {
                     cx.update_entity(&screen_size, |screen_size, cx| {
                         screen_size.columns = new_screen_size.columns.max(1);
                         screen_size.lines = new_screen_size.lines.max(1);
@@ -590,6 +625,7 @@ fn prepaint_terminal_screen(
             }
 
             let mut screen_lines = Vec::new();
+            let mut cell_hitboxes = Vec::new();
             for line in 0..screen.size().0 {
                 let mut run_calculator = RunCalculator::new(
                     window.text_system().clone(),
@@ -600,7 +636,26 @@ fn prepaint_terminal_screen(
 
                 for column in 0..screen.size().1 {
                     let cell = screen.cell(line, column).cloned();
-                    run_calculator.push_cell(cell);
+                    let cell_bounds = Bounds {
+                        origin: point(
+                            column as f32 * character_size.width,
+                            line as f32 * character_size.height,
+                        ) + bounds.origin,
+                        size: character_size,
+                    };
+
+                    let coordinates = CellCoordinates(line, column);
+
+                    let hitbox = window.insert_hitbox(cell_bounds, HitboxBehavior::Normal);
+                    cell_hitboxes.push((coordinates, hitbox));
+                    run_calculator.push_cell(
+                        cell,
+                        selected_cell_coordinates
+                            .as_ref()
+                            .is_some_and(|selected_coordinates| {
+                                selected_coordinates.contains(&coordinates)
+                            }),
+                    );
                 }
 
                 screen_lines.push(run_calculator.runs());
@@ -615,7 +670,7 @@ fn prepaint_terminal_screen(
                 size: size(px(1.), character_size.height),
             };
 
-            (screen_lines, caret_rect)
+            (screen_lines, caret_rect, cell_hitboxes)
         });
 
     let caret_color = color_scheme.parse_color(screen.fgcolor(), color_scheme.foreground, true);
@@ -627,6 +682,7 @@ fn prepaint_terminal_screen(
         screen,
         screen_hitbox,
         style,
+        cell_hitboxes,
         screen_lines,
         background: color_scheme.background,
         caret_rect,
@@ -638,7 +694,7 @@ fn paint_terminal_screen(
     bounds: Bounds<Pixels>,
     prepaint_state: TerminalScreenPrepaint,
     window: &mut Window,
-    cx: &mut App,
+    cx: &mut Context<TerminalScreen>,
 ) {
     window.paint_quad(quad(
         bounds,
@@ -693,6 +749,64 @@ fn paint_terminal_screen(
 
             y += line_height;
         }
+    });
+
+    let entity = cx.entity();
+    let cell_hitboxes = prepaint_state.cell_hitboxes.clone();
+    window.on_mouse_event(move |event: &MouseDownEvent, dispatch_phase, window, cx| {
+        if dispatch_phase != DispatchPhase::Bubble {
+            return;
+        }
+
+        let cell_hitboxes = cell_hitboxes.clone();
+
+        entity.update(cx, move |terminal_screen, cx| {
+            for (cell, hitbox) in cell_hitboxes {
+                if hitbox.is_hovered(window) {
+                    terminal_screen.clicked_cell_coordinates = Some(cell);
+                    terminal_screen.selected_cell_coordinates = None;
+                }
+            }
+            cx.notify()
+        })
+    });
+
+    let entity_2 = cx.entity();
+    let cell_hitboxes_2 = prepaint_state.cell_hitboxes.clone();
+    window.on_mouse_event(move |event: &MouseMoveEvent, dispatch_phase, window, cx| {
+        if dispatch_phase != DispatchPhase::Bubble {
+            return;
+        }
+
+        let cell_hitboxes = cell_hitboxes_2.clone();
+
+        entity_2.update(cx, move |terminal_screen, cx| {
+            if let Some(clicked_cell_coordinates) = terminal_screen.clicked_cell_coordinates {
+                for (cell, hitbox) in cell_hitboxes {
+                    if hitbox.is_hovered(window) {
+                        if clicked_cell_coordinates < cell {
+                            terminal_screen.selected_cell_coordinates =
+                                Some(clicked_cell_coordinates..cell);
+                        } else {
+                            terminal_screen.selected_cell_coordinates =
+                                Some(cell..clicked_cell_coordinates);
+                        }
+                    }
+                }
+                cx.notify()
+            }
+        })
+    });
+
+    let entity_3 = cx.entity();
+    window.on_mouse_event(move |event: &MouseUpEvent, dispatch_phase, window, cx| {
+        if dispatch_phase != DispatchPhase::Bubble {
+            return;
+        }
+
+        entity_3.update(cx, move |terminal_screen, cx| {
+            terminal_screen.clicked_cell_coordinates = None;
+        })
     });
 
     window.paint_quad(quad(

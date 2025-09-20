@@ -43,37 +43,37 @@
   },
   "PTY_OPEN_ERROR": {
     "context": "terminal_screen.rs",
-    "definedIn": "src/terminal_screen.rs:116",
+    "definedIn": "src/terminal_screen.rs:123",
     "plural": false,
     "description": null
   },
   "PTY_SPAWN_ERROR": {
     "context": "terminal_screen.rs",
-    "definedIn": "src/terminal_screen.rs:130",
+    "definedIn": "src/terminal_screen.rs:137",
     "plural": false,
     "description": null
   },
   "TERMINAL_CLOSE_WARNING_CLOSE": {
     "context": "terminal_screen.rs",
-    "definedIn": "src/terminal_screen.rs:438",
+    "definedIn": "src/terminal_screen.rs:470",
     "plural": false,
     "description": null
   },
   "TERMINAL_CLOSE_WARNING_MESSAGE": {
     "context": "terminal_screen.rs",
-    "definedIn": "src/terminal_screen.rs:415",
+    "definedIn": "src/terminal_screen.rs:447",
     "plural": true,
     "description": null
   },
   "TERMINAL_CLOSE_WARNING_TITLE": {
     "context": "terminal_screen.rs",
-    "definedIn": "src/terminal_screen.rs:410",
+    "definedIn": "src/terminal_screen.rs:442",
     "plural": false,
     "description": null
   },
   "TERMINAL_DEFAULT_TITLE": {
     "context": "terminal_screen.rs",
-    "definedIn": "src/terminal_screen.rs:205",
+    "definedIn": "src/terminal_screen.rs:212",
     "plural": false,
     "description": null
   }

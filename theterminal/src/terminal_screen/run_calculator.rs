@@ -36,9 +36,9 @@ impl RunCalculator {
         }
     }
 
-    pub fn push_cell(&mut self, cell: Option<Cell>) {
+    pub fn push_cell(&mut self, cell: Option<Cell>, selected: bool) {
         if let Some(cell) = cell {
-            let attributes = cell.clone().into();
+            let attributes = CellAttributes::from(cell.clone()).inverse_when(selected);
             if self.current_cell_attributes != attributes {
                 self.finalise_run();
                 self.current_string = String::new();
@@ -134,6 +134,13 @@ impl CellAttributes {
             },
             ..TextStyleRefinement::default()
         }
+    }
+    
+    pub fn inverse_when(mut self, condition: bool) -> Self {
+        if condition {
+            self.inverse = !self.inverse;
+        }
+        self
     }
 }
 
