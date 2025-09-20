@@ -17,6 +17,7 @@ vt100 = { workspace = true }
 ini = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
+sysinfo = { workspace = true }
 
 [target.'cfg(target_os = "macos")'.dependencies]
 objc2-open-directory = { workspace = true }

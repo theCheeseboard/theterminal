@@ -121,11 +121,21 @@ impl Render for MainSurface {
                                     .rounded(theme.border_radius)
                                     .gap(px(2.))
                                     .content_stretch(),
-                                |div, (i, terminal_screen)| {
+                                |david, (i, terminal_screen)| {
                                     let terminal_screen = terminal_screen.read(cx);
-                                    div.child(
+                                    david.child(
                                         button(i)
-                                            .child(terminal_screen.title())
+                                            .child(
+                                                div()
+                                                    .flex()
+                                                    .flex_col()
+                                                    .child(terminal_screen.title())
+                                                    .child(
+                                                        div()
+                                                            .text_size(theme.system_font_size * 0.6)
+                                                            .child("Bottom Text"),
+                                                    ),
+                                            )
                                             .on_click(cx.listener(move |this, _, _, cx| {
                                                 this.current_terminal_screen = i;
                                                 cx.notify()

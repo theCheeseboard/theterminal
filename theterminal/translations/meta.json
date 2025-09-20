@@ -43,19 +43,37 @@
   },
   "PTY_OPEN_ERROR": {
     "context": "terminal_screen.rs",
-    "definedIn": "src/terminal_screen.rs:106",
+    "definedIn": "src/terminal_screen.rs:111",
     "plural": false,
     "description": null
   },
   "PTY_SPAWN_ERROR": {
     "context": "terminal_screen.rs",
-    "definedIn": "src/terminal_screen.rs:119",
+    "definedIn": "src/terminal_screen.rs:125",
+    "plural": false,
+    "description": null
+  },
+  "TERMINAL_CLOSE_WARNING_CLOSE": {
+    "context": "terminal_screen.rs",
+    "definedIn": "src/terminal_screen.rs:398",
+    "plural": false,
+    "description": null
+  },
+  "TERMINAL_CLOSE_WARNING_MESSAGE": {
+    "context": "terminal_screen.rs",
+    "definedIn": "src/terminal_screen.rs:375",
+    "plural": true,
+    "description": null
+  },
+  "TERMINAL_CLOSE_WARNING_TITLE": {
+    "context": "terminal_screen.rs",
+    "definedIn": "src/terminal_screen.rs:370",
     "plural": false,
     "description": null
   },
   "TERMINAL_DEFAULT_TITLE": {
     "context": "terminal_screen.rs",
-    "definedIn": "src/terminal_screen.rs:192",
+    "definedIn": "src/terminal_screen.rs:200",
     "plural": false,
     "description": null
   }

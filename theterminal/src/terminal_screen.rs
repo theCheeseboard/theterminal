@@ -9,23 +9,24 @@ use crate::terminal_screen::events::{TerminalScreenCloseEvent, TerminalScreenEve
 use crate::terminal_screen::keyboard::Keyboard;
 use crate::terminal_screen::run_calculator::RunCalculator;
 use async_channel::Sender;
-use cntp_i18n::tr;
+use cntp_i18n::{tr, trn};
+use contemporary::components::button::button;
+use contemporary::components::dialog_box::{StandardButton, dialog_box};
+use gpui::prelude::FluentBuilder;
 use gpui::{
-    App, AppContext, AsyncApp, BorderStyle, Bounds, Context, Corners, CursorStyle, Element, Entity,
+    App, AppContext, AsyncApp, BorderStyle, Bounds, Context, Corners, CursorStyle, Entity,
     EntityInputHandler, FocusHandle, Focusable, Hitbox, HitboxBehavior, Hsla, InteractiveElement,
     IntoElement, KeyBinding, KeyDownEvent, ParentElement, Pixels, Point, Refineable, Render, Style,
-    StyleRefinement, Styled, TextAlign, TextRun, UTF16Selection, WeakEntity, Window, WrappedLine,
-    actions, bounds, canvas, div, point, px, quad, rgb, size, transparent_black,
+    StyleRefinement, Styled, TextAlign, UTF16Selection, Window, WrappedLine, actions, canvas, div,
+    point, px, quad, rgb, size, transparent_black,
 };
 use portable_pty::{CommandBuilder, PtySize, native_pty_system};
-use smol::io::BufReader;
 use std::cell::RefCell;
 use std::io::{Read, Write};
 use std::ops::Range;
-use std::ptr::read;
 use std::rc::Rc;
-use std::sync::{Arc, Mutex, RwLock};
 use std::thread;
+use sysinfo::{ProcessRefreshKind, RefreshKind, System};
 use tracing::{info, warn};
 use vt100::{Callbacks, Parser, Screen};
 
@@ -50,6 +51,8 @@ pub struct TerminalScreen {
     keyboard: Keyboard,
     title: String,
     events: TerminalScreenEvents,
+    shell_pid: Option<u32>,
+    close_warning_dialog: Option<Vec<String>>,
 }
 
 pub struct TerminalScreenPrepaint {
@@ -77,11 +80,10 @@ impl TerminalScreen {
 
         cx.new(|cx| {
             let mut writer = None;
+            let mut shell_pid = None;
 
-            let (tx_read, rx_read) = async_channel::unbounded();
-            let (tx_write, rx_write) = async_channel::unbounded();
-
-            let weak_terminal_screen = cx.weak_entity();
+            let (tx_read, rx_read) = async_channel::bounded(1);
+            let (tx_write, rx_write) = async_channel::bounded(1);
 
             let parser = cx.new(|cx| {
                 let screen_size = screen_size_entity.read(cx);
@@ -89,7 +91,10 @@ impl TerminalScreen {
                     screen_size.lines,
                     screen_size.columns,
                     1000,
-                    TerminalScreenCallbacks { tx_write },
+                    TerminalScreenCallbacks {
+                        tx_write,
+                        events: events.clone(),
+                    },
                 );
 
                 let pty = native_pty_system();
@@ -113,14 +118,17 @@ impl TerminalScreen {
 
                 let mut cmd = CommandBuilder::new(default_shell());
                 cmd.env("TERM", "xterm-256color");
-                if let Err(error) = pty_pair.slave.spawn_command(cmd) {
-                    warn!("Unable to spawn process: {error}");
-                    parser.process(
-                        tr!("PTY_SPAWN_ERROR", "Unable to spawn process")
-                            .to_string()
-                            .as_bytes(),
-                    );
-                    return parser;
+                match pty_pair.slave.spawn_command(cmd) {
+                    Err(error) => {
+                        warn!("Unable to spawn process: {error}");
+                        parser.process(
+                            tr!("PTY_SPAWN_ERROR", "Unable to spawn process")
+                                .to_string()
+                                .as_bytes(),
+                        );
+                        return parser;
+                    }
+                    Ok(child) => shell_pid = child.process_id(),
                 }
 
                 let mut reader = pty_pair.master.try_clone_reader().unwrap();
@@ -191,6 +199,8 @@ impl TerminalScreen {
                 keyboard: Keyboard::default(),
                 title: tr!("TERMINAL_DEFAULT_TITLE", "Terminal").to_string(),
                 events,
+                shell_pid,
+                close_warning_dialog: None,
             }
         })
     }
@@ -270,6 +280,48 @@ impl TerminalScreen {
     }
 
     pub fn request_close(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        let system = System::new_with_specifics(
+            RefreshKind::nothing().with_processes(ProcessRefreshKind::everything()),
+        );
+
+        if let Some(shell_pid) = self.shell_pid {
+            let child_processes: Vec<_> = system
+                .processes()
+                .iter()
+                .filter(|(_, process)| {
+                    let Some(mut proc) = process.parent() else {
+                        return false;
+                    };
+                    loop {
+                        if proc.as_u32() == shell_pid {
+                            return true;
+                        }
+
+                        let Some(proc_obj) = system.process(proc) else {
+                            return false;
+                        };
+
+                        if let Some(parent_obj) = proc_obj.parent() {
+                            proc = parent_obj;
+                        } else {
+                            return false;
+                        }
+                    }
+                })
+                .collect();
+
+            if !child_processes.is_empty() {
+                self.close_warning_dialog = Some(
+                    child_processes
+                        .iter()
+                        .map(|(_, process)| process.name().to_string_lossy().to_string())
+                        .collect(),
+                );
+                cx.notify();
+                return;
+            }
+        }
+
         let event = TerminalScreenCloseEvent {
             terminal: cx.entity(),
         };
@@ -311,6 +363,49 @@ impl Render for TerminalScreen {
                 )
                 .w_full()
                 .h_full(),
+            )
+            .child(
+                dialog_box("close-warning")
+                    .visible(self.close_warning_dialog.is_some())
+                    .title(tr!("TERMINAL_CLOSE_WARNING_TITLE", "Close this terminal?").into())
+                    .when_some(
+                        self.close_warning_dialog.as_ref(),
+                        |dialog_box, processes| {
+                            dialog_box.content(trn!(
+                                "TERMINAL_CLOSE_WARNING_MESSAGE",
+                                "{{count}} process is still running in \
+                                this terminal and will be terminated if \
+                                you close it: {{processes}}",
+                                "{{count}} processes are still running in \
+                                this terminal and will be terminated if \
+                                you close it: {{processes}}",
+                                count = processes.len() as isize,
+                                // TODO: Use i18n to create human readable list
+                                processes = processes.join(", ")
+                            ))
+                        },
+                    )
+                    .standard_button(
+                        StandardButton::Cancel,
+                        cx.listener(|this, _, _, cx| {
+                            this.close_warning_dialog = None;
+                            cx.notify();
+                        }),
+                    )
+                    .button(
+                        button("close-button")
+                            .child(tr!(
+                                "TERMINAL_CLOSE_WARNING_CLOSE",
+                                "Close and Terminate Processes"
+                            ))
+                            .destructive()
+                            .on_click(cx.listener(|this, _, window, cx| {
+                                let event = TerminalScreenCloseEvent {
+                                    terminal: cx.entity(),
+                                };
+                                (this.events.close_requested)(&event, window, cx);
+                            })),
+                    ),
             )
     }
 }
@@ -565,6 +660,7 @@ fn paint_terminal_screen(
 
 struct TerminalScreenCallbacks {
     tx_write: Sender<Vec<u8>>,
+    events: TerminalScreenEvents,
 }
 
 impl Callbacks for TerminalScreenCallbacks {

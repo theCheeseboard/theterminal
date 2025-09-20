@@ -8,5 +8,11 @@
   "MENU_FILE": "File",
   "PTY_OPEN_ERROR": "Unable to open pty",
   "PTY_SPAWN_ERROR": "Unable to spawn process",
+  "TERMINAL_CLOSE_WARNING_CLOSE": "Close and Terminate Processes",
+  "TERMINAL_CLOSE_WARNING_MESSAGE": {
+    "one": "{{count}} process is still running in this terminal and will be terminated if you close it: {{processes}}",
+    "other": "{{count}} processes are still running in this terminal and will be terminated if you close it: {{processes}}"
+  },
+  "TERMINAL_CLOSE_WARNING_TITLE": "Close this terminal?",
   "TERMINAL_DEFAULT_TITLE": "Terminal"
 }
