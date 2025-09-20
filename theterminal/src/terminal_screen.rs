@@ -692,7 +692,11 @@ impl Callbacks for TerminalScreenCallbacks {
     }
 
     fn write_to_pty(&mut self, _: &mut Screen, bytes: &[u8]) {
-        smol::block_on(self.tx_write.send(bytes.to_vec())).unwrap();
+        let sender = self.tx_write.clone();
+        let bytes = bytes.to_vec();
+        smol::spawn(async move {
+            sender.send(bytes).await.unwrap();
+        }).detach();
     }
 }
 
