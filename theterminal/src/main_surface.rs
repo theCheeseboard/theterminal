@@ -119,6 +119,7 @@ impl Render for MainSurface {
                         div()
                             .occlude()
                             .flex()
+                            .flex_grow()
                             .gap(px(2.))
                             .content_stretch()
                             .child(
@@ -179,6 +180,7 @@ impl Render for MainSurface {
                                     },
                                 ),
                             )
+                            .child(div().flex_grow())
                             .child(
                                 button("new-tab-button")
                                     .child(icon("list-add".into()))
