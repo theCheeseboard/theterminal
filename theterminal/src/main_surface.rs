@@ -1,6 +1,7 @@
 use cntp_i18n::tr;
 use contemporary::components::application_menu::ApplicationMenu;
 use contemporary::components::button::button;
+use contemporary::components::icon::icon;
 use contemporary::components::pager::pager;
 use contemporary::components::pager::slide_horizontal_animation::SlideHorizontalAnimation;
 use contemporary::styling::theme::Theme;
@@ -115,59 +116,77 @@ impl Render for MainSurface {
             .child(
                 surface()
                     .actions(
-                        div().occlude().flex().content_stretch().child(
-                            self.terminal_screens.iter().enumerate().fold(
-                                div()
-                                    .flex()
-                                    .id("action-bar")
-                                    .bg(theme.button_background)
-                                    .rounded(theme.border_radius)
-                                    .gap(px(2.))
-                                    .content_stretch(),
-                                |david, (i, terminal_screen)| {
-                                    let terminal_screen = terminal_screen.read(cx);
+                        div()
+                            .occlude()
+                            .flex()
+                            .gap(px(2.))
+                            .content_stretch()
+                            .child(
+                                self.terminal_screens.iter().enumerate().fold(
+                                    div()
+                                        .flex()
+                                        .id("action-bar")
+                                        .bg(theme.button_background)
+                                        .rounded(theme.border_radius)
+                                        .gap(px(2.))
+                                        .content_stretch(),
+                                    |david, (i, terminal_screen)| {
+                                        let terminal_screen = terminal_screen.read(cx);
 
-                                    let tab_subtext = terminal_screen
-                                        .working_directory()
-                                        .and_then(|path| {
-                                            path.iter()
-                                                .next_back()
-                                                .map(|str| str.to_string_lossy().to_string())
-                                        })
-                                        .unwrap_or_else(|| "".to_string());
+                                        let tab_subtext = terminal_screen
+                                            .working_directory()
+                                            .and_then(|path| {
+                                                path.iter()
+                                                    .next_back()
+                                                    .map(|str| str.to_string_lossy().to_string())
+                                            })
+                                            .unwrap_or_else(|| "".to_string());
 
-                                    david.child(
-                                        button(i)
-                                            .child(
-                                                div()
-                                                    .flex()
-                                                    .flex_col()
-                                                    .child(if terminal_screen.title().is_empty() {
-                                                        tr!("TERMINAL_DEFAULT_TITLE").to_string()
-                                                    } else {
-                                                        terminal_screen.title()
-                                                    }) 
-                                                    .when(!tab_subtext.is_empty(), |david| {
-                                                        david.child(
-                                                            div()
-                                                                .text_size(
-                                                                    theme.system_font_size * 0.6,
-                                                                )
-                                                                .child(tab_subtext),
+                                        david.child(
+                                            button(i)
+                                                .child(
+                                                    div()
+                                                        .flex()
+                                                        .flex_col()
+                                                        .child(
+                                                            if terminal_screen.title().is_empty() {
+                                                                tr!("TERMINAL_DEFAULT_TITLE")
+                                                                    .to_string()
+                                                            } else {
+                                                                terminal_screen.title()
+                                                            },
                                                         )
-                                                    }),
-                                            )
-                                            .on_click(cx.listener(move |this, _, _, cx| {
-                                                this.current_terminal_screen = i;
-                                                cx.notify()
-                                            }))
-                                            .when(self.current_terminal_screen == i, |button| {
-                                                button.checked()
-                                            }),
-                                    )
-                                },
+                                                        .when(!tab_subtext.is_empty(), |david| {
+                                                            david.child(
+                                                                div()
+                                                                    .text_size(
+                                                                        theme.system_font_size
+                                                                            * 0.6,
+                                                                    )
+                                                                    .child(tab_subtext),
+                                                            )
+                                                        }),
+                                                )
+                                                .on_click(cx.listener(move |this, _, _, cx| {
+                                                    this.current_terminal_screen = i;
+                                                    cx.notify()
+                                                }))
+                                                .when(
+                                                    self.current_terminal_screen == i,
+                                                    |button| button.checked(),
+                                                ),
+                                        )
+                                    },
+                                ),
+                            )
+                            .child(
+                                button("new-tab-button")
+                                    .child(icon("list-add".into()))
+                                    .flat()
+                                    .on_click(cx.listener(|this, _, window, cx| {
+                                        this.new_tab(&NewTabAction, window, cx);
+                                    })),
                             ),
-                        ),
                     )
                     .child(
                         self.terminal_screens.iter().fold(
