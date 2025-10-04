@@ -364,7 +364,7 @@ impl TerminalScreen {
         let scroll_delta = match event.delta {
             ScrollDelta::Pixels(pixels) => {
                 let mut lines_to_scroll = 0.;
-                self.partial_scroll += pixels.y.0;
+                self.partial_scroll += f32::from(pixels.y);
                 while self.partial_scroll > 10. {
                     lines_to_scroll += 1.;
                     self.partial_scroll -= 20.;
